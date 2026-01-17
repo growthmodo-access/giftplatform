@@ -7,6 +7,10 @@
     "build": "cd platform && npm run build",
     "dev": "cd platform && npm run dev"
   },
+  "dependencies": {
+    "next": "^15.1.0"
+  },
+  "devDependencies": {},
   "engines": {
     "node": ">=18.0.0"
   }
