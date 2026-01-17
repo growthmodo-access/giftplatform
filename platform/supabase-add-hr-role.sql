@@ -9,7 +9,7 @@ ALTER TABLE public.users
 ADD CONSTRAINT users_role_check 
 CHECK (role IN ('SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'));
 
--- Verify the update
-SELECT column_name, data_type, check_clause 
-FROM information_schema.check_constraints 
-WHERE constraint_name = 'users_role_check';
+-- Verify the update (optional - you can test by trying to insert/update with HR role)
+-- SELECT constraint_name, check_clause 
+-- FROM information_schema.check_constraints 
+-- WHERE constraint_name = 'users_role_check';
