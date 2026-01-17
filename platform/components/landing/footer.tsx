@@ -1,67 +1,73 @@
 import Link from 'next/link'
-import styles from './landing.module.css'
+
+const footerLinks = {
+  Company: ['About', 'Careers', 'Contact', 'Partners'],
+  Solutions: ['Employee Engagement', 'Client Gifting', 'Events', 'Recognition'],
+  Products: ['Swag', 'Gifts', 'Gift Cards', 'Automation'],
+  Resources: ['Blog', 'Case Studies', 'Guides', 'API Docs'],
+  Legal: ['Privacy', 'Terms', 'Security', 'Compliance'],
+}
 
 export function Footer() {
   return (
-    <footer className={styles.footer}>
-      <div className={styles.container}>
-        <div className={styles.footerContent}>
-          <div className={styles.footerLeft}>
-            <div className={styles.footerLogo}>
-              <span className={styles.logoIcon}>P</span>
-              <span className={styles.logoText}>Goodies.so</span>
+    <footer className="bg-white border-t border-gray-200 py-16">
+      <div className="max-w-7xl mx-auto px-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
+          {/* Logo and Social */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">G</span>
+              </div>
+              <span className="font-bold text-lg bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
+                Goodies.so
+              </span>
             </div>
-            <p className={styles.copyright}>© 2024 Goodies.so. All rights reserved.</p>
-            <div className={styles.socialLinks}>
-              <a href="#" className={styles.socialLink}>LinkedIn</a>
-              <a href="#" className={styles.socialLink}>Instagram</a>
-              <a href="#" className={styles.socialLink}>Facebook</a>
-              <a href="#" className={styles.socialLink}>Twitter</a>
-            </div>
-          </div>
-          <div className={styles.footerLinks}>
-            <div className={styles.footerColumn}>
-              <h4>Company</h4>
-              <a href="#">About</a>
-              <a href="#">Careers</a>
-              <a href="#">Contact</a>
-              <a href="#">Partners</a>
-            </div>
-            <div className={styles.footerColumn}>
-              <h4>Solutions</h4>
-              <a href="#">Employee Engagement</a>
-              <a href="#">Client Gifting</a>
-              <a href="#">Events</a>
-              <a href="#">Recognition</a>
-            </div>
-            <div className={styles.footerColumn}>
-              <h4>Products</h4>
-              <a href="#">Swag</a>
-              <a href="#">Gifts</a>
-              <a href="#">Gift Cards</a>
-              <a href="#">Automation</a>
-            </div>
-            <div className={styles.footerColumn}>
-              <h4>Resources</h4>
-              <a href="#">Blog</a>
-              <a href="#">Case Studies</a>
-              <a href="#">Guides</a>
-              <a href="#">API Docs</a>
-            </div>
-            <div className={styles.footerColumn}>
-              <h4>Legal</h4>
-              <a href="#">Privacy</a>
-              <a href="#">Terms</a>
-              <a href="#">Security</a>
-              <a href="#">Compliance</a>
+            <p className="text-gray-600 text-sm mb-6">
+              © 2024 Goodies.so. All rights reserved.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              {['LinkedIn', 'Instagram', 'Facebook', 'Twitter'].map((social) => (
+                <a
+                  key={social}
+                  href="#"
+                  className="text-gray-600 hover:text-purple-600 text-sm font-medium transition-colors"
+                >
+                  {social}
+                </a>
+              ))}
             </div>
           </div>
-          <div className={styles.footerBadges}>
-            <div className={styles.badge}>
-              <span className={styles.badgeLabel}>ACTA</span>
-              <span>500</span>
+
+          {/* Footer Links */}
+          {Object.entries(footerLinks).map(([category, links]) => (
+            <div key={category}>
+              <h4 className="font-semibold text-gray-900 mb-4">{category}</h4>
+              <ul className="space-y-3">
+                {links.map((link) => (
+                  <li key={link}>
+                    <a
+                      href="#"
+                      className="text-gray-600 hover:text-purple-600 text-sm transition-colors"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className={`${styles.badge} ${styles.eco}`}>🌱 Eco-Friendly</div>
+          ))}
+        </div>
+
+        {/* Badges */}
+        <div className="mt-12 pt-8 border-t border-gray-200 flex flex-wrap gap-4">
+          <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
+            <span className="text-xs font-bold text-gray-700">ACTA</span>
+            <span className="text-sm font-semibold text-gray-900">500</span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-green-50 rounded-lg">
+            <span className="text-lg">🌱</span>
+            <span className="text-sm font-semibold text-green-700">Eco-Friendly</span>
           </div>
         </div>
       </div>

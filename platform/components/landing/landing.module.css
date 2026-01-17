@@ -1,7 +1,0 @@
-/* Import the full landing styles - we'll use global classes */
-@import './landing-styles.css';
-
-/* Additional module-specific styles if needed */
-.landingPage {
-  /* Container for the entire landing page */
-}

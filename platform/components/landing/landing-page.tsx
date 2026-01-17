@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import './landing-styles.css'
 import { LandingHeader } from './landing-header'
 import { LandingHero } from './landing-hero'
 import { ClientLogos } from './client-logos'
@@ -44,9 +43,14 @@ export function LandingPage() {
   }, [])
 
   return (
-    <div className="landing-page">
+    <div className="min-h-screen bg-gradient-to-b from-white via-[#FAFBFC] to-[#F8FAFC]">
       <ScrollProgress />
-      <a href="#home" className="skip-link">Skip to main content</a>
+      <a 
+        href="#home" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-purple-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md"
+      >
+        Skip to main content
+      </a>
       <LandingHeader />
       <main>
         <LandingHero />
@@ -59,9 +63,9 @@ export function LandingPage() {
         <CTASection />
       </main>
       <Footer />
-      <div className="chat-widget">
-        <div className="chat-bubble">
-          <span>Help</span>
+      <div className="fixed bottom-6 left-6 z-50">
+        <div className="w-14 h-14 bg-purple-600 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform cursor-pointer">
+          <span className="text-white font-semibold text-sm">Help</span>
         </div>
       </div>
     </div>
