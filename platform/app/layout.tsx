@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     title: 'Goodies.so - Global Gifting & Swag Platform',
     description: 'Boost engagement globally, send premium swag and gifts.',
     type: 'website',
+    url: 'https://goodies.so',
   },
   twitter: {
     card: 'summary_large_image',

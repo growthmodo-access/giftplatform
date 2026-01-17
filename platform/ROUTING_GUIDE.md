@@ -55,19 +55,20 @@ When you deploy to Vercel:
 
 ### Example URLs After Deployment
 
-If your Vercel domain is `goodies-so.vercel.app`:
+Production domain: `goodies.so`
 
-- `https://goodies-so.vercel.app/` → Landing page
-- `https://goodies-so.vercel.app/login` → Login
-- `https://goodies-so.vercel.app/dashboard` → Dashboard
+- `https://goodies.so/` → Landing page
+- `https://goodies.so/login` → Login
+- `https://goodies.so/dashboard` → Dashboard
 
 ## Custom Domain
 
-You can add a custom domain in Vercel:
+The custom domain `goodies.so` should be configured in Vercel:
 
 1. Go to **Settings** → **Domains**
-2. Add your domain (e.g., `goodies.so`)
-3. Configure DNS as instructed
+2. Verify `goodies.so` is added
+3. Ensure DNS is properly configured
+4. The site will be available at `https://goodies.so`
 4. All routes will work on your custom domain
 
 ## Separate Landing Page (Alternative)

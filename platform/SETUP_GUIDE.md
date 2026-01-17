@@ -59,7 +59,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 npm run dev
 ```
 
-The application will be available at [http://localhost:3000](http://localhost:3000)
+The application will be available at [http://localhost:3000](http://localhost:3000) (local development) or [https://goodies.so](https://goodies.so) (production)
 
 ## Step 5: Create Your First Account
 

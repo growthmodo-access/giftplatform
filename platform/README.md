@@ -60,7 +60,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 npm run dev
 ```
 
-7. Open [http://localhost:3000](http://localhost:3000) in your browser
+7. Open [http://localhost:3000](http://localhost:3000) in your browser (local development) or visit [https://goodies.so](https://goodies.so) (production)
 
 ## Project Structure
 
