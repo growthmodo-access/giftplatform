@@ -1,15 +1,31 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { EmployeesList } from '@/components/employees/employees-list'
+import { getEmployees } from '@/actions/employees'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 
-const employees = [
-  { id: '1', name: 'John Doe', email: 'john@company.com', role: 'Employee', gifts: 12 },
-  { id: '2', name: 'Jane Smith', email: 'jane@company.com', role: 'Manager', gifts: 8 },
-  { id: '3', name: 'Mike Johnson', email: 'mike@company.com', role: 'Employee', gifts: 15 },
-]
+export default async function EmployeesPage() {
+  const supabase = await createClient()
+  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-export default function EmployeesPage() {
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Get current user's role to check permissions
+  const { data: currentUser } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  const { data: employees, error } = await getEmployees()
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -29,32 +45,11 @@ export default function EmployeesPage() {
           <CardDescription>View and manage team members</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {employees.map((employee) => (
-              <div
-                key={employee.id}
-                className="flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <Avatar>
-                    <AvatarFallback>
-                      {employee.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium text-gray-900">{employee.name}</p>
-                    <p className="text-sm text-gray-600">{employee.email}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="text-sm text-gray-600">{employee.role}</p>
-                    <p className="text-xs text-gray-500">{employee.gifts} gifts sent</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <EmployeesList 
+            employees={employees || []} 
+            currentUserRole={currentUser?.role || 'EMPLOYEE'}
+            currentUserId={user.id}
+          />
         </CardContent>
       </Card>
     </div>
