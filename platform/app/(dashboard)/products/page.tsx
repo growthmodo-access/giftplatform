@@ -37,6 +37,8 @@ export default async function ProductsPage() {
 
   if (error) {
     console.error('Error fetching products:', error)
+    // In production, you might want to show an error message to the user
+    // For now, we'll just pass an empty array and let the component handle it
   }
 
   return (

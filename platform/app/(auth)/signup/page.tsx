@@ -46,14 +46,22 @@ export default function SignupPage() {
           })
 
         if (userError) {
-          console.error('Error creating user record:', userError)
+          // If user creation fails, sign out the auth user to prevent orphaned accounts
+          await supabase.auth.signOut()
+          throw new Error(
+            `Account created but failed to set up profile: ${userError.message}. Please try again.`
+          )
         }
+      } else {
+        throw new Error('Failed to create user account')
       }
 
       router.push('/dashboard')
       router.refresh()
-    } catch (error: any) {
-      setError(error.message || 'An error occurred')
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : 'An error occurred during signup'
+      )
     } finally {
       setLoading(false)
     }
@@ -65,7 +73,7 @@ export default function SignupPage() {
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">P</span>
+              <span className="text-white font-bold text-xl">G</span>
             </div>
           </div>
           <CardTitle className="text-2xl text-center">Create an account</CardTitle>

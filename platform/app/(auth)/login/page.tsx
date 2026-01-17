@@ -30,8 +30,10 @@ export default function LoginPage() {
 
       router.push('/dashboard')
       router.refresh()
-    } catch (error: any) {
-      setError(error.message || 'An error occurred')
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : 'An error occurred during login'
+      )
     } finally {
       setLoading(false)
     }
@@ -43,7 +45,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">P</span>
+              <span className="text-white font-bold text-xl">G</span>
             </div>
           </div>
           <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
