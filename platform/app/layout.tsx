@@ -1,16 +1,41 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/providers'
 
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+})
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Goodies.so - Employee Gifting Platform',
-  description: 'Modern employee gifting and swag management platform',
+  title: 'Goodies.so - Global Gifting & Swag Platform',
+  description: 'Boost engagement globally, send premium swag and gifts. Improve your culture and increase sales, all in one global gifting platform.',
+  keywords: ['employee gifting', 'swag platform', 'corporate gifts', 'global gifting', 'employee engagement'],
+  authors: [{ name: 'Goodies.so' }],
+  openGraph: {
+    title: 'Goodies.so - Global Gifting & Swag Platform',
+    description: 'Boost engagement globally, send premium swag and gifts.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Goodies.so - Global Gifting & Swag Platform',
+    description: 'Boost engagement globally, send premium swag and gifts.',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+  },
+  charset: 'utf-8',
 }
 
 export default function RootLayout({
@@ -20,7 +45,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.variable}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
+      <body className={`${inter.variable} ${plusJakartaSans.variable} font-sans`}>
         <Providers>{children}</Providers>
       </body>
     </html>
