@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,10 +10,23 @@ import { supabase } from '@/lib/supabase/client'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const redirectTo = searchParams.get('redirect') || '/dashboard'
+        router.push(redirectTo)
+      }
+    }
+    checkUser()
+  }, [router, searchParams])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,13 +41,18 @@ export default function LoginPage() {
 
       if (error) throw error
 
-      router.push('/dashboard')
-      router.refresh()
+      // Wait for session to be established
+      await supabase.auth.getSession()
+
+      // Get redirect URL from query params or default to dashboard
+      const redirectTo = searchParams.get('redirect') || '/dashboard'
+      
+      // Use window.location for a full page reload to ensure cookies are set
+      window.location.href = redirectTo
     } catch (error) {
       setError(
         error instanceof Error ? error.message : 'An error occurred during login'
       )
-    } finally {
       setLoading(false)
     }
   }
