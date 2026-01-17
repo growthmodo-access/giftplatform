@@ -1,14 +1,3 @@
-# Supabase Database Setup
-
-Run this SQL in your Supabase SQL Editor to set up the database schema.
-
-## SQL Migration
-
-**Important**: Copy the SQL from `supabase-schema.sql` file, NOT from this markdown file. The markdown formatting can cause syntax errors.
-
-Alternatively, copy the SQL below (make sure to copy ONLY the SQL code, not the markdown headers):
-
-```sql
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -178,24 +167,14 @@ CREATE POLICY "Users can view company orders" ON orders
 CREATE POLICY "Users can view own orders" ON orders
   FOR SELECT USING (user_id = auth.uid());
 
--- Similar policies for other tables...
-```
+-- Users can read their own gifts
+CREATE POLICY "Users can view own gifts" ON gifts
+  FOR SELECT USING (user_id = auth.uid());
 
-## Setup Steps
+-- Users can read their own addresses
+CREATE POLICY "Users can view own addresses" ON addresses
+  FOR SELECT USING (user_id = auth.uid());
 
-1. Go to your Supabase project dashboard
-2. Navigate to SQL Editor
-3. **Copy the SQL from `supabase-schema.sql` file** (recommended) OR copy only the SQL code from the code block above (not the markdown headers)
-4. Paste into the SQL Editor
-5. Click "Run" to execute
-6. Verify tables are created in the Table Editor
-
-**Note**: If you get a syntax error mentioning "##", you likely copied markdown headers. Use the `supabase-schema.sql` file instead.
-
-## Next Steps
-
-After running the migration:
-1. Set up authentication in Supabase Dashboard
-2. Configure email templates (optional)
-3. Set up storage buckets for product images (optional)
-4. Test the connection with your Next.js app
+-- Users can manage their own addresses
+CREATE POLICY "Users can manage own addresses" ON addresses
+  FOR ALL USING (user_id = auth.uid());
