@@ -9,9 +9,9 @@ export function Footer() {
           <div className={styles.footerLeft}>
             <div className={styles.footerLogo}>
               <span className={styles.logoIcon}>P</span>
-              <span className={styles.logoText}>PerkUp</span>
+              <span className={styles.logoText}>Goodies.so</span>
             </div>
-            <p className={styles.copyright}>© 2024 PerkUp. All rights reserved.</p>
+            <p className={styles.copyright}>© 2024 Goodies.so. All rights reserved.</p>
             <div className={styles.socialLinks}>
               <a href="#" className={styles.socialLink}>LinkedIn</a>
               <a href="#" className={styles.socialLink}>Instagram</a>

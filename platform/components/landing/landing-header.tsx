@@ -37,7 +37,7 @@ export function LandingHeader() {
           <div className="nav-wrapper">
             <Link href="/" className="logo">
               <span className="logo-icon">P</span>
-              <span className="logo-text">PerkUp</span>
+              <span className="logo-text">Goodies.so</span>
             </Link>
             <button
               className={`mobile-menu-toggle ${isMenuOpen ? 'active' : ''}`}
@@ -62,7 +62,7 @@ export function LandingHeader() {
             </nav>
             <div className="header-actions">
               <button onClick={handleLogin} className="sign-in-link">Login</button>
-              <button onClick={handleGetStarted} className="btn-primary" aria-label="Get started with PerkUp">
+              <button onClick={handleGetStarted} className="btn-primary" aria-label="Get started with Goodies.so">
                 Get Started
               </button>
             </div>

@@ -30,14 +30,14 @@ export function LandingHero() {
             <button
               onClick={handleRequestDemo}
               className="btn-primary btn-large"
-              aria-label="Request a demo for PerkUp"
+              aria-label="Request a demo for Goodies.so"
             >
               Request a demo
             </button>
             <button
               onClick={handleExploreCountries}
               className="btn-outline btn-large"
-              aria-label="Explore countries where PerkUp operates"
+              aria-label="Explore countries where Goodies.so operates"
             >
               Explore countries
             </button>

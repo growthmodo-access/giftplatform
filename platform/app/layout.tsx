@@ -9,7 +9,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'PerkUp - Employee Gifting Platform',
+  title: 'Goodies.so - Employee Gifting Platform',
   description: 'Modern employee gifting and swag management platform',
 }
 

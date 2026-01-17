@@ -8,14 +8,14 @@ export function Testimonials() {
           <div className={`${styles.sectionTag} ${styles.tagPurple}`}>PROOF IN ACTION</div>
           <h2>Our clients say it best</h2>
           <p className={styles.testimonialsSubtitle}>
-            See what our customers around the world are saying about PerkUp.
+            See what our customers around the world are saying about Goodies.so.
           </p>
         </div>
         <div className={styles.testimonialsGrid}>
           <div className={styles.testimonialCard}>
             <div className={styles.testimonialContent}>
               <div className={styles.quote}>
-                "PerkUp does everything for me, so it's very easy for our employees to also manage the platform. It's fairly simple to get in and pick what you want."
+                "Goodies.so does everything for me, so it's very easy for our employees to also manage the platform. It's fairly simple to get in and pick what you want."
               </div>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>👤</div>
@@ -59,7 +59,7 @@ export function Testimonials() {
           <div className={styles.testimonialCard}>
             <div className={styles.testimonialContent}>
               <div className={styles.quote}>
-                "I am very grateful that I had an opportunity to use the PerkUp card. I love that I can use it as a regular debit card and pay on things that I wanted/needed. I also like where they would create suggestions on what we can use based on health and wellness. It introduced me to brands I had never thought of looking into. I'm also glad that this perk replenishes every year. Can't wait to use it again. Thank you so much for this benefit! It has helped me greatly!"
+                "I am very grateful that I had an opportunity to use the Goodies.so card. I love that I can use it as a regular debit card and pay on things that I wanted/needed. I also like where they would create suggestions on what we can use based on health and wellness. It introduced me to brands I had never thought of looking into. I'm also glad that this perk replenishes every year. Can't wait to use it again. Thank you so much for this benefit! It has helped me greatly!"
               </div>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>👤</div>
@@ -72,7 +72,7 @@ export function Testimonials() {
           <div className={styles.testimonialCard}>
             <div className={styles.testimonialContent}>
               <div className={styles.quote}>
-                "Its ability to scale while being easy to use for both the end user and the administrator is the really great thing about PerkUp. Plus, it keeps it fun and fresh, which allows us to think about the employee experience differently every time."
+                "Its ability to scale while being easy to use for both the end user and the administrator is the really great thing about Goodies.so. Plus, it keeps it fun and fresh, which allows us to think about the employee experience differently every time."
               </div>
               <div className={styles.testimonialAuthor}>
                 <div className={styles.authorAvatar}>👤</div>

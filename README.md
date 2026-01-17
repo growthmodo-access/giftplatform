@@ -1,6 +1,6 @@
-# GiftPro - Premium Gifting & Swag Platform
+# Goodies.so - Premium Gifting & Swag Platform
 
-A modern, responsive landing page inspired by PerkUp for a global gifting and swag solution.
+A modern, responsive landing page for Goodies.so - a global gifting and swag solution.
 
 ## Features
 
@@ -71,4 +71,4 @@ Edit the CSS variables in `styles.css`:
 
 ## License
 
-This project is created for GiftPro platform.
+This project is created for Goodies.so platform.

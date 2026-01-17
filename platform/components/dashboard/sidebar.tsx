@@ -45,7 +45,7 @@ export function Sidebar() {
             <span className="text-white font-bold text-sm">P</span>
           </div>
           <span className="font-bold text-lg bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
-            PerkUp
+            Goodies.so
           </span>
         </div>
       </div>

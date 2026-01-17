@@ -48,7 +48,7 @@ export default function LoginPage() {
           </div>
           <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
           <CardDescription className="text-center">
-            Sign in to your PerkUp account
+            Sign in to your Goodies.so account
           </CardDescription>
         </CardHeader>
         <CardContent>

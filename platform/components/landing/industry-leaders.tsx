@@ -8,7 +8,7 @@ export function IndustryLeaders() {
           <div className={styles.clientsText}>
             <h2>Ready to join industry leaders?</h2>
             <p className={styles.clientsDescription}>
-              Discover how top companies boost their employee, client, and event engagement through PerkUp.
+              Discover how top companies boost their employee, client, and event engagement through Goodies.so.
             </p>
             <button className={styles.btnPrimary}>See case studies</button>
           </div>

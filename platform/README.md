@@ -1,4 +1,4 @@
-# PerkUp Platform - Employee Gifting Platform
+# Goodies.so Platform - Employee Gifting Platform
 
 A modern employee gifting and swag management platform built with Next.js 15, TypeScript, Tailwind CSS, and Supabase.
 

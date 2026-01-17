@@ -1,6 +1,6 @@
-# Setup Guide - PerkUp Platform
+# Setup Guide - Goodies.so Platform
 
-This guide will help you set up and run the PerkUp platform application.
+This guide will help you set up and run the Goodies.so platform application.
 
 ## Prerequisites
 

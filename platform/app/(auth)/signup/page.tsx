@@ -70,7 +70,7 @@ export default function SignupPage() {
           </div>
           <CardTitle className="text-2xl text-center">Create an account</CardTitle>
           <CardDescription className="text-center">
-            Sign up to get started with PerkUp
+            Sign up to get started with Goodies.so
           </CardDescription>
         </CardHeader>
         <CardContent>
