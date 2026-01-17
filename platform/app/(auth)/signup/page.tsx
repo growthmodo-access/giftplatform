@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { supabase } from '@/lib/supabase/client'
+import { createUserProfile } from '@/actions/auth'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -34,26 +35,23 @@ export default function SignupPage() {
 
       if (error) throw error
 
-      // Create user record in public.users table
-      if (data.user) {
-        const { error: userError } = await supabase
-          .from('users')
-          .insert({
-            id: data.user.id,
-            email: data.user.email!,
-            name: name || null,
-            role: 'EMPLOYEE',
-          })
-
-        if (userError) {
-          // If user creation fails, sign out the auth user to prevent orphaned accounts
-          await supabase.auth.signOut()
-          throw new Error(
-            `Account created but failed to set up profile: ${userError.message}. Please try again.`
-          )
-        }
-      } else {
+      if (!data.user) {
         throw new Error('Failed to create user account')
+      }
+
+      // Create user profile using server action (bypasses RLS)
+      const profileResult = await createUserProfile(
+        data.user.id,
+        data.user.email!,
+        name
+      )
+
+      if (profileResult.error) {
+        // If user creation fails, sign out the auth user to prevent orphaned accounts
+        await supabase.auth.signOut()
+        throw new Error(
+          `Account created but failed to set up profile: ${profileResult.error}. Please try again.`
+        )
       }
 
       router.push('/dashboard')
