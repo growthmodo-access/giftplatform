@@ -25,7 +25,7 @@ type Campaign = {
 
 interface CampaignsListProps {
   campaigns: Campaign[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
 }
 
 const triggerLabels: Record<string, string> = {
@@ -41,7 +41,7 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
   const [sending, setSending] = useState<string | null>(null)
   const [toggling, setToggling] = useState<string | null>(null)
 
-  const canManageCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  const canManageCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
 
   const handleSendCampaign = async (campaignId: string) => {
     if (!confirm('Are you sure you want to send this campaign to all employees?')) {

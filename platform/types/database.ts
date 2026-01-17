@@ -14,7 +14,7 @@ export interface Database {
           id: string
           email: string
           name: string | null
-          role: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
+          role: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
           company_id: string | null
           avatar: string | null
           created_at: string
@@ -24,7 +24,7 @@ export interface Database {
           id?: string
           email: string
           name?: string | null
-          role?: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
+          role?: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
           company_id?: string | null
           avatar?: string | null
           created_at?: string
@@ -34,7 +34,7 @@ export interface Database {
           id?: string
           email?: string
           name?: string | null
-          role?: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
+          role?: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
           company_id?: string | null
           avatar?: string | null
           created_at?: string

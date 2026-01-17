@@ -23,12 +23,12 @@ type Campaign = {
 
 interface AutomationPageClientProps {
   campaigns: Campaign[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
 }
 
 export function AutomationPageClient({ campaigns, currentUserRole }: AutomationPageClientProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
-  const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">

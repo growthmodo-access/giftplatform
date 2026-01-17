@@ -18,20 +18,21 @@ type Employee = {
   id: string
   email: string
   name: string | null
-  role: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
+  role: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
   avatar: string | null
   giftsCount: number
 }
 
 interface EmployeesListProps {
   employees: Employee[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
   currentUserId: string
 }
 
 const roleColors: Record<string, string> = {
   SUPER_ADMIN: 'bg-purple-100 text-purple-700',
   ADMIN: 'bg-blue-100 text-blue-700',
+  HR: 'bg-pink-100 text-pink-700',
   MANAGER: 'bg-green-100 text-green-700',
   EMPLOYEE: 'bg-gray-100 text-gray-700',
 }
@@ -39,6 +40,7 @@ const roleColors: Record<string, string> = {
 const roleLabels: Record<string, string> = {
   SUPER_ADMIN: 'Super Admin',
   ADMIN: 'Admin',
+  HR: 'HR',
   MANAGER: 'Manager',
   EMPLOYEE: 'Employee',
 }
@@ -47,9 +49,9 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
   const router = useRouter()
   const [updating, setUpdating] = useState<string | null>(null)
 
-  const canManageRoles = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
+  const canManageRoles = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
 
-  const handleRoleChange = async (userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE') => {
+  const handleRoleChange = async (userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') => {
     setUpdating(userId)
     const result = await updateEmployeeRole(userId, newRole)
     setUpdating(null)
@@ -118,6 +120,12 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
                       disabled={employee.role === 'ADMIN' || updating === employee.id}
                     >
                       Set as Admin
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleRoleChange(employee.id, 'HR')}
+                      disabled={employee.role === 'HR' || updating === employee.id}
+                    >
+                      Set as HR
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => handleRoleChange(employee.id, 'MANAGER')}

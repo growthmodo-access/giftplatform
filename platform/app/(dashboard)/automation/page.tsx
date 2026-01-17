@@ -28,7 +28,7 @@ export default async function AutomationPage() {
   return (
     <AutomationPageClient 
       campaigns={campaigns || []} 
-      currentUserRole={currentUser?.role || 'EMPLOYEE'}
+      currentUserRole={(currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'}
     />
   )
 }

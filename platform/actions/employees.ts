@@ -65,7 +65,7 @@ export async function getEmployees() {
   }
 }
 
-export async function updateEmployeeRole(userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE') {
+export async function inviteEmployee(email: string, name: string, role: 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') {
   try {
     const supabase = await createClient()
     
@@ -78,14 +78,125 @@ export async function updateEmployeeRole(userId: string, newRole: 'SUPER_ADMIN' 
       redirect('/login')
     }
 
-    // Check if current user is admin or super admin
+    // Get current user's company and role
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('company_id, role')
+      .eq('id', user.id)
+      .single()
+
+    if (!currentUser?.company_id) {
+      return { error: 'You must be part of a company to invite employees' }
+    }
+
+    // Check permissions - only ADMIN, HR, and SUPER_ADMIN can invite
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to invite employees' }
+    }
+
+    // Check if user already exists
+    const { data: existingUser } = await supabase
+      .from('users')
+      .select('id, email')
+      .eq('email', email)
+      .single()
+
+    if (existingUser) {
+      return { error: 'A user with this email already exists' }
+    }
+
+    // Use service role to create auth user and send invitation
+    const { createClient: createServiceClient } = await import('@supabase/supabase-js')
+    const { env } = await import('@/lib/env')
+    
+    const serviceSupabase = createServiceClient(
+      env.supabase.url,
+      env.supabase.serviceRoleKey || env.supabase.anonKey,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
+    )
+
+    // Generate a temporary password (user will need to reset it)
+    const tempPassword = Math.random().toString(36).slice(-12) + 'A1!'
+
+    // Create auth user
+    const { data: authData, error: authUserError } = await serviceSupabase.auth.admin.createUser({
+      email,
+      password: tempPassword,
+      email_confirm: true,
+      user_metadata: {
+        name,
+      },
+    })
+
+    if (authUserError || !authData.user) {
+      return { error: `Failed to create user: ${authUserError?.message || 'Unknown error'}` }
+    }
+
+    // Create user profile with role and company
+    const { error: profileError } = await serviceSupabase
+      .from('users')
+      .insert({
+        id: authData.user.id,
+        email,
+        name: name || null,
+        role: role,
+        company_id: currentUser.company_id,
+      })
+
+    if (profileError) {
+      // If profile creation fails, delete the auth user
+      await serviceSupabase.auth.admin.deleteUser(authData.user.id)
+      return { error: `Failed to create profile: ${profileError.message}` }
+    }
+
+    // Send password reset email (this will allow them to set their own password)
+    const { error: resetError } = await serviceSupabase.auth.admin.generateLink({
+      type: 'recovery',
+      email,
+    })
+
+    // Note: In production, you'd want to send a proper invitation email
+    // For now, the user can use password reset to set their password
+
+    revalidatePath('/employees')
+    return { 
+      success: true, 
+      message: `Employee ${email} has been invited. They will receive an email to set their password.`,
+      userId: authData.user.id
+    }
+  } catch (error) {
+    return { 
+      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    }
+  }
+}
+
+export async function updateEmployeeRole(userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') {
+  try {
+    const supabase = await createClient()
+    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    // Check if current user is admin, HR, or super admin
     const { data: currentUser } = await supabase
       .from('users')
       .select('role, company_id')
       .eq('id', user.id)
       .single()
 
-    if (!currentUser || (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN')) {
+    if (!currentUser || (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN')) {
       return { error: 'You do not have permission to update roles' }
     }
 

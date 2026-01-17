@@ -93,8 +93,8 @@ export async function createCampaign(formData: FormData) {
       return { error: 'You must be part of a company to create campaigns' }
     }
 
-    // Check permissions (only ADMIN and MANAGER can create campaigns)
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+    // Check permissions (only ADMIN, HR, and MANAGER can create campaigns)
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
       return { error: 'You do not have permission to create campaigns' }
     }
 
@@ -161,7 +161,7 @@ export async function sendCampaignToEmployees(campaignId: string) {
     }
 
     // Check permissions
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
       return { error: 'You do not have permission to send campaigns' }
     }
 
@@ -238,7 +238,7 @@ export async function updateCampaignStatus(campaignId: string, isActive: boolean
     }
 
     // Check permissions
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
       return { error: 'You do not have permission to update campaigns' }
     }
 
