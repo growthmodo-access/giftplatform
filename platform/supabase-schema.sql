@@ -139,6 +139,10 @@ ALTER TABLE campaigns ENABLE ROW LEVEL SECURITY;
 ALTER TABLE addresses ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies
+-- Users can insert their own data (for signup)
+CREATE POLICY "Users can insert own data" ON public.users
+  FOR INSERT WITH CHECK (auth.uid() = id);
+
 -- Users can read their own data
 CREATE POLICY "Users can view own data" ON public.users
   FOR SELECT USING (auth.uid() = id);
