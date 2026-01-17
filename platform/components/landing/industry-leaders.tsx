@@ -1,7 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { ReactNode } from 'react'
 
-const clients = [
+const clients: Array<{
+  name: string
+  logo: ReactNode
+}> = [
   {
     name: 'Microsoft',
     logo: (
@@ -93,11 +97,9 @@ export function IndustryLeaders() {
               {clients.map((client, index) => (
                 <Card
                   key={client.name}
-                  className={`
-                    p-6 glass hover:shadow-xl transition-all border-2 border-white/30
-                    ${index % 2 === 0 ? 'rotate-[-1deg]' : 'rotate-[1deg]'}
-                    hover:rotate-0 hover:scale-105
-                  `}
+                  className={`p-6 glass hover:shadow-xl transition-all border-2 border-white/30 ${
+                    index % 2 === 0 ? 'rotate-[-1deg]' : 'rotate-[1deg]'
+                  } hover:rotate-0 hover:scale-105`}
                 >
                   <div className="flex items-center justify-center min-h-[60px]">
                     {client.logo}
