@@ -41,13 +41,18 @@ function LoginForm() {
 
       if (error) throw error
 
-      // Wait for session to be established
-      await supabase.auth.getSession()
+      // Verify session is established and user is authenticated
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+      
+      if (sessionError || !session) {
+        throw new Error('Failed to establish session. Please try again.')
+      }
 
       // Get redirect URL from query params or default to dashboard
       const redirectTo = searchParams.get('redirect') || '/dashboard'
       
       // Use window.location for a full page reload to ensure cookies are set
+      // This ensures middleware can read the authentication cookies
       window.location.href = redirectTo
     } catch (error) {
       setError(
