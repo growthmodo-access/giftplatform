@@ -73,6 +73,19 @@ export async function getOrders() {
       .select('order_id, product_id, quantity, price')
       .in('order_id', orderIds)
 
+    // Get payment information if available (gracefully handle if table doesn't exist)
+    let payments: any[] = []
+    try {
+      const { data: paymentData } = await supabase
+        .from('payments')
+        .select('order_id, payment_method, phone_number')
+        .in('order_id', orderIds)
+      payments = paymentData || []
+    } catch (error) {
+      // Payments table might not exist, continue without it
+      console.log('Payments table not available')
+    }
+
     // Get product IDs
     const productIds = [...new Set((orderItems || []).map(item => item.product_id))]
     
@@ -85,6 +98,7 @@ export async function getOrders() {
     // Create lookup maps
     const userMap = new Map((users || []).map(u => [u.id, u]))
     const productMap = new Map((products || []).map(p => [p.id, p]))
+    const paymentMap = new Map((payments || []).map(p => [p.order_id, p]))
 
     // Combine orders with items
     const ordersWithItems = orders.map(order => {
@@ -92,11 +106,21 @@ export async function getOrders() {
       const firstItem = items[0]
       const product = firstItem ? productMap.get(firstItem.product_id) : null
       const user = userMap.get(order.user_id)
+      const payment = paymentMap.get(order.id)
+      
+      // Map payment methods to display names
+      const paymentMethodMap: Record<string, string> = {
+        'credit_card': 'Credit Card',
+        'bank_transfer': 'Bank Transfer',
+        'crypto': 'Crypto',
+        'paypal': 'PayPal',
+      }
       
       return {
         id: order.id,
         orderNumber: order.order_number,
         employee: user?.name || user?.email || 'Unknown',
+        employeeEmail: user?.email,
         product: product?.name || (items.length > 1 ? 'Multiple items' : 'Unknown product'),
         amount: `${order.currency || 'USD'} ${Number(order.total).toFixed(2)}`,
         status: order.status,
@@ -105,6 +129,9 @@ export async function getOrders() {
           month: 'short', 
           day: 'numeric' 
         }),
+        dateTimestamp: order.created_at, // Keep original timestamp for filtering
+        mobile: payment?.phone_number || user?.email?.split('@')[0] || undefined,
+        paymentMethod: payment?.payment_method ? paymentMethodMap[payment.payment_method] || payment.payment_method : undefined,
       }
     })
 
