@@ -17,29 +17,35 @@ export async function getOrders() {
       redirect('/login')
     }
 
-    // Get current user's company
+    // Get current user's company and role
     const { data: currentUser } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
       .single()
 
-    if (!currentUser?.company_id) {
-      return { data: [], error: null }
-    }
-
     // Get orders based on role
     let query = supabase
       .from('orders')
-      .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at')
-      .eq('company_id', currentUser.company_id)
+      .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at, company_id')
+
+    // SUPER_ADMIN can see all orders (all companies)
+    if (currentUser?.role === 'SUPER_ADMIN') {
+      // No company filter for SUPER_ADMIN
+    } else {
+      // Other roles need company_id
+      if (!currentUser?.company_id) {
+        return { data: [], error: null }
+      }
+      query = query.eq('company_id', currentUser.company_id)
+    }
 
     // EMPLOYEE can only see their own orders
-    if (currentUser.role === 'EMPLOYEE') {
+    if (currentUser?.role === 'EMPLOYEE') {
       query = query.eq('user_id', user.id)
     }
     // MANAGER can see all orders (for now - could be filtered by team later)
-    // ADMIN, HR, SUPER_ADMIN see all company orders
+    // ADMIN, HR see all company orders
 
     const { data: orders, error } = await query.order('created_at', { ascending: false })
 
@@ -131,7 +137,9 @@ export async function createOrder(formData: FormData) {
       .eq('id', user.id)
       .single()
 
-    if (userError || !currentUser?.company_id) {
+    // SUPER_ADMIN can create orders without company_id requirement
+    // Other roles need company_id
+    if (currentUser.role !== 'SUPER_ADMIN' && !currentUser?.company_id) {
       return { error: 'You must be part of a company to create orders' }
     }
 
@@ -151,16 +159,25 @@ export async function createOrder(formData: FormData) {
       return { error: 'Employee and product are required' }
     }
 
-    // Verify employee is in the same company
+    // Verify employee exists
     const { data: employee, error: employeeError } = await supabase
       .from('users')
       .select('company_id')
       .eq('id', employeeId)
       .single()
 
-    if (employeeError || !employee || employee.company_id !== currentUser.company_id) {
+    if (employeeError || !employee) {
+      return { error: 'Employee not found' }
+    }
+
+    // SUPER_ADMIN can create orders for any employee
+    // Other roles can only create orders for employees in their company
+    if (currentUser.role !== 'SUPER_ADMIN' && employee.company_id !== currentUser.company_id) {
       return { error: 'Employee not found or not in your company' }
     }
+
+    // Use employee's company_id or current user's company_id
+    const orderCompanyId = currentUser.role === 'SUPER_ADMIN' ? employee.company_id : currentUser.company_id
 
     // Get product details
     const { data: product, error: productError } = await supabase
@@ -190,7 +207,7 @@ export async function createOrder(formData: FormData) {
       .insert({
         order_number: orderNumber,
         user_id: employeeId,
-        company_id: currentUser.company_id,
+        company_id: orderCompanyId,
         status: 'PENDING',
         total: total,
         currency: 'USD',

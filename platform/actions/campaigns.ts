@@ -17,20 +17,15 @@ export async function getCampaigns() {
       redirect('/login')
     }
 
-    // Get current user's company
+    // Get current user's company and role
     const { data: currentUser } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
       .single()
 
-    if (!currentUser?.company_id) {
-      return { data: [], error: null }
-    }
-
-    // Get all campaigns for the company
-    // MANAGER can see all campaigns but cannot delete (filtered in UI)
-    const { data: campaigns, error } = await supabase
+    // Get campaigns based on role
+    let query = supabase
       .from('campaigns')
       .select(`
         *,
@@ -40,8 +35,20 @@ export async function getCampaigns() {
           price
         )
       `)
-      .eq('company_id', currentUser.company_id)
-      .order('created_at', { ascending: false })
+
+    // SUPER_ADMIN can see all campaigns (all companies)
+    if (currentUser?.role === 'SUPER_ADMIN') {
+      // No company filter for SUPER_ADMIN
+    } else {
+      // Other roles need company_id
+      if (!currentUser?.company_id) {
+        return { data: [], error: null }
+      }
+      query = query.eq('company_id', currentUser.company_id)
+    }
+
+    // MANAGER can see all campaigns but cannot delete (filtered in UI)
+    const { data: campaigns, error } = await query.order('created_at', { ascending: false })
 
     if (error) {
       return { data: [], error: error.message }
@@ -83,14 +90,16 @@ export async function createCampaign(formData: FormData) {
       redirect('/login')
     }
 
-    // Get current user's company
+    // Get current user's company and role
     const { data: currentUser } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
       .single()
 
-    if (!currentUser?.company_id) {
+    // SUPER_ADMIN can create campaigns without company_id (will need company_id in form)
+    // Other roles need company_id
+    if (currentUser?.role !== 'SUPER_ADMIN' && !currentUser?.company_id) {
       return { error: 'You must be part of a company to create campaigns' }
     }
 
@@ -108,9 +117,13 @@ export async function createCampaign(formData: FormData) {
       return { error: 'Name and trigger are required' }
     }
 
+    // SUPER_ADMIN needs to provide company_id in form (for now, use current user's company_id if available)
+    // TODO: Add company_id field to campaign form for SUPER_ADMIN
+    const campaignCompanyId = currentUser?.company_id || null
+    
     const campaign = {
       name: name.trim(),
-      company_id: currentUser.company_id,
+      company_id: campaignCompanyId,
       trigger: trigger as 'NEW_HIRE' | 'BIRTHDAY' | 'ANNIVERSARY' | 'PERFORMANCE' | 'CUSTOM',
       is_active: true,
       product_id: productId || null,

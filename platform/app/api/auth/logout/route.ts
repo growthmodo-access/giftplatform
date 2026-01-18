@@ -26,32 +26,36 @@ export async function POST(request: Request) {
       console.error('Logout error:', signOutError)
     }
     
-    // Use the request URL to determine the origin
-    let redirectUrl: URL
-    try {
-      const requestUrl = new URL(request.url)
-      redirectUrl = new URL('/login', requestUrl.origin)
-      
-      // #region agent log
-      const redirectLog = {location:'app/api/auth/logout/route.ts:30',message:'Creating redirect URL',data:{origin:requestUrl.origin,redirectUrl:redirectUrl.toString()},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'};
-      await fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(redirectLog)}).catch(()=>{});
-      // #endregion
-    } catch (urlError) {
-      // #region agent log
-      const urlErrorLog = {location:'app/api/auth/logout/route.ts:35',message:'Error creating URL',data:{error:urlError instanceof Error ? urlError.message : 'Unknown error'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'};
-      await fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(urlErrorLog)}).catch(()=>{});
-      // #endregion
-      
-      // Fallback to relative URL if URL construction fails
-      redirectUrl = new URL('/login', 'http://localhost:3000')
+    // Create redirect response - use relative URL
+    const response = NextResponse.redirect(new URL('/login', request.url))
+    
+    // Clear auth cookies by setting them to expire
+    // Note: Supabase SSR handles cookie clearing via signOut(), but we'll also clear manually
+    const cookieOptions = {
+      maxAge: 0,
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const
     }
     
+    response.cookies.set('sb-access-token', '', cookieOptions)
+    response.cookies.set('sb-refresh-token', '', cookieOptions)
+    
+    // Also delete any other Supabase auth cookies
+    const allCookies = request.cookies.getAll()
+    allCookies.forEach(cookie => {
+      if (cookie.name.startsWith('sb-')) {
+        response.cookies.set(cookie.name, '', cookieOptions)
+      }
+    })
+    
     // #region agent log
-    const finalLog = {location:'app/api/auth/logout/route.ts:44',message:'Returning redirect response',data:{redirectUrl:redirectUrl.toString()},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'};
+    const finalLog = {location:'app/api/auth/logout/route.ts:30',message:'Returning redirect response',data:{redirectUrl:loginUrl.toString()},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'};
     await fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(finalLog)}).catch(()=>{});
     // #endregion
 
-    return NextResponse.redirect(redirectUrl)
+    return response
   } catch (error) {
     // #region agent log
     const errorLog = {location:'app/api/auth/logout/route.ts:49',message:'Logout route error',data:{error:error instanceof Error ? error.message : 'Unknown error',errorStack:error instanceof Error ? error.stack : undefined},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'};

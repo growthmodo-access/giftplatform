@@ -17,23 +17,28 @@ export async function getEmployees() {
       redirect('/login')
     }
 
-    // Get current user's company
+    // Get current user's company and role
     const { data: currentUser } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
       .single()
 
-    if (!currentUser?.company_id) {
-      return { data: [], error: null }
+    // SUPER_ADMIN can see all employees (all companies)
+    // Other roles need company_id
+    let query = supabase
+      .from('users')
+      .select('id, email, name, role, avatar, created_at, company_id')
+      .order('created_at', { ascending: false })
+
+    if (currentUser?.role !== 'SUPER_ADMIN') {
+      if (!currentUser?.company_id) {
+        return { data: [], error: null }
+      }
+      query = query.eq('company_id', currentUser.company_id)
     }
 
-    // Get all employees in the same company
-    const { data: employees, error } = await supabase
-      .from('users')
-      .select('id, email, name, role, avatar, created_at')
-      .eq('company_id', currentUser.company_id)
-      .order('created_at', { ascending: false })
+    const { data: employees, error } = await query
 
     if (error) {
       return { data: [], error: error.message }
@@ -97,16 +102,18 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
     fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:87',message:'Current user data',data:{currentUser,currentUserError:currentUserError?.message,hasCompanyId:!!currentUser?.company_id,userRole:currentUser?.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
     // #endregion
 
-    if (!currentUser?.company_id) {
-      return { error: 'You must be part of a company to invite employees' }
-    }
-
     // Check permissions - only ADMIN, HR, and SUPER_ADMIN can invite
     if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
       // #region agent log
       fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:95',message:'Permission denied',data:{userRole:currentUser.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
       // #endregion
       return { error: 'You do not have permission to invite employees' }
+    }
+
+    // SUPER_ADMIN can invite employees to any company (will need company_id in form)
+    // Other roles need company_id
+    if (currentUser.role !== 'SUPER_ADMIN' && !currentUser?.company_id) {
+      return { error: 'You must be part of a company to invite employees' }
     }
 
     // HR can only invite HR, MANAGER, or EMPLOYEE roles (not ADMIN or SUPER_ADMIN)
@@ -164,6 +171,10 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
     }
 
     // Create user profile with role and company
+    // SUPER_ADMIN can invite to any company, but for now we use current user's company
+    // TODO: Add company_id parameter for SUPER_ADMIN to invite to specific companies
+    const companyId = currentUser?.company_id || null
+    
     const { error: profileError } = await serviceSupabase
       .from('users')
       .insert({
@@ -171,7 +182,7 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
         email,
         name: name || null,
         role: role,
-        company_id: currentUser.company_id,
+        company_id: companyId,
       })
 
     // #region agent log

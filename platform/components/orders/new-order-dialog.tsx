@@ -56,17 +56,24 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
 
       const { data: userData } = await supabase
         .from('users')
-        .select('company_id')
+        .select('company_id, role')
         .eq('id', user.id)
         .single()
 
-      if (!userData?.company_id) return
-
-      const { data } = await supabase
+      // SUPER_ADMIN can see all employees (all companies)
+      let query = supabase
         .from('users')
         .select('id, name, email')
-        .eq('company_id', userData.company_id)
         .order('name')
+
+      if (userData?.role !== 'SUPER_ADMIN' && userData?.company_id) {
+        query = query.eq('company_id', userData.company_id)
+      } else if (userData?.role !== 'SUPER_ADMIN' && !userData?.company_id) {
+        // Non-SUPER_ADMIN without company_id cannot load employees
+        return
+      }
+
+      const { data } = await query
 
       if (data) {
         setEmployees(data)
@@ -86,17 +93,24 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
 
       const { data: userData } = await supabase
         .from('users')
-        .select('company_id')
+        .select('company_id, role')
         .eq('id', user.id)
         .single()
 
-      if (!userData?.company_id) return
-
-      const { data } = await supabase
+      // SUPER_ADMIN can see all products (all companies)
+      let query = supabase
         .from('products')
         .select('id, name, price, stock')
-        .eq('company_id', userData.company_id)
         .order('name')
+
+      if (userData?.role !== 'SUPER_ADMIN' && userData?.company_id) {
+        query = query.eq('company_id', userData.company_id)
+      } else if (userData?.role !== 'SUPER_ADMIN' && !userData?.company_id) {
+        // Non-SUPER_ADMIN without company_id cannot load products
+        return
+      }
+
+      const { data } = await query
 
       if (data) {
         setProducts(data)

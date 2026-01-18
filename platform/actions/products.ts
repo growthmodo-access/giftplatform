@@ -18,7 +18,7 @@ export async function createProduct(formData: FormData) {
       redirect('/login')
     }
 
-    // Get user's company
+    // Get user's company and role
     const { data: userData, error: userError } = await supabase
       .from('users')
       .select('company_id, role')
@@ -27,6 +27,12 @@ export async function createProduct(formData: FormData) {
 
     if (userError) {
       return { error: 'Failed to fetch user data' }
+    }
+
+    // SUPER_ADMIN can create products without company_id (will need company_id in form)
+    // Other roles need company_id
+    if (userData?.role !== 'SUPER_ADMIN' && !userData?.company_id) {
+      return { error: 'You must be part of a company to create products' }
     }
 
     // Validate required fields
@@ -46,6 +52,8 @@ export async function createProduct(formData: FormData) {
       price: parseFloat(price),
       sku: sku.trim(),
       type: type as 'SWAG' | 'GIFT_CARD' | 'PHYSICAL_GIFT' | 'EXPERIENCE',
+      // SUPER_ADMIN can create products for any company (for now, use user's company_id if available)
+      // TODO: Add company_id field to product form for SUPER_ADMIN
       company_id: userData?.company_id || null,
       stock: parseInt(formData.get('stock') as string) || 0,
     }

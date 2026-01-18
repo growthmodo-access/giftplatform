@@ -31,7 +31,9 @@ export default async function ProductsPage() {
     .select('*')
     .order('created_at', { ascending: false })
 
-  if (userData?.company_id) {
+  // SUPER_ADMIN can see all products (all companies)
+  // Other roles see only their company's products
+  if (userData?.role !== 'SUPER_ADMIN' && userData?.company_id) {
     query = query.eq('company_id', userData.company_id)
   }
 

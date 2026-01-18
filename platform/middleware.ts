@@ -62,6 +62,8 @@ export async function middleware(request: NextRequest) {
   }
 
     // Redirect authenticated users away from auth pages
+    // BUT: Allow access to /login after logout (user might be null but cookies still exist)
+    // Only redirect if user is actually authenticated
     if (
       (request.nextUrl.pathname.startsWith('/login') ||
         request.nextUrl.pathname.startsWith('/signup')) &&
