@@ -31,38 +31,69 @@ export default async function DashboardLayout({
   }
 
   // Get role from database - should already be one of the valid UserRole types
-  const rawRole = currentUser.role || 'EMPLOYEE'
+  const rawRole = currentUser.role
+  
+  // Log the raw role value for debugging
+  console.log('[Layout] Raw role from database:', {
+    rawRole,
+    type: typeof rawRole,
+    isNull: rawRole === null,
+    isUndefined: rawRole === undefined,
+    stringValue: String(rawRole),
+    userEmail: currentUser.email
+  })
   
   // Validate and normalize role
   const userRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE' = (() => {
+    // Handle null/undefined
+    if (!rawRole) {
+      console.warn('[Layout] Role is null/undefined, defaulting to EMPLOYEE for:', currentUser.email)
+      return 'EMPLOYEE'
+    }
+    
     const validRoles = ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] as const
     const roleStr = String(rawRole).trim()
     
-    // Direct match (most common case)
+    // Direct match (most common case) - exact string match
     if (validRoles.includes(roleStr as any)) {
+      console.log('[Layout] Role matched exactly:', roleStr)
       return roleStr as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
     }
     
     // Case-insensitive fallback
     const upperRole = roleStr.toUpperCase()
-    if (upperRole === 'SUPER_ADMIN') return 'SUPER_ADMIN'
+    if (upperRole === 'SUPER_ADMIN') {
+      console.log('[Layout] Role matched (uppercase): SUPER_ADMIN')
+      return 'SUPER_ADMIN'
+    }
     if (upperRole === 'ADMIN') return 'ADMIN'
     if (upperRole === 'HR') return 'HR'
     if (upperRole === 'MANAGER') return 'MANAGER'
     if (upperRole === 'EMPLOYEE') return 'EMPLOYEE'
     
     // Log warning and default
-    console.warn('[Layout] Unknown role value:', roleStr, 'defaulting to EMPLOYEE')
+    console.error('[Layout] Unknown role value:', roleStr, 'for user:', currentUser.email, 'defaulting to EMPLOYEE')
     return 'EMPLOYEE'
   })()
   
   // Debug logging
-  console.log('[Layout] Role normalization:', {
+  console.log('[Layout] Role normalization result:', {
     rawRole,
     normalizedRole: userRole,
     userEmail: currentUser.email,
-    match: rawRole === userRole
+    match: rawRole === userRole,
+    isSuperAdmin: userRole === 'SUPER_ADMIN'
   })
+  
+  // If user expects SUPER_ADMIN but got EMPLOYEE, log a warning
+  if (userRole === 'EMPLOYEE' && rawRole && String(rawRole).trim().toUpperCase() !== 'EMPLOYEE') {
+    console.error('[Layout] WARNING: Role normalization issue!', {
+      rawRole,
+      normalizedRole: userRole,
+      userEmail: currentUser.email,
+      message: 'If you expected SUPER_ADMIN, check the database role value'
+    })
+  }
   
   const userName = currentUser.name || user.email?.split('@')[0] || 'User'
   const userEmail = currentUser.email || user.email || ''
