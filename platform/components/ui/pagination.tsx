@@ -58,11 +58,11 @@ export function Pagination({
   }
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white">
-      <div className="text-sm text-gray-600">
-        Showing <span className="font-medium text-gray-900">{startItem}</span> to{' '}
-        <span className="font-medium text-gray-900">{endItem}</span> of{' '}
-        <span className="font-medium text-gray-900">{totalItems}</span> results
+    <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-background">
+      <div className="text-sm text-muted-foreground">
+        Showing <span className="font-medium text-foreground">{startItem}</span> to{' '}
+        <span className="font-medium text-foreground">{endItem}</span> of{' '}
+        <span className="font-medium text-foreground">{totalItems}</span> results
       </div>
       
       <div className="flex items-center gap-2">
@@ -80,7 +80,7 @@ export function Pagination({
           {getPageNumbers().map((page, index) => {
             if (page === '...') {
               return (
-                <span key={`ellipsis-${index}`} className="px-2 text-gray-400">
+                <span key={`ellipsis-${index}`} className="px-2 text-muted-foreground">
                   ...
                 </span>
               )
@@ -92,10 +92,7 @@ export function Pagination({
                 variant={currentPage === page ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => onPageChange(page as number)}
-                className={cn(
-                  'h-8 w-8 p-0',
-                  currentPage === page && 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                )}
+                className="h-8 w-8 p-0"
               >
                 {page}
               </Button>
