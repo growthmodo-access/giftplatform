@@ -19,20 +19,49 @@ import {
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
-const menuItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
-  { icon: Package, label: 'Products', href: '/products' },
-  { icon: ShoppingCart, label: 'Orders', href: '/orders' },
-  { icon: Users, label: 'Employees', href: '/employees' },
-  { icon: Gift, label: 'Gifts', href: '/gifts' },
-  { icon: Zap, label: 'Automation', href: '/automation' },
-  { icon: BarChart3, label: 'Analytics', href: '/analytics' },
-  { icon: Settings, label: 'Settings', href: '/settings' },
+type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+
+interface MenuItem {
+  icon: any
+  label: string
+  href: string
+  allowedRoles: UserRole[]
+}
+
+const allMenuItems: MenuItem[] = [
+  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+  { icon: Package, label: 'Products', href: '/products', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+  { icon: ShoppingCart, label: 'Orders', href: '/orders', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+  { icon: Users, label: 'Employees', href: '/employees', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
+  { icon: Gift, label: 'Gifts', href: '/gifts', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+  { icon: Zap, label: 'Automation', href: '/automation', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
+  { icon: BarChart3, label: 'Analytics', href: '/analytics', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
+  { icon: Settings, label: 'Settings', href: '/settings', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  userRole: UserRole
+}
+
+export function Sidebar({ userRole }: SidebarProps) {
   const pathname = usePathname()
   const [isCollapsed, setIsCollapsed] = useState(false)
+
+  // #region agent log
+  useEffect(() => {
+    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'components/dashboard/sidebar.tsx:50',message:'Sidebar mounted with role',data:{userRole},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+  }, [userRole]);
+  // #endregion
+
+  // Filter menu items based on user role
+  const menuItems = allMenuItems.filter(item => item.allowedRoles.includes(userRole))
+
+  // #region agent log
+  useEffect(() => {
+    const filteredCount = allMenuItems.filter(item => item.allowedRoles.includes(userRole)).length
+    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'components/dashboard/sidebar.tsx:58',message:'Filtered menu items',data:{userRole,totalItems:allMenuItems.length,filteredItems:filteredCount,menuItemLabels:menuItems.map(i => i.label)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+  }, [userRole]);
+  // #endregion
 
   // Load collapsed state from localStorage on mount
   useEffect(() => {
