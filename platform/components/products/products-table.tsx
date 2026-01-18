@@ -91,22 +91,26 @@ export function ProductsTable({ initialProducts, canManageProducts = false }: Pr
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input placeholder="Q Search" className="pl-10 bg-white" />
+          <Input placeholder="Search products..." className="pl-10 bg-white h-9" />
         </div>
-        <Button variant="outline" size="icon">
-          <Filter className="w-4 h-4" />
-        </Button>
-        <Button variant="outline">
-          Sort <ArrowUpDown className="w-4 h-4 ml-2" />
-        </Button>
-        <Button variant="outline">Add</Button>
+        <div className="flex items-center gap-2 sm:gap-4">
+          <Button variant="outline" size="icon" className="h-9 w-9">
+            <Filter className="w-4 h-4" />
+          </Button>
+          <Button variant="outline" className="h-9 text-xs sm:text-sm">
+            <span className="hidden sm:inline">Sort</span>
+            <ArrowUpDown className="w-4 h-4 sm:ml-2" />
+          </Button>
+          <Button variant="outline" className="h-9 text-xs sm:text-sm">Add</Button>
+        </div>
       </div>
       
-      <div className="bg-white rounded-lg border border-gray-200">
-        <Table>
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table>
           <TableHeader>
             <TableRow className="bg-gray-50">
               <TableHead className="w-12">
@@ -160,6 +164,7 @@ export function ProductsTable({ initialProducts, canManageProducts = false }: Pr
             })}
           </TableBody>
         </Table>
+        </div>
       </div>
     </div>
   )

@@ -69,29 +69,29 @@ export async function QuickActions() {
   }
 
   return (
-    <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold text-gray-900">Quick Actions</CardTitle>
-        <CardDescription className="mt-1">Common tasks and shortcuts</CardDescription>
+    <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-lg lg:text-xl font-bold text-gray-900">Quick Actions</CardTitle>
+        <CardDescription className="mt-1 text-sm">Common tasks and shortcuts</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
+        <div className="space-y-2 lg:space-y-3">
           {actions.map((action) => {
             const Icon = action.icon
             return (
               <Link key={action.title} href={action.href}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start h-auto p-4 hover:bg-gray-50 transition-colors group"
+                  className="w-full justify-start h-auto p-3 lg:p-4 hover:bg-gray-50 transition-colors group"
                 >
-                  <div className={`p-2 rounded-lg ${action.bgColor} mr-3 group-hover:scale-110 transition-transform`}>
-                    <Icon className={`w-5 h-5 ${action.iconColor}`} />
+                  <div className={`p-2 rounded-lg ${action.bgColor} mr-3 group-hover:scale-110 transition-transform flex-shrink-0`}>
+                    <Icon className={`w-4 h-4 lg:w-5 lg:h-5 ${action.iconColor}`} />
                   </div>
-                  <div className="flex-1 text-left">
-                    <p className="font-semibold text-gray-900">{action.title}</p>
-                    <p className="text-xs text-gray-500">{action.description}</p>
+                  <div className="flex-1 text-left min-w-0">
+                    <p className="font-semibold text-gray-900 text-sm lg:text-base truncate">{action.title}</p>
+                    <p className="text-xs text-gray-500 truncate">{action.description}</p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
                 </Button>
               </Link>
             )

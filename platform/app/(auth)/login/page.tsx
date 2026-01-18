@@ -59,19 +59,29 @@ function LoginForm() {
     setError('')
 
     try {
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:56',message:'Starting login',data:{email},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:65',message:'signInWithPassword result',data:{hasError:!!error,error:error?.message,hasData:!!data,hasSession:!!data?.session,hasUser:!!data?.user},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
+
       if (error) throw error
 
-      // Verify session is established and user is authenticated
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
-      
-      if (sessionError || !session) {
-        throw new Error('Failed to establish session. Please try again.')
-      }
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:77',message:'Login successful - no error, proceeding with redirect',data:{hasData:!!data,hasSession:!!data?.session,hasUser:!!data?.user},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
+
+      // With @supabase/ssr createBrowserClient, if signInWithPassword succeeds (no error),
+      // the session is automatically stored in cookies by the client.
+      // We don't need to verify the session immediately - it will be available after redirect via middleware.
+      // If there was an error, it would have been thrown above.
 
       // Get redirect URL from query params or default to dashboard
       const redirectTo = searchParams.get('redirect') || '/dashboard'
@@ -80,6 +90,9 @@ function LoginForm() {
       // This ensures middleware can read the authentication cookies
       window.location.href = redirectTo
     } catch (error) {
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:102',message:'Login error caught',data:{error:error instanceof Error ? error.message : 'Unknown error'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+      // #endregion
       setError(
         error instanceof Error ? error.message : 'An error occurred during login'
       )
@@ -102,19 +115,29 @@ function LoginForm() {
     setError('')
 
     try {
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:98',message:'Starting test login',data:{email:testUser.email,role:testUser.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: testUser.email,
         password: testUser.password,
       })
 
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:108',message:'Test login signInWithPassword result',data:{hasError:!!error,error:error?.message,hasData:!!data,hasSession:!!data?.session,hasUser:!!data?.user},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
+
       if (error) throw error
 
-      // Verify session is established and user is authenticated
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
-      
-      if (sessionError || !session) {
-        throw new Error('Failed to establish session. Please try again.')
-      }
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:133',message:'Test login: Login successful - no error, proceeding with redirect',data:{hasData:!!data,hasSession:!!data?.session,hasUser:!!data?.user},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
+
+      // With @supabase/ssr createBrowserClient, if signInWithPassword succeeds (no error),
+      // the session is automatically stored in cookies by the client.
+      // We don't need to verify the session immediately - it will be available after redirect via middleware.
+      // If there was an error, it would have been thrown above.
 
       // Get redirect URL from query params or default to dashboard
       const redirectTo = searchParams.get('redirect') || '/dashboard'
@@ -123,6 +146,9 @@ function LoginForm() {
       // This ensures middleware can read the authentication cookies
       window.location.href = redirectTo
     } catch (error) {
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:146',message:'Test login error caught',data:{error:error instanceof Error ? error.message : 'Unknown error'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+      // #endregion
       setError(
         error instanceof Error ? error.message : 'An error occurred during login'
       )

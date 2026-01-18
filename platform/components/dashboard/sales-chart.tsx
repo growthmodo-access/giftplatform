@@ -11,14 +11,14 @@ export async function SalesChart() {
   const maxHeight = 200 // Chart height in pixels
 
   return (
-    <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
       <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <CardTitle className="text-xl font-bold text-gray-900">Revenue Overview</CardTitle>
-            <CardDescription className="mt-1">Last 7 days performance</CardDescription>
+            <CardTitle className="text-lg lg:text-xl font-bold text-gray-900">Revenue Overview</CardTitle>
+            <CardDescription className="mt-1 text-sm">Last 7 days performance</CardDescription>
           </div>
-          <Button variant="outline" size="sm" className="gap-2 border-gray-200 hover:bg-gray-50">
+          <Button variant="outline" size="sm" className="gap-2 border-gray-200 hover:bg-gray-50 text-xs sm:text-sm w-full sm:w-auto">
             <Download className="w-4 h-4" />
             Export
           </Button>

@@ -14,7 +14,8 @@ import {
   LogOut,
   Gift,
   Menu,
-  ChevronLeft
+  ChevronLeft,
+  X
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -32,7 +33,7 @@ const allMenuItems: MenuItem[] = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
   { icon: Package, label: 'Products', href: '/products', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
   { icon: ShoppingCart, label: 'Orders', href: '/orders', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: Users, label: 'Employees', href: '/employees', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
+  { icon: Users, label: 'Employees', href: '/employees', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR'] },
   { icon: Gift, label: 'Gifts', href: '/gifts', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
   { icon: Zap, label: 'Automation', href: '/automation', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
   { icon: BarChart3, label: 'Analytics', href: '/analytics', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
@@ -46,6 +47,7 @@ interface SidebarProps {
 export function Sidebar({ userRole }: SidebarProps) {
   const pathname = usePathname()
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   // #region agent log
   useEffect(() => {
@@ -63,21 +65,34 @@ export function Sidebar({ userRole }: SidebarProps) {
   }, [userRole]);
   // #endregion
 
-  // Load collapsed state from localStorage on mount
+  // Load collapsed state from localStorage on mount (desktop only)
   useEffect(() => {
-    const savedState = localStorage.getItem('sidebar-collapsed')
-    if (savedState !== null) {
-      setIsCollapsed(JSON.parse(savedState))
+    if (typeof window !== 'undefined') {
+      const savedState = localStorage.getItem('sidebar-collapsed')
+      if (savedState !== null) {
+        setIsCollapsed(JSON.parse(savedState))
+      }
     }
   }, [])
 
   // Save collapsed state to localStorage
   useEffect(() => {
-    localStorage.setItem('sidebar-collapsed', JSON.stringify(isCollapsed))
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+      localStorage.setItem('sidebar-collapsed', JSON.stringify(isCollapsed))
+    }
   }, [isCollapsed])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileOpen(false)
+  }, [pathname])
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed)
+  }
+
+  const toggleMobileMenu = () => {
+    setIsMobileOpen(!isMobileOpen)
   }
   
   // Check if current path starts with any menu item href
@@ -88,131 +103,170 @@ export function Sidebar({ userRole }: SidebarProps) {
     return pathname.startsWith(href)
   }
 
+  const handleLogout = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      
+      if (response.ok || response.redirected) {
+        if (response.redirected) {
+          window.location.href = response.url
+        } else {
+          window.location.href = '/login'
+        }
+      } else {
+        console.error('Logout error:', await response.text())
+        window.location.href = '/login'
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
+      window.location.href = '/login'
+    }
+  }
+
   return (
-    <aside className={cn(
-      "bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out",
-      isCollapsed ? "w-16" : "w-64"
-    )}>
-      <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center justify-between">
-          <div className={cn(
-            "flex items-center gap-2 transition-opacity duration-300",
-            isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-          )}>
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-sm">G</span>
-            </div>
-            <span className="font-bold text-lg bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent whitespace-nowrap">
-              Goodies.so
-            </span>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleSidebar}
-            className="h-8 w-8 flex-shrink-0"
-          >
-            {isCollapsed ? (
-              <Menu className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
-      </div>
-      
-      <nav className="flex-1 p-4 space-y-1">
-        {menuItems.map((item) => {
-          const Icon = item.icon
-          const active = isActive(item.href)
-          
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group relative",
-                active
-                  ? "bg-purple-50 text-purple-600 font-medium"
-                  : "text-gray-700 hover:bg-gray-50",
-                isCollapsed && "justify-center"
-              )}
-              title={isCollapsed ? item.label : undefined}
-            >
-              <Icon className="w-5 h-5 flex-shrink-0" />
-              <span className={cn(
-                "transition-opacity duration-300 whitespace-nowrap",
-                isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-              )}>
-                {item.label}
+    <>
+      {/* Mobile menu button */}
+      <button
+        onClick={toggleMobileMenu}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+        aria-label="Toggle menu"
+      >
+        {isMobileOpen ? (
+          <X className="w-5 h-5 text-gray-700" />
+        ) : (
+          <Menu className="w-5 h-5 text-gray-700" />
+        )}
+      </button>
+
+      {/* Mobile overlay */}
+      {isMobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity"
+          onClick={toggleMobileMenu}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={cn(
+        "bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out fixed lg:sticky top-0 h-screen z-40",
+        // Mobile: slide in/out
+        "lg:translate-x-0",
+        isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
+        // Desktop: width based on collapsed state
+        isCollapsed ? "w-16 lg:w-16" : "w-64 lg:w-64"
+      )}>
+        {/* Header */}
+        <div className="p-4 lg:p-6 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <div className={cn(
+              "flex items-center gap-2 transition-opacity duration-300",
+              isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+            )}>
+              <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-indigo-500 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+                <span className="text-white font-bold text-sm">G</span>
+              </div>
+              <span className="font-semibold text-base lg:text-lg bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent whitespace-nowrap">
+                Goodies.so
               </span>
-              {isCollapsed && (
-                <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">
+            </div>
+            <div className="flex items-center gap-2">
+              {/* Mobile close button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleMobileMenu}
+                className="lg:hidden h-8 w-8"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+              {/* Desktop collapse button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleSidebar}
+                className="hidden lg:flex h-8 w-8"
+              >
+                {isCollapsed ? (
+                  <Menu className="h-4 w-4" />
+                ) : (
+                  <ChevronLeft className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Navigation */}
+        <nav className="flex-1 p-3 lg:p-4 space-y-1 overflow-y-auto">
+          {menuItems.map((item) => {
+            const Icon = item.icon
+            const active = isActive(item.href)
+            
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg transition-all group relative",
+                  "hover:bg-gray-50 active:scale-[0.98]",
+                  active
+                    ? "bg-indigo-50 text-indigo-600 font-medium shadow-sm"
+                    : "text-gray-700",
+                  isCollapsed && "justify-center lg:justify-center"
+                )}
+                title={isCollapsed ? item.label : undefined}
+              >
+                <Icon className={cn(
+                  "w-5 h-5 flex-shrink-0",
+                  active && "text-indigo-600"
+                )} />
+                <span className={cn(
+                  "transition-opacity duration-300 whitespace-nowrap text-sm lg:text-base",
+                  isCollapsed ? "opacity-0 w-0 overflow-hidden lg:opacity-0" : "opacity-100"
+                )}>
                   {item.label}
-                </div>
-              )}
-            </Link>
-          )
-        })}
-      </nav>
-      
-      <div className="p-4 border-t border-gray-200">
-        <form 
-          action="/api/auth/logout" 
-          method="post"
-          onSubmit={async (e) => {
-            e.preventDefault()
-            try {
-              const response = await fetch('/api/auth/logout', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              })
-              
-              if (response.ok || response.redirected) {
-                // If redirect, follow it
-                if (response.redirected) {
-                  window.location.href = response.url
-                } else {
-                  // Otherwise redirect to login
-                  window.location.href = '/login'
-                }
-              } else {
-                // Even if there's an error, try to redirect to login
-                console.error('Logout error:', await response.text())
-                window.location.href = '/login'
-              }
-            } catch (error) {
-              console.error('Logout error:', error)
-              // On any error, redirect to login anyway
-              window.location.href = '/login'
-            }
-          }}
-        >
+                </span>
+                {isCollapsed && (
+                  <div className="hidden lg:block absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
+                    {item.label}
+                  </div>
+                )}
+              </Link>
+            )
+          })}
+        </nav>
+        
+        {/* Footer */}
+        <div className="p-3 lg:p-4 border-t border-gray-200 flex-shrink-0">
           <button
-            type="submit"
+            onClick={handleLogout}
             className={cn(
-              "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 w-full transition-colors group relative",
-              isCollapsed && "justify-center"
+              "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg text-gray-700 hover:bg-gray-50 w-full transition-all active:scale-[0.98] group relative",
+              isCollapsed && "justify-center lg:justify-center"
             )}
             title={isCollapsed ? "Log out" : undefined}
           >
             <LogOut className="w-5 h-5 flex-shrink-0" />
             <span className={cn(
-              "transition-opacity duration-300 whitespace-nowrap",
-              isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+              "transition-opacity duration-300 whitespace-nowrap text-sm lg:text-base",
+              isCollapsed ? "opacity-0 w-0 overflow-hidden lg:opacity-0" : "opacity-100"
             )}>
               Log out
             </span>
             {isCollapsed && (
-              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">
+              <div className="hidden lg:block absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
                 Log out
               </div>
             )}
           </button>
-        </form>
-      </div>
-    </aside>
+        </div>
+      </aside>
+    </>
   )
 }

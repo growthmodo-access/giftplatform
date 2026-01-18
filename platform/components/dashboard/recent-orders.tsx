@@ -26,15 +26,15 @@ export async function RecentOrders() {
 
   if (recentOrders.length === 0) {
     return (
-      <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <div className="flex items-center justify-between">
+      <Card className="border border-gray-200 shadow-sm">
+        <CardHeader className="pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <CardTitle className="text-xl font-bold text-gray-900">Recent Orders</CardTitle>
-              <CardDescription className="mt-1">Latest gift orders and their status</CardDescription>
+              <CardTitle className="text-lg lg:text-xl font-bold text-gray-900">Recent Orders</CardTitle>
+              <CardDescription className="mt-1 text-sm">Latest gift orders and their status</CardDescription>
             </div>
             <Link href="/orders">
-              <Button variant="ghost" size="sm" className="gap-2">
+              <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto">
                 See All <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
@@ -54,15 +54,15 @@ export async function RecentOrders() {
   }
 
   return (
-    <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardHeader>
-        <div className="flex items-center justify-between">
+    <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <CardHeader className="pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <CardTitle className="text-xl font-bold text-gray-900">Recent Orders</CardTitle>
-            <CardDescription className="mt-1">Latest gift orders and their status</CardDescription>
+            <CardTitle className="text-lg lg:text-xl font-bold text-gray-900">Recent Orders</CardTitle>
+            <CardDescription className="mt-1 text-sm">Latest gift orders and their status</CardDescription>
           </div>
           <Link href="/orders">
-            <Button variant="ghost" size="sm" className="gap-2 hover:bg-gray-50">
+            <Button variant="ghost" size="sm" className="gap-2 hover:bg-gray-50 text-xs sm:text-sm w-full sm:w-auto">
               See All <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
@@ -75,11 +75,11 @@ export async function RecentOrders() {
             return (
               <div
                 key={order.id}
-                className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-gradient-to-r hover:from-gray-50 hover:to-transparent transition-all duration-200 group"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 gap-3"
               >
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
-                    <p className="font-semibold text-gray-900 truncate">{order.orderNumber}</p>
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <p className="font-semibold text-gray-900 text-sm lg:text-base truncate">{order.orderNumber}</p>
                     <Badge 
                       className={`${statusColors[status] || statusColors.PENDING} border font-medium text-xs`}
                     >
@@ -91,8 +91,8 @@ export async function RecentOrders() {
                     {order.employee} • {order.date}
                   </p>
                 </div>
-                <div className="text-right ml-4">
-                  <p className="font-bold text-lg text-gray-900">{order.amount}</p>
+                <div className="text-left sm:text-right flex-shrink-0">
+                  <p className="font-bold text-base lg:text-lg text-gray-900">{order.amount}</p>
                 </div>
               </div>
             )

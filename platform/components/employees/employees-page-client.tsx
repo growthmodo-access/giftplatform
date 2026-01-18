@@ -33,29 +33,28 @@ export function EmployeesPageClient({ employees, currentUserRole, currentUserId 
   // #endregion
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Employees</h1>
-          <p className="text-gray-600 mt-1">Manage your team members</p>
-          {/* Debug: Show current role */}
-          <p className="text-xs text-gray-400 mt-1">Your role: {currentUserRole} | Can invite: {canInviteEmployees ? 'Yes' : 'No'}</p>
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Employees</h1>
+          <p className="text-sm lg:text-base text-gray-600 mt-1">Manage your team members</p>
         </div>
-        <Button 
-          className="gap-2" 
-          onClick={() => setDialogOpen(true)}
-          disabled={!canInviteEmployees}
-          title={!canInviteEmployees ? 'You need ADMIN, HR, or SUPER_ADMIN role to invite employees' : undefined}
-        >
-          <Plus className="w-4 h-4" />
-          Add Employee
-        </Button>
+        {canInviteEmployees && (
+          <Button 
+            size="sm"
+            className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-xs sm:text-sm w-full sm:w-auto" 
+            onClick={() => setDialogOpen(true)}
+          >
+            <Plus className="w-4 h-4" />
+            Add Employee
+          </Button>
+        )}
       </div>
 
-      <Card className="glass">
-        <CardHeader>
-          <CardTitle>All Employees</CardTitle>
-          <CardDescription>View and manage team members</CardDescription>
+      <Card className="border border-gray-200 shadow-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg lg:text-xl">All Employees</CardTitle>
+          <CardDescription className="text-sm">View and manage team members</CardDescription>
         </CardHeader>
         <CardContent>
           <EmployeesList 

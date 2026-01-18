@@ -28,12 +28,14 @@ export default async function DashboardLayout({
   const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       <Sidebar userRole={userRole} />
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
         <Header />
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
-          {children}
+        <main className="flex-1 overflow-y-auto">
+          <div className="container-padding py-4 lg:py-6 max-w-7xl mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     </div>
