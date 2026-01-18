@@ -305,17 +305,17 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                         {statusLabels[order.status] || order.status || 'Pending'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm text-gray-600">
+                    <TableCell className="text-sm text-muted-foreground">
                       {order.mobile || 'N/A'}
                     </TableCell>
                     <TableCell>
                       {order.paymentMethod ? (
                         <div className="flex items-center gap-2">
-                          {PaymentIcon && <PaymentIcon className="w-4 h-4 text-gray-500" />}
-                          <span className="text-sm text-gray-700">{order.paymentMethod}</span>
+                          {PaymentIcon && <PaymentIcon className="w-4 h-4 text-muted-foreground" />}
+                          <span className="text-sm text-foreground">{order.paymentMethod}</span>
                         </div>
                       ) : (
-                        <span className="text-sm text-gray-400">N/A</span>
+                        <span className="text-sm text-muted-foreground">N/A</span>
                       )}
                     </TableCell>
                   </TableRow>
