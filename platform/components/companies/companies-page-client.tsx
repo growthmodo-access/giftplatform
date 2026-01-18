@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { CompaniesTable } from './companies-table'
 import { EditCompanyDialog } from './edit-company-dialog'
+import { CreateCompanyDialog } from './create-company-dialog'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Building2, Plus } from 'lucide-react'
@@ -28,16 +29,21 @@ interface CompaniesPageClientProps {
 export function CompaniesPageClient({ initialCompanies, currentUserRole }: CompaniesPageClientProps) {
   const [companies, setCompanies] = useState(initialCompanies)
   const [editingCompany, setEditingCompany] = useState<Company | null>(null)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
 
   const handleEdit = (company: Company) => {
     setEditingCompany(company)
-    setIsDialogOpen(true)
+    setIsEditDialogOpen(true)
   }
 
-  const handleDialogClose = () => {
-    setIsDialogOpen(false)
+  const handleEditDialogClose = () => {
+    setIsEditDialogOpen(false)
     setEditingCompany(null)
+  }
+
+  const handleCreateDialogClose = () => {
+    setIsCreateDialogOpen(false)
   }
 
   const handleUpdateSuccess = () => {
@@ -46,6 +52,7 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
   }
 
   const isSuperAdmin = currentUserRole === 'SUPER_ADMIN'
+  const canCreate = currentUserRole === 'SUPER_ADMIN' || currentUserRole === 'ADMIN'
 
   return (
     <div className="space-y-6">
@@ -56,6 +63,12 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
             {isSuperAdmin ? 'Manage all companies' : 'View your company information'}
           </p>
         </div>
+        {canCreate && (
+          <Button onClick={() => setIsCreateDialogOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Create Company
+          </Button>
+        )}
       </div>
 
       {companies.length === 0 ? (
@@ -126,11 +139,17 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
       {editingCompany && (
         <EditCompanyDialog
           company={editingCompany}
-          open={isDialogOpen}
-          onClose={handleDialogClose}
+          open={isEditDialogOpen}
+          onClose={handleEditDialogClose}
           onSuccess={handleUpdateSuccess}
         />
       )}
+
+      <CreateCompanyDialog
+        open={isCreateDialogOpen}
+        onClose={handleCreateDialogClose}
+        onSuccess={handleUpdateSuccess}
+      />
     </div>
   )
 }

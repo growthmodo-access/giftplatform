@@ -107,6 +107,76 @@ export async function getCompanies() {
 }
 
 /**
+ * Create a new company
+ * Only SUPER_ADMIN can create companies
+ */
+export async function createCompany(formData: FormData) {
+  try {
+    const supabase = await createClient()
+    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    // Get current user's role
+    const { data: currentUser, error: currentUserError } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (currentUserError || !currentUser) {
+      return { error: 'User profile not found' }
+    }
+
+    // Check permissions - only SUPER_ADMIN and ADMIN can create companies
+    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.role !== 'ADMIN') {
+      return { error: 'You do not have permission to create companies. Only Super Admins and Admins can create companies.' }
+    }
+
+    const name = formData.get('name') as string
+    const domain = formData.get('domain') as string
+    const budget = formData.get('budget') as string
+
+    if (!name || !budget) {
+      return { error: 'Company name and budget are required' }
+    }
+
+    const budgetNum = parseFloat(budget)
+    if (isNaN(budgetNum) || budgetNum < 0) {
+      return { error: 'Budget must be a valid positive number' }
+    }
+
+    const { data: newCompany, error: createError } = await supabase
+      .from('companies')
+      .insert({
+        name: name.trim(),
+        domain: domain.trim() || null,
+        budget: budgetNum,
+      })
+      .select()
+      .single()
+
+    if (createError) {
+      return { error: createError.message }
+    }
+
+    revalidatePath('/companies')
+    return { success: true, data: newCompany }
+  } catch (error) {
+    console.error('Create company error:', error)
+    return {
+      error: error instanceof Error ? error.message : 'Failed to create company'
+    }
+  }
+}
+
+/**
  * Update company information
  * SUPER_ADMIN can update any company
  * ADMIN can only update their own company
