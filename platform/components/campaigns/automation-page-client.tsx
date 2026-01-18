@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import { CreateCampaignDialog } from './create-campaign-dialog'
+import { CampaignWizard } from './campaign-wizard'
 import { CampaignsList } from './campaigns-list'
 
 type Campaign = {
@@ -27,20 +28,21 @@ interface AutomationPageClientProps {
 }
 
 export function AutomationPageClient({ campaigns, currentUserRole }: AutomationPageClientProps) {
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  const router = useRouter()
+  const [wizardOpen, setWizardOpen] = useState(false)
+  const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Automation</h1>
-          <p className="text-gray-600 mt-1">Automated gift campaigns</p>
+          <h1 className="text-3xl font-semibold text-foreground">Gift Campaigns</h1>
+          <p className="text-muted-foreground mt-1">Create and manage gift campaigns for your employees</p>
         </div>
         {canCreateCampaigns && (
-          <Button className="gap-2" onClick={() => setDialogOpen(true)}>
-            <Plus className="w-4 h-4" />
-            New Campaign
+          <Button onClick={() => setWizardOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Create Campaign
           </Button>
         )}
       </div>
@@ -48,7 +50,14 @@ export function AutomationPageClient({ campaigns, currentUserRole }: AutomationP
       <CampaignsList campaigns={campaigns} currentUserRole={currentUserRole} />
 
       {canCreateCampaigns && (
-        <CreateCampaignDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+        <CampaignWizard
+          open={wizardOpen}
+          onClose={() => setWizardOpen(false)}
+          onSuccess={() => {
+            setWizardOpen(false)
+            router.refresh()
+          }}
+        />
       )}
     </div>
   )
