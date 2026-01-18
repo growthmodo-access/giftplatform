@@ -25,9 +25,16 @@ export default async function DashboardLayout({
     .eq('id', user.id)
     .maybeSingle()
 
-  if (currentUserError || !currentUser) {
-    // If user profile not found, redirect to login
-    redirect('/login')
+  if (currentUserError) {
+    console.error('[Layout] Error fetching user profile:', currentUserError)
+    // Redirect to login with error message
+    redirect('/login?error=profile_error')
+  }
+
+  if (!currentUser) {
+    console.error('[Layout] User profile not found for user:', user.id, user.email)
+    // Redirect to login with error message
+    redirect('/login?error=profile_not_found')
   }
 
   // Get role from database and normalize it

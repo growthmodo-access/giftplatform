@@ -16,6 +16,16 @@ function LoginForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // Check for error in URL params (from redirects)
+  useEffect(() => {
+    const errorParam = searchParams.get('error')
+    if (errorParam === 'profile_not_found') {
+      setError('User profile not found. Please contact support or ensure your account is properly set up.')
+    } else if (errorParam === 'profile_error') {
+      setError('Error loading user profile. Please try again or contact support.')
+    }
+  }, [searchParams])
+
   // Check if user is already logged in
   useEffect(() => {
     const checkUser = async () => {
@@ -47,12 +57,40 @@ function LoginForm() {
         password,
       })
 
-      if (error) throw error
+      if (error) {
+        console.error('[Login] Supabase auth error:', error)
+        throw error
+      }
 
-      // With @supabase/ssr createBrowserClient, if signInWithPassword succeeds (no error),
-      // the session is automatically stored in cookies by the client.
-      // We don't need to verify the session immediately - it will be available after redirect via middleware.
-      // If there was an error, it would have been thrown above.
+      if (!data?.user) {
+        console.error('[Login] No user returned from signInWithPassword')
+        throw new Error('Login failed: No user data returned')
+      }
+
+      // Verify user profile exists before redirecting
+      try {
+        const { data: profile, error: profileError } = await supabase
+          .from('users')
+          .select('id, role, company_id')
+          .eq('id', data.user.id)
+          .maybeSingle()
+
+        if (profileError) {
+          console.error('[Login] Error fetching user profile:', profileError)
+          throw new Error(`Profile error: ${profileError.message}`)
+        }
+
+        if (!profile) {
+          console.error('[Login] User profile not found for user:', data.user.id)
+          throw new Error('User profile not found. Please contact support.')
+        }
+
+        console.log('[Login] User profile found:', { role: profile.role, company_id: profile.company_id })
+      } catch (profileErr) {
+        // If profile check fails, still allow login but log the error
+        console.warn('[Login] Profile check warning:', profileErr)
+        // Don't throw - let the user proceed and see if layout handles it
+      }
 
       // Get redirect URL from query params or default to dashboard
       const redirectTo = searchParams.get('redirect') || '/dashboard'
@@ -61,9 +99,9 @@ function LoginForm() {
       // This ensures middleware can read the authentication cookies
       window.location.href = redirectTo
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : 'An error occurred during login'
-      )
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred during login'
+      console.error('[Login] Error:', errorMessage, error)
+      setError(errorMessage)
       setLoading(false)
     }
   }
@@ -88,12 +126,39 @@ function LoginForm() {
         password: testUser.password,
       })
 
-      if (error) throw error
+      if (error) {
+        console.error('[Login] Test login Supabase auth error:', error)
+        throw error
+      }
 
-      // With @supabase/ssr createBrowserClient, if signInWithPassword succeeds (no error),
-      // the session is automatically stored in cookies by the client.
-      // We don't need to verify the session immediately - it will be available after redirect via middleware.
-      // If there was an error, it would have been thrown above.
+      if (!data?.user) {
+        console.error('[Login] Test login: No user returned')
+        throw new Error('Login failed: No user data returned')
+      }
+
+      // Verify user profile exists
+      try {
+        const { data: profile, error: profileError } = await supabase
+          .from('users')
+          .select('id, role, company_id')
+          .eq('id', data.user.id)
+          .maybeSingle()
+
+        if (profileError) {
+          console.error('[Login] Test login profile error:', profileError)
+          throw new Error(`Profile error: ${profileError.message}`)
+        }
+
+        if (!profile) {
+          console.error('[Login] Test login: User profile not found for:', testUser.email)
+          throw new Error(`User profile not found for ${testUser.email}. Please ensure the user exists in the database.`)
+        }
+
+        console.log('[Login] Test login profile found:', { email: testUser.email, role: profile.role, company_id: profile.company_id })
+      } catch (profileErr) {
+        console.warn('[Login] Test login profile check warning:', profileErr)
+        // Don't throw - let the user proceed
+      }
 
       // Get redirect URL from query params or default to dashboard
       const redirectTo = searchParams.get('redirect') || '/dashboard'
@@ -102,9 +167,9 @@ function LoginForm() {
       // This ensures middleware can read the authentication cookies
       window.location.href = redirectTo
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : 'An error occurred during login'
-      )
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred during login'
+      console.error('[Login] Test login error:', errorMessage, error)
+      setError(errorMessage)
       setLoading(false)
     }
   }
