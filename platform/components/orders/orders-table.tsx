@@ -84,45 +84,56 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
   }
 
   const sortedOrders = useMemo(() => {
+    if (!orders || orders.length === 0) return []
     if (!sortField || !sortDirection) return orders
 
-    return [...orders].sort((a, b) => {
-      let aValue: any
-      let bValue: any
+    try {
+      return [...orders].sort((a, b) => {
+        let aValue: any
+        let bValue: any
 
-      switch (sortField) {
-        case 'orderNumber':
-          aValue = a.orderNumber
-          bValue = b.orderNumber
-          break
-        case 'employee':
-          aValue = a.employee.toLowerCase()
-          bValue = b.employee.toLowerCase()
-          break
-        case 'amount':
-          aValue = parseFloat(a.amount.replace(/[^0-9.]/g, ''))
-          bValue = parseFloat(b.amount.replace(/[^0-9.]/g, ''))
-          break
-        case 'status':
-          aValue = a.status
-          bValue = b.status
-          break
-        case 'mobile':
-          aValue = a.mobile || ''
-          bValue = b.mobile || ''
-          break
-        case 'paymentMethod':
-          aValue = a.paymentMethod || ''
-          bValue = b.paymentMethod || ''
-          break
-        default:
+        try {
+          switch (sortField) {
+            case 'orderNumber':
+              aValue = a.orderNumber || ''
+              bValue = b.orderNumber || ''
+              break
+            case 'employee':
+              aValue = (a.employee || '').toLowerCase()
+              bValue = (b.employee || '').toLowerCase()
+              break
+            case 'amount':
+              aValue = parseFloat((a.amount || '0').replace(/[^0-9.]/g, '')) || 0
+              bValue = parseFloat((b.amount || '0').replace(/[^0-9.]/g, '')) || 0
+              break
+            case 'status':
+              aValue = a.status || ''
+              bValue = b.status || ''
+              break
+            case 'mobile':
+              aValue = a.mobile || ''
+              bValue = b.mobile || ''
+              break
+            case 'paymentMethod':
+              aValue = a.paymentMethod || ''
+              bValue = b.paymentMethod || ''
+              break
+            default:
+              return 0
+          }
+
+          if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
+          if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
           return 0
-      }
-
-      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
-      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
-      return 0
-    })
+        } catch (error) {
+          console.error('Sort error:', error)
+          return 0
+        }
+      })
+    } catch (error) {
+      console.error('Sorting error:', error)
+      return orders
+    }
   }, [orders, sortField, sortDirection])
 
   const handleSelectAll = (checked: boolean) => {
@@ -144,12 +155,17 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
   }
 
   const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2)
+    if (!name) return 'U'
+    try {
+      return name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2) || 'U'
+    } catch {
+      return name[0]?.toUpperCase() || 'U'
+    }
   }
 
   const getSortIcon = (field: SortField) => {
@@ -272,21 +288,21 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                       <div className="flex items-center gap-2">
                         <Avatar className="w-8 h-8 border border-gray-200">
                           <AvatarFallback className="bg-indigo-100 text-indigo-600 text-xs font-medium">
-                            {getInitials(order.employee)}
+                            {getInitials(order.employee || 'Unknown')}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-sm text-gray-900 font-medium">{order.employee}</span>
+                        <span className="text-sm text-gray-900 font-medium">{order.employee || 'Unknown'}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-gray-900 font-medium">
-                      {order.amount}
+                      {order.amount || 'N/A'}
                     </TableCell>
                     <TableCell>
                       <Badge className={cn(
                         'text-xs font-medium px-2.5 py-0.5',
                         statusColors[order.status] || statusColors.PENDING
                       )}>
-                        {statusLabels[order.status] || order.status}
+                        {statusLabels[order.status] || order.status || 'Pending'}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-sm text-gray-600">

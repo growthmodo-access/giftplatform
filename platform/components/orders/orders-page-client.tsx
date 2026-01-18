@@ -45,56 +45,93 @@ export function OrdersPageClient({ orders, currentUserRole }: OrdersPageClientPr
   // Only ADMIN, MANAGER, and SUPER_ADMIN can create orders (HR cannot)
   const canCreateOrders = currentUserRole === 'ADMIN' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
 
+  // Safety check for orders
+  const safeOrders = orders || []
+
   // Filter orders based on filter state
   const filteredOrders = useMemo(() => {
-    return orders.filter(order => {
-      // Order ID filter
-      if (filters.orderId && !order.orderNumber.toLowerCase().includes(filters.orderId.toLowerCase())) {
-        return false
-      }
-
-      // Status filter
-      if (filters.status && order.status !== filters.status) {
-        return false
-      }
-
-      // Amount range filter
-      const orderAmount = parseFloat(order.amount.replace(/[^0-9.]/g, ''))
-      if (filters.minAmount && orderAmount < parseFloat(filters.minAmount)) {
-        return false
-      }
-      if (filters.maxAmount && orderAmount > parseFloat(filters.maxAmount)) {
-        return false
-      }
-
-      // Date range filter (using timestamp if available, otherwise parse formatted date)
-      if (filters.startDate || filters.endDate) {
-        const orderDate = order.dateTimestamp 
-          ? new Date(order.dateTimestamp)
-          : new Date(order.date)
-        
-        if (filters.startDate) {
-          const startDate = new Date(filters.startDate)
-          startDate.setHours(0, 0, 0, 0)
-          if (orderDate < startDate) {
+    if (!safeOrders || safeOrders.length === 0) return []
+    
+    return safeOrders.filter(order => {
+      try {
+        // Order ID filter
+        if (filters.orderId && order.orderNumber) {
+          if (!order.orderNumber.toLowerCase().includes(filters.orderId.toLowerCase())) {
             return false
           }
         }
-        if (filters.endDate) {
-          const endDate = new Date(filters.endDate)
-          endDate.setHours(23, 59, 59, 999) // Include entire end date
-          if (orderDate > endDate) {
-            return false
+
+        // Status filter
+        if (filters.status && order.status !== filters.status) {
+          return false
+        }
+
+        // Amount range filter
+        if (filters.minAmount || filters.maxAmount) {
+          try {
+            const orderAmount = parseFloat(order.amount?.replace(/[^0-9.]/g, '') || '0')
+            if (filters.minAmount && !isNaN(parseFloat(filters.minAmount))) {
+              if (orderAmount < parseFloat(filters.minAmount)) {
+                return false
+              }
+            }
+            if (filters.maxAmount && !isNaN(parseFloat(filters.maxAmount))) {
+              if (orderAmount > parseFloat(filters.maxAmount)) {
+                return false
+              }
+            }
+          } catch (e) {
+            // If amount parsing fails, skip amount filter
           }
         }
-      }
 
-      // Mobile filter
-      if (filters.mobile && order.mobile && !order.mobile.includes(filters.mobile)) {
-        return false
-      }
+        // Date range filter (using timestamp if available, otherwise parse formatted date)
+        if (filters.startDate || filters.endDate) {
+          try {
+            const orderDate = order.dateTimestamp 
+              ? new Date(order.dateTimestamp)
+              : order.date 
+                ? new Date(order.date)
+                : null
+            
+            if (!orderDate || isNaN(orderDate.getTime())) {
+              // Skip date filter if date is invalid
+            } else {
+              if (filters.startDate) {
+                const startDate = new Date(filters.startDate)
+                if (!isNaN(startDate.getTime())) {
+                  startDate.setHours(0, 0, 0, 0)
+                  if (orderDate < startDate) {
+                    return false
+                  }
+                }
+              }
+              if (filters.endDate) {
+                const endDate = new Date(filters.endDate)
+                if (!isNaN(endDate.getTime())) {
+                  endDate.setHours(23, 59, 59, 999) // Include entire end date
+                  if (orderDate > endDate) {
+                    return false
+                  }
+                }
+              }
+            }
+          } catch (e) {
+            // If date parsing fails, skip date filter
+          }
+        }
 
-      return true
+        // Mobile filter
+        if (filters.mobile && order.mobile && !order.mobile.includes(filters.mobile)) {
+          return false
+        }
+
+        return true
+      } catch (error) {
+        // If any filter fails, include the order to be safe
+        console.error('Filter error:', error)
+        return true
+      }
     })
   }, [orders, filters])
 
