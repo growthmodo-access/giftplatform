@@ -66,6 +66,11 @@ export async function createProduct(formData: FormData) {
       return { error: 'Invalid product type' }
     }
 
+    // Check permissions - only ADMIN and SUPER_ADMIN can create products
+    if (userData?.role !== 'ADMIN' && userData?.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to create products. Only Admins can create products.' }
+    }
+
     const { data, error } = await supabase
       .from('products')
       .insert(product)
@@ -125,11 +130,16 @@ export async function updateProduct(id: string, formData: FormData) {
       .eq('id', user.id)
       .single()
 
-    // Check if user owns the product (same company) or is admin
+    // Check permissions - only ADMIN and SUPER_ADMIN can update products
+    if (userData?.role !== 'ADMIN' && userData?.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to update products. Only Admins can update products.' }
+    }
+
+    // Check if user owns the product (same company) or is super admin
     if (
       existingProduct.company_id &&
       userData?.company_id !== existingProduct.company_id &&
-      userData?.role !== 'ADMIN'
+      userData?.role !== 'SUPER_ADMIN'
     ) {
       return { error: 'You do not have permission to update this product' }
     }
@@ -234,11 +244,16 @@ export async function deleteProduct(id: string) {
       .eq('id', user.id)
       .single()
 
-    // Check if user owns the product (same company) or is admin
+    // Check permissions - only ADMIN and SUPER_ADMIN can delete products
+    if (userData?.role !== 'ADMIN' && userData?.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to delete products. Only Admins can delete products.' }
+    }
+
+    // Check if user owns the product (same company) or is super admin
     if (
       existingProduct.company_id &&
       userData?.company_id !== existingProduct.company_id &&
-      userData?.role !== 'ADMIN'
+      userData?.role !== 'SUPER_ADMIN'
     ) {
       return { error: 'You do not have permission to delete this product' }
     }

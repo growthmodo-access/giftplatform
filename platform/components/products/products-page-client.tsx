@@ -12,10 +12,13 @@ type Product = Database['public']['Tables']['products']['Row']
 
 interface ProductsPageClientProps {
   initialProducts: Product[]
+  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
 }
 
-export function ProductsPageClient({ initialProducts }: ProductsPageClientProps) {
+export function ProductsPageClient({ initialProducts, currentUserRole }: ProductsPageClientProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
+  // Only ADMIN and SUPER_ADMIN can create/edit/delete products
+  const canManageProducts = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">
@@ -25,21 +28,25 @@ export function ProductsPageClient({ initialProducts }: ProductsPageClientProps)
           <p className="text-gray-600 mt-1">My products</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" className="gap-2">
-            <Upload className="w-4 h-4" />
-            Import
-          </Button>
-          <Button variant="outline" className="gap-2">
-            <Download className="w-4 h-4" />
-            Export
-          </Button>
-          <Button 
-            className="gap-2 bg-gray-900 hover:bg-gray-800"
-            onClick={() => setDialogOpen(true)}
-          >
-            <Plus className="w-4 h-4" />
-            Add product
-          </Button>
+          {canManageProducts && (
+            <>
+              <Button variant="outline" className="gap-2">
+                <Upload className="w-4 h-4" />
+                Import
+              </Button>
+              <Button variant="outline" className="gap-2">
+                <Download className="w-4 h-4" />
+                Export
+              </Button>
+              <Button 
+                className="gap-2 bg-gray-900 hover:bg-gray-800"
+                onClick={() => setDialogOpen(true)}
+              >
+                <Plus className="w-4 h-4" />
+                Add product
+              </Button>
+            </>
+          )}
         </div>
       </div>
 
@@ -51,7 +58,7 @@ export function ProductsPageClient({ initialProducts }: ProductsPageClientProps)
           <TabsTrigger value="archived">Archived</TabsTrigger>
         </TabsList>
 
-        <ProductsTable initialProducts={initialProducts} />
+        <ProductsTable initialProducts={initialProducts} canManageProducts={canManageProducts} />
       </Tabs>
 
       <AddProductDialog open={dialogOpen} onOpenChange={setDialogOpen} />

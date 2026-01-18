@@ -109,6 +109,11 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
       return { error: 'You do not have permission to invite employees' }
     }
 
+    // HR can only invite HR, MANAGER, or EMPLOYEE roles (not ADMIN or SUPER_ADMIN)
+    if (currentUser.role === 'HR' && (role === 'ADMIN' || role === 'SUPER_ADMIN')) {
+      return { error: 'HR cannot invite users with ADMIN or SUPER_ADMIN roles. Only Admins can invite Admins.' }
+    }
+
     // Check if user already exists
     const { data: existingUser, error: existingUserError } = await supabase
       .from('users')
@@ -235,12 +240,27 @@ export async function updateEmployeeRole(userId: string, newRole: 'SUPER_ADMIN' 
     // Verify the target user is in the same company
     const { data: targetUser } = await supabase
       .from('users')
-      .select('company_id')
+      .select('company_id, role')
       .eq('id', userId)
       .single()
 
     if (!targetUser || targetUser.company_id !== currentUser.company_id) {
       return { error: 'User not found or not in your company' }
+    }
+
+    // HR cannot change roles to ADMIN or SUPER_ADMIN
+    if (currentUser.role === 'HR' && (newRole === 'ADMIN' || newRole === 'SUPER_ADMIN')) {
+      return { error: 'HR cannot change roles to ADMIN or SUPER_ADMIN. Only Admins can assign these roles.' }
+    }
+
+    // ADMIN cannot change roles to SUPER_ADMIN (only SUPER_ADMIN can)
+    if (currentUser.role === 'ADMIN' && newRole === 'SUPER_ADMIN') {
+      return { error: 'Admins cannot change roles to SUPER_ADMIN. Only Super Admins can assign this role.' }
+    }
+
+    // ADMIN cannot change roles to ADMIN (prevents privilege escalation)
+    if (currentUser.role === 'ADMIN' && newRole === 'ADMIN' && targetUser.role !== 'ADMIN') {
+      return { error: 'Admins cannot promote users to ADMIN role. Only Super Admins can assign ADMIN role.' }
     }
 
     // Update the role

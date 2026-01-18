@@ -28,12 +28,20 @@ export async function getOrders() {
       return { data: [], error: null }
     }
 
-    // Get all orders for the company
-    const { data: orders, error } = await supabase
+    // Get orders based on role
+    let query = supabase
       .from('orders')
       .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at')
       .eq('company_id', currentUser.company_id)
-      .order('created_at', { ascending: false })
+
+    // EMPLOYEE can only see their own orders
+    if (currentUser.role === 'EMPLOYEE') {
+      query = query.eq('user_id', user.id)
+    }
+    // MANAGER can see all orders (for now - could be filtered by team later)
+    // ADMIN, HR, SUPER_ADMIN see all company orders
+
+    const { data: orders, error } = await query.order('created_at', { ascending: false })
 
     if (error) {
       return { data: [], error: error.message }
@@ -127,10 +135,10 @@ export async function createOrder(formData: FormData) {
       return { error: 'You must be part of a company to create orders' }
     }
 
-    // Check permissions - only ADMIN, HR, MANAGER, and SUPER_ADMIN can create orders
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && 
-        currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
-      return { error: 'You do not have permission to create orders' }
+    // Check permissions - only ADMIN, MANAGER, and SUPER_ADMIN can create orders
+    // HR cannot create orders (read-only access)
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to create orders. Only Admins and Managers can create orders.' }
     }
 
     // Get form data

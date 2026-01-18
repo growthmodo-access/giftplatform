@@ -32,8 +32,8 @@ interface OrdersPageClientProps {
 
 export function OrdersPageClient({ orders, currentUserRole }: OrdersPageClientProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
-  const canCreateOrders = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || 
-                          currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  // Only ADMIN, MANAGER, and SUPER_ADMIN can create orders (HR cannot)
+  const canCreateOrders = currentUserRole === 'ADMIN' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">

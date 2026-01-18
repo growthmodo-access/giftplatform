@@ -19,6 +19,7 @@ type Product = Database['public']['Tables']['products']['Row']
 
 interface ProductsTableProps {
   initialProducts: Product[]
+  canManageProducts?: boolean
 }
 
 const statusColors: Record<string, string> = {
@@ -28,7 +29,7 @@ const statusColors: Record<string, string> = {
   Shipped: 'bg-gray-100 text-gray-700',
 }
 
-export function ProductsTable({ initialProducts }: ProductsTableProps) {
+export function ProductsTable({ initialProducts, canManageProducts = false }: ProductsTableProps) {
   // For now, we'll use mock data to match the design
   // In production, this would come from the database
   const products = initialProducts.length > 0 ? initialProducts : [

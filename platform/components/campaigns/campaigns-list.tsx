@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Zap, Send } from 'lucide-react'
-import { sendCampaignToEmployees, updateCampaignStatus } from '@/actions/campaigns'
+import { sendCampaignToEmployees, updateCampaignStatus, deleteCampaign } from '@/actions/campaigns'
 
 type Campaign = {
   id: string
@@ -40,8 +40,11 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
   const router = useRouter()
   const [sending, setSending] = useState<string | null>(null)
   const [toggling, setToggling] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState<string | null>(null)
 
   const canManageCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  // Only ADMIN and SUPER_ADMIN can delete campaigns
+  const canDeleteCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
 
   const handleSendCampaign = async (campaignId: string) => {
     if (!confirm('Are you sure you want to send this campaign to all employees?')) {
@@ -64,6 +67,22 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
     setToggling(campaignId)
     const result = await updateCampaignStatus(campaignId, !currentStatus)
     setToggling(null)
+    
+    if (result.error) {
+      alert(result.error)
+    } else {
+      router.refresh()
+    }
+  }
+
+  const handleDeleteCampaign = async (campaignId: string) => {
+    if (!confirm('Are you sure you want to delete this campaign? This action cannot be undone.')) {
+      return
+    }
+
+    setDeleting(campaignId)
+    const result = await deleteCampaign(campaignId)
+    setDeleting(null)
     
     if (result.error) {
       alert(result.error)
@@ -130,6 +149,17 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
                     {sending === campaign.id ? 'Sending...' : 'Send Now'}
                   </Button>
                 </div>
+              )}
+              {canDeleteCampaigns && (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  className="w-full mt-2"
+                  onClick={() => handleDeleteCampaign(campaign.id)}
+                  disabled={deleting === campaign.id}
+                >
+                  {deleting === campaign.id ? 'Deleting...' : 'Delete Campaign'}
+                </Button>
               )}
             </div>
           </CardContent>

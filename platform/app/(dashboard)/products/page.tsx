@@ -18,10 +18,10 @@ export default async function ProductsPage() {
     redirect('/login')
   }
 
-  // Get user's company_id
+  // Get user's company_id and role
   const { data: userData } = await supabase
     .from('users')
-    .select('company_id')
+    .select('company_id, role')
     .eq('id', user.id)
     .single()
 
@@ -44,6 +44,9 @@ export default async function ProductsPage() {
   }
 
   return (
-    <ProductsPageClient initialProducts={products || []} />
+    <ProductsPageClient 
+      initialProducts={products || []} 
+      currentUserRole={(userData?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'}
+    />
   )
 }

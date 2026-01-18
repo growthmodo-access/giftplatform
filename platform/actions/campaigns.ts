@@ -20,7 +20,7 @@ export async function getCampaigns() {
     // Get current user's company
     const { data: currentUser } = await supabase
       .from('users')
-      .select('company_id')
+      .select('company_id, role')
       .eq('id', user.id)
       .single()
 
@@ -29,6 +29,7 @@ export async function getCampaigns() {
     }
 
     // Get all campaigns for the company
+    // MANAGER can see all campaigns but cannot delete (filtered in UI)
     const { data: campaigns, error } = await supabase
       .from('campaigns')
       .select(`
@@ -257,6 +258,65 @@ export async function updateCampaignStatus(campaignId: string, isActive: boolean
       .update({ is_active: isActive })
       .eq('id', campaignId)
       .eq('company_id', currentUser.company_id)
+
+    if (error) {
+      return { error: error.message }
+    }
+
+    revalidatePath('/automation')
+    return { success: true }
+  } catch (error) {
+    return { 
+      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    }
+  }
+}
+
+export async function deleteCampaign(campaignId: string) {
+  try {
+    const supabase = await createClient()
+    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    // Get current user's company and role
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('company_id, role')
+      .eq('id', user.id)
+      .single()
+
+    if (!currentUser?.company_id) {
+      return { error: 'You must be part of a company' }
+    }
+
+    // Check permissions - only ADMIN and SUPER_ADMIN can delete campaigns
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to delete campaigns. Only Admins can delete campaigns.' }
+    }
+
+    // Verify campaign exists and belongs to company
+    const { data: campaign, error: campaignError } = await supabase
+      .from('campaigns')
+      .select('id')
+      .eq('id', campaignId)
+      .eq('company_id', currentUser.company_id)
+      .single()
+
+    if (campaignError || !campaign) {
+      return { error: 'Campaign not found' }
+    }
+
+    const { error } = await supabase
+      .from('campaigns')
+      .delete()
+      .eq('id', campaignId)
 
     if (error) {
       return { error: error.message }
