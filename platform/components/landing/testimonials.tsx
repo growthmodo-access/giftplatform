@@ -41,13 +41,13 @@ export function Testimonials() {
     <section className="py-24 lg:py-32 bg-transparent">
       <div className="max-w-7xl mx-auto px-10">
         <div className="text-center mb-16">
-          <div className="text-purple-600 text-xs font-bold uppercase tracking-widest mb-4">
+          <div className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-4">
             PROOF IN ACTION
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
             Our clients say it best
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             See what our customers around the world are saying about Goodies.so.
           </p>
         </div>
@@ -58,11 +58,11 @@ export function Testimonials() {
               key={index}
               className={`
                 p-8 glass hover:shadow-xl transition-all
-                ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-2 border-purple-200' : ''}
+                ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-2 border-border/50' : ''}
               `}
             >
               <div className="flex flex-col gap-6">
-                <p className="text-gray-700 leading-relaxed flex-1">
+                <p className="text-foreground leading-relaxed flex-1">
                   "{testimonial.quote}"
                 </p>
                 <div className="flex items-start gap-3">
@@ -71,16 +71,16 @@ export function Testimonials() {
                   </Avatar>
                   <div className="flex-1">
                     {testimonial.author && (
-                      <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                      <div className="font-semibold text-foreground">{testimonial.author}</div>
                     )}
                     {testimonial.role && (
-                      <div className="text-sm text-gray-600">{testimonial.role}</div>
+                      <div className="text-sm text-muted-foreground">{testimonial.role}</div>
                     )}
                   </div>
                 </div>
                 {testimonial.company && (
-                  <div className="pt-4 border-t border-gray-200">
-                    <Badge variant="outline" className="text-gray-700">
+                  <div className="pt-4 border-t border-border/50">
+                    <Badge variant="outline" className="text-foreground border-border/50">
                       {testimonial.company}
                     </Badge>
                   </div>

@@ -66,28 +66,28 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white via-[#FAFBFC] to-[#F8FAFC] p-4">
-      <Card className="w-full max-w-md glass">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">G</span>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md border border-border/50">
+        <CardHeader className="space-y-1 pb-6">
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-12 h-12 bg-foreground rounded-lg flex items-center justify-center">
+              <span className="text-background font-semibold text-xl">G</span>
             </div>
           </div>
-          <CardTitle className="text-2xl text-center">Create an account</CardTitle>
-          <CardDescription className="text-center">
+          <CardTitle className="text-2xl font-semibold text-center text-foreground">Create an account</CardTitle>
+          <CardDescription className="text-center text-muted-foreground">
             Sign up to get started with Goodies.so
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-4">
             {error && (
-              <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md">
+              <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
                 {error}
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name" className="text-foreground">Name</Label>
               <Input
                 id="name"
                 type="text"
@@ -95,10 +95,11 @@ export default function SignupPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                className="border-border/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-foreground">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -106,10 +107,11 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="border-border/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-foreground">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -117,14 +119,15 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
+                className="border-border/50"
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Creating account...' : 'Sign up'}
             </Button>
-            <div className="text-center text-sm text-gray-600">
+            <div className="text-center text-sm text-muted-foreground">
               Already have an account?{' '}
-              <a href="/login" className="text-purple-600 hover:underline">
+              <a href="/login" className="text-foreground hover:underline font-medium">
                 Sign in
               </a>
             </div>

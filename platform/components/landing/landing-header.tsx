@@ -29,8 +29,8 @@ export function LandingHeader() {
 
   return (
     <>
-      {/* Sustainability Banner */}
-      <div className="bg-green-600 text-white py-3 text-center text-sm font-medium">
+      {/* Banner */}
+      <div className="bg-muted text-foreground py-3 text-center text-sm font-medium border-b border-border/50">
         <div className="max-w-7xl mx-auto px-10">
           <span>Your trusted partner for global gifting.</span>
         </div>
@@ -39,42 +39,42 @@ export function LandingHeader() {
       {/* Header */}
       <header
         className={cn(
-          "sticky top-0 z-50 transition-all duration-300",
+          "sticky top-0 z-50 transition-all duration-300 border-b",
           isScrolled
-            ? "bg-white/95 backdrop-blur-lg shadow-md"
-            : "bg-white/85 backdrop-blur-lg"
+            ? "bg-background/95 backdrop-blur-lg shadow-sm border-border/50"
+            : "bg-background/85 backdrop-blur-lg border-border/50"
         )}
       >
         <div className="max-w-7xl mx-auto px-10">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-9 h-9 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                <span className="text-white font-bold text-lg">G</span>
+              <div className="w-9 h-9 bg-foreground rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                <span className="text-background font-semibold text-lg">G</span>
               </div>
-              <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
+              <span className="font-semibold text-xl text-foreground">
                 Goodies.so
               </span>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-8">
-              <a href="#home" className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
+              <a href="#home" className="text-muted-foreground hover:text-foreground font-medium transition-colors">
                 Home
               </a>
-              <a href="#solutions" className="text-gray-700 hover:text-purple-600 font-medium transition-colors flex items-center gap-1">
+              <a href="#solutions" className="text-muted-foreground hover:text-foreground font-medium transition-colors flex items-center gap-1">
                 Solutions <span className="text-xs">▼</span>
               </a>
-              <a href="#products" className="text-gray-700 hover:text-purple-600 font-medium transition-colors flex items-center gap-1">
+              <a href="#products" className="text-muted-foreground hover:text-foreground font-medium transition-colors flex items-center gap-1">
                 Products <span className="text-xs">▼</span>
               </a>
-              <a href="#pricing" className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
+              <a href="#pricing" className="text-muted-foreground hover:text-foreground font-medium transition-colors">
                 Pricing
               </a>
-              <a href="#blog" className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
+              <a href="#blog" className="text-muted-foreground hover:text-foreground font-medium transition-colors">
                 Blog
               </a>
-              <a href="#contact" className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
+              <a href="#contact" className="text-muted-foreground hover:text-foreground font-medium transition-colors">
                 Contact
               </a>
             </nav>
@@ -83,13 +83,13 @@ export function LandingHeader() {
             <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={handleLogin}
-                className="text-gray-700 hover:text-purple-600 font-medium text-sm transition-colors"
+                className="text-muted-foreground hover:text-foreground font-medium text-sm transition-colors"
               >
                 Login
               </button>
               <button
                 onClick={handleGetStarted}
-                className="bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                className="bg-foreground text-background px-6 py-2.5 rounded-md font-medium hover:opacity-90 transition-opacity"
                 aria-label="Get started with Goodies.so"
               >
                 Get Started
@@ -98,7 +98,7 @@ export function LandingHeader() {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 text-gray-700"
+              className="lg:hidden p-2 text-foreground"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -108,33 +108,33 @@ export function LandingHeader() {
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="lg:hidden border-t border-gray-200 py-4">
+            <div className="lg:hidden border-t border-border/50 py-4">
               <nav className="flex flex-col gap-4">
-                <a href="#home" className="text-gray-700 hover:text-purple-600 font-medium" onClick={() => setIsMenuOpen(false)}>
+                <a href="#home" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Home
                 </a>
-                <a href="#solutions" className="text-gray-700 hover:text-purple-600 font-medium" onClick={() => setIsMenuOpen(false)}>
+                <a href="#solutions" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Solutions
                 </a>
-                <a href="#products" className="text-gray-700 hover:text-purple-600 font-medium" onClick={() => setIsMenuOpen(false)}>
+                <a href="#products" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Products
                 </a>
-                <a href="#pricing" className="text-gray-700 hover:text-purple-600 font-medium" onClick={() => setIsMenuOpen(false)}>
+                <a href="#pricing" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Pricing
                 </a>
-                <a href="#blog" className="text-gray-700 hover:text-purple-600 font-medium" onClick={() => setIsMenuOpen(false)}>
+                <a href="#blog" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Blog
                 </a>
-                <a href="#contact" className="text-gray-700 hover:text-purple-600 font-medium" onClick={() => setIsMenuOpen(false)}>
+                <a href="#contact" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Contact
                 </a>
-                <div className="flex flex-col gap-2 pt-4 border-t border-gray-200">
+                <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
                   <button
                     onClick={() => {
                       handleLogin()
                       setIsMenuOpen(false)
                     }}
-                    className="text-gray-700 hover:text-purple-600 font-medium text-left"
+                    className="text-muted-foreground hover:text-foreground font-medium text-left"
                   >
                     Login
                   </button>
@@ -143,7 +143,7 @@ export function LandingHeader() {
                       handleGetStarted()
                       setIsMenuOpen(false)
                     }}
-                    className="bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-2.5 rounded-xl font-semibold w-full"
+                    className="bg-foreground text-background px-6 py-2.5 rounded-md font-medium w-full"
                   >
                     Get Started
                   </button>

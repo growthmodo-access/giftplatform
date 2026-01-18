@@ -18,10 +18,10 @@ export function IntegrationsSection() {
     <section className="py-24 lg:py-32 bg-transparent">
       <div className="max-w-7xl mx-auto px-10">
         <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
             Integrated to your workspace.
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-muted-foreground">
             Automate your workflow with 100+ webhook triggers.
           </p>
         </div>
@@ -30,9 +30,9 @@ export function IntegrationsSection() {
           {integrations.map((integration, index) => (
             <div
               key={index}
-              className="bg-white/70 backdrop-blur-xl p-6 rounded-xl border border-gray-200 hover:shadow-lg hover:scale-105 transition-all text-center"
+              className="bg-background backdrop-blur-xl p-6 rounded-xl border border-border/50 hover:shadow-sm hover:scale-105 transition-all text-center"
             >
-              <div className="text-gray-700 font-semibold">{integration}</div>
+              <div className="text-foreground font-semibold">{integration}</div>
             </div>
           ))}
         </div>

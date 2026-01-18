@@ -110,28 +110,28 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white via-[#FAFBFC] to-[#F8FAFC] p-4">
-      <Card className="w-full max-w-md glass">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">G</span>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md border border-border/50">
+        <CardHeader className="space-y-1 pb-6">
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-12 h-12 bg-foreground rounded-lg flex items-center justify-center">
+              <span className="text-background font-semibold text-xl">G</span>
             </div>
           </div>
-          <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
-          <CardDescription className="text-center">
+          <CardTitle className="text-2xl font-semibold text-center text-foreground">Welcome back</CardTitle>
+          <CardDescription className="text-center text-muted-foreground">
             Sign in to your Goodies.so account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             {error && (
-              <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md">
+              <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
                 {error}
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-foreground">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -139,32 +139,34 @@ function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="border-border/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-foreground">Password</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="border-border/50"
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Signing in...' : 'Sign in'}
             </Button>
-            <div className="text-center text-sm text-gray-600">
+            <div className="text-center text-sm text-muted-foreground">
               Don't have an account?{' '}
-              <a href="/signup" className="text-purple-600 hover:underline">
+              <a href="/signup" className="text-foreground hover:underline font-medium">
                 Sign up
               </a>
             </div>
           </form>
 
           {/* Test User Quick Login */}
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-xs text-gray-500 mb-3 text-center">Quick Login (Testing)</p>
+          <div className="mt-6 pt-6 border-t border-border/50">
+            <p className="text-xs text-muted-foreground mb-3 text-center">Quick Login (Testing)</p>
             <div className="grid grid-cols-2 gap-2">
               {testUsers.map((testUser) => (
                 <Button
@@ -174,13 +176,13 @@ function LoginForm() {
                   size="sm"
                   onClick={() => handleTestLogin(testUser)}
                   disabled={loading}
-                  className="text-xs"
+                  className="text-xs border-border/50"
                 >
                   {testUser.label}
                 </Button>
               ))}
             </div>
-            <p className="text-xs text-gray-400 mt-2 text-center">
+            <p className="text-xs text-muted-foreground mt-2 text-center">
               All test users: Test123!@#
             </p>
           </div>
@@ -193,8 +195,8 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white via-[#FAFBFC] to-[#F8FAFC]">
-        <div className="text-gray-600">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-muted-foreground">Loading...</div>
       </div>
     }>
       <LoginForm />

@@ -82,17 +82,17 @@ export function IndustryLeaders() {
       <div className="max-w-7xl mx-auto px-10">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight">
               Ready to join industry leaders?
             </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-md">
+            <p className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-md">
               Discover how top companies boost their employee, client, and event engagement through Goodies.so.
             </p>
-            <Button className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600">
+            <Button>
               See case studies
             </Button>
           </div>
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-12 rounded-3xl">
+          <div className="bg-muted/30 p-12 rounded-3xl border border-border/50">
             <div className="grid grid-cols-2 gap-6">
               {clients.map((client, index) => (
                 <Card
