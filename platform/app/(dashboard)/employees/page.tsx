@@ -16,18 +16,21 @@ export default async function EmployeesPage() {
   }
 
   // Get current user's role to check permissions
-  const { data: currentUser } = await supabase
+  const { data: currentUser, error: userError } = await supabase
     .from('users')
-    .select('role')
+    .select('role, company_id')
     .eq('id', user.id)
     .single()
 
   const { data: employees, error } = await getEmployees()
 
+  // Ensure proper type casting for role
+  const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
+
   return (
     <EmployeesPageClient 
       employees={employees || []}
-      currentUserRole={currentUser?.role || 'EMPLOYEE'}
+      currentUserRole={userRole}
       currentUserId={user.id}
     />
   )
