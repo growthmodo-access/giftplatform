@@ -1,9 +1,4 @@
-import { ProductsTable } from '@/components/products/products-table'
-import { AddProductDialog } from '@/components/products/add-product-dialog'
 import { ProductsPageClient } from '@/components/products/products-page-client'
-import { Button } from '@/components/ui/button'
-import { Plus, Download, Upload } from 'lucide-react'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 

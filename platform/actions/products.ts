@@ -45,16 +45,26 @@ export async function createProduct(formData: FormData) {
       return { error: 'Missing required fields: name, price, sku, and type are required' }
     }
 
+    // Handle company_id - SUPER_ADMIN can select any company, others use their own
+    let company_id: string | null = null
+    if (userData?.role === 'SUPER_ADMIN') {
+      const formCompanyId = formData.get('company_id') as string
+      company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
+    } else {
+      company_id = userData?.company_id || null
+    }
+
+    const currency = (formData.get('currency') as string)?.trim() || 'USD'
+
     const product = {
       name: name.trim(),
       description: (formData.get('description') as string)?.trim() || null,
       category: (formData.get('category') as string)?.trim() || null,
       price: parseFloat(price),
+      currency: currency,
       sku: sku.trim(),
       type: type as 'SWAG' | 'GIFT_CARD' | 'PHYSICAL_GIFT' | 'EXPERIENCE',
-      // SUPER_ADMIN can create products for any company (for now, use user's company_id if available)
-      // TODO: Add company_id field to product form for SUPER_ADMIN
-      company_id: userData?.company_id || null,
+      company_id: company_id,
       stock: parseInt(formData.get('stock') as string) || 0,
     }
 
@@ -158,13 +168,16 @@ export async function updateProduct(id: string, formData: FormData) {
 
     const price = formData.get('price') as string
     const stock = formData.get('stock') as string
+    const currency = formData.get('currency') as string
 
     const updates: {
       name?: string
       description?: string | null
       category?: string | null
       price?: number
+      currency?: string
       stock?: number
+      company_id?: string | null
       updated_at: string
     } = {
       updated_at: new Date().toISOString(),
@@ -183,12 +196,22 @@ export async function updateProduct(id: string, formData: FormData) {
       updates.category = category.trim() || null
     }
 
+    if (currency) {
+      updates.currency = currency.trim()
+    }
+
     if (price) {
       const parsedPrice = parseFloat(price)
       if (isNaN(parsedPrice) || parsedPrice < 0) {
         return { error: 'Invalid price value' }
       }
       updates.price = parsedPrice
+    }
+
+    // SUPER_ADMIN can update company_id
+    if (userData.role === 'SUPER_ADMIN') {
+      const formCompanyId = formData.get('company_id') as string
+      updates.company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
     }
 
     if (stock !== null) {
