@@ -16,38 +16,21 @@ function LoginForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // #region agent log
-  useEffect(() => {
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:11',message:'LoginForm component mounted',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-  }, []);
-  // #endregion
-
   // Check if user is already logged in
   useEffect(() => {
     const checkUser = async () => {
       try {
-        // #region agent log
-        fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:21',message:'Checking user auth status',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-        // #endregion
-        
-        const { data: { user }, error: userError } = await supabase.auth.getUser()
-        
-        // #region agent log
-        fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:25',message:'User check result',data:{hasUser:!!user,userError:userError?.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-        // #endregion
+        const { data: { user } } = await supabase.auth.getUser()
         
         if (user) {
           const redirectTo = searchParams.get('redirect') || '/dashboard'
-          // #region agent log
-          fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:29',message:'Redirecting logged in user',data:{redirectTo},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-          // #endregion
           router.push(redirectTo)
         }
       } catch (err) {
-        // #region agent log
-        fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:33',message:'Error checking user',data:{error:err instanceof Error ? err.message : 'Unknown error'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-        // #endregion
-        console.error('Error checking user:', err)
+        // Silently handle error - user can still log in
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error checking user:', err)
+        }
       }
     }
     checkUser()
@@ -59,24 +42,12 @@ function LoginForm() {
     setError('')
 
     try {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:56',message:'Starting login',data:{email},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
-
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:65',message:'signInWithPassword result',data:{hasError:!!error,error:error?.message,hasData:!!data,hasSession:!!data?.session,hasUser:!!data?.user},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
-
       if (error) throw error
-
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:77',message:'Login successful - no error, proceeding with redirect',data:{hasData:!!data,hasSession:!!data?.session,hasUser:!!data?.user},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-      // #endregion
 
       // With @supabase/ssr createBrowserClient, if signInWithPassword succeeds (no error),
       // the session is automatically stored in cookies by the client.
@@ -90,9 +61,6 @@ function LoginForm() {
       // This ensures middleware can read the authentication cookies
       window.location.href = redirectTo
     } catch (error) {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:102',message:'Login error caught',data:{error:error instanceof Error ? error.message : 'Unknown error'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-      // #endregion
       setError(
         error instanceof Error ? error.message : 'An error occurred during login'
       )
@@ -115,24 +83,12 @@ function LoginForm() {
     setError('')
 
     try {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:98',message:'Starting test login',data:{email:testUser.email,role:testUser.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
-
       const { data, error } = await supabase.auth.signInWithPassword({
         email: testUser.email,
         password: testUser.password,
       })
 
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:108',message:'Test login signInWithPassword result',data:{hasError:!!error,error:error?.message,hasData:!!data,hasSession:!!data?.session,hasUser:!!data?.user},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
-
       if (error) throw error
-
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:133',message:'Test login: Login successful - no error, proceeding with redirect',data:{hasData:!!data,hasSession:!!data?.session,hasUser:!!data?.user},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-      // #endregion
 
       // With @supabase/ssr createBrowserClient, if signInWithPassword succeeds (no error),
       // the session is automatically stored in cookies by the client.
@@ -146,9 +102,6 @@ function LoginForm() {
       // This ensures middleware can read the authentication cookies
       window.location.href = redirectTo
     } catch (error) {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:146',message:'Test login error caught',data:{error:error instanceof Error ? error.message : 'Unknown error'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-      // #endregion
       setError(
         error instanceof Error ? error.message : 'An error occurred during login'
       )
@@ -238,12 +191,6 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
-  // #region agent log
-  if (typeof window !== 'undefined') {
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/(auth)/login/page.tsx:123',message:'LoginPage component rendering',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-  }
-  // #endregion
-  
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white via-[#FAFBFC] to-[#F8FAFC]">

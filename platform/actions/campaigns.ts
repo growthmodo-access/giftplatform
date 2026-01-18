@@ -18,11 +18,19 @@ export async function getCampaigns() {
     }
 
     // Get current user's company and role
-    const { data: currentUser } = await supabase
+    const { data: currentUser, error: currentUserError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (currentUserError) {
+      return { data: [], error: currentUserError.message }
+    }
+
+    if (!currentUser) {
+      return { data: [], error: 'User profile not found' }
+    }
 
     // Get campaigns based on role
     let query = supabase
@@ -91,15 +99,19 @@ export async function createCampaign(formData: FormData) {
     }
 
     // Get current user's company and role
-    const { data: currentUser } = await supabase
+    const { data: currentUser, error: currentUserError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (currentUserError || !currentUser) {
+      return { error: 'Failed to fetch user data' }
+    }
 
     // SUPER_ADMIN can create campaigns without company_id (will need company_id in form)
     // Other roles need company_id
-    if (currentUser?.role !== 'SUPER_ADMIN' && !currentUser?.company_id) {
+    if (currentUser.role !== 'SUPER_ADMIN' && !currentUser.company_id) {
       return { error: 'You must be part of a company to create campaigns' }
     }
 
@@ -119,7 +131,7 @@ export async function createCampaign(formData: FormData) {
 
     // SUPER_ADMIN needs to provide company_id in form (for now, use current user's company_id if available)
     // TODO: Add company_id field to campaign form for SUPER_ADMIN
-    const campaignCompanyId = currentUser?.company_id || null
+    const campaignCompanyId = currentUser.company_id || null
     
     const campaign = {
       name: name.trim(),

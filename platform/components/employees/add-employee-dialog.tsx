@@ -32,10 +32,6 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
     // Get role from hidden input
     const roleValue = (document.getElementById('role-value') as HTMLInputElement)?.value
     
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'components/employees/add-employee-dialog.tsx:33',message:'Form submission started',data:{roleValue,email:formData.get('email'),name:formData.get('name')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-    // #endregion
-    
     if (!roleValue) {
       setError('Please select a role')
       setLoading(false)
@@ -50,10 +46,6 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
       name,
       roleValue as 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
     )
-
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'components/employees/add-employee-dialog.tsx:49',message:'inviteEmployee result',data:{hasError:!!result.error,error:result.error,hasSuccess:!!result.success},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-    // #endregion
 
     if (result.error) {
       setError(result.error)

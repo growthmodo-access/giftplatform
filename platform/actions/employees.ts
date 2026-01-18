@@ -18,11 +18,19 @@ export async function getEmployees() {
     }
 
     // Get current user's company and role
-    const { data: currentUser } = await supabase
+    const { data: currentUser, error: currentUserError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (currentUserError) {
+      return { data: [], error: currentUserError.message }
+    }
+
+    if (!currentUser) {
+      return { data: [], error: 'User profile not found' }
+    }
 
     // SUPER_ADMIN can see all employees (all companies)
     // Other roles need company_id
@@ -96,42 +104,24 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:101',message:'Current user data fetched',data:{hasCurrentUser:!!currentUser,currentUserError:currentUserError?.message,hasCompanyId:!!currentUser?.company_id,userRole:currentUser?.role,roleType:typeof currentUser?.role,roleValue:currentUser?.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
+    if (currentUserError) {
+      return { error: 'Failed to fetch user data' }
+    }
 
-    // Check if currentUser exists
     if (!currentUser) {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:107',message:'currentUser is null',data:{currentUserError:currentUserError?.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
       return { error: 'User profile not found' }
     }
 
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:112',message:'Before permission check',data:{userRole:currentUser.role,isAdmin:currentUser.role === 'ADMIN',isHR:currentUser.role === 'HR',isSuperAdmin:currentUser.role === 'SUPER_ADMIN'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
-
     // Check permissions - only ADMIN, HR, and SUPER_ADMIN can invite
     if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:118',message:'Permission denied',data:{userRole:currentUser.role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-      // #endregion
       return { error: 'You do not have permission to invite employees' }
     }
-
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:123',message:'Before company_id check',data:{userRole:currentUser.role,isSuperAdmin:currentUser.role === 'SUPER_ADMIN',hasCompanyId:!!currentUser?.company_id,companyId:currentUser?.company_id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
 
     // SUPER_ADMIN can invite employees to any company (will need company_id in form)
     // Other roles need company_id
     if (currentUser.role !== 'SUPER_ADMIN' && !currentUser?.company_id) {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:128',message:'Company_id check failed',data:{userRole:currentUser.role,hasCompanyId:!!currentUser?.company_id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
       return { error: 'You must be part of a company to invite employees' }
     }
 
@@ -203,10 +193,6 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
         role: role,
         company_id: companyId,
       })
-
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:151',message:'Profile creation result',data:{profileError:profileError?.message,profileErrorCode:profileError?.code,profileErrorDetails:profileError?.details},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-    // #endregion
 
     if (profileError) {
       // If profile creation fails, delete the auth user

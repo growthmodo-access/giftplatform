@@ -23,9 +23,9 @@ export async function createProduct(formData: FormData) {
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    if (userError) {
+    if (userError || !userData) {
       return { error: 'Failed to fetch user data' }
     }
 
@@ -132,22 +132,26 @@ export async function updateProduct(id: string, formData: FormData) {
     }
 
     // Get user's company to verify ownership
-    const { data: userData } = await supabase
+    const { data: userData, error: userError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (userError || !userData) {
+      return { error: 'Failed to fetch user data' }
+    }
 
     // Check permissions - only ADMIN and SUPER_ADMIN can update products
-    if (userData?.role !== 'ADMIN' && userData?.role !== 'SUPER_ADMIN') {
+    if (userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
       return { error: 'You do not have permission to update products. Only Admins can update products.' }
     }
 
     // Check if user owns the product (same company) or is super admin
     if (
       existingProduct.company_id &&
-      userData?.company_id !== existingProduct.company_id &&
-      userData?.role !== 'SUPER_ADMIN'
+      userData.company_id !== existingProduct.company_id &&
+      userData.role !== 'SUPER_ADMIN'
     ) {
       return { error: 'You do not have permission to update this product' }
     }
@@ -246,22 +250,26 @@ export async function deleteProduct(id: string) {
     }
 
     // Get user's company to verify ownership
-    const { data: userData } = await supabase
+    const { data: userData, error: userError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (userError || !userData) {
+      return { error: 'Failed to fetch user data' }
+    }
 
     // Check permissions - only ADMIN and SUPER_ADMIN can delete products
-    if (userData?.role !== 'ADMIN' && userData?.role !== 'SUPER_ADMIN') {
+    if (userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
       return { error: 'You do not have permission to delete products. Only Admins can delete products.' }
     }
 
     // Check if user owns the product (same company) or is super admin
     if (
       existingProduct.company_id &&
-      userData?.company_id !== existingProduct.company_id &&
-      userData?.role !== 'SUPER_ADMIN'
+      userData.company_id !== existingProduct.company_id &&
+      userData.role !== 'SUPER_ADMIN'
     ) {
       return { error: 'You do not have permission to delete this product' }
     }

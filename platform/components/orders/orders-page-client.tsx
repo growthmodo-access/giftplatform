@@ -25,11 +25,12 @@ type Order = {
 interface OrdersPageClientProps {
   orders: Order[]
   currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  error?: string
 }
 
 const ITEMS_PER_PAGE = 10
 
-export function OrdersPageClient({ orders, currentUserRole }: OrdersPageClientProps) {
+export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageClientProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     orderId: '',
@@ -168,6 +169,15 @@ export function OrdersPageClient({ orders, currentUserRole }: OrdersPageClientPr
           </Button>
         )}
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-sm text-red-600">
+            Error loading orders: {error}
+          </p>
+        </div>
+      )}
 
       {/* Filters */}
       <OrdersFilters onFilterChange={handleFilterChange} />

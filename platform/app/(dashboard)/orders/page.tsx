@@ -16,18 +16,23 @@ export default async function OrdersPage() {
   }
 
   // Get current user's role to check permissions
-  const { data: currentUser } = await supabase
+  const { data: currentUser, error: userError } = await supabase
     .from('users')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+
+  if (userError || !currentUser) {
+    redirect('/login')
+  }
 
   const { data: orders, error } = await getOrders()
 
   return (
     <OrdersPageClient 
       orders={orders || []}
-      currentUserRole={currentUser?.role || 'EMPLOYEE'}
+      currentUserRole={currentUser.role || 'EMPLOYEE'}
+      error={error || undefined}
     />
   )
 }

@@ -18,11 +18,19 @@ export async function getOrders() {
     }
 
     // Get current user's company and role
-    const { data: currentUser } = await supabase
+    const { data: currentUser, error: currentUserError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (currentUserError) {
+      return { data: [], error: currentUserError.message }
+    }
+
+    if (!currentUser) {
+      return { data: [], error: 'User profile not found' }
+    }
 
     // Get orders based on role
     let query = supabase
@@ -30,18 +38,18 @@ export async function getOrders() {
       .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at, company_id')
 
     // SUPER_ADMIN can see all orders (all companies)
-    if (currentUser?.role === 'SUPER_ADMIN') {
+    if (currentUser.role === 'SUPER_ADMIN') {
       // No company filter for SUPER_ADMIN
     } else {
       // Other roles need company_id
-      if (!currentUser?.company_id) {
+      if (!currentUser.company_id) {
         return { data: [], error: null }
       }
       query = query.eq('company_id', currentUser.company_id)
     }
 
     // EMPLOYEE can only see their own orders
-    if (currentUser?.role === 'EMPLOYEE') {
+    if (currentUser.role === 'EMPLOYEE') {
       query = query.eq('user_id', user.id)
     }
     // MANAGER can see all orders (for now - could be filtered by team later)
@@ -162,11 +170,15 @@ export async function createOrder(formData: FormData) {
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (userError || !currentUser) {
+      return { error: 'Failed to fetch user data' }
+    }
 
     // SUPER_ADMIN can create orders without company_id requirement
     // Other roles need company_id
-    if (currentUser.role !== 'SUPER_ADMIN' && !currentUser?.company_id) {
+    if (currentUser.role !== 'SUPER_ADMIN' && !currentUser.company_id) {
       return { error: 'You must be part of a company to create orders' }
     }
 

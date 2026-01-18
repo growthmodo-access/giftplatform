@@ -19,15 +19,20 @@ export default async function DashboardLayout({
   }
 
   // Get current user's role and profile data
-  const { data: currentUser } = await supabase
+  const { data: currentUser, error: currentUserError } = await supabase
     .from('users')
     .select('role, name, email')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
-  const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
-  const userName = currentUser?.name || user.email?.split('@')[0] || 'User'
-  const userEmail = currentUser?.email || user.email || ''
+  if (currentUserError || !currentUser) {
+    // If user profile not found, redirect to login
+    redirect('/login')
+  }
+
+  const userRole = (currentUser.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
+  const userName = currentUser.name || user.email?.split('@')[0] || 'User'
+  const userEmail = currentUser.email || user.email || ''
 
   // Generate initials for avatar
   const getInitials = (name: string | null, email: string) => {
@@ -42,7 +47,7 @@ export default async function DashboardLayout({
     return email[0]?.toUpperCase() || 'U'
   }
 
-  const userInitials = getInitials(currentUser?.name, userEmail)
+  const userInitials = getInitials(currentUser.name, userEmail)
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">

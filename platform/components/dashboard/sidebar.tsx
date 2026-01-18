@@ -49,21 +49,8 @@ export function Sidebar({ userRole }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
 
-  // #region agent log
-  useEffect(() => {
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'components/dashboard/sidebar.tsx:50',message:'Sidebar mounted with role',data:{userRole},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-  }, [userRole]);
-  // #endregion
-
   // Filter menu items based on user role
   const menuItems = allMenuItems.filter(item => item.allowedRoles.includes(userRole))
-
-  // #region agent log
-  useEffect(() => {
-    const filteredCount = allMenuItems.filter(item => item.allowedRoles.includes(userRole)).length
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'components/dashboard/sidebar.tsx:58',message:'Filtered menu items',data:{userRole,totalItems:allMenuItems.length,filteredItems:filteredCount,menuItemLabels:menuItems.map(i => i.label)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-  }, [userRole]);
-  // #endregion
 
   // Load collapsed state from localStorage on mount (desktop only)
   useEffect(() => {

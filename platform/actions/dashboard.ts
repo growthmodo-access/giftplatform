@@ -17,14 +17,31 @@ export async function getDashboardStats() {
     }
 
     // Get current user's company and role
-    const { data: currentUser } = await supabase
+    const { data: currentUser, error: currentUserError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    const isSuperAdmin = currentUser?.role === 'SUPER_ADMIN'
-    const companyFilter = isSuperAdmin ? undefined : currentUser?.company_id
+    if (currentUserError || !currentUser) {
+      return {
+        stats: {
+          todayOrders: 0,
+          totalRevenue: 0,
+          revenueChange: 0,
+          monthlyRevenue: 0,
+          totalEmployees: 0,
+          totalGifts: 0,
+        },
+        chartData: [],
+        recentOrders: [],
+        topProducts: [],
+        error: currentUserError?.message || 'User profile not found'
+      }
+    }
+
+    const isSuperAdmin = currentUser.role === 'SUPER_ADMIN'
+    const companyFilter = isSuperAdmin ? undefined : currentUser.company_id
 
     // Get today's date range
     const today = new Date()
