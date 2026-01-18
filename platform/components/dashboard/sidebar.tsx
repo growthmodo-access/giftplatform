@@ -29,15 +29,64 @@ interface MenuItem {
   allowedRoles: UserRole[]
 }
 
+/**
+ * Navigation menu items configuration based on RBAC
+ * 
+ * SUPER_ADMIN: All 8 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics, Settings)
+ * ADMIN: All 8 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics, Settings)
+ * HR: 7 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics) - NO Settings
+ * MANAGER: 6 items (Dashboard, Products, Orders, Gifts, Automation, Analytics) - NO Employees, NO Settings
+ * EMPLOYEE: 4 items (Dashboard, Products, Orders, Gifts) - NO Employees, NO Automation, NO Analytics, NO Settings
+ */
 const allMenuItems: MenuItem[] = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: Package, label: 'Products', href: '/products', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: ShoppingCart, label: 'Orders', href: '/orders', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: Users, label: 'Employees', href: '/employees', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR'] },
-  { icon: Gift, label: 'Gifts', href: '/gifts', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: Zap, label: 'Automation', href: '/automation', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
-  { icon: BarChart3, label: 'Analytics', href: '/analytics', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
-  { icon: Settings, label: 'Settings', href: '/settings', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
+  { 
+    icon: LayoutDashboard, 
+    label: 'Dashboard', 
+    href: '/dashboard', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+  },
+  { 
+    icon: Package, 
+    label: 'Products', 
+    href: '/products', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+  },
+  { 
+    icon: ShoppingCart, 
+    label: 'Orders', 
+    href: '/orders', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+  },
+  { 
+    icon: Users, 
+    label: 'Employees', 
+    href: '/employees', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR'] 
+  },
+  { 
+    icon: Gift, 
+    label: 'Gifts', 
+    href: '/gifts', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+  },
+  { 
+    icon: Zap, 
+    label: 'Automation', 
+    href: '/automation', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
+  },
+  { 
+    icon: BarChart3, 
+    label: 'Analytics', 
+    href: '/analytics', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
+  },
+  { 
+    icon: Settings, 
+    label: 'Settings', 
+    href: '/settings', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
+  },
 ]
 
 interface SidebarProps {
@@ -49,8 +98,61 @@ export function Sidebar({ userRole }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
 
+  // Use the role directly - it should already be normalized from layout.tsx
+  // But add a safety check to ensure it's a valid UserRole
+  const normalizedRole: UserRole = (() => {
+    if (!userRole) {
+      console.warn('[Sidebar] No userRole provided, defaulting to EMPLOYEE')
+      return 'EMPLOYEE'
+    }
+    
+    // Ensure it's a valid UserRole type
+    const validRoles: UserRole[] = ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE']
+    if (validRoles.includes(userRole as UserRole)) {
+      return userRole as UserRole
+    }
+    
+    // Fallback if role doesn't match exactly
+    console.warn('[Sidebar] Invalid role value:', userRole, 'defaulting to EMPLOYEE')
+    return 'EMPLOYEE'
+  })()
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('[Sidebar] Role received:', { 
+      userRole, 
+      normalizedRole, 
+      type: typeof userRole,
+      allMenuItemsCount: allMenuItems.length 
+    })
+  }, [userRole, normalizedRole])
+
   // Filter menu items based on user role
-  const menuItems = allMenuItems.filter(item => item.allowedRoles.includes(userRole))
+  const menuItems = allMenuItems.filter(item => {
+    const hasAccess = item.allowedRoles.includes(normalizedRole)
+    if (!hasAccess && normalizedRole === 'SUPER_ADMIN') {
+      console.error('[Sidebar] SUPER_ADMIN denied access to:', item.label, {
+        normalizedRole,
+        allowedRoles: item.allowedRoles,
+        includes: item.allowedRoles.includes('SUPER_ADMIN'),
+        includesNormalized: item.allowedRoles.includes(normalizedRole)
+      })
+    }
+    return hasAccess
+  })
+
+  // Debug filtered results
+  useEffect(() => {
+    console.log('[Sidebar] Filtered menu items:', { 
+      normalizedRole, 
+      allItemsCount: allMenuItems.length, 
+      filteredCount: menuItems.length,
+      filteredItems: menuItems.map(i => i.label),
+      missingItems: allMenuItems
+        .filter(i => !menuItems.includes(i))
+        .map(i => ({ label: i.label, allowedRoles: i.allowedRoles }))
+    })
+  }, [normalizedRole, menuItems.length])
 
   // Load collapsed state from localStorage on mount (desktop only)
   useEffect(() => {
@@ -164,6 +266,12 @@ export function Sidebar({ userRole }: SidebarProps) {
                 Goodies.so
               </span>
             </div>
+            {/* Debug: Show role and menu count (temporary) */}
+            {!isCollapsed && (
+              <div className="text-xs text-muted-foreground">
+                {normalizedRole} ({menuItems.length})
+              </div>
+            )}
             <div className="flex items-center gap-2">
               {/* Mobile close button */}
               <Button

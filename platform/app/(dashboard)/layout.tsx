@@ -30,7 +30,40 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
-  const userRole = (currentUser.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
+  // Get role from database - should already be one of the valid UserRole types
+  const rawRole = currentUser.role || 'EMPLOYEE'
+  
+  // Validate and normalize role
+  const userRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE' = (() => {
+    const validRoles = ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] as const
+    const roleStr = String(rawRole).trim()
+    
+    // Direct match (most common case)
+    if (validRoles.includes(roleStr as any)) {
+      return roleStr as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+    }
+    
+    // Case-insensitive fallback
+    const upperRole = roleStr.toUpperCase()
+    if (upperRole === 'SUPER_ADMIN') return 'SUPER_ADMIN'
+    if (upperRole === 'ADMIN') return 'ADMIN'
+    if (upperRole === 'HR') return 'HR'
+    if (upperRole === 'MANAGER') return 'MANAGER'
+    if (upperRole === 'EMPLOYEE') return 'EMPLOYEE'
+    
+    // Log warning and default
+    console.warn('[Layout] Unknown role value:', roleStr, 'defaulting to EMPLOYEE')
+    return 'EMPLOYEE'
+  })()
+  
+  // Debug logging
+  console.log('[Layout] Role normalization:', {
+    rawRole,
+    normalizedRole: userRole,
+    userEmail: currentUser.email,
+    match: rawRole === userRole
+  })
+  
   const userName = currentUser.name || user.email?.split('@')[0] || 'User'
   const userEmail = currentUser.email || user.email || ''
 
