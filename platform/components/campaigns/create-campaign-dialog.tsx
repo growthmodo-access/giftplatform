@@ -87,8 +87,11 @@ export function CreateCampaignDialog({ open, onOpenChange }: CreateCampaignDialo
     if (triggerValue) {
       formData.set('trigger', triggerValue)
     }
-    if (productIdValue) {
+    // Handle "none" value - convert to empty string for optional product_id
+    if (productIdValue && productIdValue !== 'none') {
       formData.set('product_id', productIdValue)
+    } else {
+      formData.set('product_id', '')
     }
     
     const result = await createCampaign(formData)
@@ -173,7 +176,7 @@ export function CreateCampaignDialog({ open, onOpenChange }: CreateCampaignDialo
                   <SelectValue placeholder="Select a product (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {products.map((product) => (
                     <SelectItem key={product.id} value={product.id}>
                       {product.name} - ${product.price}

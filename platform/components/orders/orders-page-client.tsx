@@ -34,7 +34,7 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
   const [dialogOpen, setDialogOpen] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     orderId: '',
-    status: '',
+    status: 'all',
     minAmount: '',
     maxAmount: '',
     startDate: '',
@@ -63,7 +63,7 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
         }
 
         // Status filter
-        if (filters.status && order.status !== filters.status) {
+        if (filters.status && filters.status !== 'all' && order.status !== filters.status) {
           return false
         }
 

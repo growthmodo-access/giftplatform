@@ -24,7 +24,7 @@ export interface FilterState {
 export function OrdersFilters({ onFilterChange }: OrdersFiltersProps) {
   const [filters, setFilters] = useState<FilterState>({
     orderId: '',
-    status: '',
+    status: 'all',
     minAmount: '',
     maxAmount: '',
     startDate: '',
@@ -41,7 +41,7 @@ export function OrdersFilters({ onFilterChange }: OrdersFiltersProps) {
   const handleClear = () => {
     const clearedFilters: FilterState = {
       orderId: '',
-      status: '',
+      status: 'all',
       minAmount: '',
       maxAmount: '',
       startDate: '',
@@ -99,7 +99,7 @@ export function OrdersFilters({ onFilterChange }: OrdersFiltersProps) {
               <SelectValue placeholder="Select option" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Statuses</SelectItem>
+              <SelectItem value="all">All Statuses</SelectItem>
               <SelectItem value="PENDING">Pending</SelectItem>
               <SelectItem value="PROCESSING">Processing</SelectItem>
               <SelectItem value="SHIPPED">Shipped</SelectItem>
