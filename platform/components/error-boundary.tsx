@@ -26,11 +26,13 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log error to console in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Error caught by boundary:', error, errorInfo)
-    }
+    // Always log error to console for debugging
+    console.error('Error caught by boundary:', error)
+    console.error('Error info:', errorInfo)
+    console.error('Error stack:', error.stack)
+    
     // In production, you might want to log to an error tracking service
+    // Example: Sentry.captureException(error, { contexts: { react: errorInfo } })
   }
 
   resetError = () => {
@@ -57,11 +59,21 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {process.env.NODE_ENV === 'development' && this.state.error && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-                  <p className="text-sm font-mono text-red-800">
-                    {this.state.error.message}
+              {this.state.error && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-md space-y-2">
+                  <p className="text-sm font-semibold text-red-800">
+                    Error: {this.state.error.message}
                   </p>
+                  {process.env.NODE_ENV === 'development' && this.state.error.stack && (
+                    <details className="mt-2">
+                      <summary className="text-xs text-red-600 cursor-pointer hover:text-red-800">
+                        Show stack trace
+                      </summary>
+                      <pre className="mt-2 text-xs font-mono text-red-700 bg-red-100 p-2 rounded overflow-auto max-h-40">
+                        {this.state.error.stack}
+                      </pre>
+                    </details>
+                  )}
                 </div>
               )}
               <div className="flex gap-2">
