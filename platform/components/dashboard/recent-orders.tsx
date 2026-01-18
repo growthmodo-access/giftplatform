@@ -1,9 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Package } from 'lucide-react'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { ArrowRight, Package, Plus, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { getDashboardStats } from '@/actions/dashboard'
+import { getInitials } from '@/lib/utils/dashboard'
 
 const statusColors = {
   DELIVERED: 'bg-muted text-foreground border-border',
@@ -41,12 +43,20 @@ export async function RecentOrders() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="p-3 rounded-md bg-muted mb-3">
-              <Package className="w-6 h-6 text-muted-foreground" />
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="p-4 rounded-full bg-muted/50 mb-4">
+              <Package className="w-8 h-8 text-muted-foreground" />
             </div>
-            <p className="text-muted-foreground font-medium mb-1">No orders yet</p>
-            <p className="text-sm text-muted-foreground">Orders will appear here once they're created</p>
+            <h3 className="font-semibold text-foreground mb-1">No orders yet</h3>
+            <p className="text-sm text-muted-foreground mb-4 max-w-sm">
+              Get started by creating your first gift order
+            </p>
+            <Button asChild>
+              <Link href="/orders">
+                <Plus className="w-4 h-4 mr-2" />
+                Create Order
+              </Link>
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -63,8 +73,8 @@ export async function RecentOrders() {
           </div>
           <Link href="/orders">
             <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted text-xs sm:text-sm w-full sm:w-auto">
-              See All <ArrowRight className="w-4 h-4" />
-            </Button>
+            See All <ArrowRight className="w-4 h-4" />
+          </Button>
           </Link>
         </div>
       </CardHeader>
@@ -72,30 +82,39 @@ export async function RecentOrders() {
         <div className="space-y-1">
           {recentOrders.map((order) => {
             const status = order.status as keyof typeof statusColors
+            const employeeEmail = (order as any).employeeEmail || order.employee
+            const initials = getInitials(order.employee, employeeEmail)
             return (
-              <div
-                key={order.id}
-                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-md hover:bg-muted transition-colors gap-3"
-              >
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                    <p className="font-medium text-sm text-foreground truncate">{order.orderNumber}</p>
-                    <Badge 
-                      variant="outline"
-                      className="border-border bg-muted text-xs font-normal"
-                    >
-                      {statusLabels[status] || order.status}
-                    </Badge>
+              <Link key={order.id} href={`/orders?order=${order.id}`}>
+                <div className="flex items-center gap-3 p-3 rounded-md hover:bg-muted transition-colors group cursor-pointer">
+                  <Avatar className="w-9 h-9 flex-shrink-0">
+                    <AvatarFallback className="text-xs bg-muted/50">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <p className="font-medium text-sm text-foreground truncate">{order.orderNumber}</p>
+                      <Badge 
+                        variant="outline"
+                        className="border-border bg-muted text-xs font-normal"
+                      >
+                        {statusLabels[status] || order.status}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-foreground mb-0.5 truncate">{order.product}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {order.employee} • {order.date}
+                    </p>
                   </div>
-                  <p className="text-sm text-foreground mb-0.5 truncate">{order.product}</p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {order.employee} • {order.date}
-                  </p>
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    <div className="text-right">
+                      <p className="font-semibold text-sm text-foreground">{order.amount}</p>
+                    </div>
+                    <Eye className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
                 </div>
-                <div className="text-left sm:text-right flex-shrink-0">
-                  <p className="font-semibold text-sm text-foreground">{order.amount}</p>
-                </div>
-              </div>
+              </Link>
             )
           })}
         </div>

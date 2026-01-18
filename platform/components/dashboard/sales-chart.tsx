@@ -19,9 +19,9 @@ export async function SalesChart() {
             <CardDescription className="text-sm text-muted-foreground">Last 7 days performance</CardDescription>
           </div>
           <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto border-border">
-            <Download className="w-4 h-4" />
+              <Download className="w-4 h-4" />
             Export
-          </Button>
+            </Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -47,23 +47,40 @@ export async function SalesChart() {
 
           {/* Chart */}
           <div className="relative">
-            <div className="h-[200px] flex items-end justify-between gap-2">
+            {/* Grid lines */}
+            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+              {[0, 0.5, 1].map((pos) => (
+                <div 
+                  key={pos}
+                  className="border-t border-border/30"
+                  style={{ marginTop: pos === 0 ? '0' : pos === 1 ? '100%' : '50%' }}
+                />
+              ))}
+            </div>
+            
+            <div className="h-[200px] flex items-end justify-between gap-2 relative">
               {chartData.map((data, index) => {
                 const height = (data.revenue / maxRevenue) * maxHeight
                 
                 return (
-                  <div key={index} className="flex-1 flex flex-col items-center group">
+                  <div 
+                    key={index} 
+                    className="flex-1 flex flex-col items-center group"
+                    style={{
+                      animation: `slideUp 0.6s ease-out ${index * 0.1}s both`
+                    }}
+                  >
                     <div className="relative w-full flex items-end justify-center h-full">
                       {/* Bar */}
                       <div
-                        className="w-full rounded-t bg-foreground/80 hover:bg-foreground transition-all duration-200 cursor-pointer"
+                        className="w-full rounded-t bg-foreground/80 hover:bg-foreground transition-all duration-200 cursor-pointer group-hover:scale-105 origin-bottom"
                         style={{ height: `${Math.max(height, 8)}px` }}
                       >
                         {/* Tooltip on hover */}
-                        <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
-                          <div className="bg-foreground text-background text-xs rounded-md py-1.5 px-2 whitespace-nowrap">
-                            <div className="font-medium">${data.revenue.toFixed(2)}</div>
-                            <div className="text-[10px] opacity-80">{data.orders} orders</div>
+                        <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                          <div className="bg-foreground text-background text-xs rounded-md py-1.5 px-2.5 whitespace-nowrap shadow-lg">
+                            <div className="font-semibold">${data.revenue.toFixed(2)}</div>
+                            <div className="text-[10px] opacity-80 mt-0.5">{data.orders} order{data.orders !== 1 ? 's' : ''}</div>
                             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
                               <div className="border-4 border-transparent border-t-foreground"></div>
                             </div>
@@ -72,7 +89,7 @@ export async function SalesChart() {
                       </div>
                     </div>
                     {/* Date label */}
-                    <div className="mt-3 text-xs text-muted-foreground text-center">
+                    <div className="mt-3 text-xs text-muted-foreground text-center font-medium">
                       {data.date}
                     </div>
                   </div>
@@ -81,9 +98,9 @@ export async function SalesChart() {
             </div>
             
             {/* Y-axis labels */}
-            <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-muted-foreground pr-2">
-              <span>${(maxRevenue / 1000).toFixed(1)}k</span>
-              <span>${(maxRevenue / 2000).toFixed(1)}k</span>
+            <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-muted-foreground pr-2 pointer-events-none">
+              <span className="font-medium">${(maxRevenue / 1000).toFixed(1)}k</span>
+              <span className="font-medium">${(maxRevenue / 2000).toFixed(1)}k</span>
               <span>$0</span>
             </div>
           </div>

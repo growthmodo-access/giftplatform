@@ -235,6 +235,8 @@ export async function getDashboardStats() {
         id: order.id,
         orderNumber: order.order_number || `ORD-${order.id.substring(0, 8)}`,
         employee: user?.name || user?.email || 'Unknown',
+        employeeEmail: user?.email || '',
+        employeeId: order.user_id,
         product: productName,
         amount: `$${Number(order.total).toFixed(2)}`,
         status: order.status,
