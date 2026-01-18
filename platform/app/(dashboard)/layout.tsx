@@ -50,7 +50,7 @@ export default async function DashboardLayout({
   const userInitials = getInitials(currentUser.name, userEmail)
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex h-screen bg-background overflow-hidden">
       <Sidebar userRole={userRole} />
       <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
         <Header 

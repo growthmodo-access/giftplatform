@@ -55,7 +55,7 @@ export async function StatsCards() {
         return (
           <Card 
             key={stat.label} 
-            className="relative overflow-hidden border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all duration-200 group"
+            className="relative overflow-hidden border border-border bg-card shadow-sm hover:shadow-md transition-all duration-200 group"
           >
             <div className="relative p-4 lg:p-6">
               <div className="flex items-center justify-between mb-3 lg:mb-4">
@@ -78,10 +78,10 @@ export async function StatsCards() {
                 )}
               </div>
               <div>
-                <p className="text-xs lg:text-sm font-medium text-gray-600 mb-1 lg:mb-2">{stat.label}</p>
-                <p className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
+                <p className="text-xs lg:text-sm font-medium text-muted-foreground mb-1 lg:mb-2">{stat.label}</p>
+                <p className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{stat.value}</p>
                 {stat.change && (
-                  <p className="text-xs text-gray-500">vs last month</p>
+                  <p className="text-xs text-muted-foreground">vs last month</p>
                 )}
               </div>
             </div>

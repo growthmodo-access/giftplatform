@@ -69,9 +69,9 @@ export async function QuickActions() {
   }
 
   return (
-    <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+    <Card className="border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg lg:text-xl font-bold text-gray-900">Quick Actions</CardTitle>
+        <CardTitle className="text-lg lg:text-xl font-bold text-foreground">Quick Actions</CardTitle>
         <CardDescription className="mt-1 text-sm">Common tasks and shortcuts</CardDescription>
       </CardHeader>
       <CardContent>
@@ -82,16 +82,16 @@ export async function QuickActions() {
               <Link key={action.title} href={action.href}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start h-auto p-3 lg:p-4 hover:bg-gray-50 transition-colors group"
+                  className="w-full justify-start h-auto p-3 lg:p-4 hover:bg-accent transition-colors group"
                 >
                   <div className={`p-2 rounded-lg ${action.bgColor} mr-3 group-hover:scale-110 transition-transform flex-shrink-0`}>
                     <Icon className={`w-4 h-4 lg:w-5 lg:h-5 ${action.iconColor}`} />
                   </div>
                   <div className="flex-1 text-left min-w-0">
-                    <p className="font-semibold text-gray-900 text-sm lg:text-base truncate">{action.title}</p>
-                    <p className="text-xs text-gray-500 truncate">{action.description}</p>
+                    <p className="font-semibold text-foreground text-sm lg:text-base truncate">{action.title}</p>
+                    <p className="text-xs text-muted-foreground truncate">{action.description}</p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all flex-shrink-0" />
                 </Button>
               </Link>
             )
