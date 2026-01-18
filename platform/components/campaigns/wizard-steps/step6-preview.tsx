@@ -7,7 +7,7 @@ import { createGiftCampaign } from '@/actions/campaigns'
 import { Loader2, Check, Users, Gift, DollarSign, Calendar, MessageSquare } from 'lucide-react'
 import { CampaignWizardData } from '../campaign-wizard'
 import { format } from 'date-fns'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import { useEffect } from 'react'
 
 interface Step6Props {
@@ -29,8 +29,6 @@ export function CampaignStep6Preview({ data, onSuccess, onClose, onBack }: Step6
   }, [])
 
   const loadData = async () => {
-    const supabase = createClient()
-    
     // Load products
     if (data.selectedProducts.length > 0) {
       const { data: productsData } = await supabase

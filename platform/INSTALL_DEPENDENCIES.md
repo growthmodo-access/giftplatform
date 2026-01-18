@@ -3,7 +3,7 @@
 Before using the new gift campaign wizard, you need to install the following dependencies:
 
 ```bash
-npm install react-day-picker @radix-ui/react-progress @radix-ui/react-radio-group
+e
 ```
 
 These packages are required for:

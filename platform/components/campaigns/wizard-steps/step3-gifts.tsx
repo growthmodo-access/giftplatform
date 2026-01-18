@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import { Card, CardContent } from '@/components/ui/card'
 import { Check } from 'lucide-react'
 import { CampaignWizardData } from '../campaign-wizard'
@@ -24,7 +24,6 @@ export function CampaignStep3Gifts({ data, onUpdate }: Step3Props) {
 
   const loadProducts = async () => {
     try {
-      const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 
