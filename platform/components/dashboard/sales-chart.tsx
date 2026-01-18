@@ -11,14 +11,14 @@ export async function SalesChart() {
   const maxHeight = 200 // Chart height in pixels
 
   return (
-    <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+    <Card className="border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
       <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <CardTitle className="text-lg lg:text-xl font-bold text-gray-900">Revenue Overview</CardTitle>
+            <CardTitle className="text-lg lg:text-xl font-bold text-foreground">Revenue Overview</CardTitle>
             <CardDescription className="mt-1 text-sm">Last 7 days performance</CardDescription>
           </div>
-          <Button variant="outline" size="sm" className="gap-2 border-gray-200 hover:bg-gray-50 text-xs sm:text-sm w-full sm:w-auto">
+          <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto">
             <Download className="w-4 h-4" />
             Export
           </Button>
@@ -27,10 +27,10 @@ export async function SalesChart() {
       <CardContent>
         <div className="space-y-4">
           {/* Summary Stats */}
-          <div className="flex items-center gap-6 pb-4 border-b border-gray-100">
+          <div className="flex items-center gap-6 pb-4 border-b border-border">
             <div>
-              <p className="text-xs text-gray-500 mb-1">Monthly Revenue</p>
-              <p className="text-2xl font-bold text-gray-900">${(stats.monthlyRevenue / 1000).toFixed(1)}k</p>
+              <p className="text-xs text-muted-foreground mb-1">Monthly Revenue</p>
+              <p className="text-2xl font-bold text-foreground">${(stats.monthlyRevenue / 1000).toFixed(1)}k</p>
             </div>
             <div className="flex items-center gap-2">
               <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-semibold ${
@@ -45,7 +45,7 @@ export async function SalesChart() {
                 )}
                 {stats.revenueChange >= 0 ? '+' : ''}{stats.revenueChange.toFixed(1)}%
               </div>
-              <span className="text-sm text-gray-500">vs last month</span>
+              <span className="text-sm text-muted-foreground">vs last month</span>
             </div>
           </div>
 
@@ -77,7 +77,7 @@ export async function SalesChart() {
                       </div>
                     </div>
                     {/* Date label */}
-                    <div className="mt-3 text-xs font-medium text-gray-600 text-center">
+                    <div className="mt-3 text-xs font-medium text-muted-foreground text-center">
                       {data.date}
                     </div>
                   </div>
@@ -86,7 +86,7 @@ export async function SalesChart() {
             </div>
             
             {/* Y-axis labels */}
-            <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-gray-400 pr-2">
+            <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-muted-foreground pr-2">
               <span>${(maxRevenue / 1000).toFixed(1)}k</span>
               <span>${(maxRevenue / 2000).toFixed(1)}k</span>
               <span>$0</span>
