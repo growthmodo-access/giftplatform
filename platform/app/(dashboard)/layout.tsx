@@ -18,20 +18,41 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
-  // Get current user's role for navigation
+  // Get current user's role and profile data
   const { data: currentUser } = await supabase
     .from('users')
-    .select('role')
+    .select('role, name, email')
     .eq('id', user.id)
     .single()
 
   const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
+  const userName = currentUser?.name || user.email?.split('@')[0] || 'User'
+  const userEmail = currentUser?.email || user.email || ''
+
+  // Generate initials for avatar
+  const getInitials = (name: string | null, email: string) => {
+    if (name) {
+      return name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2)
+    }
+    return email[0]?.toUpperCase() || 'U'
+  }
+
+  const userInitials = getInitials(currentUser?.name, userEmail)
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       <Sidebar userRole={userRole} />
       <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
-        <Header />
+        <Header 
+          userName={userName}
+          userEmail={userEmail}
+          userInitials={userInitials}
+        />
         <main className="flex-1 overflow-y-auto">
           <div className="container-padding py-4 lg:py-6 max-w-7xl mx-auto">
             {children}

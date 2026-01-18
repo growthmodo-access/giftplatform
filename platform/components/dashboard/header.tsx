@@ -11,8 +11,15 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
-export function Header() {
+interface HeaderProps {
+  userName: string
+  userEmail: string
+  userInitials: string
+}
+
+export function Header({ userName, userEmail, userInitials }: HeaderProps) {
   return (
     <header className="h-14 lg:h-16 bg-white border-b border-gray-200 shadow-sm sticky top-0 z-30">
       <div className="h-full px-4 lg:px-6 flex items-center justify-between gap-4">
@@ -60,27 +67,31 @@ export function Header() {
               >
                 <Avatar className="w-8 h-8 border-2 border-gray-200">
                   <AvatarFallback className="bg-indigo-100 text-indigo-600 text-sm font-medium">
-                    JD
+                    {userInitials}
                   </AvatarFallback>
                 </Avatar>
-                <span className="hidden lg:inline text-sm font-medium text-gray-700">
-                  John Doe
+                <span className="hidden lg:inline text-sm font-medium text-gray-700 truncate max-w-[120px]">
+                  {userName}
                 </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <div className="px-2 py-1.5">
-                <p className="text-sm font-medium text-gray-900">John Doe</p>
-                <p className="text-xs text-gray-500">john@example.com</p>
+                <p className="text-sm font-medium text-gray-900 truncate">{userName}</p>
+                <p className="text-xs text-gray-500 truncate">{userEmail}</p>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <User className="w-4 h-4 mr-2" />
-                Profile
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link href="/settings" className="flex items-center w-full">
+                  <User className="w-4 h-4 mr-2" />
+                  Profile
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link href="/settings" className="flex items-center w-full">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Settings
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
