@@ -170,20 +170,20 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
 
   const getSortIcon = (field: SortField) => {
     if (sortField !== field) {
-      return <ArrowUpDown className="w-3.5 h-3.5 ml-1 text-gray-400" />
+      return <ArrowUpDown className="w-3.5 h-3.5 ml-1 text-muted-foreground" />
     }
     if (sortDirection === 'asc') {
-      return <ArrowUp className="w-3.5 h-3.5 ml-1 text-gray-600" />
+      return <ArrowUp className="w-3.5 h-3.5 ml-1 text-foreground" />
     }
-    return <ArrowDown className="w-3.5 h-3.5 ml-1 text-gray-600" />
+    return <ArrowDown className="w-3.5 h-3.5 ml-1 text-foreground" />
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="bg-background rounded-lg border border-border overflow-hidden">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="bg-gray-50 hover:bg-gray-50 border-b border-gray-200">
+            <TableRow className="bg-muted hover:bg-muted border-b border-border">
               <TableHead className="w-12">
                 <Checkbox
                   checked={selectedOrders.size === orders.length && orders.length > 0}
@@ -194,7 +194,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-1 font-semibold text-gray-700 hover:bg-transparent"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
                   onClick={() => handleSort('orderNumber')}
                 >
                   ORDER ID
@@ -205,7 +205,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-1 font-semibold text-gray-700 hover:bg-transparent"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
                   onClick={() => handleSort('employee')}
                 >
                   CUSTOMER
@@ -216,7 +216,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-1 font-semibold text-gray-700 hover:bg-transparent"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
                   onClick={() => handleSort('amount')}
                 >
                   ORDER AMOUNT
@@ -227,7 +227,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-1 font-semibold text-gray-700 hover:bg-transparent"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
                   onClick={() => handleSort('status')}
                 >
                   STATUS
@@ -238,7 +238,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-1 font-semibold text-gray-700 hover:bg-transparent"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
                   onClick={() => handleSort('mobile')}
                 >
                   MOBILE
@@ -249,7 +249,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-1 font-semibold text-gray-700 hover:bg-transparent"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
                   onClick={() => handleSort('paymentMethod')}
                 >
                   PAYMENT METHOD
@@ -261,7 +261,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
           <TableBody>
             {sortedOrders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-gray-500">
+                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
                   No orders found
                 </TableCell>
               </TableRow>
@@ -271,7 +271,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 return (
                   <TableRow
                     key={order.id}
-                    className="hover:bg-gray-50 cursor-pointer border-b border-gray-100"
+                    className="hover:bg-accent cursor-pointer border-b border-border"
                     onClick={() => onOrderClick?.(order)}
                   >
                     <TableCell>
@@ -281,20 +281,20 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                         onClick={(e) => e.stopPropagation()}
                       />
                     </TableCell>
-                    <TableCell className="font-medium text-gray-900">
+                    <TableCell className="font-medium text-foreground">
                       {order.orderNumber}
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <Avatar className="w-8 h-8 border border-gray-200">
+                        <Avatar className="w-8 h-8 border border-border">
                           <AvatarFallback className="bg-primary/20 text-primary text-xs font-medium">
                             {getInitials(order.employee || 'Unknown')}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-sm text-gray-900 font-medium">{order.employee || 'Unknown'}</span>
+                        <span className="text-sm text-foreground font-medium">{order.employee || 'Unknown'}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-gray-900 font-medium">
+                    <TableCell className="text-foreground font-medium">
                       {order.amount || 'N/A'}
                     </TableCell>
                     <TableCell>
