@@ -23,15 +23,11 @@ export default async function DashboardPage() {
   const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'there'
 
   return (
-    <div className="space-y-6 lg:space-y-8">
-      {/* Welcome Header */}
-      <div className="relative overflow-hidden rounded-xl lg:rounded-2xl bg-gradient-to-br from-primary via-primary/90 to-primary/80 p-6 lg:p-8 text-primary-foreground shadow-lg">
-        <div className="relative z-10">
-          <h1 className="text-2xl lg:text-4xl font-bold mb-2">Welcome back, {userName}! 👋</h1>
-          <p className="text-primary-foreground/80 text-sm lg:text-lg">Here's what's happening with your gift platform today.</p>
-        </div>
-        <div className="absolute top-0 right-0 -mt-4 -mr-4 w-48 h-48 lg:w-64 lg:h-64 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-32 h-32 lg:w-48 lg:h-48 bg-white/5 rounded-full blur-2xl"></div>
+    <div className="space-y-8">
+      {/* Welcome Header - Minimal Notion style */}
+      <div className="pb-6 border-b border-border">
+        <h1 className="text-3xl lg:text-4xl font-semibold text-foreground mb-2">Welcome back, {userName}</h1>
+        <p className="text-muted-foreground text-base">Here's what's happening with your gift platform today.</p>
       </div>
       
       {/* Stats Cards */}

@@ -149,16 +149,16 @@ export function Sidebar({ userRole }: SidebarProps) {
         isCollapsed ? "w-16 lg:w-16" : "w-64 lg:w-64"
       )}>
         {/* Header */}
-        <div className="p-4 lg:p-6 border-b border-border flex-shrink-0">
+        <div className="p-4 lg:p-5 border-b border-border flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className={cn(
               "flex items-center gap-2 transition-opacity duration-300",
               isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
             )}>
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                <span className="text-primary-foreground font-bold text-sm">G</span>
+              <div className="w-7 h-7 bg-foreground rounded-md flex items-center justify-center flex-shrink-0">
+                <span className="text-background font-semibold text-xs">G</span>
               </div>
-              <span className="font-semibold text-base lg:text-lg bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent whitespace-nowrap">
+              <span className="font-semibold text-sm text-foreground whitespace-nowrap">
                 Goodies.so
               </span>
             </div>
@@ -200,18 +200,18 @@ export function Sidebar({ userRole }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg transition-all group relative",
-                  "hover:bg-accent active:scale-[0.98]",
+                  "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-md transition-all group relative",
+                  "hover:bg-muted active:scale-[0.98]",
                   active
-                    ? "bg-primary/10 text-primary font-medium shadow-sm"
-                    : "text-foreground",
+                    ? "bg-muted text-foreground font-medium"
+                    : "text-muted-foreground",
                   isCollapsed && "justify-center lg:justify-center"
                 )}
                 title={isCollapsed ? item.label : undefined}
               >
                 <Icon className={cn(
                   "w-5 h-5 flex-shrink-0",
-                  active && "text-primary"
+                  active && "text-foreground"
                 )} />
                 <span className={cn(
                   "transition-opacity duration-300 whitespace-nowrap text-sm lg:text-base",
@@ -234,7 +234,7 @@ export function Sidebar({ userRole }: SidebarProps) {
           <button
             onClick={handleLogout}
             className={cn(
-              "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg text-foreground hover:bg-accent w-full transition-all active:scale-[0.98] group relative",
+              "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground w-full transition-all active:scale-[0.98] group relative",
               isCollapsed && "justify-center lg:justify-center"
             )}
             title={isCollapsed ? "Log out" : undefined}

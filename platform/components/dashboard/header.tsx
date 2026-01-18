@@ -21,7 +21,7 @@ interface HeaderProps {
 
 export function Header({ userName, userEmail, userInitials }: HeaderProps) {
   return (
-    <header className="h-14 lg:h-16 bg-background border-b border-border shadow-sm sticky top-0 z-30">
+    <header className="h-14 lg:h-16 bg-background border-b border-border sticky top-0 z-30">
       <div className="h-full px-4 lg:px-6 flex items-center justify-between gap-4">
         {/* Search - hidden on mobile */}
         <div className="hidden md:flex flex-1 max-w-md">
@@ -63,10 +63,10 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="h-9 px-2 gap-2 hover:bg-accent"
+                className="h-9 px-2 gap-2 hover:bg-muted"
               >
-                <Avatar className="w-8 h-8 border-2 border-border">
-                  <AvatarFallback className="bg-primary/20 text-primary text-sm font-medium">
+                <Avatar className="w-8 h-8 border border-border">
+                  <AvatarFallback className="bg-muted text-foreground text-sm font-medium">
                     {userInitials}
                   </AvatarFallback>
                 </Avatar>

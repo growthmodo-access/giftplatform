@@ -27,9 +27,6 @@ export async function QuickActions() {
       description: 'Create a gift order',
       icon: Package,
       href: '/orders',
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
-      iconColor: 'text-blue-600',
       allowedRoles: ['ADMIN', 'MANAGER', 'SUPER_ADMIN'],
     },
     {
@@ -37,9 +34,6 @@ export async function QuickActions() {
       description: 'Invite team member',
       icon: Users,
       href: '/employees',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      iconColor: 'text-purple-600',
       allowedRoles: ['ADMIN', 'HR', 'SUPER_ADMIN'],
     },
     {
@@ -47,9 +41,6 @@ export async function QuickActions() {
       description: 'Create gift campaign',
       icon: Sparkles,
       href: '/automation',
-      color: 'from-pink-500 to-pink-600',
-      bgColor: 'bg-pink-50',
-      iconColor: 'text-pink-600',
       allowedRoles: ['ADMIN', 'HR', 'MANAGER', 'SUPER_ADMIN'],
     },
     {
@@ -57,9 +48,6 @@ export async function QuickActions() {
       description: 'Add new gift product',
       icon: Plus,
       href: '/products',
-      color: 'from-emerald-500 to-emerald-600',
-      bgColor: 'bg-emerald-50',
-      iconColor: 'text-emerald-600',
       allowedRoles: ['ADMIN', 'SUPER_ADMIN'],
     },
   ].filter(action => action.allowedRoles.includes(role || ''))
@@ -69,29 +57,29 @@ export async function QuickActions() {
   }
 
   return (
-    <Card className="border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-      <CardHeader className="pb-4">
-        <CardTitle className="text-lg lg:text-xl font-bold text-foreground">Quick Actions</CardTitle>
-        <CardDescription className="mt-1 text-sm">Common tasks and shortcuts</CardDescription>
+    <Card className="border border-border bg-card">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base font-semibold text-foreground">Quick Actions</CardTitle>
+        <CardDescription className="text-sm text-muted-foreground">Common tasks and shortcuts</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2 lg:space-y-3">
+        <div className="space-y-1">
           {actions.map((action) => {
             const Icon = action.icon
             return (
               <Link key={action.title} href={action.href}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start h-auto p-3 lg:p-4 hover:bg-accent transition-colors group"
+                  className="w-full justify-start h-auto p-3 hover:bg-muted transition-colors group"
                 >
-                  <div className={`p-2 rounded-lg ${action.bgColor} mr-3 group-hover:scale-110 transition-transform flex-shrink-0`}>
-                    <Icon className={`w-4 h-4 lg:w-5 lg:h-5 ${action.iconColor}`} />
+                  <div className="p-1.5 rounded bg-muted mr-3 flex-shrink-0">
+                    <Icon className="w-4 h-4 text-foreground" />
                   </div>
                   <div className="flex-1 text-left min-w-0">
-                    <p className="font-semibold text-foreground text-sm lg:text-base truncate">{action.title}</p>
+                    <p className="font-medium text-sm text-foreground truncate">{action.title}</p>
                     <p className="text-xs text-muted-foreground truncate">{action.description}</p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all flex-shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all flex-shrink-0 opacity-0 group-hover:opacity-100" />
                 </Button>
               </Link>
             )

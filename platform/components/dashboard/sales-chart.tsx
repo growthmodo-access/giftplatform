@@ -11,14 +11,14 @@ export async function SalesChart() {
   const maxHeight = 200 // Chart height in pixels
 
   return (
-    <Card className="border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-      <CardHeader className="pb-4">
+    <Card className="border border-border">
+      <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <CardTitle className="text-lg lg:text-xl font-bold text-foreground">Revenue Overview</CardTitle>
-            <CardDescription className="mt-1 text-sm">Last 7 days performance</CardDescription>
+            <CardTitle className="text-base font-semibold text-foreground">Revenue Overview</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground">Last 7 days performance</CardDescription>
           </div>
-          <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto">
+          <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto border-border">
             <Download className="w-4 h-4" />
             Export
           </Button>
@@ -30,22 +30,18 @@ export async function SalesChart() {
           <div className="flex items-center gap-6 pb-4 border-b border-border">
             <div>
               <p className="text-xs text-muted-foreground mb-1">Monthly Revenue</p>
-              <p className="text-2xl font-bold text-foreground">${(stats.monthlyRevenue / 1000).toFixed(1)}k</p>
+              <p className="text-2xl font-semibold text-foreground tracking-tight">${(stats.monthlyRevenue / 1000).toFixed(1)}k</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-semibold ${
-                stats.revenueChange >= 0 
-                  ? 'bg-green-100 text-green-700' 
-                  : 'bg-red-100 text-red-700'
-              }`}>
+              <div className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-muted">
                 {stats.revenueChange >= 0 ? (
-                  <TrendingUp className="w-4 h-4" />
+                  <TrendingUp className="w-3 h-3" />
                 ) : (
-                  <TrendingUp className="w-4 h-4 rotate-180" />
+                  <TrendingUp className="w-3 h-3 rotate-180" />
                 )}
                 {stats.revenueChange >= 0 ? '+' : ''}{stats.revenueChange.toFixed(1)}%
               </div>
-              <span className="text-sm text-muted-foreground">vs last month</span>
+              <span className="text-xs text-muted-foreground">vs last month</span>
             </div>
           </div>
 
@@ -54,30 +50,29 @@ export async function SalesChart() {
             <div className="h-[200px] flex items-end justify-between gap-2">
               {chartData.map((data, index) => {
                 const height = (data.revenue / maxRevenue) * maxHeight
-                const isHighest = data.revenue === maxRevenue
                 
                 return (
                   <div key={index} className="flex-1 flex flex-col items-center group">
                     <div className="relative w-full flex items-end justify-center h-full">
                       {/* Bar */}
                       <div
-                        className="w-full rounded-t-lg bg-gradient-to-t from-blue-500 to-blue-400 hover:from-blue-600 hover:to-blue-500 transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg group-hover:scale-105"
+                        className="w-full rounded-t bg-foreground/80 hover:bg-foreground transition-all duration-200 cursor-pointer"
                         style={{ height: `${Math.max(height, 8)}px` }}
                       >
                         {/* Tooltip on hover */}
-                        <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                          <div className="bg-gray-900 text-white text-xs rounded-lg py-2 px-3 whitespace-nowrap shadow-lg">
-                            <div className="font-semibold">${data.revenue.toFixed(2)}</div>
-                            <div className="text-gray-400 text-[10px]">{data.orders} orders</div>
+                        <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                          <div className="bg-foreground text-background text-xs rounded-md py-1.5 px-2 whitespace-nowrap">
+                            <div className="font-medium">${data.revenue.toFixed(2)}</div>
+                            <div className="text-[10px] opacity-80">{data.orders} orders</div>
                             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
-                              <div className="border-4 border-transparent border-t-gray-900"></div>
+                              <div className="border-4 border-transparent border-t-foreground"></div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     {/* Date label */}
-                    <div className="mt-3 text-xs font-medium text-muted-foreground text-center">
+                    <div className="mt-3 text-xs text-muted-foreground text-center">
                       {data.date}
                     </div>
                   </div>
