@@ -15,7 +15,8 @@ import {
   Gift,
   Menu,
   ChevronLeft,
-  X
+  X,
+  Building2
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -32,11 +33,11 @@ interface MenuItem {
 /**
  * Navigation menu items configuration based on RBAC
  * 
- * SUPER_ADMIN: All 8 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics, Settings)
- * ADMIN: All 8 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics, Settings)
- * HR: 7 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics) - NO Settings
- * MANAGER: 6 items (Dashboard, Products, Orders, Gifts, Automation, Analytics) - NO Employees, NO Settings
- * EMPLOYEE: 4 items (Dashboard, Products, Orders, Gifts) - NO Employees, NO Automation, NO Analytics, NO Settings
+ * SUPER_ADMIN: All 9 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics, Companies, Settings)
+ * ADMIN: All 9 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics, Companies, Settings)
+ * HR: 7 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics) - NO Companies, NO Settings
+ * MANAGER: 6 items (Dashboard, Products, Orders, Gifts, Automation, Analytics) - NO Employees, NO Companies, NO Settings
+ * EMPLOYEE: 4 items (Dashboard, Products, Orders, Gifts) - NO Employees, NO Automation, NO Analytics, NO Companies, NO Settings
  */
 const allMenuItems: MenuItem[] = [
   { 
@@ -80,6 +81,12 @@ const allMenuItems: MenuItem[] = [
     label: 'Analytics', 
     href: '/analytics', 
     allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
+  },
+  { 
+    icon: Building2, 
+    label: 'Companies', 
+    href: '/companies', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
   },
   { 
     icon: Settings, 
