@@ -133,7 +133,7 @@ export function OrdersPageClient({ orders, currentUserRole }: OrdersPageClientPr
         return true
       }
     })
-  }, [orders, filters])
+  }, [safeOrders, filters])
 
   // Paginate filtered orders
   const paginatedOrders = useMemo(() => {
