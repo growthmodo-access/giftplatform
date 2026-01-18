@@ -98,11 +98,9 @@ export function Sidebar({ userRole }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
 
-  // Use the role directly - it should already be normalized from layout.tsx
-  // But add a safety check to ensure it's a valid UserRole
+  // Validate role and ensure it's a valid UserRole type
   const normalizedRole: UserRole = (() => {
     if (!userRole) {
-      console.warn('[Sidebar] No userRole provided, defaulting to EMPLOYEE')
       return 'EMPLOYEE'
     }
     
@@ -113,46 +111,11 @@ export function Sidebar({ userRole }: SidebarProps) {
     }
     
     // Fallback if role doesn't match exactly
-    console.warn('[Sidebar] Invalid role value:', userRole, 'defaulting to EMPLOYEE')
     return 'EMPLOYEE'
   })()
-  
-  // Debug logging
-  useEffect(() => {
-    console.log('[Sidebar] Role received:', { 
-      userRole, 
-      normalizedRole, 
-      type: typeof userRole,
-      allMenuItemsCount: allMenuItems.length 
-    })
-  }, [userRole, normalizedRole])
 
   // Filter menu items based on user role
-  const menuItems = allMenuItems.filter(item => {
-    const hasAccess = item.allowedRoles.includes(normalizedRole)
-    if (!hasAccess && normalizedRole === 'SUPER_ADMIN') {
-      console.error('[Sidebar] SUPER_ADMIN denied access to:', item.label, {
-        normalizedRole,
-        allowedRoles: item.allowedRoles,
-        includes: item.allowedRoles.includes('SUPER_ADMIN'),
-        includesNormalized: item.allowedRoles.includes(normalizedRole)
-      })
-    }
-    return hasAccess
-  })
-
-  // Debug filtered results
-  useEffect(() => {
-    console.log('[Sidebar] Filtered menu items:', { 
-      normalizedRole, 
-      allItemsCount: allMenuItems.length, 
-      filteredCount: menuItems.length,
-      filteredItems: menuItems.map(i => i.label),
-      missingItems: allMenuItems
-        .filter(i => !menuItems.includes(i))
-        .map(i => ({ label: i.label, allowedRoles: i.allowedRoles }))
-    })
-  }, [normalizedRole, menuItems.length])
+  const menuItems = allMenuItems.filter(item => item.allowedRoles.includes(normalizedRole))
 
   // Load collapsed state from localStorage on mount (desktop only)
   useEffect(() => {
@@ -266,12 +229,6 @@ export function Sidebar({ userRole }: SidebarProps) {
                 Goodies.so
               </span>
             </div>
-            {/* Debug: Show role and menu count (temporary) */}
-            {!isCollapsed && (
-              <div className="text-xs text-muted-foreground">
-                {normalizedRole} ({menuItems.length})
-              </div>
-            )}
             <div className="flex items-center gap-2">
               {/* Mobile close button */}
               <Button
