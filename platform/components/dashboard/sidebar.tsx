@@ -132,9 +132,33 @@ export function Sidebar() {
           action="/api/auth/logout" 
           method="post"
           onSubmit={async (e) => {
-            // #region agent log
-            fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'components/dashboard/sidebar.tsx:131',message:'Logout form submitted',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-            // #endregion
+            e.preventDefault()
+            try {
+              const response = await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+              
+              if (response.ok || response.redirected) {
+                // If redirect, follow it
+                if (response.redirected) {
+                  window.location.href = response.url
+                } else {
+                  // Otherwise redirect to login
+                  window.location.href = '/login'
+                }
+              } else {
+                // Even if there's an error, try to redirect to login
+                console.error('Logout error:', await response.text())
+                window.location.href = '/login'
+              }
+            } catch (error) {
+              console.error('Logout error:', error)
+              // On any error, redirect to login anyway
+              window.location.href = '/login'
+            }
           }}
         >
           <button

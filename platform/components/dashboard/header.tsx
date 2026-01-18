@@ -12,7 +12,7 @@ import {
 
 export function Header() {
   return (
-    <header className="h-16 bg-white/80 backdrop-blur-lg border-b border-gray-200 px-6 flex items-center justify-between">
+    <header className="h-16 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm px-6 flex items-center justify-between sticky top-0 z-40">
       <div className="flex-1 max-w-md">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />

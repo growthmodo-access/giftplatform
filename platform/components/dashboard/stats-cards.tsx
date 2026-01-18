@@ -1,61 +1,89 @@
 import { Card } from '@/components/ui/card'
-import { TrendingUp, TrendingDown, Package, Users } from 'lucide-react'
+import { Package, Gift, Users, DollarSign, TrendingUp, TrendingDown, Sparkles, Target } from 'lucide-react'
+import { getDashboardStats } from '@/actions/dashboard'
 
-const stats = [
-  {
-    label: "Today's Orders",
-    value: "142",
-    change: "+12%",
-    trend: "up",
-    icon: Package,
-  },
-  {
-    label: "Total Gifts Sent",
-    value: "2,485",
-    change: "+8%",
-    trend: "up",
-    icon: TrendingUp,
-  },
-  {
-    label: "Active Employees",
-    value: "1,234",
-    change: "+5%",
-    trend: "up",
-    icon: Users,
-  },
-  {
-    label: "Monthly Budget",
-    value: "$45,230",
-    change: "-3%",
-    trend: "down",
-    icon: TrendingDown,
-  },
-]
+export async function StatsCards() {
+  const { stats } = await getDashboardStats()
 
-export function StatsCards() {
+  const statsData = [
+    {
+      label: "Today's Orders",
+      value: stats.todayOrders.toString(),
+      change: stats.todayOrders > 0 ? "+" : "",
+      trend: "up",
+      icon: Package,
+      gradient: "from-blue-500 to-blue-600",
+      bgGradient: "from-blue-50 to-blue-100/50",
+      iconColor: "text-blue-600",
+    },
+    {
+      label: "Total Revenue",
+      value: `$${(stats.totalRevenue / 1000).toFixed(1)}k`,
+      change: stats.revenueChange >= 0 ? `+${stats.revenueChange.toFixed(1)}%` : `${stats.revenueChange.toFixed(1)}%`,
+      trend: stats.revenueChange >= 0 ? "up" : "down",
+      icon: DollarSign,
+      gradient: "from-emerald-500 to-emerald-600",
+      bgGradient: "from-emerald-50 to-emerald-100/50",
+      iconColor: "text-emerald-600",
+    },
+    {
+      label: "Active Employees",
+      value: stats.totalEmployees.toString(),
+      change: "",
+      trend: "up",
+      icon: Users,
+      gradient: "from-purple-500 to-purple-600",
+      bgGradient: "from-purple-50 to-purple-100/50",
+      iconColor: "text-purple-600",
+    },
+    {
+      label: "Total Gifts Sent",
+      value: stats.totalGifts.toString(),
+      change: "",
+      trend: "up",
+      icon: Gift,
+      gradient: "from-pink-500 to-pink-600",
+      bgGradient: "from-pink-50 to-pink-100/50",
+      iconColor: "text-pink-600",
+    },
+  ]
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {stats.map((stat) => {
+      {statsData.map((stat) => {
         const Icon = stat.icon
         return (
-          <Card key={stat.label} className="p-6 glass hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                <div className="flex items-center gap-1 mt-2">
-                  <span
-                    className={`text-sm font-medium ${
-                      stat.trend === 'up' ? 'text-green-600' : 'text-red-600'
-                    }`}
-                  >
-                    {stat.change}
-                  </span>
-                  <span className="text-sm text-gray-500">vs last month</span>
+          <Card 
+            key={stat.label} 
+            className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 group"
+          >
+            <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+            <div className="relative p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg`}>
+                  <Icon className="w-6 h-6 text-white" />
                 </div>
+                {stat.change && (
+                  <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
+                    stat.trend === 'up' 
+                      ? 'bg-green-100 text-green-700' 
+                      : 'bg-red-100 text-red-700'
+                  }`}>
+                    {stat.trend === 'up' ? (
+                      <TrendingUp className="w-3 h-3" />
+                    ) : (
+                      <TrendingDown className="w-3 h-3" />
+                    )}
+                    {stat.change}
+                  </div>
+                )}
               </div>
-              <div className="p-3 bg-purple-50 rounded-lg">
-                <Icon className="w-6 h-6 text-purple-600" />
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-2">{stat.label}</p>
+                <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
+                {stat.change && (
+                  <p className="text-xs text-gray-500">vs last month</p>
+                )}
               </div>
             </div>
           </Card>
