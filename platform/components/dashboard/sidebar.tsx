@@ -121,7 +121,7 @@ export function Sidebar({ userRole }: SidebarProps) {
       {/* Mobile menu button */}
       <button
         onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-background shadow-lg border border-border hover:bg-accent transition-colors"
+        className="lg:hidden fixed top-3 left-3 z-[60] p-2.5 rounded-md bg-background border border-border/50 hover:bg-muted transition-colors shadow-sm"
         aria-label="Toggle menu"
       >
         {isMobileOpen ? (
@@ -134,14 +134,16 @@ export function Sidebar({ userRole }: SidebarProps) {
       {/* Mobile overlay */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity"
+          className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[45] transition-opacity"
           onClick={toggleMobileMenu}
         />
       )}
 
       {/* Sidebar */}
       <aside className={cn(
-        "bg-background border-r border-border flex flex-col transition-all duration-300 ease-in-out fixed lg:sticky top-0 h-screen z-40",
+        "bg-background border-r border-border/50 flex flex-col transition-all duration-300 ease-in-out",
+        // Mobile: fixed positioning with slide animation
+        "lg:sticky fixed top-0 h-screen z-[50]",
         // Mobile: slide in/out
         "lg:translate-x-0",
         isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
@@ -149,7 +151,7 @@ export function Sidebar({ userRole }: SidebarProps) {
         isCollapsed ? "w-16 lg:w-16" : "w-64 lg:w-64"
       )}>
         {/* Header */}
-        <div className="p-4 lg:p-5 border-b border-border flex-shrink-0">
+        <div className="p-4 lg:p-5 border-b border-border/50 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className={cn(
               "flex items-center gap-2 transition-opacity duration-300",
@@ -190,7 +192,7 @@ export function Sidebar({ userRole }: SidebarProps) {
         </div>
         
         {/* Navigation */}
-        <nav className="flex-1 p-3 lg:p-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 p-2 lg:p-3 space-y-0.5 overflow-y-auto">
           {menuItems.map((item) => {
             const Icon = item.icon
             const active = isActive(item.href)
@@ -200,27 +202,27 @@ export function Sidebar({ userRole }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-md transition-all group relative",
-                  "hover:bg-muted active:scale-[0.98]",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-md transition-all group relative",
+                  "hover:bg-muted/80 active:scale-[0.98]",
                   active
                     ? "bg-muted text-foreground font-medium"
-                    : "text-muted-foreground",
+                    : "text-muted-foreground hover:text-foreground",
                   isCollapsed && "justify-center lg:justify-center"
                 )}
                 title={isCollapsed ? item.label : undefined}
               >
                 <Icon className={cn(
-                  "w-5 h-5 flex-shrink-0",
-                  active && "text-foreground"
+                  "w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-colors",
+                  active ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"
                 )} />
                 <span className={cn(
-                  "transition-opacity duration-300 whitespace-nowrap text-sm lg:text-base",
+                  "transition-opacity duration-300 whitespace-nowrap text-sm font-medium",
                   isCollapsed ? "opacity-0 w-0 overflow-hidden lg:opacity-0" : "opacity-100"
                 )}>
                   {item.label}
                 </span>
                 {isCollapsed && (
-                  <div className="hidden lg:block absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
+                  <div className="hidden lg:block absolute left-full ml-2 px-2 py-1.5 bg-foreground text-background text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
                     {item.label}
                   </div>
                 )}
@@ -230,11 +232,11 @@ export function Sidebar({ userRole }: SidebarProps) {
         </nav>
         
         {/* Footer */}
-        <div className="p-3 lg:p-4 border-t border-border flex-shrink-0">
+        <div className="p-3 lg:p-4 border-t border-border/50 flex-shrink-0">
           <button
             onClick={handleLogout}
             className={cn(
-              "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground w-full transition-all active:scale-[0.98] group relative",
+              "flex items-center gap-3 px-3 py-2.5 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground w-full transition-all active:scale-[0.98] group relative",
               isCollapsed && "justify-center lg:justify-center"
             )}
             title={isCollapsed ? "Log out" : undefined}

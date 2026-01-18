@@ -59,7 +59,7 @@ export default async function DashboardLayout({
           userInitials={userInitials}
         />
         <main className="flex-1 overflow-y-auto bg-[#fafafa]">
-          <div className="container-padding py-6 lg:py-8 max-w-7xl mx-auto">
+          <div className="container-padding py-6 lg:py-8 max-w-7xl mx-auto px-4 lg:px-6">
             {children}
           </div>
         </main>

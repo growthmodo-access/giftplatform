@@ -21,7 +21,7 @@ interface HeaderProps {
 
 export function Header({ userName, userEmail, userInitials }: HeaderProps) {
   return (
-    <header className="h-14 lg:h-16 bg-background border-b border-border sticky top-0 z-30">
+    <header className="h-14 lg:h-16 bg-background/95 backdrop-blur-sm border-b border-border/50 sticky top-0 z-30">
       <div className="h-full px-4 lg:px-6 flex items-center justify-between gap-4">
         {/* Search - hidden on mobile */}
         <div className="hidden md:flex flex-1 max-w-md">
