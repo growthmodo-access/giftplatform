@@ -1,0 +1,236 @@
+'use server'
+
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+
+export async function getOrders() {
+  try {
+    const supabase = await createClient()
+    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    // Get current user's company
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('company_id, role')
+      .eq('id', user.id)
+      .single()
+
+    if (!currentUser?.company_id) {
+      return { data: [], error: null }
+    }
+
+    // Get all orders for the company
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at')
+      .eq('company_id', currentUser.company_id)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      return { data: [], error: error.message }
+    }
+
+    if (!orders || orders.length === 0) {
+      return { data: [], error: null }
+    }
+
+    // Get user IDs and product IDs
+    const userIds = [...new Set(orders.map(o => o.user_id))]
+    const orderIds = orders.map(o => o.id)
+
+    // Fetch users
+    const { data: users } = await supabase
+      .from('users')
+      .select('id, name, email')
+      .in('id', userIds)
+
+    // Get order items for each order
+    const { data: orderItems } = await supabase
+      .from('order_items')
+      .select('order_id, product_id, quantity, price')
+      .in('order_id', orderIds)
+
+    // Get product IDs
+    const productIds = [...new Set((orderItems || []).map(item => item.product_id))]
+    
+    // Fetch products
+    const { data: products } = await supabase
+      .from('products')
+      .select('id, name')
+      .in('id', productIds)
+
+    // Create lookup maps
+    const userMap = new Map((users || []).map(u => [u.id, u]))
+    const productMap = new Map((products || []).map(p => [p.id, p]))
+
+    // Combine orders with items
+    const ordersWithItems = orders.map(order => {
+      const items = (orderItems || []).filter(item => item.order_id === order.id)
+      const firstItem = items[0]
+      const product = firstItem ? productMap.get(firstItem.product_id) : null
+      const user = userMap.get(order.user_id)
+      
+      return {
+        id: order.id,
+        orderNumber: order.order_number,
+        employee: user?.name || user?.email || 'Unknown',
+        product: product?.name || (items.length > 1 ? 'Multiple items' : 'Unknown product'),
+        amount: `${order.currency || 'USD'} ${Number(order.total).toFixed(2)}`,
+        status: order.status,
+        date: new Date(order.created_at).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric' 
+        }),
+      }
+    })
+
+    return { data: ordersWithItems, error: null }
+  } catch (error) {
+    return { 
+      data: [], 
+      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    }
+  }
+}
+
+export async function createOrder(formData: FormData) {
+  try {
+    const supabase = await createClient()
+    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    // Get current user's company
+    const { data: currentUser, error: userError } = await supabase
+      .from('users')
+      .select('company_id, role')
+      .eq('id', user.id)
+      .single()
+
+    if (userError || !currentUser?.company_id) {
+      return { error: 'You must be part of a company to create orders' }
+    }
+
+    // Check permissions - only ADMIN, HR, MANAGER, and SUPER_ADMIN can create orders
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && 
+        currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to create orders' }
+    }
+
+    // Get form data
+    const employeeId = formData.get('employee_id') as string
+    const productId = formData.get('product_id') as string
+    const quantity = parseInt(formData.get('quantity') as string) || 1
+    const shippingAddress = formData.get('shipping_address') as string
+
+    if (!employeeId || !productId) {
+      return { error: 'Employee and product are required' }
+    }
+
+    // Verify employee is in the same company
+    const { data: employee, error: employeeError } = await supabase
+      .from('users')
+      .select('company_id')
+      .eq('id', employeeId)
+      .single()
+
+    if (employeeError || !employee || employee.company_id !== currentUser.company_id) {
+      return { error: 'Employee not found or not in your company' }
+    }
+
+    // Get product details
+    const { data: product, error: productError } = await supabase
+      .from('products')
+      .select('id, price, stock, name')
+      .eq('id', productId)
+      .single()
+
+    if (productError || !product) {
+      return { error: 'Product not found' }
+    }
+
+    // Check stock availability
+    if (product.stock < quantity) {
+      return { error: `Insufficient stock. Only ${product.stock} available.` }
+    }
+
+    // Generate order number
+    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
+
+    // Calculate total
+    const total = product.price * quantity
+
+    // Create order
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .insert({
+        order_number: orderNumber,
+        user_id: employeeId,
+        company_id: currentUser.company_id,
+        status: 'PENDING',
+        total: total,
+        currency: 'USD',
+        shipping_address: shippingAddress || null,
+      })
+      .select()
+      .single()
+
+    if (orderError || !order) {
+      return { error: `Failed to create order: ${orderError?.message || 'Unknown error'}` }
+    }
+
+    // Create order item
+    const { error: itemError } = await supabase
+      .from('order_items')
+      .insert({
+        order_id: order.id,
+        product_id: productId,
+        quantity: quantity,
+        price: product.price,
+      })
+
+    if (itemError) {
+      // Rollback order creation
+      await supabase.from('orders').delete().eq('id', order.id)
+      return { error: `Failed to create order item: ${itemError.message}` }
+    }
+
+    // Update product stock
+    const { error: stockError } = await supabase
+      .from('products')
+      .update({ stock: product.stock - quantity })
+      .eq('id', productId)
+
+    if (stockError) {
+      console.error('Failed to update product stock:', stockError)
+      // Don't fail the order creation, but log the error
+    }
+
+    revalidatePath('/orders')
+    return { 
+      success: true, 
+      message: `Order ${orderNumber} created successfully`,
+      orderId: order.id
+    }
+  } catch (error) {
+    return { 
+      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    }
+  }
+}
