@@ -20,18 +20,26 @@ interface HeaderProps {
 }
 
 export function Header({ userName, userEmail, userInitials }: HeaderProps) {
+  const handleSearchFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    // Could add search functionality here
+  }
+
   return (
     <header className="h-14 lg:h-16 bg-background/95 backdrop-blur-sm border-b border-border/50 sticky top-0 z-30">
       <div className="h-full px-4 lg:px-6 flex items-center justify-between gap-4">
         {/* Search - hidden on mobile */}
         <div className="hidden md:flex flex-1 max-w-md">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none" />
-            <Input
+          <div className="relative w-full group">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none group-focus-within:text-foreground transition-colors" />
+              <Input
               type="search"
-              placeholder="Search..."
-              className="pl-10 h-9 bg-muted focus:bg-background transition-colors"
+              placeholder="Search products, orders, employees..."
+              className="pl-10 pr-16 h-9 bg-muted/50 border-border/50 focus:bg-background focus:border-border transition-all placeholder:text-muted-foreground"
+              onFocus={handleSearchFocus}
             />
+            <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium text-muted-foreground bg-background border border-border/50 rounded">
+              <span className="text-[10px]">⌘</span>K
+            </kbd>
           </div>
         </div>
         
@@ -39,7 +47,7 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="md:hidden h-9 w-9 hover:bg-muted"
           aria-label="Search"
         >
           <Search className="w-5 h-5" />
@@ -51,11 +59,11 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="relative h-9 w-9"
+            className="relative h-9 w-9 hover:bg-muted"
             aria-label="Notifications"
           >
-            <Bell className="w-5 h-5 text-foreground" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full border-2 border-background"></span>
+            <Bell className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full border-2 border-background animate-pulse"></span>
           </Button>
           
           {/* User menu */}
@@ -75,22 +83,22 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
                 </span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <div className="px-2 py-1.5">
-                <p className="text-sm font-medium text-foreground truncate">{userName}</p>
-                <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+            <DropdownMenuContent align="end" className="w-56 border-border/50">
+              <div className="px-3 py-2.5 border-b border-border/50">
+                <p className="text-sm font-semibold text-foreground truncate">{userName}</p>
+                <p className="text-xs text-muted-foreground truncate mt-0.5">{userEmail}</p>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild className="cursor-pointer">
+              <DropdownMenuItem asChild className="cursor-pointer focus:bg-muted">
                 <Link href="/settings" className="flex items-center w-full">
-                  <User className="w-4 h-4 mr-2" />
-                  Profile
+                  <User className="w-4 h-4 mr-2.5 text-muted-foreground" />
+                  <span className="text-sm">Profile</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer">
+              <DropdownMenuItem asChild className="cursor-pointer focus:bg-muted">
                 <Link href="/settings" className="flex items-center w-full">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Settings
+                  <Settings className="w-4 h-4 mr-2.5 text-muted-foreground" />
+                  <span className="text-sm">Settings</span>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>

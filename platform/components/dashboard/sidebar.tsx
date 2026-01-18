@@ -146,6 +146,24 @@ export function Sidebar({ userRole }: SidebarProps) {
     setIsMobileOpen(false)
   }, [pathname])
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Toggle sidebar with Cmd/Ctrl + B
+      if ((e.metaKey || e.ctrlKey) && e.key === 'b' && window.innerWidth >= 1024) {
+        e.preventDefault()
+        toggleSidebar()
+      }
+      // Close mobile menu with Escape
+      if (e.key === 'Escape' && isMobileOpen) {
+        setIsMobileOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMobileOpen, isCollapsed])
+
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed)
   }
@@ -193,7 +211,7 @@ export function Sidebar({ userRole }: SidebarProps) {
       {/* Mobile menu button */}
       <button
         onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-3 left-3 z-[60] p-2.5 rounded-md bg-background border border-border/50 hover:bg-muted transition-colors shadow-sm"
+        className="lg:hidden fixed top-4 left-4 z-[60] p-2.5 rounded-lg bg-background border border-border/50 hover:bg-muted transition-all shadow-md hover:shadow-lg active:scale-95"
         aria-label="Toggle menu"
       >
         {isMobileOpen ? (
@@ -206,7 +224,7 @@ export function Sidebar({ userRole }: SidebarProps) {
       {/* Mobile overlay */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[45] transition-opacity"
+          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-md z-[45] transition-opacity animate-in fade-in duration-200"
           onClick={toggleMobileMenu}
         />
       )}
@@ -225,24 +243,32 @@ export function Sidebar({ userRole }: SidebarProps) {
         {/* Header */}
         <div className="p-4 lg:p-5 border-b border-border/50 flex-shrink-0">
           <div className="flex items-center justify-between">
-            <div className={cn(
-              "flex items-center gap-2 transition-opacity duration-300",
-              isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-            )}>
-              <div className="w-7 h-7 bg-foreground rounded-md flex items-center justify-center flex-shrink-0">
-                <span className="text-background font-semibold text-xs">G</span>
+            <Link 
+              href="/dashboard"
+              className={cn(
+                "flex items-center gap-2.5 transition-opacity duration-300 hover:opacity-80",
+                isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+              )}
+            >
+              <div className="w-8 h-8 bg-foreground rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm hover:shadow-md transition-shadow">
+                <span className="text-background font-bold text-sm">G</span>
               </div>
-              <span className="font-semibold text-sm text-foreground whitespace-nowrap">
-                Goodies.so
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
+              <div className="flex flex-col">
+                <span className="font-bold text-base text-foreground leading-tight">
+                  Goodies.so
+                </span>
+                <span className="text-[10px] text-muted-foreground leading-tight">
+                  Gift Platform
+                </span>
+              </div>
+            </Link>
+            <div className="flex items-center gap-1.5">
               {/* Mobile close button */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleMobileMenu}
-                className="lg:hidden h-8 w-8"
+                className="lg:hidden h-8 w-8 hover:bg-muted"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -251,7 +277,8 @@ export function Sidebar({ userRole }: SidebarProps) {
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="hidden lg:flex h-8 w-8"
+                className="hidden lg:flex h-8 w-8 hover:bg-muted"
+                title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
               >
                 {isCollapsed ? (
                   <Menu className="h-4 w-4" />
@@ -264,7 +291,7 @@ export function Sidebar({ userRole }: SidebarProps) {
         </div>
         
         {/* Navigation */}
-        <nav className="flex-1 p-2 lg:p-3 space-y-0.5 overflow-y-auto">
+        <nav className="flex-1 p-2 lg:p-3 space-y-1 overflow-y-auto overflow-x-hidden">
           {menuItems.map((item) => {
             const Icon = item.icon
             const active = isActive(item.href)
@@ -274,18 +301,24 @@ export function Sidebar({ userRole }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-md transition-all group relative",
-                  "hover:bg-muted/80 active:scale-[0.98]",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative",
+                  "hover:bg-muted/60 active:scale-[0.98]",
                   active
-                    ? "bg-muted text-foreground font-medium"
+                    ? "bg-muted text-foreground font-semibold shadow-sm"
                     : "text-muted-foreground hover:text-foreground",
                   isCollapsed && "justify-center lg:justify-center"
                 )}
                 title={isCollapsed ? item.label : undefined}
               >
+                <div className={cn(
+                  "absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full transition-all",
+                  active ? "bg-foreground opacity-100" : "bg-transparent opacity-0"
+                )} />
                 <Icon className={cn(
-                  "w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-colors",
-                  active ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"
+                  "w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-all",
+                  active 
+                    ? "text-foreground scale-110" 
+                    : "text-muted-foreground group-hover:text-foreground group-hover:scale-105"
                 )} />
                 <span className={cn(
                   "transition-opacity duration-300 whitespace-nowrap text-sm font-medium",
@@ -294,8 +327,9 @@ export function Sidebar({ userRole }: SidebarProps) {
                   {item.label}
                 </span>
                 {isCollapsed && (
-                  <div className="hidden lg:block absolute left-full ml-2 px-2 py-1.5 bg-foreground text-background text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
+                  <div className="hidden lg:block absolute left-full ml-3 px-3 py-2 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-50 whitespace-nowrap shadow-xl">
                     {item.label}
+                    <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-r-4 border-r-foreground border-b-4 border-b-transparent"></div>
                   </div>
                 )}
               </Link>
@@ -308,21 +342,22 @@ export function Sidebar({ userRole }: SidebarProps) {
           <button
             onClick={handleLogout}
             className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground w-full transition-all active:scale-[0.98] group relative",
+              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-foreground hover:bg-muted/60 hover:text-foreground w-full transition-all active:scale-[0.98] group relative",
               isCollapsed && "justify-center lg:justify-center"
             )}
             title={isCollapsed ? "Log out" : undefined}
           >
-            <LogOut className="w-5 h-5 flex-shrink-0" />
+            <LogOut className="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-transform group-hover:rotate-[-15deg]" />
             <span className={cn(
-              "transition-opacity duration-300 whitespace-nowrap text-sm lg:text-base",
+              "transition-opacity duration-300 whitespace-nowrap text-sm font-medium",
               isCollapsed ? "opacity-0 w-0 overflow-hidden lg:opacity-0" : "opacity-100"
             )}>
               Log out
             </span>
             {isCollapsed && (
-              <div className="hidden lg:block absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
+              <div className="hidden lg:block absolute left-full ml-3 px-3 py-2 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-50 whitespace-nowrap shadow-xl">
                 Log out
+                <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-r-4 border-r-foreground border-b-4 border-b-transparent"></div>
               </div>
             )}
           </button>
