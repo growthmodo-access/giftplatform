@@ -121,13 +121,13 @@ export function Sidebar({ userRole }: SidebarProps) {
       {/* Mobile menu button */}
       <button
         onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-background shadow-lg border border-border hover:bg-accent transition-colors"
         aria-label="Toggle menu"
       >
         {isMobileOpen ? (
-          <X className="w-5 h-5 text-gray-700" />
+          <X className="w-5 h-5 text-foreground" />
         ) : (
-          <Menu className="w-5 h-5 text-gray-700" />
+          <Menu className="w-5 h-5 text-foreground" />
         )}
       </button>
 
@@ -141,7 +141,7 @@ export function Sidebar({ userRole }: SidebarProps) {
 
       {/* Sidebar */}
       <aside className={cn(
-        "bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out fixed lg:sticky top-0 h-screen z-40",
+        "bg-background border-r border-border flex flex-col transition-all duration-300 ease-in-out fixed lg:sticky top-0 h-screen z-40",
         // Mobile: slide in/out
         "lg:translate-x-0",
         isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
@@ -149,16 +149,16 @@ export function Sidebar({ userRole }: SidebarProps) {
         isCollapsed ? "w-16 lg:w-16" : "w-64 lg:w-64"
       )}>
         {/* Header */}
-        <div className="p-4 lg:p-6 border-b border-gray-200 flex-shrink-0">
+        <div className="p-4 lg:p-6 border-b border-border flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className={cn(
               "flex items-center gap-2 transition-opacity duration-300",
               isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
             )}>
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-indigo-500 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                <span className="text-white font-bold text-sm">G</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+                <span className="text-primary-foreground font-bold text-sm">G</span>
               </div>
-              <span className="font-semibold text-base lg:text-lg bg-gradient-to-r from-indigo-600 to-indigo-500 bg-clip-text text-transparent whitespace-nowrap">
+              <span className="font-semibold text-base lg:text-lg bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent whitespace-nowrap">
                 Goodies.so
               </span>
             </div>
@@ -201,17 +201,17 @@ export function Sidebar({ userRole }: SidebarProps) {
                 href={item.href}
                 className={cn(
                   "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg transition-all group relative",
-                  "hover:bg-gray-50 active:scale-[0.98]",
+                  "hover:bg-accent active:scale-[0.98]",
                   active
-                    ? "bg-indigo-50 text-indigo-600 font-medium shadow-sm"
-                    : "text-gray-700",
+                    ? "bg-primary/10 text-primary font-medium shadow-sm"
+                    : "text-foreground",
                   isCollapsed && "justify-center lg:justify-center"
                 )}
                 title={isCollapsed ? item.label : undefined}
               >
                 <Icon className={cn(
                   "w-5 h-5 flex-shrink-0",
-                  active && "text-indigo-600"
+                  active && "text-primary"
                 )} />
                 <span className={cn(
                   "transition-opacity duration-300 whitespace-nowrap text-sm lg:text-base",
@@ -230,11 +230,11 @@ export function Sidebar({ userRole }: SidebarProps) {
         </nav>
         
         {/* Footer */}
-        <div className="p-3 lg:p-4 border-t border-gray-200 flex-shrink-0">
+        <div className="p-3 lg:p-4 border-t border-border flex-shrink-0">
           <button
             onClick={handleLogout}
             className={cn(
-              "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg text-gray-700 hover:bg-gray-50 w-full transition-all active:scale-[0.98] group relative",
+              "flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg text-foreground hover:bg-accent w-full transition-all active:scale-[0.98] group relative",
               isCollapsed && "justify-center lg:justify-center"
             )}
             title={isCollapsed ? "Log out" : undefined}

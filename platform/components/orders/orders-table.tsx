@@ -287,7 +287,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Avatar className="w-8 h-8 border border-gray-200">
-                          <AvatarFallback className="bg-indigo-100 text-indigo-600 text-xs font-medium">
+                          <AvatarFallback className="bg-primary/20 text-primary text-xs font-medium">
                             {getInitials(order.employee || 'Unknown')}
                           </AvatarFallback>
                         </Avatar>

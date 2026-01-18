@@ -21,16 +21,16 @@ interface HeaderProps {
 
 export function Header({ userName, userEmail, userInitials }: HeaderProps) {
   return (
-    <header className="h-14 lg:h-16 bg-white border-b border-gray-200 shadow-sm sticky top-0 z-30">
+    <header className="h-14 lg:h-16 bg-background border-b border-border shadow-sm sticky top-0 z-30">
       <div className="h-full px-4 lg:px-6 flex items-center justify-between gap-4">
         {/* Search - hidden on mobile */}
         <div className="hidden md:flex flex-1 max-w-md">
           <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none" />
             <Input
               type="search"
               placeholder="Search..."
-              className="pl-10 h-9 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+              className="pl-10 h-9 bg-muted focus:bg-background transition-colors"
             />
           </div>
         </div>
@@ -54,8 +54,8 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
             className="relative h-9 w-9"
             aria-label="Notifications"
           >
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+            <Bell className="w-5 h-5 text-foreground" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full border-2 border-background"></span>
           </Button>
           
           {/* User menu */}
@@ -63,22 +63,22 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="h-9 px-2 gap-2 hover:bg-gray-50"
+                className="h-9 px-2 gap-2 hover:bg-accent"
               >
-                <Avatar className="w-8 h-8 border-2 border-gray-200">
-                  <AvatarFallback className="bg-indigo-100 text-indigo-600 text-sm font-medium">
+                <Avatar className="w-8 h-8 border-2 border-border">
+                  <AvatarFallback className="bg-primary/20 text-primary text-sm font-medium">
                     {userInitials}
                   </AvatarFallback>
                 </Avatar>
-                <span className="hidden lg:inline text-sm font-medium text-gray-700 truncate max-w-[120px]">
+                <span className="hidden lg:inline text-sm font-medium text-foreground truncate max-w-[120px]">
                   {userName}
                 </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <div className="px-2 py-1.5">
-                <p className="text-sm font-medium text-gray-900 truncate">{userName}</p>
-                <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+                <p className="text-sm font-medium text-foreground truncate">{userName}</p>
+                <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild className="cursor-pointer">

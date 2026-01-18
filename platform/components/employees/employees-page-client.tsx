@@ -36,7 +36,7 @@ export function EmployeesPageClient({ employees, currentUserRole, currentUserId 
         {canInviteEmployees && (
           <Button 
             size="sm"
-            className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-xs sm:text-sm w-full sm:w-auto" 
+            className="gap-2 text-xs sm:text-sm w-full sm:w-auto" 
             onClick={() => setDialogOpen(true)}
           >
             <Plus className="w-4 h-4" />

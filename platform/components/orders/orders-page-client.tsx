@@ -161,7 +161,7 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
         {canCreateOrders && (
           <Button 
             size="sm"
-            className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-sm"
+            className="gap-2 text-sm"
             onClick={() => setDialogOpen(true)}
           >
             <Plus className="w-4 h-4" />

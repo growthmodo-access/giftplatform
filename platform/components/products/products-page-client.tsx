@@ -39,7 +39,7 @@ export function ProductsPageClient({ initialProducts, currentUserRole }: Product
             </Button>
             <Button 
               size="sm"
-              className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-xs sm:text-sm"
+              className="gap-2 text-xs sm:text-sm"
               onClick={() => setDialogOpen(true)}
             >
               <Plus className="w-4 h-4" />
