@@ -72,6 +72,10 @@ export async function createProduct(formData: FormData) {
       .select()
       .single()
 
+    if (!data && !error) {
+      return { error: 'Failed to create product - no data returned' }
+    }
+
     if (error) {
       return { error: error.message }
     }

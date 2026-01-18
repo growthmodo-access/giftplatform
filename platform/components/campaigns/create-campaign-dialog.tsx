@@ -35,27 +35,41 @@ export function CreateCampaignDialog({ open, onOpenChange }: CreateCampaignDialo
   }, [open])
 
   const loadProducts = async () => {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    
-    if (!user) return
+    try {
+      const supabase = createClient()
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      
+      if (userError || !user) {
+        console.error('Failed to get user:', userError)
+        return
+      }
 
-    const { data: userData } = await supabase
-      .from('users')
-      .select('company_id')
-      .eq('id', user.id)
-      .single()
+      const { data: userData, error: userDataError } = await supabase
+        .from('users')
+        .select('company_id')
+        .eq('id', user.id)
+        .single()
 
-    if (!userData?.company_id) return
+      if (userDataError || !userData?.company_id) {
+        console.error('Failed to get user data:', userDataError)
+        return
+      }
 
-    const { data } = await supabase
-      .from('products')
-      .select('id, name, price')
-      .eq('company_id', userData.company_id)
-      .order('name')
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, price')
+        .eq('company_id', userData.company_id)
+        .order('name')
 
-    if (data) {
-      setProducts(data)
+      if (error) {
+        console.error('Failed to load products:', error)
+        setError('Failed to load products. Please try again.')
+      } else if (data) {
+        setProducts(data)
+      }
+    } catch (error) {
+      console.error('Error loading products:', error)
+      setError('An error occurred while loading products.')
     }
   }
 

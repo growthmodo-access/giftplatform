@@ -8,7 +8,7 @@ import { env } from '@/lib/env'
  * This uses the service role key to bypass RLS for admin operations
  * Use with caution - only for administrative tasks
  */
-export async function updateUserRoleByEmail(email: string, role: 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'EMPLOYEE') {
+export async function updateUserRoleByEmail(email: string, role: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') {
   try {
     // Use service role key to bypass RLS
     const supabaseUrl = env.supabase.url

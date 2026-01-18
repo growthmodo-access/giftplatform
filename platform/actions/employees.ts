@@ -95,14 +95,20 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
     }
 
     // Check if user already exists
-    const { data: existingUser } = await supabase
+    const { data: existingUser, error: existingUserError } = await supabase
       .from('users')
       .select('id, email')
       .eq('email', email)
-      .single()
+      .maybeSingle()
 
-    if (existingUser) {
+    // If query succeeded and user exists, return error
+    if (!existingUserError && existingUser) {
       return { error: 'A user with this email already exists' }
+    }
+
+    // If there was an error other than "not found", return it
+    if (existingUserError) {
+      return { error: `Failed to check existing user: ${existingUserError.message}` }
     }
 
     // Use service role to create auth user and send invitation
@@ -159,6 +165,13 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
       type: 'recovery',
       email,
     })
+
+    // Log error but don't fail the invitation if email sending fails
+    // The user can still reset their password manually
+    if (resetError) {
+      console.error('Failed to send password reset email:', resetError)
+      // Continue anyway - user can reset password manually
+    }
 
     // Note: In production, you'd want to send a proper invitation email
     // For now, the user can use password reset to set their password

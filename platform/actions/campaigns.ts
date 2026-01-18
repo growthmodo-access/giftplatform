@@ -177,6 +177,11 @@ export async function sendCampaignToEmployees(campaignId: string) {
       return { error: 'Campaign not found' }
     }
 
+    // Validate campaign has a product
+    if (!campaign.product_id) {
+      return { error: 'Campaign must have a product assigned before sending to employees' }
+    }
+
     // Get all employees in the company
     const { data: employees, error: employeesError } = await supabase
       .from('users')
@@ -185,6 +190,11 @@ export async function sendCampaignToEmployees(campaignId: string) {
 
     if (employeesError || !employees) {
       return { error: 'Failed to fetch employees' }
+    }
+
+    // Validate employees list is not empty
+    if (!employees || employees.length === 0) {
+      return { error: 'No employees found in your company' }
     }
 
     // Create gifts for each employee
