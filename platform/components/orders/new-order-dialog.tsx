@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createOrder } from '@/actions/orders'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import { Loader2 } from 'lucide-react'
 
 interface NewOrderDialogProps {
@@ -49,7 +49,6 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
 
   const loadEmployees = async () => {
     try {
-      const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       
       if (!user) return
@@ -86,7 +85,6 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
 
   const loadProducts = async () => {
     try {
-      const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       
       if (!user) return
