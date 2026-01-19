@@ -77,6 +77,12 @@ const allMenuItems: MenuItem[] = [
     allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
   },
   { 
+    icon: Gift, 
+    label: 'Campaigns Management', 
+    href: '/campaigns-management', 
+    allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
+  },
+  { 
     icon: BarChart3, 
     label: 'Analytics', 
     href: '/analytics', 

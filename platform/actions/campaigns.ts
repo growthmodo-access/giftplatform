@@ -523,6 +523,130 @@ async function sendCampaignGifts(
   }
 }
 
+/**
+ * Get campaigns with detailed management information for ADMIN and SUPER_ADMIN
+ * Includes company, employee counts, product details
+ */
+export async function getCampaignsManagement() {
+  try {
+    const supabase = await createClient()
+    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    // Get current user's role
+    const { data: currentUser, error: currentUserError } = await supabase
+      .from('users')
+      .select('role, company_id')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (currentUserError || !currentUser) {
+      return { data: [], error: 'User profile not found' }
+    }
+
+    // Only ADMIN and SUPER_ADMIN can access this
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+      return { data: [], error: 'Unauthorized' }
+    }
+
+    // Get campaigns
+    let query = supabase
+      .from('campaigns')
+      .select(`
+        *,
+        products:product_id (
+          id,
+          name,
+          price,
+          currency,
+          image
+        ),
+        companies:company_id (
+          id,
+          name
+        )
+      `)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+
+    // ADMIN can only see their company's campaigns
+    if (currentUser.role === 'ADMIN' && currentUser.company_id) {
+      query = query.eq('company_id', currentUser.company_id)
+    }
+
+    const { data: campaigns, error } = await query
+
+    if (error) {
+      return { data: [], error: error.message }
+    }
+
+    if (!campaigns || campaigns.length === 0) {
+      return { data: [], error: null }
+    }
+
+    // Get employee counts per company
+    const companyIds = [...new Set(campaigns.map(c => c.company_id).filter(Boolean))]
+    const { data: employees } = await supabase
+      .from('users')
+      .select('company_id')
+      .in('company_id', companyIds)
+
+    const employeeCounts = employees?.reduce((acc, emp) => {
+      if (emp.company_id) {
+        acc[emp.company_id] = (acc[emp.company_id] || 0) + 1
+      }
+      return acc
+    }, {} as Record<string, number>) || {}
+
+    // Get gift counts per campaign (if campaign_id exists in gifts table)
+    const campaignIds = campaigns.map(c => c.id)
+    const { data: gifts } = await supabase
+      .from('gifts')
+      .select('campaign_id')
+      .in('campaign_id', campaignIds)
+
+    const giftCounts = gifts?.reduce((acc, gift) => {
+      if (gift.campaign_id) {
+        acc[gift.campaign_id] = (acc[gift.campaign_id] || 0) + 1
+      }
+      return acc
+    }, {} as Record<string, number>) || {}
+
+    // Combine all data
+    const campaignsWithDetails = campaigns.map(campaign => ({
+      id: campaign.id,
+      name: campaign.name,
+      company: (campaign.companies as any)?.name || 'N/A',
+      companyId: campaign.company_id,
+      employeeCount: employeeCounts[campaign.company_id] || 0,
+      product: (campaign.products as any)?.name || 'N/A',
+      productId: campaign.product_id,
+      productPrice: (campaign.products as any)?.price || 0,
+      productCurrency: (campaign.products as any)?.currency || 'USD',
+      productImage: (campaign.products as any)?.image || null,
+      trigger: campaign.trigger,
+      budget: campaign.budget,
+      giftsSent: giftCounts[campaign.id] || 0,
+      isActive: campaign.is_active,
+      createdAt: campaign.created_at,
+    }))
+
+    return { data: campaignsWithDetails, error: null }
+  } catch (error) {
+    return { 
+      data: [], 
+      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    }
+  }
+}
+
 export async function deleteCampaign(campaignId: string) {
   try {
     const supabase = await createClient()
