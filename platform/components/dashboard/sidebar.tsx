@@ -16,7 +16,8 @@ import {
   Menu,
   ChevronLeft,
   X,
-  Building2
+  Building2,
+  CreditCard
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -69,6 +70,12 @@ const menuCategories: MenuCategory[] = [
         icon: Gift, 
         label: 'Gifts', 
         href: '/gifts', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+      },
+      { 
+        icon: CreditCard, 
+        label: 'Billing', 
+        href: '/billing', 
         allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
       },
     ]
