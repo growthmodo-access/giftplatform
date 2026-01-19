@@ -4,7 +4,7 @@ import './globals.css'
 import { Providers } from '@/components/providers'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { CSSVariablesCheck } from '@/components/css-variables-check'
-import { TooltipProvider } from '@/components/ui/tooltip'
+import { TooltipProviderWrapper } from '@/components/tooltip-provider-wrapper'
 import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ 
@@ -53,10 +53,10 @@ export default function RootLayout({
       <body className={`${inter.variable} ${plusJakartaSans.variable} font-sans`}>
         <CSSVariablesCheck />
         <ErrorBoundary>
-          <TooltipProvider>
+          <TooltipProviderWrapper>
             <Providers>{children}</Providers>
             <Toaster />
-          </TooltipProvider>
+          </TooltipProviderWrapper>
         </ErrorBoundary>
       </body>
     </html>
