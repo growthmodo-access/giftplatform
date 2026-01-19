@@ -10,7 +10,17 @@
     CREATE INDEX IF NOT EXISTS idx_companies_store_identifier ON companies(store_identifier);
     CREATE INDEX IF NOT EXISTS idx_companies_subdomain ON companies(subdomain);
 
-    -- Add currency constraint
+    -- Add currency constraint (drop first if exists)
+    DO $$ 
+    BEGIN
+        IF EXISTS (
+            SELECT 1 FROM pg_constraint 
+            WHERE conname = 'companies_currency_check'
+        ) THEN
+            ALTER TABLE companies DROP CONSTRAINT companies_currency_check;
+        END IF;
+    END $$;
+
     ALTER TABLE companies 
     ADD CONSTRAINT companies_currency_check 
-    CHECK (currency IN ('USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'INR', 'BRL', 'MXN', 'SGD', 'HKD', 'NZD', 'ZAR', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK'));
+    CHECK (currency IN ('USD', 'INR', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'BRL', 'MXN', 'SGD', 'HKD', 'NZD', 'ZAR', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK'));
