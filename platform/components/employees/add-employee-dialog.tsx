@@ -35,6 +35,10 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
   useEffect(() => {
     if (open) {
       loadUserAndCompanies()
+      // Reset form state when dialog opens
+      setSelectedCompanyId('')
+      setError('')
+      setSuccess('')
     }
   }, [open])
 
@@ -243,12 +247,12 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
               />
             </div>
 
-            {/* Company Selection - Show for SUPER_ADMIN or if user has no company */}
-            {(userRole === 'SUPER_ADMIN' || !userCompanyId) && companies.length > 0 && (
-              <div className="grid gap-2">
-                <Label htmlFor="company">
-                  Company <span className="text-red-500">*</span>
-                </Label>
+            {/* Company Selection - Always show */}
+            <div className="grid gap-2">
+              <Label htmlFor="company">
+                Company <span className="text-red-500">*</span>
+              </Label>
+              {userRole === 'SUPER_ADMIN' && companies.length > 0 ? (
                 <Select 
                   required 
                   disabled={loading}
@@ -266,26 +270,31 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
                     ))}
                   </SelectContent>
                 </Select>
-                {userRole !== 'SUPER_ADMIN' && (
-                  <p className="text-xs text-muted-foreground">
-                    Select the company this employee belongs to
+              ) : userRole === 'SUPER_ADMIN' && companies.length === 0 ? (
+                <div className="p-2 bg-amber-50 border border-amber-200 rounded-md">
+                  <p className="text-sm text-amber-800">
+                    No companies available. Please create a company first.
                   </p>
-                )}
-              </div>
-            )}
-
-            {/* Show company name for non-SUPER_ADMIN users */}
-            {userRole !== 'SUPER_ADMIN' && userCompanyId && companies.length > 0 && (
-              <div className="grid gap-2">
-                <Label>Company</Label>
-                <div className="p-2 bg-muted/50 rounded-md text-sm text-foreground">
-                  {companies[0]?.name || 'Your Company'}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Employee will be added to your company
-                </p>
-              </div>
-            )}
+              ) : userCompanyId && companies.length > 0 ? (
+                <div className="space-y-2">
+                  <div className="p-2.5 bg-muted/50 border border-border/50 rounded-md">
+                    <p className="text-sm font-medium text-foreground">
+                      {companies[0]?.name || 'Your Company'}
+                    </p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Employee will be added to this company
+                  </p>
+                </div>
+              ) : (
+                <div className="p-2 bg-amber-50 border border-amber-200 rounded-md">
+                  <p className="text-sm text-amber-800">
+                    You are not associated with a company. Please contact an administrator.
+                  </p>
+                </div>
+              )}
+            </div>
 
             <div className="grid gap-2">
               <Label htmlFor="role">
