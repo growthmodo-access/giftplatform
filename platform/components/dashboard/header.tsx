@@ -1,6 +1,6 @@
 'use client'
 
-import { Search, Bell, User, Settings } from 'lucide-react'
+import { Search, Settings } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -55,17 +55,6 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
         
         {/* Right side actions */}
         <div className="flex items-center gap-2 lg:gap-4">
-          {/* Notifications */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative h-9 w-9 hover:bg-muted"
-            aria-label="Notifications"
-          >
-            <Bell className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full border-2 border-background animate-pulse"></span>
-          </Button>
-          
           {/* User menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -89,12 +78,6 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
                 <p className="text-xs text-muted-foreground truncate mt-0.5">{userEmail}</p>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild className="cursor-pointer focus:bg-muted">
-                <Link href="/settings" className="flex items-center w-full">
-                  <User className="w-4 h-4 mr-2.5 text-muted-foreground" />
-                  <span className="text-sm">Profile</span>
-                </Link>
-              </DropdownMenuItem>
               <DropdownMenuItem asChild className="cursor-pointer focus:bg-muted">
                 <Link href="/settings" className="flex items-center w-full">
                   <Settings className="w-4 h-4 mr-2.5 text-muted-foreground" />

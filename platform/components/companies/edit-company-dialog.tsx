@@ -36,12 +36,11 @@ interface EditCompanyDialogProps {
   onSuccess: () => void
 }
 
-const CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'INR', 'BRL', 'MXN', 'SGD', 'HKD', 'NZD', 'ZAR', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK']
+const CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'BRL', 'MXN', 'SGD', 'HKD', 'NZD', 'ZAR', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK']
 
 export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCompanyDialogProps) {
   const [name, setName] = useState(company.name)
   const [domain, setDomain] = useState(company.domain || '')
-  const [budget, setBudget] = useState(company.budget.toString())
   const [taxId, setTaxId] = useState((company as any).tax_id || '')
   const [currency, setCurrency] = useState((company as any).currency || 'USD')
   const [billingStreet, setBillingStreet] = useState('')
@@ -56,7 +55,6 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
     if (open) {
       setName(company.name)
       setDomain(company.domain || '')
-      setBudget(company.budget.toString())
       setTaxId((company as any).tax_id || '')
       setCurrency((company as any).currency || 'USD')
       const billing = (company as any).billing_address || {}
@@ -78,7 +76,6 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
       const formData = new FormData()
       formData.append('name', name)
       formData.append('domain', domain)
-      formData.append('budget', budget)
       formData.append('tax_id', taxId)
       formData.append('currency', currency)
       formData.append('billing_address', JSON.stringify({
@@ -141,20 +138,6 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
                 onChange={(e) => setDomain(e.target.value)}
                 className="border-border/50"
                 placeholder="acme.com"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="budget" className="text-foreground">Monthly Budget</Label>
-              <Input
-                id="budget"
-                type="number"
-                value={budget}
-                onChange={(e) => setBudget(e.target.value)}
-                required
-                className="border-border/50"
-                placeholder="10000"
-                min="0"
-                step="0.01"
               />
             </div>
             <div className="space-y-2">

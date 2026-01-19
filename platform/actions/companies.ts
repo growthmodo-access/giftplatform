@@ -141,18 +141,12 @@ export async function createCompany(formData: FormData) {
 
     const name = formData.get('name') as string
     const domain = formData.get('domain') as string
-    const budget = formData.get('budget') as string
     const taxId = formData.get('tax_id') as string
     const currency = formData.get('currency') as string || 'USD'
     const billingAddressStr = formData.get('billing_address') as string
 
-    if (!name || !budget) {
-      return { error: 'Company name and budget are required' }
-    }
-
-    const budgetNum = parseFloat(budget)
-    if (isNaN(budgetNum) || budgetNum < 0) {
-      return { error: 'Budget must be a valid positive number' }
+    if (!name) {
+      return { error: 'Company name is required' }
     }
 
     let billingAddress = null
@@ -172,7 +166,6 @@ export async function createCompany(formData: FormData) {
       .insert({
         name: name.trim(),
         domain: domain.trim() || null,
-        budget: budgetNum,
         tax_id: taxId?.trim() || null,
         currency: currency || 'USD',
         billing_address: billingAddress,
@@ -236,7 +229,6 @@ export async function updateCompany(companyId: string, formData: FormData) {
 
     const name = formData.get('name') as string
     const domain = formData.get('domain') as string
-    const budget = formData.get('budget') as string
     const taxId = formData.get('tax_id') as string
     const currency = formData.get('currency') as string
     const billingAddressStr = formData.get('billing_address') as string
@@ -244,7 +236,6 @@ export async function updateCompany(companyId: string, formData: FormData) {
     const updates: {
       name?: string
       domain?: string | null
-      budget?: number
       tax_id?: string | null
       currency?: string
       billing_address?: any
@@ -259,13 +250,6 @@ export async function updateCompany(companyId: string, formData: FormData) {
 
     if (domain !== undefined) {
       updates.domain = domain.trim() || null
-    }
-
-    if (budget) {
-      const budgetNum = parseFloat(budget)
-      if (!isNaN(budgetNum) && budgetNum >= 0) {
-        updates.budget = budgetNum
-      }
     }
 
     if (taxId !== undefined) {

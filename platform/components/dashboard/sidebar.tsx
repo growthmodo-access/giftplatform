@@ -32,81 +32,102 @@ interface MenuItem {
 
 /**
  * Navigation menu items configuration based on RBAC
- * 
- * SUPER_ADMIN: All 9 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics, Companies, Settings)
- * ADMIN: All 9 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics, Companies, Settings)
- * HR: 7 items (Dashboard, Products, Orders, Employees, Gifts, Automation, Analytics) - NO Companies, NO Settings
- * MANAGER: 6 items (Dashboard, Products, Orders, Gifts, Automation, Analytics) - NO Employees, NO Companies, NO Settings
- * EMPLOYEE: 4 items (Dashboard, Products, Orders, Gifts) - NO Employees, NO Automation, NO Analytics, NO Companies, NO Settings
+ * Organized into logical categories:
+ * - Core: Essential daily operations (Dashboard, Products, Orders, Gifts)
+ * - Management: Team and campaign management (Employees, Campaigns)
+ * - Administration: System administration (Companies, Users, Analytics)
+ * - Settings: Configuration and preferences
  */
-const allMenuItems: MenuItem[] = [
-  { 
-    icon: LayoutDashboard, 
-    label: 'Dashboard', 
-    href: '/dashboard', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+interface MenuCategory {
+  label: string
+  items: MenuItem[]
+}
+
+const menuCategories: MenuCategory[] = [
+  {
+    label: 'Core',
+    items: [
+      { 
+        icon: LayoutDashboard, 
+        label: 'Dashboard', 
+        href: '/dashboard', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+      },
+      { 
+        icon: Package, 
+        label: 'Products', 
+        href: '/products', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+      },
+      { 
+        icon: ShoppingCart, 
+        label: 'Orders', 
+        href: '/orders', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+      },
+      { 
+        icon: Gift, 
+        label: 'Gifts', 
+        href: '/gifts', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+      },
+    ]
   },
-  { 
-    icon: Package, 
-    label: 'Products', 
-    href: '/products', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+  {
+    label: 'Management',
+    items: [
+      { 
+        icon: Users, 
+        label: 'Employees', 
+        href: '/employees', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR'] 
+      },
+      { 
+        icon: Zap, 
+        label: 'Campaigns', 
+        href: '/campaigns', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
+      },
+    ]
   },
-  { 
-    icon: ShoppingCart, 
-    label: 'Orders', 
-    href: '/orders', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
+  {
+    label: 'Administration',
+    items: [
+      { 
+        icon: BarChart3, 
+        label: 'Analytics', 
+        href: '/analytics', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
+      },
+      { 
+        icon: Building2, 
+        label: 'Companies', 
+        href: '/companies', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
+      },
+      { 
+        icon: Users, 
+        label: 'Users', 
+        href: '/users', 
+        allowedRoles: ['SUPER_ADMIN'] 
+      },
+    ]
   },
-  { 
-    icon: Users, 
-    label: 'Employees', 
-    href: '/employees', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR'] 
-  },
-  { 
-    icon: Gift, 
-    label: 'Gifts', 
-    href: '/gifts', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] 
-  },
-  { 
-    icon: Zap, 
-    label: 'Campaigns', 
-    href: '/campaigns', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
-  },
-  { 
-    icon: Gift, 
-    label: 'Campaigns Management', 
-    href: '/campaigns-management', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
-  },
-  { 
-    icon: BarChart3, 
-    label: 'Analytics', 
-    href: '/analytics', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
-  },
-  { 
-    icon: Building2, 
-    label: 'Companies', 
-    href: '/companies', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
-  },
-  { 
-    icon: Users, 
-    label: 'Users', 
-    href: '/users', 
-    allowedRoles: ['SUPER_ADMIN'] 
-  },
-  { 
-    icon: Settings, 
-    label: 'Settings', 
-    href: '/settings', 
-    allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
+  {
+    label: 'Settings',
+    items: [
+      { 
+        icon: Settings, 
+        label: 'Settings', 
+        href: '/settings', 
+        allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
+      },
+    ]
   },
 ]
+
+// Flatten for backward compatibility
+const allMenuItems: MenuItem[] = menuCategories.flatMap(category => category.items)
 
 interface SidebarProps {
   userRole: UserRole
@@ -133,7 +154,13 @@ export function Sidebar({ userRole }: SidebarProps) {
     return 'EMPLOYEE'
   })()
 
-  // Filter menu items based on user role
+  // Filter menu categories based on user role
+  const filteredCategories = menuCategories.map(category => ({
+    ...category,
+    items: category.items.filter(item => item.allowedRoles.includes(normalizedRole))
+  })).filter(category => category.items.length > 0)
+  
+  // Flatten for backward compatibility
   const menuItems = allMenuItems.filter(item => item.allowedRoles.includes(normalizedRole))
 
   // Load collapsed state from localStorage on mount (desktop only)
@@ -303,50 +330,61 @@ export function Sidebar({ userRole }: SidebarProps) {
         </div>
         
         {/* Navigation */}
-        <nav className="flex-1 p-2 lg:p-3 space-y-1 overflow-y-auto overflow-x-hidden">
-          {menuItems.map((item) => {
-            const Icon = item.icon
-            const active = isActive(item.href)
-            
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative",
-                  "hover:bg-muted/60 active:scale-[0.98]",
-                  active
-                    ? "bg-muted text-foreground font-semibold shadow-sm"
-                    : "text-muted-foreground hover:text-foreground",
-                  isCollapsed && "justify-center lg:justify-center"
-                )}
-                title={isCollapsed ? item.label : undefined}
-              >
-                <div className={cn(
-                  "absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full transition-all",
-                  active ? "bg-foreground opacity-100" : "bg-transparent opacity-0"
-                )} />
-                <Icon className={cn(
-                  "w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-all",
-                  active 
-                    ? "text-foreground scale-110" 
-                    : "text-muted-foreground group-hover:text-foreground group-hover:scale-105"
-                )} />
-                <span className={cn(
-                  "transition-opacity duration-300 whitespace-nowrap text-sm font-medium",
-                  isCollapsed ? "opacity-0 w-0 overflow-hidden lg:opacity-0" : "opacity-100"
-                )}>
-                  {item.label}
-                </span>
-                {isCollapsed && (
-                  <div className="hidden lg:block absolute left-full ml-3 px-3 py-2 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-50 whitespace-nowrap shadow-xl">
-                    {item.label}
-                    <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-r-4 border-r-foreground border-b-4 border-b-transparent"></div>
-                  </div>
-                )}
-              </Link>
-            )
-          })}
+        <nav className="flex-1 p-2 lg:p-3 space-y-4 overflow-y-auto overflow-x-hidden">
+          {filteredCategories.map((category, categoryIndex) => (
+            <div key={category.label} className="space-y-1">
+              {!isCollapsed && (
+                <div className="px-3 py-1.5 mb-1">
+                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                    {category.label}
+                  </span>
+                </div>
+              )}
+              {category.items.map((item) => {
+                const Icon = item.icon
+                const active = isActive(item.href)
+                
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative",
+                      "hover:bg-muted/60 active:scale-[0.98]",
+                      active
+                        ? "bg-muted text-foreground font-semibold shadow-sm"
+                        : "text-muted-foreground hover:text-foreground",
+                      isCollapsed && "justify-center lg:justify-center"
+                    )}
+                    title={isCollapsed ? item.label : undefined}
+                  >
+                    <div className={cn(
+                      "absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full transition-all",
+                      active ? "bg-foreground opacity-100" : "bg-transparent opacity-0"
+                    )} />
+                    <Icon className={cn(
+                      "w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-all",
+                      active 
+                        ? "text-foreground scale-110" 
+                        : "text-muted-foreground group-hover:text-foreground group-hover:scale-105"
+                    )} />
+                    <span className={cn(
+                      "transition-opacity duration-300 whitespace-nowrap text-sm font-medium",
+                      isCollapsed ? "opacity-0 w-0 overflow-hidden lg:opacity-0" : "opacity-100"
+                    )}>
+                      {item.label}
+                    </span>
+                    {isCollapsed && (
+                      <div className="hidden lg:block absolute left-full ml-3 px-3 py-2 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-50 whitespace-nowrap shadow-xl">
+                        {item.label}
+                        <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-r-4 border-r-foreground border-b-4 border-b-transparent"></div>
+                      </div>
+                    )}
+                  </Link>
+                )
+              })}
+            </div>
+          ))}
         </nav>
         
         {/* Footer */}

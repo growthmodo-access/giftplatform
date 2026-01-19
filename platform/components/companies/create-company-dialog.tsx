@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createCompany } from '@/actions/companies'
 
-const CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'INR', 'BRL', 'MXN', 'SGD', 'HKD', 'NZD', 'ZAR', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK']
+const CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'BRL', 'MXN', 'SGD', 'HKD', 'NZD', 'ZAR', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK']
 
 interface CreateCompanyDialogProps {
   open: boolean
@@ -26,7 +26,6 @@ interface CreateCompanyDialogProps {
 export function CreateCompanyDialog({ open, onClose, onSuccess }: CreateCompanyDialogProps) {
   const [name, setName] = useState('')
   const [domain, setDomain] = useState('')
-  const [budget, setBudget] = useState('')
   const [taxId, setTaxId] = useState('')
   const [currency, setCurrency] = useState('USD')
   const [billingStreet, setBillingStreet] = useState('')
@@ -46,7 +45,6 @@ export function CreateCompanyDialog({ open, onClose, onSuccess }: CreateCompanyD
       const formData = new FormData()
       formData.append('name', name)
       formData.append('domain', domain)
-      formData.append('budget', budget)
       formData.append('tax_id', taxId)
       formData.append('currency', currency)
       formData.append('billing_address', JSON.stringify({
@@ -65,7 +63,6 @@ export function CreateCompanyDialog({ open, onClose, onSuccess }: CreateCompanyD
         // Reset form
         setName('')
         setDomain('')
-        setBudget('')
         setTaxId('')
         setCurrency('USD')
         setBillingStreet('')
@@ -87,7 +84,6 @@ export function CreateCompanyDialog({ open, onClose, onSuccess }: CreateCompanyD
     if (!loading) {
       setName('')
       setDomain('')
-      setBudget('')
       setTaxId('')
       setCurrency('USD')
       setBillingStreet('')
@@ -137,20 +133,6 @@ export function CreateCompanyDialog({ open, onClose, onSuccess }: CreateCompanyD
                 onChange={(e) => setDomain(e.target.value)}
                 className="border-border/50"
                 placeholder="acme.com"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="budget" className="text-foreground">Monthly Budget *</Label>
-              <Input
-                id="budget"
-                type="number"
-                value={budget}
-                onChange={(e) => setBudget(e.target.value)}
-                required
-                className="border-border/50"
-                placeholder="10000"
-                min="0"
-                step="0.01"
               />
             </div>
             <div className="space-y-2">

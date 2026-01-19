@@ -28,9 +28,9 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Welcome Header - Enhanced */}
+      {/* Welcome Header with Quick Actions */}
       <div className="pb-6 border-b border-border/50">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
           <div>
             <p className="text-sm text-muted-foreground mb-1.5">
               {getTimeGreeting()} • {getFormattedDate()}
@@ -45,6 +45,9 @@ export default async function DashboardPage() {
               }
             </p>
           </div>
+          <div className="lg:min-w-[280px]">
+            <QuickActions />
+          </div>
         </div>
       </div>
       
@@ -57,13 +60,12 @@ export default async function DashboardPage() {
         <TopProducts />
       </div>
       
-      {/* Quick Actions and Recent Orders */}
+      {/* Recent Orders and Activity Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         <div className="lg:col-span-2">
           <RecentOrders />
         </div>
-        <div className="space-y-4 lg:space-y-6">
-          <QuickActions />
+        <div>
           <ActivityFeed />
         </div>
       </div>
