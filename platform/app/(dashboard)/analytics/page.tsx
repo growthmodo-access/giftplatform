@@ -1,22 +1,31 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { StatsCards } from '@/components/dashboard/stats-cards'
-import { SalesChart } from '@/components/dashboard/sales-chart'
-import { TopProducts } from '@/components/dashboard/top-products'
+import { AnalyticsPageClient } from '@/components/analytics/analytics-page-client'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 
-export default function AnalyticsPage() {
+export default async function AnalyticsPage() {
+  const supabase = await createClient()
+  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Get current user's role
+  const { data: currentUser } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
-        <p className="text-gray-600 mt-1">Detailed insights and reports</p>
-      </div>
-      
-      <StatsCards />
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <SalesChart />
-        <TopProducts />
-      </div>
-    </div>
+    <AnalyticsPageClient 
+      initialData={null}
+      currentUserRole={userRole}
+    />
   )
 }

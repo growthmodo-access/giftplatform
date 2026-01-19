@@ -115,20 +115,10 @@ export async function getOrders() {
       .select('id, name')
       .in('id', productIds)
 
-    // Get company IDs
-    const companyIds = [...new Set(orders.map(o => o.company_id).filter(Boolean))]
-    
-    // Fetch companies
-    const { data: companies } = companyIds.length > 0 ? await supabase
-      .from('companies')
-      .select('id, name')
-      .in('id', companyIds) : { data: [] }
-
     // Create lookup maps
     const userMap = new Map((users || []).map(u => [u.id, u]))
     const productMap = new Map((products || []).map(p => [p.id, p]))
     const paymentMap = new Map((payments || []).map(p => [p.order_id, p]))
-    const companyMap = new Map((companies || []).map(c => [c.id, c.name]))
 
     // Combine orders with items
     const ordersWithItems = orders.map(order => {

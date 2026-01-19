@@ -196,6 +196,7 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
       setError(err instanceof Error ? err.message : 'An error occurred')
       setLoading(false)
     }
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
