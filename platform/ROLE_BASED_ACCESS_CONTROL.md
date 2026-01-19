@@ -35,20 +35,27 @@ This document outlines the complete role-based access control system implemented
 - **Purpose**: Employee management and engagement
 - **Scope**: Own company only
 - **Key Permissions**:
-  - Invite employees (HR, MANAGER, EMPLOYEE only)
-  - View all employees
-  - Change employee roles (to HR, MANAGER, EMPLOYEE only)
-  - View products (read-only)
-  - Create and send campaigns
-  - View all orders (read-only)
-  - View all gifts and track redemption
+  - ✅ Invite employees (HR, MANAGER, EMPLOYEE only)
+  - ✅ View all employees in company
+  - ✅ Change employee roles (to HR, MANAGER, EMPLOYEE only)
+  - ✅ View employee details (company association, shipping addresses)
+  - ✅ Bulk import employees via CSV
+  - ✅ View products (read-only)
+  - ✅ Create and send campaigns
+  - ✅ Activate/deactivate campaigns
+  - ✅ View all orders (read-only)
+  - ✅ View all gifts and track redemption
+  - ✅ View analytics (employee engagement metrics)
+  - ✅ Access billing section (view invoices and wallet)
 - **Restrictions**:
-  - Cannot remove employees (ADMIN only)
-  - Cannot change roles to ADMIN or SUPER_ADMIN
-  - Cannot manage products (create/edit/delete)
-  - Cannot create orders
-  - Cannot delete campaigns
-  - Cannot access financial/budget settings
+  - ❌ Cannot remove employees (ADMIN only)
+  - ❌ Cannot change roles to ADMIN or SUPER_ADMIN
+  - ❌ Cannot manage products (create/edit/delete)
+  - ❌ Cannot create orders
+  - ❌ Cannot delete campaigns
+  - ❌ Cannot access company settings
+  - ❌ Cannot manage companies
+- **Critical Requirement**: HR MUST be associated with a company (`company_id`) to access most features
 
 ### **MANAGER** (Team Manager)
 - **Purpose**: Team management and gift distribution
