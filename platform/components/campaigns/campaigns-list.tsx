@@ -17,6 +17,12 @@ import {
 } from '@/components/ui/alert-dialog'
 import { useToast } from '@/hooks/use-toast'
 import { Zap, Send } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { sendCampaignToEmployees, updateCampaignStatus, deleteCampaign } from '@/actions/campaigns'
 
 type Campaign = {
