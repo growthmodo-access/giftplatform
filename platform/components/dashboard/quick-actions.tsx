@@ -40,7 +40,7 @@ export async function QuickActions() {
       title: 'New Campaign',
       description: 'Create gift campaign',
       icon: Sparkles,
-      href: '/automation',
+      href: '/campaigns',
       allowedRoles: ['ADMIN', 'HR', 'MANAGER', 'SUPER_ADMIN'],
     },
     {

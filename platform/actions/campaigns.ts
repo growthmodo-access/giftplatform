@@ -153,7 +153,7 @@ export async function createCampaign(formData: FormData) {
       return { error: error.message }
     }
 
-    revalidatePath('/automation')
+    revalidatePath('/campaigns')
     return { success: true, data }
   } catch (error) {
     return { 
@@ -239,7 +239,7 @@ export async function sendCampaignToEmployees(campaignId: string) {
       return { error: giftsError.message }
     }
 
-    revalidatePath('/automation')
+    revalidatePath('/campaigns')
     revalidatePath('/gifts')
     return { success: true, giftsSent: gifts.length }
   } catch (error) {
@@ -288,7 +288,7 @@ export async function updateCampaignStatus(campaignId: string, isActive: boolean
       return { error: error.message }
     }
 
-    revalidatePath('/automation')
+    revalidatePath('/campaigns')
     return { success: true }
   } catch (error) {
     return { 
@@ -431,7 +431,7 @@ export async function createGiftCampaign(formData: FormData) {
       }
     }
 
-    revalidatePath('/automation')
+    revalidatePath('/campaigns')
     return { success: true, data: campaign }
   } catch (error) {
     console.error('Create gift campaign error:', error)
@@ -573,7 +573,7 @@ export async function deleteCampaign(campaignId: string) {
       return { error: error.message }
     }
 
-    revalidatePath('/automation')
+    revalidatePath('/campaigns')
     return { success: true }
   } catch (error) {
     return { 

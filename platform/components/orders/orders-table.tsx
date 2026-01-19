@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { ArrowUpDown, ArrowUp, ArrowDown, CreditCard, Wallet, Building2, Coins } from 'lucide-react'
+import { ArrowUpDown, ArrowUp, ArrowDown, CreditCard, Wallet, Building2, Coins, Truck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 type Order = {
@@ -28,6 +28,9 @@ type Order = {
   dateTimestamp?: string
   mobile?: string
   paymentMethod?: string
+  company?: string
+  companyId?: string | null
+  shippingAddress?: string | null
 }
 
 interface OrdersTableProps {
@@ -35,7 +38,7 @@ interface OrdersTableProps {
   onOrderClick?: (order: Order) => void
 }
 
-type SortField = 'orderNumber' | 'employee' | 'amount' | 'status' | 'mobile' | 'paymentMethod'
+type SortField = 'orderNumber' | 'employee' | 'amount' | 'status' | 'mobile' | 'paymentMethod' | 'company'
 type SortDirection = 'asc' | 'desc' | null
 
 const statusColors: Record<string, string> = {
@@ -117,6 +120,10 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
             case 'paymentMethod':
               aValue = a.paymentMethod || ''
               bValue = b.paymentMethod || ''
+              break
+            case 'company':
+              aValue = (a.company || '').toLowerCase()
+              bValue = (b.company || '').toLowerCase()
               break
             default:
               return 0
@@ -217,6 +224,17 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                   variant="ghost"
                   size="sm"
                   className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
+                  onClick={() => handleSort('company')}
+                >
+                  COMPANY (BILL TO)
+                  {getSortIcon('company')}
+                </Button>
+              </TableHead>
+              <TableHead>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
                   onClick={() => handleSort('amount')}
                 >
                   ORDER AMOUNT
@@ -261,7 +279,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
           <TableBody>
             {sortedOrders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
+                <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
                   No orders found
                 </TableCell>
               </TableRow>
@@ -291,7 +309,21 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                             {getInitials(order.employee || 'Unknown')}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-sm text-foreground font-medium">{order.employee || 'Unknown'}</span>
+                        <div>
+                          <div className="text-sm text-foreground font-medium">{order.employee || 'Unknown'}</div>
+                          {order.shippingAddress && (
+                            <div className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                              <Truck className="w-3 h-3" />
+                              Ship to employee
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Building2 className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-sm text-foreground font-medium">{order.company || 'N/A'}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-foreground font-medium">

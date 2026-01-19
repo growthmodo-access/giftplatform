@@ -72,8 +72,8 @@ const allMenuItems: MenuItem[] = [
   },
   { 
     icon: Zap, 
-    label: 'Automation', 
-    href: '/automation', 
+    label: 'Campaigns', 
+    href: '/campaigns', 
     allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] 
   },
   { 
