@@ -297,6 +297,86 @@ export async function updateCampaignStatus(campaignId: string, isActive: boolean
   }
 }
 
+export async function updateCampaignDetails(campaignId: string, formData: FormData) {
+  try {
+    const supabase = await createClient()
+    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    // Get current user's company and role
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('company_id, role')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (!currentUser) {
+      return { error: 'User profile not found' }
+    }
+
+    // Check permissions
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to update campaigns' }
+    }
+
+    const name = formData.get('name') as string
+    const description = formData.get('description') as string
+    const trigger = formData.get('trigger') as string
+    const isActive = formData.get('is_active') === 'true'
+    const budget = formData.get('budget') as string
+
+    if (!name || !trigger) {
+      return { error: 'Name and trigger are required' }
+    }
+
+    const updates: any = {
+      name: name.trim(),
+      description: description?.trim() || null,
+      trigger: trigger as 'NEW_HIRE' | 'BIRTHDAY' | 'ANNIVERSARY' | 'PERFORMANCE' | 'CUSTOM',
+      is_active: isActive,
+    }
+
+    if (budget) {
+      const parsedBudget = parseFloat(budget)
+      if (!isNaN(parsedBudget) && parsedBudget >= 0) {
+        updates.budget = parsedBudget
+      }
+    } else {
+      updates.budget = null
+    }
+
+    // Build query with company check for non-SUPER_ADMIN
+    let query = supabase
+      .from('campaigns')
+      .update(updates)
+      .eq('id', campaignId)
+
+    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.company_id) {
+      query = query.eq('company_id', currentUser.company_id)
+    }
+
+    const { data, error } = await query.select().single()
+
+    if (error) {
+      return { error: error.message }
+    }
+
+    revalidatePath('/campaigns')
+    return { success: true, data }
+  } catch (error) {
+    return { 
+      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    }
+  }
+}
+
 /**
  * Create a new gift campaign (PerkUp-style)
  * Enhanced campaign creation with recipient selection, gift types, budgeting, and scheduling

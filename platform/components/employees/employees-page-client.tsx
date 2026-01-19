@@ -7,6 +7,7 @@ import { Pagination } from '@/components/ui/pagination'
 import { Plus } from 'lucide-react'
 import { EmployeesList } from './employees-list'
 import { AddEmployeeDialog } from './add-employee-dialog'
+import { TeamsSection } from './teams-section'
 
 type Employee = {
   id: string
@@ -57,6 +58,11 @@ export function EmployeesPageClient({ employees, currentUserRole, currentUserId 
           </Button>
         )}
       </div>
+
+      {/* Teams Section - Only for ADMIN, HR, SUPER_ADMIN */}
+      {(currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN') && (
+        <TeamsSection currentUserRole={currentUserRole} />
+      )}
 
       <Card className="border border-gray-200 shadow-sm">
         <CardHeader className="pb-4">

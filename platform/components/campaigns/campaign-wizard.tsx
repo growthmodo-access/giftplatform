@@ -59,6 +59,7 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
     description: '',
     recipientType: 'ALL',
     selectedRecipients: [],
+    selectedTeams: [],
     giftType: 'SINGLE',
     selectedProducts: [],
     budget: null,
@@ -90,7 +91,9 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
       case 1:
         return !!campaignData.name.trim()
       case 2:
-        return campaignData.recipientType === 'ALL' || campaignData.selectedRecipients.length > 0
+        if (campaignData.recipientType === 'ALL') return true
+        if (campaignData.recipientType === 'TEAM') return campaignData.selectedTeams.length > 0
+        return campaignData.selectedRecipients.length > 0
       case 3:
         if (campaignData.giftType === 'SINGLE') {
           return campaignData.selectedProducts.length === 1

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Plus, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { getEmployees } from '@/actions/employees'
+import { getTeams } from '@/actions/teams'
 import { CampaignWizardData } from '../campaign-wizard'
 import { AddEmployeeDialog } from '@/components/employees/add-employee-dialog'
 
@@ -20,12 +21,14 @@ interface Step2Props {
 
 export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
   const [employees, setEmployees] = useState<any[]>([])
+  const [teams, setTeams] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [showAddEmployee, setShowAddEmployee] = useState(false)
 
   useEffect(() => {
     loadEmployees()
+    loadTeams()
   }, [])
 
   const loadEmployees = async () => {
@@ -35,6 +38,13 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
       setEmployees(result.data)
     }
     setLoading(false)
+  }
+
+  const loadTeams = async () => {
+    const result = await getTeams()
+    if (result.data) {
+      setTeams(result.data)
+    }
   }
 
   const handleRecipientToggle = (employeeId: string) => {
@@ -86,8 +96,9 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
         value={data.recipientType}
         onValueChange={(value) => {
           onUpdate({ 
-            recipientType: value as 'ALL' | 'SELECTED',
-            selectedRecipients: value === 'ALL' ? [] : data.selectedRecipients
+            recipientType: value as 'ALL' | 'SELECTED' | 'TEAM',
+            selectedRecipients: value === 'ALL' ? [] : data.selectedRecipients,
+            selectedTeams: value === 'ALL' ? [] : data.selectedTeams || []
           })
         }}
         className="space-y-4"
@@ -97,6 +108,13 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
           <Label htmlFor="all" className="cursor-pointer flex-1">
             <div className="font-medium text-foreground">All Employees</div>
             <div className="text-sm text-muted-foreground">Send to everyone in your company</div>
+          </Label>
+        </div>
+        <div className="flex items-center space-x-2 p-4 border border-border/50 rounded-lg hover:bg-muted/50 cursor-pointer">
+          <RadioGroupItem value="TEAM" id="team" />
+          <Label htmlFor="team" className="cursor-pointer flex-1">
+            <div className="font-medium text-foreground">Select Teams</div>
+            <div className="text-sm text-muted-foreground">Send to specific teams</div>
           </Label>
         </div>
         <div className="flex items-center space-x-2 p-4 border border-border/50 rounded-lg hover:bg-muted/50 cursor-pointer">
