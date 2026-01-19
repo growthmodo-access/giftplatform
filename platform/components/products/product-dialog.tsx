@@ -47,7 +47,10 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
     type: '' as 'SWAG' | 'GIFT_CARD' | 'PHYSICAL_GIFT' | 'EXPERIENCE' | '',
     company_id: '',
     currency: 'USD',
+    image: '',
   })
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string>('')
 
   // Load companies for SUPER_ADMIN
   useEffect(() => {
@@ -69,7 +72,10 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
         type: product.type || '',
         company_id: product.company_id || '',
         currency: product.currency || 'USD',
+        image: product.image || '',
       })
+      setImagePreview(product.image || '')
+      setImageFile(null)
     } else if (open && !product) {
       // Reset form for new product
       setFormData({
@@ -82,9 +88,24 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
         type: '',
         company_id: '',
         currency: 'USD',
+        image: '',
       })
+      setImagePreview('')
+      setImageFile(null)
     }
   }, [product, open])
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setImageFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   const loadCompanies = async () => {
     setLoadingCompanies(true)
@@ -105,38 +126,76 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
     setLoading(true)
     setError('')
 
-    const form = e.currentTarget
-    const submitFormData = new FormData(form)
-    
-    // Ensure type is included
-    if (formData.type) {
-      submitFormData.set('type', formData.type)
-    }
+    try {
+      let imageUrl = formData.image
 
-    const result = isEdit && product
-      ? await updateProduct(product.id, submitFormData)
-      : await createProduct(submitFormData)
+      // Upload image if a new file is selected
+      if (imageFile) {
+        const fileExt = imageFile.name.split('.').pop()
+        const fileName = `${Math.random()}.${fileExt}`
+        const filePath = `products/${fileName}`
 
-    if (result.error) {
-      setError(result.error)
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(filePath, imageFile, {
+            cacheControl: '3600',
+            upsert: false
+          })
+
+        if (uploadError) {
+          throw new Error(`Image upload failed: ${uploadError.message}`)
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(filePath)
+
+        imageUrl = publicUrl
+      }
+
+      const form = e.currentTarget
+      const submitFormData = new FormData(form)
+      
+      // Ensure type is included
+      if (formData.type) {
+        submitFormData.set('type', formData.type)
+      }
+
+      // Add image URL
+      if (imageUrl) {
+        submitFormData.set('image', imageUrl)
+      }
+
+      const result = isEdit && product
+        ? await updateProduct(product.id, submitFormData)
+        : await createProduct(submitFormData)
+
+      if (result.error) {
+        setError(result.error)
+        setLoading(false)
+      } else {
+        onOpenChange(false)
+        router.refresh()
+        // Reset form
+        setFormData({
+          name: '',
+          description: '',
+          category: '',
+          price: '',
+          stock: '0',
+          sku: '',
+          type: '',
+          company_id: '',
+          currency: 'USD',
+          image: '',
+        })
+        setImagePreview('')
+        setImageFile(null)
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
       setLoading(false)
-    } else {
-      onOpenChange(false)
-      router.refresh()
-      // Reset form
-      setFormData({
-        name: '',
-        description: '',
-        category: '',
-        price: '',
-        stock: '0',
-        sku: '',
-        type: '',
-        company_id: '',
-        currency: 'USD',
-      })
     }
-  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -199,6 +258,32 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                 className="bg-background border-border/50"
               />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="image">Product Image</Label>
+              <div className="space-y-2">
+                {imagePreview && (
+                  <div className="relative w-full h-48 border border-border/50 rounded-md overflow-hidden">
+                    <img 
+                      src={imagePreview} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  disabled={loading}
+                  className="bg-background border-border/50"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Upload a product image (JPG, PNG, etc.)
+                </p>
+              </div>
             </div>
 
             <div className="grid gap-2">

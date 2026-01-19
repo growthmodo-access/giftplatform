@@ -52,8 +52,31 @@ export async function getEmployees() {
       return { data: [], error: error.message }
     }
 
-    // Get gift counts for each employee
+    // Get company IDs and fetch company names
+    const companyIds = [...new Set(employees?.map(e => e.company_id).filter(Boolean) || [])]
+    const { data: companies } = companyIds.length > 0 ? await supabase
+      .from('companies')
+      .select('id, name')
+      .in('id', companyIds) : { data: [] }
+
+    const companyMap = new Map((companies || []).map(c => [c.id, c.name]))
+
+    // Get shipping addresses for employees
     const employeeIds = employees?.map(e => e.id) || []
+    const { data: addresses } = await supabase
+      .from('addresses')
+      .select('user_id, street, city, state, country, zip_code, type')
+      .in('user_id', employeeIds)
+      .eq('type', 'SHIPPING')
+
+    const addressMap = new Map<string, any>()
+    addresses?.forEach(addr => {
+      if (!addressMap.has(addr.user_id)) {
+        addressMap.set(addr.user_id, addr)
+      }
+    })
+
+    // Get gift counts for each employee
     const { data: gifts } = await supabase
       .from('gifts')
       .select('user_id')
@@ -64,10 +87,21 @@ export async function getEmployees() {
       return acc
     }, {} as Record<string, number>) || {}
 
-    const employeesWithGifts = employees?.map(employee => ({
-      ...employee,
-      giftsCount: giftCounts[employee.id] || 0,
-    })) || []
+    const employeesWithGifts = employees?.map(employee => {
+      const address = addressMap.get(employee.id)
+      return {
+        ...employee,
+        giftsCount: giftCounts[employee.id] || 0,
+        companyName: employee.company_id ? companyMap.get(employee.company_id) : null,
+        shippingAddress: address ? {
+          street: address.street,
+          city: address.city,
+          state: address.state,
+          country: address.country,
+          zip_code: address.zip_code,
+        } : null,
+      }
+    }) || []
 
     return { data: employeesWithGifts, error: null }
   } catch (error) {

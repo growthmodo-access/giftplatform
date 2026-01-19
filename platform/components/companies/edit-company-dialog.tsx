@@ -12,6 +12,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
 import { updateCompany } from '@/actions/companies'
 
 interface Company {
@@ -34,10 +36,19 @@ interface EditCompanyDialogProps {
   onSuccess: () => void
 }
 
+const CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'INR', 'BRL', 'MXN', 'SGD', 'HKD', 'NZD', 'ZAR', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK']
+
 export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCompanyDialogProps) {
   const [name, setName] = useState(company.name)
   const [domain, setDomain] = useState(company.domain || '')
   const [budget, setBudget] = useState(company.budget.toString())
+  const [taxId, setTaxId] = useState((company as any).tax_id || '')
+  const [currency, setCurrency] = useState((company as any).currency || 'USD')
+  const [billingStreet, setBillingStreet] = useState('')
+  const [billingCity, setBillingCity] = useState('')
+  const [billingState, setBillingState] = useState('')
+  const [billingCountry, setBillingCountry] = useState('')
+  const [billingZip, setBillingZip] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -46,6 +57,14 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
       setName(company.name)
       setDomain(company.domain || '')
       setBudget(company.budget.toString())
+      setTaxId((company as any).tax_id || '')
+      setCurrency((company as any).currency || 'USD')
+      const billing = (company as any).billing_address || {}
+      setBillingStreet(billing.street || '')
+      setBillingCity(billing.city || '')
+      setBillingState(billing.state || '')
+      setBillingCountry(billing.country || '')
+      setBillingZip(billing.zip_code || '')
       setError('')
     }
   }, [company, open])
@@ -60,6 +79,15 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
       formData.append('name', name)
       formData.append('domain', domain)
       formData.append('budget', budget)
+      formData.append('tax_id', taxId)
+      formData.append('currency', currency)
+      formData.append('billing_address', JSON.stringify({
+        street: billingStreet,
+        city: billingCity,
+        state: billingState,
+        country: billingCountry,
+        zip_code: billingZip,
+      }))
 
       const result = await updateCompany(company.id, formData)
 
@@ -128,6 +156,92 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
                 min="0"
                 step="0.01"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="currency" className="text-foreground">Currency</Label>
+              <Select value={currency} onValueChange={setCurrency}>
+                <SelectTrigger className="border-border/50">
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((curr) => (
+                    <SelectItem key={curr} value={curr}>{curr}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="tax_id" className="text-foreground">Tax ID</Label>
+              <Input
+                id="tax_id"
+                type="text"
+                value={taxId}
+                onChange={(e) => setTaxId(e.target.value)}
+                className="border-border/50"
+                placeholder="TAX-123456"
+              />
+            </div>
+            <div className="space-y-4 pt-2 border-t border-border/50">
+              <h3 className="text-sm font-semibold text-foreground">Billing Address</h3>
+              <div className="space-y-2">
+                <Label htmlFor="billing_street" className="text-foreground">Street Address</Label>
+                <Input
+                  id="billing_street"
+                  type="text"
+                  value={billingStreet}
+                  onChange={(e) => setBillingStreet(e.target.value)}
+                  className="border-border/50"
+                  placeholder="123 Main St"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
+                  <Label htmlFor="billing_city" className="text-foreground">City</Label>
+                  <Input
+                    id="billing_city"
+                    type="text"
+                    value={billingCity}
+                    onChange={(e) => setBillingCity(e.target.value)}
+                    className="border-border/50"
+                    placeholder="New York"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="billing_state" className="text-foreground">State/Province</Label>
+                  <Input
+                    id="billing_state"
+                    type="text"
+                    value={billingState}
+                    onChange={(e) => setBillingState(e.target.value)}
+                    className="border-border/50"
+                    placeholder="NY"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
+                  <Label htmlFor="billing_country" className="text-foreground">Country</Label>
+                  <Input
+                    id="billing_country"
+                    type="text"
+                    value={billingCountry}
+                    onChange={(e) => setBillingCountry(e.target.value)}
+                    className="border-border/50"
+                    placeholder="United States"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="billing_zip" className="text-foreground">ZIP/Postal Code</Label>
+                  <Input
+                    id="billing_zip"
+                    type="text"
+                    value={billingZip}
+                    onChange={(e) => setBillingZip(e.target.value)}
+                    className="border-border/50"
+                    placeholder="10001"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <DialogFooter className="mt-6">

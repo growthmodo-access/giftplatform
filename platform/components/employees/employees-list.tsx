@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { updateEmployeeRole } from '@/actions/employees'
-import { MoreVertical } from 'lucide-react'
+import { MoreVertical, Building2, MapPin } from 'lucide-react'
 
 type Employee = {
   id: string
@@ -21,6 +21,14 @@ type Employee = {
   role: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
   avatar: string | null
   giftsCount: number
+  companyName?: string | null
+  shippingAddress?: {
+    street: string
+    city: string
+    state?: string | null
+    country: string
+    zip_code: string
+  } | null
 }
 
 interface EmployeesListProps {
@@ -65,7 +73,7 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
 
   if (employees.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-8 text-muted-foreground">
         No employees found. Add your first team member to get started.
       </div>
     )
@@ -82,7 +90,7 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
         return (
           <div
             key={employee.id}
-            className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors gap-3 sm:gap-4"
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors gap-3 sm:gap-4 bg-card"
           >
             <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
               <Avatar className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0">
@@ -90,14 +98,28 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
               </Avatar>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="font-medium text-gray-900 text-sm sm:text-base truncate">
+                  <p className="font-medium text-foreground text-sm sm:text-base truncate">
                     {employee.name || 'No name'}
                     {isCurrentUser && (
-                      <span className="ml-2 text-xs text-gray-500">(You)</span>
+                      <span className="ml-2 text-xs text-muted-foreground">(You)</span>
                     )}
                   </p>
                 </div>
-                <p className="text-sm text-gray-600 truncate">{employee.email}</p>
+                <p className="text-sm text-muted-foreground truncate">{employee.email}</p>
+                {employee.companyName && (
+                  <div className="flex items-center gap-1 mt-1">
+                    <Building2 className="w-3 h-3 text-muted-foreground" />
+                    <p className="text-xs text-muted-foreground">{employee.companyName}</p>
+                  </div>
+                )}
+                {employee.shippingAddress && (
+                  <div className="flex items-start gap-1 mt-1">
+                    <MapPin className="w-3 h-3 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <p className="text-xs text-muted-foreground line-clamp-1">
+                      {employee.shippingAddress.street}, {employee.shippingAddress.city}{employee.shippingAddress.state ? `, ${employee.shippingAddress.state}` : ''} {employee.shippingAddress.zip_code}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4">
@@ -105,7 +127,7 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
                 <Badge className={`text-xs ${roleColors[employee.role] || roleColors.EMPLOYEE}`}>
                   {roleLabels[employee.role] || 'Employee'}
                 </Badge>
-                <p className="text-xs text-gray-500 mt-1">{employee.giftsCount} gifts sent</p>
+                <p className="text-xs text-muted-foreground mt-1">{employee.giftsCount} gifts sent</p>
               </div>
               {canManageRoles && !isCurrentUser && (
                 <DropdownMenu>

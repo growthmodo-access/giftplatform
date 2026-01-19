@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { ProductsTable } from '@/components/products/products-table'
+import { ProductsGrid } from '@/components/products/products-grid'
 import { Button } from '@/components/ui/button'
-import { Plus, Download, Upload, Package } from 'lucide-react'
+import { Plus, Download, Upload, Package, Grid, List } from 'lucide-react'
 import { Database } from '@/types/database'
+import { ProductDialog } from './product-dialog'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -16,6 +18,8 @@ interface ProductsPageClientProps {
 export function ProductsPageClient({ initialProducts, currentUserRole }: ProductsPageClientProps) {
   // Only ADMIN and SUPER_ADMIN can create/edit/delete products
   const canManageProducts = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
+  const [viewMode, setViewMode] = useState<'table' | 'grid'>('grid')
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   return (
     <div className="space-y-6">
@@ -29,6 +33,24 @@ export function ProductsPageClient({ initialProducts, currentUserRole }: Product
         </div>
         {canManageProducts && (
           <div className="flex flex-wrap gap-2 sm:gap-3">
+            <div className="flex items-center gap-1 border border-border/50 rounded-md p-1">
+              <Button
+                variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                size="sm"
+                className="h-7 px-2"
+                onClick={() => setViewMode('grid')}
+              >
+                <Grid className="w-4 h-4" />
+              </Button>
+              <Button
+                variant={viewMode === 'table' ? 'default' : 'ghost'}
+                size="sm"
+                className="h-7 px-2"
+                onClick={() => setViewMode('table')}
+              >
+                <List className="w-4 h-4" />
+              </Button>
+            </div>
             <Button variant="outline" size="sm" className="gap-2 border-border/50">
               <Upload className="w-4 h-4" />
               <span className="hidden sm:inline">Import</span>
@@ -36,6 +58,10 @@ export function ProductsPageClient({ initialProducts, currentUserRole }: Product
             <Button variant="outline" size="sm" className="gap-2 border-border/50">
               <Download className="w-4 h-4" />
               <span className="hidden sm:inline">Export</span>
+            </Button>
+            <Button size="sm" className="gap-2" onClick={() => setDialogOpen(true)}>
+              <Plus className="w-4 h-4" />
+              <span className="hidden sm:inline">Add Product</span>
             </Button>
           </div>
         )}
@@ -103,12 +129,29 @@ export function ProductsPageClient({ initialProducts, currentUserRole }: Product
         </div>
       </div>
 
-      {/* Products Table */}
-      <ProductsTable 
-        initialProducts={initialProducts} 
-        canManageProducts={canManageProducts}
-        currentUserRole={currentUserRole}
-      />
+      {/* Products View */}
+      {viewMode === 'grid' ? (
+        <ProductsGrid 
+          initialProducts={initialProducts} 
+          canManageProducts={canManageProducts}
+          currentUserRole={currentUserRole}
+        />
+      ) : (
+        <ProductsTable 
+          initialProducts={initialProducts} 
+          canManageProducts={canManageProducts}
+          currentUserRole={currentUserRole}
+        />
+      )}
+
+      {/* Add Product Dialog */}
+      {canManageProducts && (
+        <ProductDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          currentUserRole={currentUserRole}
+        />
+      )}
     </div>
   )
 }
