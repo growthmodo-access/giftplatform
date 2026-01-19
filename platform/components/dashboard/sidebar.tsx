@@ -164,7 +164,20 @@ export function Sidebar({ userRole }: SidebarProps) {
   // Filter menu categories based on user role
   const filteredCategories = menuCategories.map(category => ({
     ...category,
-    items: category.items.filter(item => item.allowedRoles.includes(normalizedRole))
+    items: category.items.filter(item => {
+      const hasAccess = item.allowedRoles.includes(normalizedRole)
+      // Debug log for Campaigns menu item
+      if (item.label === 'Campaigns') {
+        console.log('[Sidebar] Campaigns menu item check:', {
+          itemLabel: item.label,
+          normalizedRole,
+          allowedRoles: item.allowedRoles,
+          hasAccess,
+          userRole
+        })
+      }
+      return hasAccess
+    })
   })).filter(category => category.items.length > 0)
   
   // Flatten for backward compatibility
