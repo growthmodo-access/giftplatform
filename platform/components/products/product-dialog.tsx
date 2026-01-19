@@ -165,15 +165,15 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
               <div className="grid gap-2">
                 <Label htmlFor="company_id">Company</Label>
                 <Select
-                  value={formData.company_id}
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, company_id: value }))}
+                  value={formData.company_id || 'none'}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, company_id: value === 'none' ? '' : value }))}
                   disabled={loading || loadingCompanies}
                 >
                   <SelectTrigger id="company_id" name="company_id">
                     <SelectValue placeholder={loadingCompanies ? "Loading companies..." : "Select company (optional)"} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No company (Global)</SelectItem>
+                    <SelectItem value="none">No company (Global)</SelectItem>
                     {companies.map((company) => (
                       <SelectItem key={company.id} value={company.id}>
                         {company.name}
@@ -181,7 +181,7 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
                     ))}
                   </SelectContent>
                 </Select>
-                <input type="hidden" name="company_id" value={formData.company_id} />
+                <input type="hidden" name="company_id" value={formData.company_id || ''} />
               </div>
             )}
 
