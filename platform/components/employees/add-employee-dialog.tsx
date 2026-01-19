@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
@@ -10,7 +10,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { inviteEmployee, importEmployeesFromCSV } from '@/actions/employees'
+import { getCompanies } from '@/actions/companies'
 import { Loader2, Upload, FileText } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 interface AddEmployeeDialogProps {
   open: boolean
@@ -25,6 +27,49 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
   const [success, setSuccess] = useState('')
   const [activeTab, setActiveTab] = useState('single')
   const [csvFile, setCsvFile] = useState<File | null>(null)
+  const [companies, setCompanies] = useState<Array<{id: string, name: string}>>([])
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('')
+  const [userRole, setUserRole] = useState<string>('')
+  const [userCompanyId, setUserCompanyId] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (open) {
+      loadUserAndCompanies()
+    }
+  }, [open])
+
+  const loadUserAndCompanies = async () => {
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data: currentUser } = await supabase
+        .from('users')
+        .select('role, company_id')
+        .eq('id', user.id)
+        .single()
+
+      if (currentUser) {
+        setUserRole(currentUser.role)
+        setUserCompanyId(currentUser.company_id)
+        
+        // If SUPER_ADMIN, load all companies
+        if (currentUser.role === 'SUPER_ADMIN') {
+          const result = await getCompanies()
+          if (result.data) {
+            setCompanies(result.data.map(c => ({ id: c.id, name: c.name })))
+          }
+        } else if (currentUser.company_id) {
+          // For other roles, set their company
+          setSelectedCompanyId(currentUser.company_id)
+          setCompanies([{ id: currentUser.company_id, name: 'Your Company' }])
+        }
+      }
+    } catch (err) {
+      console.error('Error loading companies:', err)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -46,12 +91,18 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
     const email = formData.get('email') as string
     const name = formData.get('name') as string
     const shippingAddress = formData.get('shipping_address') as string
+    
+    // Determine company_id: SUPER_ADMIN can select, others use their own
+    const companyId = userRole === 'SUPER_ADMIN' && selectedCompanyId 
+      ? selectedCompanyId 
+      : userCompanyId
 
     const result = await inviteEmployee(
       email,
       name,
       roleValue as 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE',
-      shippingAddress || null
+      shippingAddress || null,
+      companyId || null
     )
 
     if (result.error) {
@@ -159,6 +210,31 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
                 disabled={loading}
               />
             </div>
+
+            {userRole === 'SUPER_ADMIN' && companies.length > 0 && (
+              <div className="grid gap-2">
+                <Label htmlFor="company">
+                  Company <span className="text-red-500">*</span>
+                </Label>
+                <Select 
+                  required 
+                  disabled={loading}
+                  value={selectedCompanyId}
+                  onValueChange={setSelectedCompanyId}
+                >
+                  <SelectTrigger id="company">
+                    <SelectValue placeholder="Select a company" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {companies.map((company) => (
+                      <SelectItem key={company.id} value={company.id}>
+                        {company.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             <div className="grid gap-2">
               <Label htmlFor="role">

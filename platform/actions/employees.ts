@@ -112,7 +112,7 @@ export async function getEmployees() {
   }
 }
 
-export async function inviteEmployee(email: string, name: string, role: 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE', shippingAddress?: string | null) {
+export async function inviteEmployee(email: string, name: string, role: 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE', shippingAddress?: string | null, companyId?: string | null) {
   try {
     // #region agent log
     fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:68',message:'inviteEmployee called',data:{email,name,role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
@@ -214,9 +214,22 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
     }
 
     // Create user profile with role and company
-    // SUPER_ADMIN can invite to any company, but for now we use current user's company
-    // TODO: Add company_id parameter for SUPER_ADMIN to invite to specific companies
-    const companyId = currentUser?.company_id || null
+    // SUPER_ADMIN can invite to any company via companyId parameter
+    // Other roles use their own company_id
+    const finalCompanyId = companyId || currentUser?.company_id || null
+    
+    // Validate company_id for SUPER_ADMIN
+    if (currentUser.role === 'SUPER_ADMIN' && companyId) {
+      const { data: companyExists } = await supabase
+        .from('companies')
+        .select('id')
+        .eq('id', companyId)
+        .single()
+      
+      if (!companyExists) {
+        return { error: 'Selected company does not exist' }
+      }
+    }
     
     const { error: profileError } = await serviceSupabase
       .from('users')
@@ -225,7 +238,7 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
         email,
         name: name || null,
         role: role,
-        company_id: companyId,
+        company_id: finalCompanyId,
       })
 
     if (profileError) {
