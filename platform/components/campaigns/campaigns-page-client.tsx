@@ -34,7 +34,7 @@ export function CampaignsPageClient({ campaigns, managementCampaigns = [], curre
   const router = useRouter()
   const [wizardOpen, setWizardOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('all')
-  const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
   const canViewManagement = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
 
   return (

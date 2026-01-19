@@ -320,8 +320,8 @@ export async function createGiftCampaign(formData: FormData) {
       return { error: 'Failed to fetch user data' }
     }
 
-    // Check permissions - only SUPER_ADMIN, ADMIN, and HR can create campaigns
-    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.role !== 'ADMIN' && currentUser.role !== 'HR') {
+    // Check permissions - SUPER_ADMIN, ADMIN, HR, and MANAGER can create campaigns
+    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'MANAGER') {
       return { error: 'You do not have permission to create campaigns' }
     }
 
