@@ -95,6 +95,12 @@ const allMenuItems: MenuItem[] = [
     allowedRoles: ['SUPER_ADMIN', 'ADMIN'] 
   },
   { 
+    icon: Users, 
+    label: 'Users', 
+    href: '/users', 
+    allowedRoles: ['SUPER_ADMIN'] 
+  },
+  { 
     icon: Settings, 
     label: 'Settings', 
     href: '/settings', 
