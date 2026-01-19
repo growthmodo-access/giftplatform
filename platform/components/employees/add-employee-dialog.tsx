@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { inviteEmployee, importEmployeesFromCSV } from '@/actions/employees'
 import { getCompanies } from '@/actions/companies'
 import { Loader2, Upload, FileText } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 interface AddEmployeeDialogProps {
   open: boolean
@@ -44,7 +44,6 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
 
   const loadUserAndCompanies = async () => {
     try {
-      const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 

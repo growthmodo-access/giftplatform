@@ -1,6 +1,7 @@
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { Header } from '@/components/dashboard/header'
 import { Breadcrumbs } from '@/components/dashboard/breadcrumbs'
+import { KeyboardShortcuts } from '@/components/dashboard/keyboard-shortcuts'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
