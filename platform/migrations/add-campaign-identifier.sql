@@ -19,7 +19,7 @@ BEGIN
   LOOP
     -- Generate identifier: first 3 letters of name + timestamp (last 6 digits)
     new_identifier := UPPER(SUBSTRING(REGEXP_REPLACE(campaign_record.name, '[^A-Za-z0-9]', '', 'g'), 1, 3)) || 
-                      LPAD(EXTRACT(EPOCH FROM campaign_record.created_at)::BIGINT % 1000000, 6, '0');
+                      LPAD((EXTRACT(EPOCH FROM campaign_record.created_at)::BIGINT % 1000000)::TEXT, 6, '0');
     
     -- Ensure uniqueness
     WHILE EXISTS (SELECT 1 FROM campaigns WHERE campaign_identifier = new_identifier) LOOP
@@ -43,18 +43,18 @@ BEGIN
   -- Generate base identifier from name (first 3 alphanumeric chars)
   base_identifier := UPPER(SUBSTRING(REGEXP_REPLACE(campaign_name, '[^A-Za-z0-9]', '', 'g'), 1, 3));
   
-  -- If name is too short, pad with random chars
-  IF LENGTH(base_identifier) < 3 THEN
-    base_identifier := base_identifier || LPAD(FLOOR(RANDOM() * 100)::TEXT, 3 - LENGTH(base_identifier), '0');
-  END IF;
+    -- If name is too short, pad with random chars
+    IF LENGTH(base_identifier) < 3 THEN
+      base_identifier := base_identifier || LPAD((FLOOR(RANDOM() * 100))::TEXT, 3 - LENGTH(base_identifier), '0');
+    END IF;
   
   -- Add timestamp component
-  final_identifier := base_identifier || LPAD(EXTRACT(EPOCH FROM NOW())::BIGINT % 1000000, 6, '0');
+  final_identifier := base_identifier || LPAD((EXTRACT(EPOCH FROM NOW())::BIGINT % 1000000)::TEXT, 6, '0');
   
-  -- Ensure uniqueness
-  WHILE EXISTS (SELECT 1 FROM campaigns WHERE campaign_identifier = final_identifier) LOOP
-    counter := counter + 1;
-    final_identifier := base_identifier || LPAD((EXTRACT(EPOCH FROM NOW())::BIGINT % 1000000 + counter)::TEXT, 6, '0');
+    -- Ensure uniqueness
+    WHILE EXISTS (SELECT 1 FROM campaigns WHERE campaign_identifier = final_identifier) LOOP
+      counter := counter + 1;
+      final_identifier := base_identifier || LPAD(((EXTRACT(EPOCH FROM NOW())::BIGINT % 1000000) + counter)::TEXT, 6, '0');
     IF counter > 1000 THEN
       -- Fallback: use UUID substring if we can't find unique identifier
       final_identifier := base_identifier || SUBSTRING(REPLACE(gen_random_uuid()::TEXT, '-', ''), 1, 6);
