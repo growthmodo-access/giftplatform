@@ -57,13 +57,25 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
         // If SUPER_ADMIN, load all companies
         if (currentUser.role === 'SUPER_ADMIN') {
           const result = await getCompanies()
-          if (result.data) {
+          if (result.data && result.data.length > 0) {
             setCompanies(result.data.map(c => ({ id: c.id, name: c.name })))
+            // Auto-select first company if none selected
+            if (!selectedCompanyId && result.data.length > 0) {
+              setSelectedCompanyId(result.data[0].id)
+            }
           }
         } else if (currentUser.company_id) {
-          // For other roles, set their company
-          setSelectedCompanyId(currentUser.company_id)
-          setCompanies([{ id: currentUser.company_id, name: 'Your Company' }])
+          // For other roles, fetch their company name
+          const { data: company } = await supabase
+            .from('companies')
+            .select('id, name')
+            .eq('id', currentUser.company_id)
+            .single()
+          
+          if (company) {
+            setSelectedCompanyId(currentUser.company_id)
+            setCompanies([{ id: company.id, name: company.name }])
+          }
         }
       }
     } catch (err) {
@@ -92,10 +104,30 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
     const name = formData.get('name') as string
     const shippingAddress = formData.get('shipping_address') as string
     
-    // Determine company_id: SUPER_ADMIN can select, others use their own
-    const companyId = userRole === 'SUPER_ADMIN' && selectedCompanyId 
-      ? selectedCompanyId 
-      : userCompanyId
+    // Determine company_id: SUPER_ADMIN can select, others use their own or selected
+    let companyId: string | null = null
+    
+    if (userRole === 'SUPER_ADMIN') {
+      // SUPER_ADMIN must select a company
+      if (!selectedCompanyId) {
+        setError('Please select a company')
+        setLoading(false)
+        return
+      }
+      companyId = selectedCompanyId
+    } else if (selectedCompanyId) {
+      // If company is selected (for users without company)
+      companyId = selectedCompanyId
+    } else {
+      // Use user's company
+      companyId = userCompanyId
+    }
+    
+    if (!companyId) {
+      setError('Company is required. Please select a company or ensure you are part of a company.')
+      setLoading(false)
+      return
+    }
 
     const result = await inviteEmployee(
       email,
@@ -211,7 +243,8 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
               />
             </div>
 
-            {userRole === 'SUPER_ADMIN' && companies.length > 0 && (
+            {/* Company Selection - Show for SUPER_ADMIN or if user has no company */}
+            {(userRole === 'SUPER_ADMIN' || !userCompanyId) && companies.length > 0 && (
               <div className="grid gap-2">
                 <Label htmlFor="company">
                   Company <span className="text-red-500">*</span>
@@ -233,6 +266,24 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
                     ))}
                   </SelectContent>
                 </Select>
+                {userRole !== 'SUPER_ADMIN' && (
+                  <p className="text-xs text-muted-foreground">
+                    Select the company this employee belongs to
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Show company name for non-SUPER_ADMIN users */}
+            {userRole !== 'SUPER_ADMIN' && userCompanyId && companies.length > 0 && (
+              <div className="grid gap-2">
+                <Label>Company</Label>
+                <div className="p-2 bg-muted/50 rounded-md text-sm text-foreground">
+                  {companies[0]?.name || 'Your Company'}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Employee will be added to your company
+                </p>
               </div>
             )}
 
