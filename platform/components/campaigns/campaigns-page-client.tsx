@@ -3,9 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Plus } from 'lucide-react'
 import { CampaignWizard } from './campaign-wizard'
 import { CampaignsList } from './campaigns-list'
+import { CampaignsManagementClient } from './campaigns-management-client'
 
 type Campaign = {
   id: string
@@ -24,20 +26,28 @@ type Campaign = {
 
 interface CampaignsPageClientProps {
   campaigns: Campaign[]
+  managementCampaigns?: any[]
   currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
 }
 
-export function CampaignsPageClient({ campaigns, currentUserRole }: CampaignsPageClientProps) {
+export function CampaignsPageClient({ campaigns, managementCampaigns = [], currentUserRole }: CampaignsPageClientProps) {
   const router = useRouter()
   const [wizardOpen, setWizardOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState('all')
   const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canViewManagement = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-semibold text-foreground">Gift Campaigns</h1>
-          <p className="text-muted-foreground mt-1">Create and manage gift campaigns for your employees</p>
+          <p className="text-muted-foreground mt-1">
+            {canViewManagement 
+              ? 'Create, manage, and monitor all gift campaigns across companies'
+              : 'Create and manage gift campaigns for your employees'
+            }
+          </p>
         </div>
         {canCreateCampaigns && (
           <Button onClick={() => setWizardOpen(true)}>
@@ -47,7 +57,25 @@ export function CampaignsPageClient({ campaigns, currentUserRole }: CampaignsPag
         )}
       </div>
 
-      <CampaignsList campaigns={campaigns} currentUserRole={currentUserRole} />
+      {canViewManagement ? (
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="border-border/50">
+            <TabsTrigger value="all">All Campaigns</TabsTrigger>
+            <TabsTrigger value="management">Management View</TabsTrigger>
+          </TabsList>
+          <TabsContent value="all" className="space-y-6">
+            <CampaignsList campaigns={campaigns} currentUserRole={currentUserRole} />
+          </TabsContent>
+          <TabsContent value="management" className="space-y-6">
+            <CampaignsManagementClient 
+              campaigns={managementCampaigns} 
+              currentUserRole={currentUserRole} 
+            />
+          </TabsContent>
+        </Tabs>
+      ) : (
+        <CampaignsList campaigns={campaigns} currentUserRole={currentUserRole} />
+      )}
 
       {canCreateCampaigns && (
         <CampaignWizard

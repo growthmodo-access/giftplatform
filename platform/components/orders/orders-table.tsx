@@ -31,6 +31,7 @@ type Order = {
   company?: string
   companyId?: string | null
   shippingAddress?: string | null
+  trackingNumber?: string | null
 }
 
 interface OrdersTableProps {
@@ -274,12 +275,21 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                   {getSortIcon('paymentMethod')}
                 </Button>
               </TableHead>
+              <TableHead>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
+                >
+                  TRACKING
+                </Button>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {sortedOrders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
+                <TableCell colSpan={9} className="text-center py-12 text-muted-foreground">
                   No orders found
                 </TableCell>
               </TableRow>
@@ -348,6 +358,16 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                         </div>
                       ) : (
                         <span className="text-sm text-muted-foreground">N/A</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {order.trackingNumber ? (
+                        <div className="flex items-center gap-2">
+                          <Truck className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm font-mono text-foreground">{order.trackingNumber}</span>
+                        </div>
+                      ) : (
+                        <span className="text-sm text-muted-foreground">—</span>
                       )}
                     </TableCell>
                   </TableRow>

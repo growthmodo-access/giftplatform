@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { NewOrderDialog } from './new-order-dialog'
+import { OrderDetailsDialog } from './order-details-dialog'
 import { OrdersTable } from './orders-table'
 import { OrdersFilters, FilterState } from './orders-filters'
 import { Pagination } from '@/components/ui/pagination'
@@ -20,6 +21,10 @@ type Order = {
   dateTimestamp?: string
   mobile?: string
   paymentMethod?: string
+  company?: string
+  companyId?: string | null
+  shippingAddress?: string | null
+  trackingNumber?: string | null
 }
 
 interface OrdersPageClientProps {
@@ -32,6 +37,8 @@ const ITEMS_PER_PAGE = 10
 
 export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageClientProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [filters, setFilters] = useState<FilterState>({
     orderId: '',
     status: 'all',
@@ -184,7 +191,13 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
 
       {/* Orders Table */}
       <div className="space-y-4">
-        <OrdersTable orders={paginatedOrders} />
+        <OrdersTable 
+          orders={paginatedOrders} 
+          onOrderClick={(order) => {
+            setSelectedOrder(order)
+            setDetailsDialogOpen(true)
+          }}
+        />
         
         {/* Pagination */}
         {filteredOrders.length > 0 && (
@@ -201,6 +214,21 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
       {canCreateOrders && (
         <NewOrderDialog open={dialogOpen} onOpenChange={setDialogOpen} />
       )}
+
+      <OrderDetailsDialog
+        order={selectedOrder}
+        open={detailsDialogOpen}
+        onClose={() => {
+          setDetailsDialogOpen(false)
+          setSelectedOrder(null)
+        }}
+        onSuccess={() => {
+          setDetailsDialogOpen(false)
+          setSelectedOrder(null)
+          window.location.reload()
+        }}
+        canEdit={canCreateOrders || currentUserRole === 'HR'}
+      />
     </div>
   )
 }

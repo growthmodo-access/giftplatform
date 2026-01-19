@@ -156,6 +156,7 @@ export async function getOrders() {
         company: companyName || 'N/A',
         companyId: order.company_id,
         shippingAddress: order.shipping_address || null,
+        trackingNumber: order.tracking_number || null,
       }
     })
 
@@ -163,6 +164,85 @@ export async function getOrders() {
   } catch (error) {
     return { 
       data: [], 
+      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    }
+  }
+}
+
+/**
+ * Update order tracking number and status
+ */
+export async function updateOrderTracking(orderId: string, updates: { trackingNumber?: string | null, status?: string }) {
+  try {
+    const supabase = await createClient()
+    
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    // Get current user's role
+    const { data: currentUser, error: currentUserError } = await supabase
+      .from('users')
+      .select('role, company_id')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (currentUserError || !currentUser) {
+      return { error: 'User profile not found' }
+    }
+
+    // Check permissions - ADMIN, HR, SUPER_ADMIN can update
+    if (!['ADMIN', 'HR', 'SUPER_ADMIN'].includes(currentUser.role || '')) {
+      return { error: 'You do not have permission to update orders' }
+    }
+
+    // Get order to check company
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .select('company_id')
+      .eq('id', orderId)
+      .single()
+
+    if (orderError || !order) {
+      return { error: 'Order not found' }
+    }
+
+    // ADMIN can only update orders from their company
+    if (currentUser.role === 'ADMIN' && currentUser.company_id !== order.company_id) {
+      return { error: 'You can only update orders from your company' }
+    }
+
+    // Update order
+    const updateData: any = {
+      updated_at: new Date().toISOString(),
+    }
+
+    if (updates.trackingNumber !== undefined) {
+      updateData.tracking_number = updates.trackingNumber
+    }
+
+    if (updates.status) {
+      updateData.status = updates.status
+    }
+
+    const { error: updateError } = await supabase
+      .from('orders')
+      .update(updateData)
+      .eq('id', orderId)
+
+    if (updateError) {
+      return { error: updateError.message }
+    }
+
+    revalidatePath('/orders')
+    return { success: true }
+  } catch (error) {
+    return { 
       error: error instanceof Error ? error.message : 'An unexpected error occurred' 
     }
   }
@@ -181,30 +261,22 @@ export async function createOrder(formData: FormData) {
       redirect('/login')
     }
 
-    // Get current user's company
-    const { data: currentUser, error: userError } = await supabase
+    // Get current user's company and role
+    const { data: currentUser, error: currentUserError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
       .maybeSingle()
 
-    if (userError || !currentUser) {
-      return { error: 'Failed to fetch user data' }
+    if (currentUserError || !currentUser) {
+      return { error: 'User profile not found' }
     }
 
-    // SUPER_ADMIN can create orders without company_id requirement
-    // Other roles need company_id
-    if (currentUser.role !== 'SUPER_ADMIN' && !currentUser.company_id) {
-      return { error: 'You must be part of a company to create orders' }
+    // Check permissions - ADMIN, MANAGER, SUPER_ADMIN can create orders
+    if (!['ADMIN', 'MANAGER', 'SUPER_ADMIN'].includes(currentUser.role || '')) {
+      return { error: 'You do not have permission to create orders' }
     }
 
-    // Check permissions - only ADMIN, MANAGER, and SUPER_ADMIN can create orders
-    // HR cannot create orders (read-only access)
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
-      return { error: 'You do not have permission to create orders. Only Admins and Managers can create orders.' }
-    }
-
-    // Get form data
     const employeeId = formData.get('employee_id') as string
     const productId = formData.get('product_id') as string
     const quantity = parseInt(formData.get('quantity') as string) || 1
@@ -214,7 +286,18 @@ export async function createOrder(formData: FormData) {
       return { error: 'Employee and product are required' }
     }
 
-    // Verify employee exists
+    // Get product details
+    const { data: product, error: productError } = await supabase
+      .from('products')
+      .select('id, price, currency, company_id')
+      .eq('id', productId)
+      .single()
+
+    if (productError || !product) {
+      return { error: 'Product not found' }
+    }
+
+    // Get employee's company
     const { data: employee, error: employeeError } = await supabase
       .from('users')
       .select('company_id')
@@ -225,89 +308,52 @@ export async function createOrder(formData: FormData) {
       return { error: 'Employee not found' }
     }
 
-    // SUPER_ADMIN can create orders for any employee
-    // Other roles can only create orders for employees in their company
-    if (currentUser.role !== 'SUPER_ADMIN' && employee.company_id !== currentUser.company_id) {
-      return { error: 'Employee not found or not in your company' }
-    }
-
-    // Use employee's company_id or current user's company_id
-    const orderCompanyId = currentUser.role === 'SUPER_ADMIN' ? employee.company_id : currentUser.company_id
-
-    // Get product details
-    const { data: product, error: productError } = await supabase
-      .from('products')
-      .select('id, price, stock, name')
-      .eq('id', productId)
-      .single()
-
-    if (productError || !product) {
-      return { error: 'Product not found' }
-    }
-
-    // Check stock availability
-    if (product.stock < quantity) {
-      return { error: `Insufficient stock. Only ${product.stock} available.` }
-    }
-
-    // Generate order number
-    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
+    // Determine company_id - use product's company or employee's company
+    const companyId = product.company_id || employee.company_id || currentUser.company_id
 
     // Calculate total
-    const total = product.price * quantity
+    const total = (product.price || 0) * quantity
+
+    // Generate order number
+    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
 
     // Create order
-    const { data: order, error: orderError } = await supabase
+    const { data: newOrder, error: orderError } = await supabase
       .from('orders')
       .insert({
         order_number: orderNumber,
         user_id: employeeId,
-        company_id: orderCompanyId,
+        company_id: companyId,
         status: 'PENDING',
         total: total,
-        currency: 'USD',
+        currency: product.currency || 'USD',
         shipping_address: shippingAddress || null,
       })
       .select()
       .single()
 
-    if (orderError || !order) {
-      return { error: `Failed to create order: ${orderError?.message || 'Unknown error'}` }
+    if (orderError) {
+      return { error: orderError.message }
     }
 
-    // Create order item
-    const { error: itemError } = await supabase
+    // Create order items
+    const { error: itemsError } = await supabase
       .from('order_items')
       .insert({
-        order_id: order.id,
+        order_id: newOrder.id,
         product_id: productId,
         quantity: quantity,
-        price: product.price,
+        price: product.price || 0,
       })
 
-    if (itemError) {
+    if (itemsError) {
       // Rollback order creation
-      await supabase.from('orders').delete().eq('id', order.id)
-      return { error: `Failed to create order item: ${itemError.message}` }
-    }
-
-    // Update product stock
-    const { error: stockError } = await supabase
-      .from('products')
-      .update({ stock: product.stock - quantity })
-      .eq('id', productId)
-
-    if (stockError) {
-      console.error('Failed to update product stock:', stockError)
-      // Don't fail the order creation, but log the error
+      await supabase.from('orders').delete().eq('id', newOrder.id)
+      return { error: itemsError.message }
     }
 
     revalidatePath('/orders')
-    return { 
-      success: true, 
-      message: `Order ${orderNumber} created successfully`,
-      orderId: order.id
-    }
+    return { success: true, data: newOrder }
   } catch (error) {
     return { 
       error: error instanceof Error ? error.message : 'An unexpected error occurred' 
