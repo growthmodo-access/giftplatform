@@ -64,6 +64,11 @@ CREATE POLICY "Users can update own wallet" ON wallets
   FOR UPDATE
   USING (user_id = auth.uid());
 
+-- Allow system to insert wallets (needed for auto-creation)
+CREATE POLICY "System can create wallets" ON wallets
+  FOR INSERT
+  WITH CHECK (true);
+
 -- RLS Policies for wallet_transactions
 CREATE POLICY "Users can view own transactions" ON wallet_transactions
   FOR SELECT
@@ -72,6 +77,11 @@ CREATE POLICY "Users can view own transactions" ON wallet_transactions
       SELECT id FROM wallets WHERE user_id = auth.uid()
     )
   );
+
+-- Allow system to create transactions
+CREATE POLICY "System can create transactions" ON wallet_transactions
+  FOR INSERT
+  WITH CHECK (true);
 
 -- RLS Policies for invoices
 CREATE POLICY "Users can view company invoices" ON invoices
@@ -86,3 +96,8 @@ CREATE POLICY "Users can view company invoices" ON invoices
       AND users.role = 'SUPER_ADMIN'
     )
   );
+
+-- Allow system to create invoices
+CREATE POLICY "System can create invoices" ON invoices
+  FOR INSERT
+  WITH CHECK (true);
