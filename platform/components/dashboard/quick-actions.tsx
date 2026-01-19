@@ -57,29 +57,29 @@ export async function QuickActions() {
   }
 
   return (
-    <Card className="border border-border bg-card">
+    <Card className="border border-border/50 bg-card shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-base font-semibold text-foreground">Quick Actions</CardTitle>
-        <CardDescription className="text-sm text-muted-foreground">Common tasks and shortcuts</CardDescription>
+        <CardDescription className="text-xs text-muted-foreground">Common tasks and shortcuts</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-1">
+      <CardContent className="pt-0">
+        <div className="space-y-1.5">
           {actions.map((action) => {
             const Icon = action.icon
             return (
               <Link key={action.title} href={action.href}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start h-auto p-3 hover:bg-muted transition-colors group"
+                  className="w-full justify-start h-auto p-3 hover:bg-muted/60 transition-all group rounded-lg"
                 >
-                  <div className="p-1.5 rounded bg-muted mr-3 flex-shrink-0">
+                  <div className="p-1.5 rounded-md bg-muted/50 mr-3 flex-shrink-0 group-hover:bg-muted transition-colors">
                     <Icon className="w-4 h-4 text-foreground" />
                   </div>
                   <div className="flex-1 text-left min-w-0">
-                    <p className="font-medium text-sm text-foreground truncate">{action.title}</p>
-                    <p className="text-xs text-muted-foreground truncate">{action.description}</p>
+                    <p className="font-medium text-sm text-foreground leading-tight">{action.title}</p>
+                    <p className="text-xs text-muted-foreground leading-tight mt-0.5">{action.description}</p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all flex-shrink-0 opacity-0 group-hover:opacity-100" />
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all flex-shrink-0 opacity-0 group-hover:opacity-100 ml-2" />
                 </Button>
               </Link>
             )

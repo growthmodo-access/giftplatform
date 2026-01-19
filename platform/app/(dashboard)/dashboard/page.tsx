@@ -30,8 +30,8 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       {/* Welcome Header with Quick Actions */}
       <div className="pb-6 border-b border-border/50">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+          <div className="lg:col-span-2">
             <p className="text-sm text-muted-foreground mb-1.5">
               {getTimeGreeting()} • {getFormattedDate()}
             </p>
@@ -45,7 +45,7 @@ export default async function DashboardPage() {
               }
             </p>
           </div>
-          <div className="lg:min-w-[280px]">
+          <div className="lg:col-span-1">
             <QuickActions />
           </div>
         </div>
