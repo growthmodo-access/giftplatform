@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Pagination } from '@/components/ui/pagination'
 import { Plus } from 'lucide-react'
 import { EmployeesList } from './employees-list'
 import { AddEmployeeDialog } from './add-employee-dialog'
@@ -22,9 +23,21 @@ interface EmployeesPageClientProps {
   currentUserId: string
 }
 
+const ITEMS_PER_PAGE = 10
+
 export function EmployeesPageClient({ employees, currentUserRole, currentUserId }: EmployeesPageClientProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
   const canInviteEmployees = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+
+  // Paginate employees
+  const paginatedEmployees = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+    const endIndex = startIndex + ITEMS_PER_PAGE
+    return employees.slice(startIndex, endIndex)
+  }, [employees, currentPage])
+
+  const totalPages = Math.ceil(employees.length / ITEMS_PER_PAGE)
 
   return (
     <div className="space-y-4 lg:space-y-6">
@@ -52,10 +65,23 @@ export function EmployeesPageClient({ employees, currentUserRole, currentUserId 
         </CardHeader>
         <CardContent>
           <EmployeesList 
-            employees={employees} 
+            employees={paginatedEmployees} 
             currentUserRole={currentUserRole}
             currentUserId={currentUserId}
           />
+          
+          {/* Pagination */}
+          {employees.length > ITEMS_PER_PAGE && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={employees.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 

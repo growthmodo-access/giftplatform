@@ -4,6 +4,16 @@ import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { CampaignStep1Details } from './wizard-steps/step1-details'
 import { CampaignStep2Recipients } from './wizard-steps/step2-recipients'
 import { CampaignStep3Gifts } from './wizard-steps/step3-gifts'
@@ -43,6 +53,7 @@ const STEPS = [
 
 export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps) {
   const [currentStep, setCurrentStep] = useState(1)
+  const [closeDialogOpen, setCloseDialogOpen] = useState(false)
   const [campaignData, setCampaignData] = useState<CampaignWizardData>({
     name: '',
     description: '',
@@ -101,7 +112,7 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
   }
 
   const handleClose = () => {
-    if (currentStep === 1 || confirm('Are you sure you want to close? Your progress will be lost.')) {
+    if (currentStep === 1) {
       setCurrentStep(1)
       setCampaignData({
         name: '',
@@ -117,7 +128,28 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
         customMessage: '',
       })
       onClose()
+    } else {
+      setCloseDialogOpen(true)
     }
+  }
+
+  const handleCloseConfirm = () => {
+    setCurrentStep(1)
+    setCampaignData({
+      name: '',
+      description: '',
+      recipientType: 'ALL',
+      selectedRecipients: [],
+      giftType: 'SINGLE',
+      selectedProducts: [],
+      budget: null,
+      perRecipientBudget: null,
+      scheduleType: 'NOW',
+      scheduledDate: null,
+      customMessage: '',
+    })
+    setCloseDialogOpen(false)
+    onClose()
   }
 
   const renderStep = () => {
@@ -197,6 +229,24 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
           </div>
         )}
       </DialogContent>
+      
+      {/* Close Confirmation Dialog */}
+      <AlertDialog open={closeDialogOpen} onOpenChange={setCloseDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Discard Changes?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to close? Your progress will be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continue Editing</AlertDialogCancel>
+            <AlertDialogAction onClick={handleCloseConfirm}>
+              Discard Changes
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Dialog>
   )
 }

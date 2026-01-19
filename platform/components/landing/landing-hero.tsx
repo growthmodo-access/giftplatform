@@ -12,7 +12,7 @@ export function LandingHero() {
 
   const handleExploreCountries = () => {
     // Scroll to countries section or show modal
-    console.log('Explore countries clicked')
+    // Navigate to signup or dashboard
   }
 
   return (

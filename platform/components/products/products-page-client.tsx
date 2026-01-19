@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { ProductsTable } from '@/components/products/products-table'
 import { ProductsGrid } from '@/components/products/products-grid'
 import { Button } from '@/components/ui/button'
+import { Pagination } from '@/components/ui/pagination'
 import { Plus, Download, Upload, Package, Grid, List } from 'lucide-react'
 import { Database } from '@/types/database'
 import { ProductDialog } from './product-dialog'
@@ -15,11 +16,23 @@ interface ProductsPageClientProps {
   currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
 }
 
+const ITEMS_PER_PAGE = 12
+
 export function ProductsPageClient({ initialProducts, currentUserRole }: ProductsPageClientProps) {
   // Only ADMIN and SUPER_ADMIN can create/edit/delete products
   const canManageProducts = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('grid')
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  // Paginate products
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+    const endIndex = startIndex + ITEMS_PER_PAGE
+    return initialProducts.slice(startIndex, endIndex)
+  }, [initialProducts, currentPage])
+
+  const totalPages = Math.ceil(initialProducts.length / ITEMS_PER_PAGE)
 
   return (
     <div className="space-y-6">
@@ -132,15 +145,26 @@ export function ProductsPageClient({ initialProducts, currentUserRole }: Product
       {/* Products View */}
       {viewMode === 'grid' ? (
         <ProductsGrid 
-          initialProducts={initialProducts} 
+          initialProducts={paginatedProducts} 
           canManageProducts={canManageProducts}
           currentUserRole={currentUserRole}
         />
       ) : (
         <ProductsTable 
-          initialProducts={initialProducts} 
+          initialProducts={paginatedProducts} 
           canManageProducts={canManageProducts}
           currentUserRole={currentUserRole}
+        />
+      )}
+
+      {/* Pagination */}
+      {initialProducts.length > ITEMS_PER_PAGE && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={initialProducts.length}
+          itemsPerPage={ITEMS_PER_PAGE}
+          onPageChange={setCurrentPage}
         />
       )}
 

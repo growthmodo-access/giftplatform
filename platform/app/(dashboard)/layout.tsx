@@ -1,5 +1,6 @@
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { Header } from '@/components/dashboard/header'
+import { Breadcrumbs } from '@/components/dashboard/breadcrumbs'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -95,7 +96,9 @@ export default async function DashboardLayout({
           userInitials={userInitials}
         />
         <main className="flex-1 overflow-y-auto bg-[#fafafa]">
+          <KeyboardShortcuts />
           <div className="container-padding py-6 lg:py-8 max-w-7xl mx-auto px-4 lg:px-6">
+            <Breadcrumbs />
             {children}
           </div>
         </main>

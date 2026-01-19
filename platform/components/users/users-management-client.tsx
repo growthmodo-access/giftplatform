@@ -21,6 +21,17 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { useToast } from '@/hooks/use-toast'
 import { Building2, Users, Shield, Mail } from 'lucide-react'
 import { updateUserRole } from '@/actions/users'
 
@@ -57,20 +68,28 @@ const roleLabels: Record<string, string> = {
 
 export function UsersManagementClient({ users }: UsersManagementClientProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [updating, setUpdating] = useState<string | null>(null)
+  const [roleChangeDialog, setRoleChangeDialog] = useState<{ userId: string; newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE' } | null>(null)
 
   const handleRoleChange = async (userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') => {
-    if (!confirm(`Are you sure you want to change this user's role to ${roleLabels[newRole]}?`)) {
-      return
-    }
-
     setUpdating(userId)
+    setRoleChangeDialog(null)
     const result = await updateUserRole(userId, newRole)
     setUpdating(null)
     
     if (result.error) {
-      alert(result.error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error,
+      })
     } else {
+      toast({
+        variant: "success",
+        title: "Role Updated",
+        description: `User role updated to ${roleLabels[newRole]}.`,
+      })
       router.refresh()
     }
   }
@@ -208,7 +227,7 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
                       <TableCell>
                         <Select
                           value={user.role}
-                          onValueChange={(value) => handleRoleChange(user.id, value as any)}
+                          onValueChange={(value) => setRoleChangeDialog({ userId: user.id, newRole: value as any })}
                           disabled={updating === user.id}
                         >
                           <SelectTrigger className="w-[140px]">
@@ -234,6 +253,26 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
           </div>
         </CardContent>
       </Card>
+      
+      {/* Role Change Confirmation Dialog */}
+      {roleChangeDialog && (
+        <AlertDialog open={!!roleChangeDialog} onOpenChange={(open) => !open && setRoleChangeDialog(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Change User Role</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to change this user's role to {roleLabels[roleChangeDialog.newRole]}? This action will immediately update their permissions.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={() => roleChangeDialog && handleRoleChange(roleChangeDialog.userId, roleChangeDialog.newRole)}>
+                Change Role
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   )
 }

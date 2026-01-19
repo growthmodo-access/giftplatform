@@ -12,6 +12,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/hooks/use-toast'
 import { Search, MoreVertical, Edit, Trash2, Package } from 'lucide-react'
 import {
   DropdownMenu,
@@ -44,6 +45,7 @@ interface ProductsTableProps {
 
 export function ProductsTable({ initialProducts, canManageProducts = false, currentUserRole }: ProductsTableProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -83,9 +85,18 @@ export function ProductsTable({ initialProducts, canManageProducts = false, curr
     const result = await deleteProduct(productToDelete.id)
 
     if (result.error) {
-      alert(result.error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error,
+      })
       setDeleting(false)
     } else {
+      toast({
+        variant: "success",
+        title: "Product Deleted",
+        description: "Product deleted successfully.",
+      })
       setDeleteDialogOpen(false)
       setProductToDelete(null)
       router.refresh()
@@ -209,33 +220,42 @@ export function ProductsTable({ initialProducts, canManageProducts = false, curr
                         </TableCell>
                         {canManageProducts && (
                           <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-8 w-8"
-                                >
-                                  <MoreVertical className="w-4 h-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="border-border/50">
-                                <DropdownMenuItem
-                                  onClick={() => handleEdit(product)}
-                                  className="cursor-pointer"
-                                >
-                                  <Edit className="w-4 h-4 mr-2" />
-                                  Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() => handleDeleteClick(product)}
-                                  className="cursor-pointer text-destructive focus:text-destructive"
-                                >
-                                  <Trash2 className="w-4 h-4 mr-2" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <TooltipProvider>
+                              <DropdownMenu>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8"
+                                      >
+                                        <MoreVertical className="w-4 h-4" />
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Product actions</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                                <DropdownMenuContent align="end" className="border-border/50">
+                                  <DropdownMenuItem
+                                    onClick={() => handleEdit(product)}
+                                    className="cursor-pointer"
+                                  >
+                                    <Edit className="w-4 h-4 mr-2" />
+                                    Edit
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => handleDeleteClick(product)}
+                                    className="cursor-pointer text-destructive focus:text-destructive"
+                                  >
+                                    <Trash2 className="w-4 h-4 mr-2" />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TooltipProvider>
                           </TableCell>
                         )}
                       </TableRow>

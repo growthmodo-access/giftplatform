@@ -36,6 +36,7 @@ export async function getOrders() {
     let query = supabase
       .from('orders')
       .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at, company_id')
+      .is('deleted_at', null) // Only get non-deleted orders
 
     // SUPER_ADMIN can see all orders (all companies)
     if (currentUser.role === 'SUPER_ADMIN') {

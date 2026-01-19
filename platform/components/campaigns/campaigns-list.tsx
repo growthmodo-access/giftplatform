@@ -5,6 +5,17 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { useToast } from '@/hooks/use-toast'
 import { Zap, Send } from 'lucide-react'
 import { sendCampaignToEmployees, updateCampaignStatus, deleteCampaign } from '@/actions/campaigns'
 
@@ -38,27 +49,35 @@ const triggerLabels: Record<string, string> = {
 
 export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [sending, setSending] = useState<string | null>(null)
   const [toggling, setToggling] = useState<string | null>(null)
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null)
+  const [sendDialogOpen, setSendDialogOpen] = useState<string | null>(null)
 
   const canManageCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
   // Only ADMIN and SUPER_ADMIN can delete campaigns
   const canDeleteCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
 
   const handleSendCampaign = async (campaignId: string) => {
-    if (!confirm('Are you sure you want to send this campaign to all employees?')) {
-      return
-    }
-
     setSending(campaignId)
+    setSendDialogOpen(null)
     const result = await sendCampaignToEmployees(campaignId)
     setSending(null)
     
     if (result.error) {
-      alert(result.error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error,
+      })
     } else {
-      alert(`Campaign sent successfully! ${result.giftsSent} gifts sent to employees.`)
+      toast({
+        variant: "success",
+        title: "Campaign Sent",
+        description: `Campaign sent successfully! ${result.giftsSent || 0} gifts sent to employees.`,
+      })
       router.refresh()
     }
   }
@@ -69,32 +88,53 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
     setToggling(null)
     
     if (result.error) {
-      alert(result.error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error,
+      })
     } else {
+      toast({
+        variant: "success",
+        title: "Campaign Updated",
+        description: `Campaign ${!currentStatus ? 'activated' : 'deactivated'} successfully.`,
+      })
       router.refresh()
     }
   }
 
   const handleDeleteCampaign = async (campaignId: string) => {
-    if (!confirm('Are you sure you want to delete this campaign? This action cannot be undone.')) {
-      return
-    }
-
     setDeleting(campaignId)
+    setDeleteDialogOpen(null)
     const result = await deleteCampaign(campaignId)
     setDeleting(null)
     
     if (result.error) {
-      alert(result.error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error,
+      })
     } else {
+      toast({
+        variant: "success",
+        title: "Campaign Deleted",
+        description: "Campaign deleted successfully.",
+      })
       router.refresh()
     }
   }
 
   if (campaigns.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
-        No campaigns found. Create your first campaign to get started.
+      <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+        <div className="mb-4 p-4 rounded-full bg-muted/50">
+          <Zap className="w-8 h-8 text-muted-foreground" />
+        </div>
+        <h3 className="text-lg font-semibold text-foreground mb-2">No campaigns found</h3>
+        <p className="text-sm text-muted-foreground max-w-md">
+          Create your first campaign to start sending gifts to your employees automatically.
+        </p>
       </div>
     )
   }
@@ -129,33 +169,49 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
                 </div>
               )}
               {canManageCampaigns && (
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => handleToggleStatus(campaign.id, campaign.is_active)}
-                    disabled={toggling === campaign.id}
-                  >
-                    {toggling === campaign.id ? '...' : campaign.is_active ? 'Deactivate' : 'Activate'}
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="flex-1 gap-2"
-                    onClick={() => handleSendCampaign(campaign.id)}
-                    disabled={sending === campaign.id || !campaign.is_active}
-                  >
-                    <Send className="w-4 h-4" />
-                    {sending === campaign.id ? 'Sending...' : 'Send Now'}
-                  </Button>
-                </div>
+                <TooltipProvider>
+                  <div className="flex gap-2">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => handleToggleStatus(campaign.id, campaign.is_active)}
+                          disabled={toggling === campaign.id}
+                        >
+                          {toggling === campaign.id ? '...' : campaign.is_active ? 'Deactivate' : 'Activate'}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{campaign.is_active ? 'Deactivate this campaign' : 'Activate this campaign'}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          size="sm"
+                          className="flex-1 gap-2"
+                          onClick={() => setSendDialogOpen(campaign.id)}
+                          disabled={sending === campaign.id || !campaign.is_active}
+                        >
+                          <Send className="w-4 h-4" />
+                          {sending === campaign.id ? 'Sending...' : 'Send Now'}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Send this campaign to all eligible employees</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
               )}
               {canDeleteCampaigns && (
                 <Button
                   variant="destructive"
                   size="sm"
                   className="w-full mt-2"
-                  onClick={() => handleDeleteCampaign(campaign.id)}
+                  onClick={() => setDeleteDialogOpen(campaign.id)}
                   disabled={deleting === campaign.id}
                 >
                   {deleting === campaign.id ? 'Deleting...' : 'Delete Campaign'}
@@ -165,6 +221,49 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
           </CardContent>
         </Card>
       ))}
+      
+      {/* Send Campaign Confirmation Dialog */}
+      {sendDialogOpen && (
+        <AlertDialog open={!!sendDialogOpen} onOpenChange={(open) => !open && setSendDialogOpen(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Send Campaign</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to send this campaign to all employees? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={() => sendDialogOpen && handleSendCampaign(sendDialogOpen)}>
+                Send Campaign
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+
+      {/* Delete Campaign Confirmation Dialog */}
+      {deleteDialogOpen && (
+        <AlertDialog open={!!deleteDialogOpen} onOpenChange={(open) => !open && setDeleteDialogOpen(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Campaign</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete this campaign? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction 
+                onClick={() => deleteDialogOpen && handleDeleteCampaign(deleteDialogOpen)}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   )
 }

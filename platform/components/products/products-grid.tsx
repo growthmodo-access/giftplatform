@@ -6,6 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Edit, Trash2, Package, Grid, List } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { Database } from '@/types/database'
 import { deleteProduct } from '@/actions/products'
 import { useRouter } from 'next/navigation'
@@ -71,9 +77,18 @@ export function ProductsGrid({ initialProducts, canManageProducts = false, curre
     const result = await deleteProduct(productToDelete.id)
 
     if (result.error) {
-      alert(result.error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error,
+      })
       setDeleting(false)
     } else {
+      toast({
+        variant: "success",
+        title: "Product Deleted",
+        description: "Product deleted successfully.",
+      })
       setDeleteDialogOpen(false)
       setProductToDelete(null)
       router.refresh()
@@ -136,24 +151,40 @@ export function ProductsGrid({ initialProducts, canManageProducts = false, curre
                       </div>
                     )}
                     {canManageProducts && (
-                      <div className="absolute top-2 right-2 flex gap-1">
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          className="h-7 w-7 p-0"
-                          onClick={() => handleEdit(product)}
-                        >
-                          <Edit className="w-3 h-3" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          className="h-7 w-7 p-0"
-                          onClick={() => handleDeleteClick(product)}
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </div>
+                      <TooltipProvider>
+                        <div className="absolute top-2 right-2 flex gap-1">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="secondary"
+                                className="h-7 w-7 p-0"
+                                onClick={() => handleEdit(product)}
+                              >
+                                <Edit className="w-3 h-3" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Edit product</p>
+                            </TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                className="h-7 w-7 p-0"
+                                onClick={() => handleDeleteClick(product)}
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Delete product</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                      </TooltipProvider>
                     )}
                   </div>
                   

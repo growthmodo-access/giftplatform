@@ -299,8 +299,9 @@ export async function deleteProduct(id: string) {
 
     const { error } = await supabase
       .from('products')
-      .delete()
+      .update({ deleted_at: new Date().toISOString() })
       .eq('id', id)
+      .is('deleted_at', null) // Only soft delete if not already deleted
 
     if (error) {
       return { error: error.message }

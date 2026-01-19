@@ -11,7 +11,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useToast } from '@/hooks/use-toast'
 import { updateEmployeeRole } from '@/actions/employees'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { MoreVertical, Building2, MapPin } from 'lucide-react'
 
 type Employee = {
@@ -55,6 +62,7 @@ const roleLabels: Record<string, string> = {
 
 export function EmployeesList({ employees, currentUserRole, currentUserId }: EmployeesListProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [updating, setUpdating] = useState<string | null>(null)
 
   const canManageRoles = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
@@ -65,16 +73,31 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
     setUpdating(null)
     
     if (result.error) {
-      alert(result.error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error,
+      })
     } else {
+      toast({
+        variant: "success",
+        title: "Role Updated",
+        description: `Employee role updated to ${roleLabels[newRole]}.`,
+      })
       router.refresh()
     }
   }
 
   if (employees.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        No employees found. Add your first team member to get started.
+      <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+        <div className="mb-4 p-4 rounded-full bg-muted/50">
+          <Users className="w-8 h-8 text-muted-foreground" />
+        </div>
+        <h3 className="text-lg font-semibold text-foreground mb-2">No employees found</h3>
+        <p className="text-sm text-muted-foreground max-w-md">
+          Add your first team member to get started with employee management.
+        </p>
       </div>
     )
   }

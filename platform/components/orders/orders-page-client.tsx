@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { NewOrderDialog } from './new-order-dialog'
@@ -8,6 +8,8 @@ import { OrderDetailsDialog } from './order-details-dialog'
 import { OrdersTable } from './orders-table'
 import { OrdersFilters, FilterState } from './orders-filters'
 import { Pagination } from '@/components/ui/pagination'
+import { useRealtimeOrders } from '@/hooks/use-realtime-orders'
+import { useRouter } from 'next/navigation'
 
 type Order = {
   id: string
@@ -36,6 +38,7 @@ interface OrdersPageClientProps {
 const ITEMS_PER_PAGE = 10
 
 export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageClientProps) {
+  const router = useRouter()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
@@ -157,6 +160,11 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
     setFilters(newFilters)
     setCurrentPage(1)
   }
+
+  // Real-time updates for orders
+  useRealtimeOrders(() => {
+    router.refresh()
+  })
 
   return (
     <div className="space-y-6">
