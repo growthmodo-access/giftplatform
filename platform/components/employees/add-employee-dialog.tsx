@@ -6,9 +6,11 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { inviteEmployee } from '@/actions/employees'
-import { Loader2 } from 'lucide-react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { inviteEmployee, importEmployeesFromCSV } from '@/actions/employees'
+import { Loader2, Upload, FileText } from 'lucide-react'
 
 interface AddEmployeeDialogProps {
   open: boolean
@@ -18,8 +20,11 @@ interface AddEmployeeDialogProps {
 export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [csvLoading, setCsvLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [activeTab, setActiveTab] = useState('single')
+  const [csvFile, setCsvFile] = useState<File | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -40,11 +45,13 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
 
     const email = formData.get('email') as string
     const name = formData.get('name') as string
+    const shippingAddress = formData.get('shipping_address') as string
 
     const result = await inviteEmployee(
       email,
       name,
-      roleValue as 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+      roleValue as 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE',
+      shippingAddress || null
     )
 
     if (result.error) {
@@ -61,16 +68,59 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
     }
   }
 
+  const handleCSVUpload = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!csvFile) {
+      setError('Please select a CSV file')
+      return
+    }
+
+    setCsvLoading(true)
+    setError('')
+    setSuccess('')
+
+    try {
+      const formData = new FormData()
+      formData.append('csv', csvFile)
+
+      const result = await importEmployeesFromCSV(formData)
+
+      if (result.error) {
+        setError(result.error)
+      } else {
+        setSuccess(result.message || `Successfully imported ${result.count || 0} employees!`)
+        setCsvFile(null)
+        setTimeout(() => {
+          onOpenChange(false)
+          router.refresh()
+          setSuccess('')
+        }, 2000)
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to import CSV')
+    } finally {
+      setCsvLoading(false)
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Invite Employee</DialogTitle>
+          <DialogTitle>Add Employee</DialogTitle>
           <DialogDescription>
-            Invite a new team member to join your company. They will receive an email to set their password.
+            Add a single employee or import multiple employees from CSV
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
+        
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="single">Single Employee</TabsTrigger>
+            <TabsTrigger value="csv">CSV Import</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="single" className="space-y-4">
+            <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             {error && (
               <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md">
@@ -134,6 +184,19 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="shipping_address">
+                Shipping Address
+              </Label>
+              <Textarea
+                id="shipping_address"
+                name="shipping_address"
+                placeholder="Street, City, State, ZIP, Country"
+                disabled={loading}
+                rows={3}
+              />
+            </div>
           </div>
           <DialogFooter>
             <Button
@@ -149,7 +212,72 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
               Invite Employee
             </Button>
           </DialogFooter>
-        </form>
+            </form>
+          </TabsContent>
+
+          <TabsContent value="csv" className="space-y-4">
+            <form onSubmit={handleCSVUpload}>
+              <div className="space-y-4">
+                {error && (
+                  <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md">
+                    {error}
+                  </div>
+                )}
+                {success && (
+                  <div className="p-3 text-sm text-green-600 bg-green-50 rounded-md">
+                    {success}
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="csv-file">CSV File</Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="csv-file"
+                      type="file"
+                      accept=".csv"
+                      onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
+                      disabled={csvLoading}
+                      className="cursor-pointer"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    CSV format: email, name, role, shipping_address (optional)
+                  </p>
+                </div>
+
+                <div className="p-4 bg-muted/50 rounded-md">
+                  <div className="flex items-start gap-2">
+                    <FileText className="w-4 h-4 text-muted-foreground mt-0.5" />
+                    <div className="text-xs text-muted-foreground space-y-1">
+                      <p className="font-medium">CSV Format Example:</p>
+                      <pre className="mt-2 text-[10px] bg-background p-2 rounded border border-border/50">
+{`email,name,role,shipping_address
+john@company.com,John Doe,EMPLOYEE,"123 Main St, City, State, 12345"
+jane@company.com,Jane Smith,MANAGER,"456 Oak Ave, City, State, 67890"`}
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => onOpenChange(false)}
+                  disabled={csvLoading}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={csvLoading || !csvFile}>
+                  {csvLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  <Upload className="mr-2 h-4 w-4" />
+                  Import CSV
+                </Button>
+              </DialogFooter>
+            </form>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   )

@@ -112,7 +112,7 @@ export async function getEmployees() {
   }
 }
 
-export async function inviteEmployee(email: string, name: string, role: 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') {
+export async function inviteEmployee(email: string, name: string, role: 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE', shippingAddress?: string | null) {
   try {
     // #region agent log
     fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:68',message:'inviteEmployee called',data:{email,name,role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
@@ -245,6 +245,20 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
     if (resetError) {
       console.error('Failed to send password reset email:', resetError)
       // Continue anyway - user can reset password manually
+    }
+
+    // Create shipping address if provided
+    if (shippingAddress) {
+      await serviceSupabase
+        .from('addresses')
+        .insert({
+          user_id: authData.user.id,
+          street: shippingAddress,
+          type: 'SHIPPING',
+        })
+        .catch(() => {
+          // Ignore address creation errors
+        })
     }
 
     // Note: In production, you'd want to send a proper invitation email
