@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -179,9 +180,14 @@ function LoginForm() {
       <Card className="w-full max-w-md border border-[#F8F3EC]/50 gradient-card shadow-primary-lg">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
-            <span className="font-dm-sans text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              goodies
-            </span>
+            <Image
+              src="/logogoodies.png"
+              alt="Goodies Logo"
+              width={160}
+              height={80}
+              className="h-12 sm:h-16 lg:h-20 w-auto object-contain"
+              priority
+            />
           </div>
           <CardTitle className="text-2xl font-semibold text-center text-foreground">Welcome back</CardTitle>
           <CardDescription className="text-center text-muted-foreground">
