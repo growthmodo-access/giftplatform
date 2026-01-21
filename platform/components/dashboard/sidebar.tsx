@@ -297,7 +297,7 @@ export function Sidebar({ userRole }: SidebarProps) {
                 isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
               )}
             >
-              <div className="relative w-36 h-20 flex-shrink-0">
+              <div className="relative w-72 h-40 flex-shrink-0 max-w-[180px] max-h-[100px] lg:max-w-[288px] lg:max-h-[160px]">
                 <Image
                   src="/goodies.png"
                   alt="Goodies.so Logo"

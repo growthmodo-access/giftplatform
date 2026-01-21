@@ -47,10 +47,10 @@ export function LandingHeader() {
         )}
       >
         <div className="max-w-7xl mx-auto px-10">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between min-h-24 py-4">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative w-48 h-24 group-hover:scale-105 transition-transform">
+            <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+              <div className="relative w-96 h-48 group-hover:scale-105 transition-transform max-w-[200px] max-h-[100px] lg:max-w-[384px] lg:max-h-[192px]">
                 <Image
                   src="/goodies.png"
                   alt="Goodies.so Logo"
