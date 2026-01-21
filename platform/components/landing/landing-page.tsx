@@ -63,9 +63,9 @@ export function LandingPage() {
         <CTASection />
       </main>
       <Footer />
-      <div className="fixed bottom-6 left-6 z-50">
-        <div className="w-14 h-14 gradient-primary rounded-full flex items-center justify-center shadow-primary-lg hover:scale-110 transition-transform cursor-pointer">
-          <span className="text-white font-semibold text-sm">Help</span>
+      <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 gradient-primary rounded-full flex items-center justify-center shadow-primary-lg hover:scale-110 transition-transform cursor-pointer">
+          <span className="text-white font-semibold text-xs sm:text-sm">Help</span>
         </div>
       </div>
     </div>

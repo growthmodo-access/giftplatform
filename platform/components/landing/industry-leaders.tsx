@@ -78,30 +78,30 @@ const clients: Array<{
 
 export function IndustryLeaders() {
   return (
-    <section className="py-24 lg:py-32 bg-transparent">
-      <div className="max-w-7xl mx-auto px-10">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-          <div>
-            <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-transparent">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-center">
+          <div className="order-2 lg:order-1">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-4 sm:mb-6 leading-tight">
               India-first, global-ready
             </h2>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-md">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed max-w-md">
               Built in India, shipping worldwide. We understand local preferences and global scale. Whether you're a startup expanding internationally or an enterprise managing distributed teams, we've got you covered.
             </p>
-            <Button>
+            <Button className="text-sm sm:text-base">
               Talk to sales
             </Button>
           </div>
-          <div className="bg-muted/30 p-12 rounded-3xl border border-border/50">
-            <div className="grid grid-cols-2 gap-6">
+          <div className="bg-muted/30 p-6 sm:p-8 md:p-10 lg:p-12 rounded-2xl sm:rounded-3xl border border-border/50 order-1 lg:order-2">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
               {clients.map((client, index) => (
                 <Card
                   key={client.name}
-                  className={`p-6 glass hover:shadow-xl transition-all border-2 border-white/30 ${
+                  className={`p-3 sm:p-4 md:p-6 glass hover:shadow-xl transition-all border-2 border-white/30 ${
                     index % 2 === 0 ? 'rotate-[-1deg]' : 'rotate-[1deg]'
                   } hover:rotate-0 hover:scale-105`}
                 >
-                  <div className="flex items-center justify-center min-h-[60px]">
+                  <div className="flex items-center justify-center min-h-[40px] sm:min-h-[50px] md:min-h-[60px]">
                     {client.logo}
                   </div>
                 </Card>

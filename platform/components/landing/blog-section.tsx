@@ -13,35 +13,35 @@ const blogPosts = [
 
 export function BlogSection() {
   return (
-    <section id="blog" className="py-24 lg:py-32 bg-transparent">
-      <div className="max-w-7xl mx-auto px-10">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
+    <section id="blog" className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-transparent">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">
             Resources for better gifting
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 px-4 sm:px-0">
             Learn how thoughtful gifting drives employee engagement, strengthens client relationships, and elevates events.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md mx-auto px-4 sm:px-0">
             <Input
               type="text"
               placeholder="Search articles..."
-              className="flex-1"
+              className="flex-1 text-sm sm:text-base"
             />
-            <Button variant="outline">View all articles</Button>
+            <Button variant="outline" className="text-sm sm:text-base">View all articles</Button>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           {blogPosts.map((post, index) => (
             <Card
               key={index}
-              className="p-6 glass hover:shadow-xl transition-all cursor-pointer group"
+              className="p-5 sm:p-6 glass hover:shadow-xl transition-all cursor-pointer group"
             >
-              <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">
+              <div className="text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
                 {post.emoji}
               </div>
-              <h3 className="text-xl font-semibold text-foreground leading-tight">
+              <h3 className="text-base sm:text-lg md:text-xl font-semibold text-foreground leading-tight">
                 {post.title}
               </h3>
             </Card>

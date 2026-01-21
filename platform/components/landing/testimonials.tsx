@@ -44,43 +44,43 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-24 lg:py-32 bg-transparent">
-      <div className="max-w-7xl mx-auto px-10">
-        <div className="text-center mb-16">
-          <div className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-4">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-transparent">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <div className="text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
             EARLY CUSTOMERS
           </div>
-          <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">
             What our customers are saying
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
             We're early, but we're building something special. Here's what our first customers have to say.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {testimonials.map((testimonial, index) => (
             <Card
               key={index}
               className={`
-                p-8 glass hover:shadow-xl transition-all
+                p-5 sm:p-6 md:p-8 glass hover:shadow-xl transition-all
                 ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-2 border-border/50' : ''}
               `}
             >
-              <div className="flex flex-col gap-6">
-                <p className="text-foreground leading-relaxed flex-1">
+              <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
+                <p className="text-sm sm:text-base text-foreground leading-relaxed flex-1">
                   "{testimonial.quote}"
                 </p>
-                <div className="flex items-start gap-3">
-                  <Avatar>
-                    <AvatarFallback>👤</AvatarFallback>
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
+                    <AvatarFallback className="text-xs sm:text-sm">👤</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     {testimonial.author && (
-                      <div className="font-semibold text-foreground">{testimonial.author}</div>
+                      <div className="text-sm sm:text-base font-semibold text-foreground">{testimonial.author}</div>
                     )}
                     {testimonial.role && (
-                      <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">{testimonial.role}</div>
                     )}
                   </div>
                 </div>
