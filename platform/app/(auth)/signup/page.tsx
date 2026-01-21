@@ -99,7 +99,7 @@ export default function SignupPage() {
       <Card className="w-full max-w-md border border-border/50">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
-            <div className="relative w-24 h-14">
+            <div className="relative w-40 h-20">
               <Image
                 src="/goodies.png"
                 alt="Goodies.so Logo"
