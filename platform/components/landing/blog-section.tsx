@@ -16,10 +16,10 @@ export function BlogSection() {
     <section id="blog" className="py-24 lg:py-32 bg-transparent">
       <div className="max-w-7xl mx-auto px-10">
         <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
             Explore expert tips to boost engagement.
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Dive into our resources designed to empower your team, delight clients, and make events unforgettable.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
@@ -41,7 +41,7 @@ export function BlogSection() {
               <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">
                 {post.emoji}
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 leading-tight">
+              <h3 className="text-xl font-semibold text-foreground leading-tight">
                 {post.title}
               </h3>
             </Card>

@@ -18,15 +18,21 @@ export async function createProduct(formData: FormData) {
       redirect('/login')
     }
 
-    // Get user's company
+    // Get user's company and role
     const { data: userData, error: userError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    if (userError) {
+    if (userError || !userData) {
       return { error: 'Failed to fetch user data' }
+    }
+
+    // SUPER_ADMIN can create products without company_id (will need company_id in form)
+    // Other roles need company_id
+    if (userData?.role !== 'SUPER_ADMIN' && !userData?.company_id) {
+      return { error: 'You must be part of a company to create products' }
     }
 
     // Validate required fields
@@ -39,14 +45,26 @@ export async function createProduct(formData: FormData) {
       return { error: 'Missing required fields: name, price, sku, and type are required' }
     }
 
+    // Handle company_id - SUPER_ADMIN can select any company, others use their own
+    let company_id: string | null = null
+    if (userData?.role === 'SUPER_ADMIN') {
+      const formCompanyId = formData.get('company_id') as string
+      company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
+    } else {
+      company_id = userData?.company_id || null
+    }
+
+    const currency = (formData.get('currency') as string)?.trim() || 'USD'
+
     const product = {
       name: name.trim(),
       description: (formData.get('description') as string)?.trim() || null,
       category: (formData.get('category') as string)?.trim() || null,
       price: parseFloat(price),
+      currency: currency,
       sku: sku.trim(),
       type: type as 'SWAG' | 'GIFT_CARD' | 'PHYSICAL_GIFT' | 'EXPERIENCE',
-      company_id: userData?.company_id || null,
+      company_id: company_id,
       stock: parseInt(formData.get('stock') as string) || 0,
     }
 
@@ -66,11 +84,20 @@ export async function createProduct(formData: FormData) {
       return { error: 'Invalid product type' }
     }
 
+    // Check permissions - only ADMIN and SUPER_ADMIN can create products
+    if (userData?.role !== 'ADMIN' && userData?.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to create products. Only Admins can create products.' }
+    }
+
     const { data, error } = await supabase
       .from('products')
       .insert(product)
       .select()
       .single()
+
+    if (!data && !error) {
+      return { error: 'Failed to create product - no data returned' }
+    }
 
     if (error) {
       return { error: error.message }
@@ -115,30 +142,42 @@ export async function updateProduct(id: string, formData: FormData) {
     }
 
     // Get user's company to verify ownership
-    const { data: userData } = await supabase
+    const { data: userData, error: userError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    // Check if user owns the product (same company) or is admin
+    if (userError || !userData) {
+      return { error: 'Failed to fetch user data' }
+    }
+
+    // Check permissions - only ADMIN and SUPER_ADMIN can update products
+    if (userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to update products. Only Admins can update products.' }
+    }
+
+    // Check if user owns the product (same company) or is super admin
     if (
       existingProduct.company_id &&
-      userData?.company_id !== existingProduct.company_id &&
-      userData?.role !== 'ADMIN'
+      userData.company_id !== existingProduct.company_id &&
+      userData.role !== 'SUPER_ADMIN'
     ) {
       return { error: 'You do not have permission to update this product' }
     }
 
     const price = formData.get('price') as string
     const stock = formData.get('stock') as string
+    const currency = formData.get('currency') as string
 
     const updates: {
       name?: string
       description?: string | null
       category?: string | null
       price?: number
+      currency?: string
       stock?: number
+      company_id?: string | null
       updated_at: string
     } = {
       updated_at: new Date().toISOString(),
@@ -157,12 +196,22 @@ export async function updateProduct(id: string, formData: FormData) {
       updates.category = category.trim() || null
     }
 
+    if (currency) {
+      updates.currency = currency.trim()
+    }
+
     if (price) {
       const parsedPrice = parseFloat(price)
       if (isNaN(parsedPrice) || parsedPrice < 0) {
         return { error: 'Invalid price value' }
       }
       updates.price = parsedPrice
+    }
+
+    // SUPER_ADMIN can update company_id
+    if (userData.role === 'SUPER_ADMIN') {
+      const formCompanyId = formData.get('company_id') as string
+      updates.company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
     }
 
     if (stock !== null) {
@@ -224,25 +273,35 @@ export async function deleteProduct(id: string) {
     }
 
     // Get user's company to verify ownership
-    const { data: userData } = await supabase
+    const { data: userData, error: userError } = await supabase
       .from('users')
       .select('company_id, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    // Check if user owns the product (same company) or is admin
+    if (userError || !userData) {
+      return { error: 'Failed to fetch user data' }
+    }
+
+    // Check permissions - only ADMIN and SUPER_ADMIN can delete products
+    if (userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
+      return { error: 'You do not have permission to delete products. Only Admins can delete products.' }
+    }
+
+    // Check if user owns the product (same company) or is super admin
     if (
       existingProduct.company_id &&
-      userData?.company_id !== existingProduct.company_id &&
-      userData?.role !== 'ADMIN'
+      userData.company_id !== existingProduct.company_id &&
+      userData.role !== 'SUPER_ADMIN'
     ) {
       return { error: 'You do not have permission to delete this product' }
     }
 
     const { error } = await supabase
       .from('products')
-      .delete()
+      .update({ deleted_at: new Date().toISOString() })
       .eq('id', id)
+      .is('deleted_at', null) // Only soft delete if not already deleted
 
     if (error) {
       return { error: error.message }

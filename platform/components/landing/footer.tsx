@@ -11,7 +11,7 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200 py-16">
+    <footer className="bg-background border-t border-border/50 py-16">
       <div className="max-w-7xl mx-auto px-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
           {/* Logo and Social */}
@@ -26,11 +26,11 @@ export function Footer() {
                   priority
                 />
               </div>
-              <span className="font-bold text-lg bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
+              <span className="font-semibold text-lg text-foreground">
                 Goodies.so
               </span>
             </div>
-            <p className="text-gray-600 text-sm mb-6">
+            <p className="text-muted-foreground text-sm mb-6">
               © 2024 Goodies.so. All rights reserved.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -38,7 +38,7 @@ export function Footer() {
                 <a
                   key={social}
                   href="#"
-                  className="text-gray-600 hover:text-purple-600 text-sm font-medium transition-colors"
+                  className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
                 >
                   {social}
                 </a>
@@ -49,13 +49,13 @@ export function Footer() {
           {/* Footer Links */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h4 className="font-semibold text-gray-900 mb-4">{category}</h4>
+              <h4 className="font-semibold text-foreground mb-4">{category}</h4>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link}>
                     <a
                       href="#"
-                      className="text-gray-600 hover:text-purple-600 text-sm transition-colors"
+                      className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                     >
                       {link}
                     </a>
@@ -67,14 +67,14 @@ export function Footer() {
         </div>
 
         {/* Badges */}
-        <div className="mt-12 pt-8 border-t border-gray-200 flex flex-wrap gap-4">
-          <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
-            <span className="text-xs font-bold text-gray-700">ACTA</span>
-            <span className="text-sm font-semibold text-gray-900">500</span>
+        <div className="mt-12 pt-8 border-t border-border/50 flex flex-wrap gap-4">
+          <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg border border-border/50">
+            <span className="text-xs font-bold text-foreground">ACTA</span>
+            <span className="text-sm font-semibold text-foreground">500</span>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 bg-green-50 rounded-lg">
+          <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg border border-border/50">
             <span className="text-lg">🌱</span>
-            <span className="text-sm font-semibold text-green-700">Eco-Friendly</span>
+            <span className="text-sm font-semibold text-foreground">Eco-Friendly</span>
           </div>
         </div>
       </div>

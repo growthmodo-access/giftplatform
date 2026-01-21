@@ -2,6 +2,10 @@ import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/providers'
+import { ErrorBoundary } from '@/components/error-boundary'
+import { CSSVariablesCheck } from '@/components/css-variables-check'
+import { TooltipProviderWrapper } from '@/components/tooltip-provider-wrapper'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -54,7 +58,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${plusJakartaSans.variable} font-sans`}>
-        <Providers>{children}</Providers>
+        <CSSVariablesCheck />
+        <ErrorBoundary>
+          <TooltipProviderWrapper>
+            <Providers>{children}</Providers>
+            <Toaster />
+          </TooltipProviderWrapper>
+        </ErrorBoundary>
       </body>
     </html>
   )

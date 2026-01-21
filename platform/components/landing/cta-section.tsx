@@ -16,16 +16,16 @@ export function CTASection() {
     <section className="py-24 lg:py-32 bg-transparent">
       <div className="max-w-7xl mx-auto px-10">
         <div className="text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
             Elevate your swag game worldwide.
           </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Deliver every swag, matter, and gift with easy inventory, event management, and team accountability.
           </p>
           <Button
             onClick={handleRequestDemo}
             size="lg"
-            className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all mb-12"
+            className="px-8 py-6 text-lg font-medium mb-12"
           >
             Request a demo
           </Button>
