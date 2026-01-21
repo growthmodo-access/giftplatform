@@ -42,8 +42,8 @@ export function LandingHeader() {
         className={cn(
           "sticky top-0 z-50 transition-all duration-300",
           isScrolled
-            ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-[#F8F3EC]/30"
-            : "bg-transparent backdrop-blur-0 border-b border-transparent"
+            ? "bg-white/70 backdrop-blur-sm shadow-sm border-b border-[#F8F3EC]/20"
+            : "bg-white/40 backdrop-blur-sm border-b border-transparent"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
