@@ -83,13 +83,13 @@ export function IndustryLeaders() {
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <div>
             <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight">
-              Ready to join industry leaders?
+              India-first, global-ready
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-md">
-              Discover how top companies boost their employee, client, and event engagement through Goodies.so.
+              Built in India, shipping worldwide. We understand local preferences and global scale. Whether you're a startup expanding internationally or an enterprise managing distributed teams, we've got you covered.
             </p>
             <Button>
-              See case studies
+              Talk to sales
             </Button>
           </div>
           <div className="bg-muted/30 p-12 rounded-3xl border border-border/50">

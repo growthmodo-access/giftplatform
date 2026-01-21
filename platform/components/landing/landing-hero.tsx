@@ -22,18 +22,18 @@ export function LandingHero() {
           {/* Trust Badge */}
           <div className="mb-6">
             <span className="inline-block bg-[#F8F3EC] text-foreground px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wide border border-[#F8F3EC]/50 shadow-sm">
-              Your trusted partner for global gifting.
+              Built in India, shipping globally
             </span>
           </div>
 
           {/* Main Heading */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-6 leading-tight">
-            <span className="gradient-text">Boost engagement globally, send premium swag and gifts</span>
+            <span className="gradient-text">Corporate gifting that actually builds relationships</span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-            Improve your culture and increase sales, all in one global gifting platform.
+            Send premium, branded gifts to employees, clients, and events worldwide. We handle inventory, fulfillment, and logistics—you focus on relationships.
           </p>
 
           {/* CTA Buttons */}
@@ -43,7 +43,7 @@ export function LandingHero() {
               size="lg"
               className="gradient-button text-white px-8 py-6 text-lg font-medium shadow-primary-lg"
             >
-              Request a demo
+              Talk to sales
             </Button>
             <Button
               onClick={handleExploreCountries}
@@ -51,7 +51,7 @@ export function LandingHero() {
               size="lg"
               className="border-[#7B61FF]/30 bg-white/90 backdrop-blur-sm hover:bg-[#F8F3EC]/80 px-8 py-6 text-lg font-medium text-[#7B61FF]"
             >
-              Explore countries
+              See how it works
             </Button>
           </div>
 
@@ -59,11 +59,11 @@ export function LandingHero() {
           <div className="flex flex-wrap items-center justify-center gap-8 text-muted-foreground">
             <div className="flex items-center gap-2">
               <span className="text-xl">🌍</span>
-              <span className="text-sm font-medium">Trusted by 50,000+ users globally</span>
+              <span className="text-sm font-medium">80+ countries, zero logistics hassle</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-foreground text-lg">★★★★★</span>
-              <span className="text-sm font-semibold">4.5 / 5 on G2</span>
+              <span className="text-foreground text-lg">🎁</span>
+              <span className="text-sm font-semibold">Premium inventory, human-managed</span>
             </div>
           </div>
         </div>

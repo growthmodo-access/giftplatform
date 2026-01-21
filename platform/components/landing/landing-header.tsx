@@ -33,7 +33,7 @@ export function LandingHeader() {
       {/* Banner */}
       <div className="bg-[#F8F3EC] text-foreground py-3 text-center text-sm font-medium border-b border-[#F8F3EC]/50">
         <div className="max-w-7xl mx-auto px-10">
-          <span>Your trusted partner for global gifting.</span>
+          <span>Built in India, shipping globally</span>
         </div>
       </div>
 

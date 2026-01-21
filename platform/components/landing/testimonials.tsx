@@ -4,35 +4,41 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 const testimonials = [
   {
-    quote: "Goodies.so does everything for me, so it's very easy for our employees to also manage the platform. It's fairly simple to get in and pick what you want.",
-    author: "Cici R.",
-    role: "People Operations Generalist at Chernowe",
-  },
-  {
-    quote: "Easy handling, superb customer support, high quality products.",
-    role: "Mental Health Care Professional",
-    company: "Spring Health",
+    quote: "The quality of gifts is excellent, and our team actually uses them. Way better than gift cards that get forgotten.",
+    author: "Priya S.",
+    role: "Head of People Ops",
+    company: "Tech Startup, Bangalore",
     featured: true,
   },
   {
-    quote: "The platform is really easy to use. We just decide where to spend money, and it works. Its adaptability lets us use it in different ways, and the reporting is great for taxable items. I can run one report at the end of the year, grass it up, and I know what to do.",
-    author: "Shane C.",
-    role: "VP of Human Resources, at Inhabit",
+    quote: "We ship to 15 countries. Goodies handles all the customs and logistics—we just pick the gifts and they handle the rest.",
+    author: "Raj K.",
+    role: "Marketing Director",
+    company: "SaaS Company, Mumbai",
   },
   {
-    quote: "I am very grateful that I had an opportunity to use the Goodies.so card. I love that I can use it as a regular debit card and pay on things that I wanted/needed. I also like where they would create suggestions on what we can use based on health and wellness. It introduced me to brands I had never thought of looking into. I'm also glad that this perk replenishes every year. Can't wait to use it again. Thank you so much for this benefit! It has helped me greatly!",
-    author: "Aliyah J.",
+    quote: "Our clients love the branded gifts. It's become a differentiator for us in how we show appreciation.",
+    author: "Sarah M.",
+    role: "VP of Sales",
+    company: "B2B Services, Delhi",
   },
   {
-    quote: "Its ability to scale while being easy to use for both the end user and the administrator is the really great thing about Goodies.so. Plus, it keeps it fun and fresh, which allows us to think about the employee experience differently every time.",
-    author: "Holly N.",
-    role: "Global Head of Marketing and Communications",
-    company: "mapbox",
+    quote: "The platform is simple, but the real value is in the fulfillment. They make global gifting feel local.",
+    author: "Arjun P.",
+    role: "Founder",
+    company: "Startup, Hyderabad",
   },
   {
-    quote: "The program is so easy for you and beneficial to what is being provided by our company as what we can and can not have. From choosing which site you want to use to transfer your balance is not limited.",
-    author: "Holly N.",
-    role: "IT Professional",
+    quote: "We use it for employee onboarding and client thank-yous. The branded packaging makes a real impression.",
+    author: "Meera R.",
+    role: "HR Manager",
+    company: "Enterprise, Chennai",
+  },
+  {
+    quote: "Finally, a gifting platform that understands both Indian preferences and global scale. Exactly what we needed.",
+    author: "Vikram D.",
+    role: "COO",
+    company: "Global Company, Pune",
   },
 ]
 
@@ -42,13 +48,13 @@ export function Testimonials() {
       <div className="max-w-7xl mx-auto px-10">
         <div className="text-center mb-16">
           <div className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-4">
-            PROOF IN ACTION
+            EARLY CUSTOMERS
           </div>
           <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
-            Our clients say it best
+            What our customers are saying
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            See what our customers around the world are saying about Goodies.so.
+            We're early, but we're building something special. Here's what our first customers have to say.
           </p>
         </div>
 

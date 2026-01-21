@@ -21,16 +21,16 @@ export function FeatureSections() {
             </div>
             <div>
               <div className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-4">
-                THINK GLOBAL, ACT LOCAL
+                GLOBAL FULFILLMENT
               </div>
               <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight">
-                Order premium swag for your global team and events in any volume
+                Premium swag and gifts, shipped worldwide
               </h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Access hassle-free global swag with no shipping or customs fees. Premium swag in any volume, on-demand or in bulk, warehoused and delivered to over 80 countries.
+                We own inventory across 80+ countries. Order branded swag, premium gifts, or curated selections—we handle warehousing, customs, and delivery. No volume minimums, no logistics headaches.
               </p>
               <Button variant="outline" className="border-[#7B61FF]/30 bg-white/90 hover:bg-[#F8F3EC]/80 text-[#7B61FF]">
-                Learn more &gt;
+                Talk to sales
               </Button>
             </div>
           </div>
@@ -55,16 +55,16 @@ export function FeatureSections() {
             </div>
             <div className="lg:order-1">
               <div className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-4">
-                GIVE THE GIFT OF CHOICE
+                WHY GIFTS BEAT GIFT CARDS
               </div>
               <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight">
-                Explore 60,000+ gifts and gift cards globally
+                Thoughtful gifts build stronger relationships
               </h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Boost employee retention and client appreciation with thoughtful, personalized gifts for every occasion, allowing each person to choose something they truly love, and making every gift feel special and memorable.
+                Gift cards feel transactional. Branded, curated gifts show you care. We curate premium selections that recipients actually want—from tech accessories to wellness products. Every gift reinforces your brand and strengthens relationships.
               </p>
-              <Button variant="outline" className="border-border/50">
-                Learn More &gt;
+              <Button variant="outline" className="border-[#7B61FF]/30 bg-white/90 hover:bg-[#F8F3EC]/80 text-[#7B61FF]">
+                Talk to sales
               </Button>
             </div>
           </div>
@@ -102,16 +102,18 @@ export function FeatureSections() {
             </div>
             <div>
               <div className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-4">
-                MAKE EVERY OCCASION MEANINGFUL
+                USE CASES
               </div>
               <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight">
-                Automate gifts for new hires, birthdays, and anniversaries
+                Gifts for employees, clients, and events
               </h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Celebrate your employees' milestones effortlessly. Automate rewards for anniversaries, birthdays, and new hires to ensure every moment is recognized and appreciated.
+                <strong>Employee recognition:</strong> Welcome kits, work anniversaries, performance rewards<br/>
+                <strong>Client appreciation:</strong> Thank-you gifts, deal closings, partnership milestones<br/>
+                <strong>Events & campaigns:</strong> Conference swag, product launches, team offsites
               </p>
-              <Button variant="outline" className="border-border/50">
-                Learn More &gt;
+              <Button variant="outline" className="border-[#7B61FF]/30 bg-white/90 hover:bg-[#F8F3EC]/80 text-[#7B61FF]">
+                Talk to sales
               </Button>
             </div>
           </div>

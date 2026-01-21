@@ -3,12 +3,12 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 
 const blogPosts = [
-  { emoji: '📦', title: 'Top 5 Swag Platforms Best CRM Global Swagging in 2024' },
-  { emoji: '🎉', title: 'Employee Appreciation Day 2024 Swag Ideas' },
-  { emoji: '👕', title: 'Your Complete T-Shirts and Swag Guide for Employee Appreciation Day 2024' },
-  { emoji: '🔗', title: 'Loop & Tie 2024 Review: Products, Use Cases, and More' },
-  { emoji: '🎁', title: 'Corporate Gifting Best Practices for 2024' },
-  { emoji: '🌍', title: 'Global Shipping Made Simple: A Complete Guide' },
+  { emoji: '🎁', title: 'Why branded gifts beat gift cards every time' },
+  { emoji: '🌍', title: 'Global gifting: How to ship to 80+ countries without the hassle' },
+  { emoji: '👥', title: 'Employee gifting strategies that actually boost retention' },
+  { emoji: '🤝', title: 'Client appreciation gifts that strengthen relationships' },
+  { emoji: '🎉', title: 'Event swag that makes an impression' },
+  { emoji: '📊', title: 'Measuring ROI on corporate gifting programs' },
 ]
 
 export function BlogSection() {
@@ -17,10 +17,10 @@ export function BlogSection() {
       <div className="max-w-7xl mx-auto px-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
-            Explore expert tips to boost engagement.
+            Resources for better gifting
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Dive into our resources designed to empower your team, delight clients, and make events unforgettable.
+            Learn how thoughtful gifting drives employee engagement, strengthens client relationships, and elevates events.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
             <Input

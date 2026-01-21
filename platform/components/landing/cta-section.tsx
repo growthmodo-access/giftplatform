@@ -17,17 +17,17 @@ export function CTASection() {
       <div className="max-w-7xl mx-auto px-10">
         <div className="text-center">
           <h2 className="text-4xl lg:text-5xl font-semibold text-foreground mb-4">
-            Elevate your swag game worldwide.
+            Ready to build stronger relationships through gifting?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Deliver every swag, matter, and gift with easy inventory, event management, and team accountability.
+            Let's talk about your gifting needs. We'll show you how premium, branded gifts can transform how you engage with employees, clients, and events.
           </p>
           <Button
             onClick={handleRequestDemo}
             size="lg"
             className="gradient-button text-white px-8 py-6 text-lg font-medium mb-12 shadow-primary-lg"
           >
-            Request a demo
+            Talk to sales
           </Button>
           <div className="flex flex-wrap items-center justify-center gap-6">
             {ctaItems.map((item, index) => (
