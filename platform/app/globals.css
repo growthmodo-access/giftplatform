@@ -4,27 +4,38 @@
 
 @layer base {
   :root {
-    /* Beautiful Purple Theme */
+    /* Premium Color Palette - White Base */
     --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
+    --foreground: 0 0% 16%; /* Signal Black #282828 */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    --card-foreground: 0 0% 16%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
-    --primary: 262 83% 58%;
+    --popover-foreground: 0 0% 16%;
+    --primary: 252 100% 71%; /* Amethyst Bellflower #7B61FF */
     --primary-foreground: 0 0% 100%;
-    --secondary: 262 30% 96%;
-    --secondary-foreground: 262 83% 58%;
-    --muted: 262 20% 98%;
+    --secondary: 40 100% 66%; /* Lemon and Banana #FFE450 */
+    --secondary-foreground: 0 0% 16%;
+    --muted: 30 30% 96%; /* Creamy Milk #F8F3EC */
     --muted-foreground: 0 0% 45%;
-    --accent: 262 40% 95%;
-    --accent-foreground: 262 83% 58%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 262 20% 92%;
-    --input: 262 20% 96%;
-    --ring: 262 83% 58%;
+    --accent: 210 88% 54%; /* Azure Cornflower #2883EB */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 4 100% 65%; /* Watermelon with Carrot #FF5E54 */
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%; /* Light Malachite #28BF5D */
+    --success-foreground: 0 0% 100%;
+    --border: 30 20% 90%;
+    --input: 30 20% 96%;
+    --ring: 252 100% 71%;
     --radius: 0.5rem;
+    
+    /* Custom Color Variables */
+    --color-creamy-milk: #F8F3EC;
+    --color-watermelon: #FF5E54;
+    --color-malachite: #28BF5D;
+    --color-azure: #2883EB;
+    --color-lemon: #FFE450;
+    --color-amethyst: #7B61FF;
+    --color-signal-black: #282828;
   }
 }
 
@@ -39,7 +50,7 @@
     text-rendering: optimizeLegibility;
     font-feature-settings: 'kern' 1, 'liga' 1;
     font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(to bottom, #fafbff 0%, #f8fafc 50%, #f1f5f9 100%);
+    background: #FFFFFF;
     background-attachment: fixed;
   }
   
@@ -58,40 +69,70 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
   
-  /* Beautiful Gradient Utilities */
-  .gradient-purple {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Beautiful Gradient Utilities with Premium Colors */
+  .gradient-primary {
+    background: linear-gradient(135deg, #7B61FF 0%, #2883EB 100%);
   }
   
-  .gradient-purple-light {
-    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #e9d5ff 100%);
+  .gradient-primary-light {
+    background: linear-gradient(135deg, rgba(123, 97, 255, 0.1) 0%, rgba(40, 131, 235, 0.1) 100%);
   }
   
-  .gradient-purple-subtle {
-    background: linear-gradient(to bottom, #fafbff 0%, #f5f3ff 50%, #f0edff 100%);
+  .gradient-warm {
+    background: linear-gradient(135deg, #FFE450 0%, #FF5E54 100%);
+  }
+  
+  .gradient-cool {
+    background: linear-gradient(135deg, #2883EB 0%, #28BF5D 100%);
+  }
+  
+  .gradient-vibrant {
+    background: linear-gradient(135deg, #7B61FF 0%, #FF5E54 50%, #FFE450 100%);
+  }
+  
+  .gradient-subtle {
+    background: linear-gradient(to bottom, #FFFFFF 0%, #F8F3EC 50%, #FFFFFF 100%);
   }
   
   .gradient-hero {
-    background: linear-gradient(135deg, #fafbff 0%, #f5f3ff 25%, #ede9fe 50%, #e9d5ff 75%, #f0edff 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8F3EC 25%, rgba(123, 97, 255, 0.05) 50%, rgba(40, 131, 235, 0.05) 75%, #FFFFFF 100%);
   }
   
   .gradient-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 245, 255, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 243, 236, 0.5) 100%);
+    border: 1px solid rgba(123, 97, 255, 0.1);
   }
   
   .gradient-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #7B61FF 0%, #2883EB 100%);
     transition: all 0.3s ease;
   }
   
   .gradient-button:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: linear-gradient(135deg, #2883EB 0%, #7B61FF 100%);
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 25px rgba(123, 97, 255, 0.4);
+  }
+  
+  .gradient-button-warm {
+    background: linear-gradient(135deg, #FF5E54 0%, #FFE450 100%);
+  }
+  
+  .gradient-button-warm:hover {
+    background: linear-gradient(135deg, #FFE450 0%, #FF5E54 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 94, 84, 0.4);
   }
   
   .gradient-text {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #7B61FF 0%, #2883EB 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-warm {
+    background: linear-gradient(135deg, #FF5E54 0%, #FFE450 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -106,12 +147,20 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
   
-  .shadow-purple {
-    box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.15), 0 2px 4px 0 rgba(102, 126, 234, 0.1);
+  .shadow-primary {
+    box-shadow: 0 4px 14px 0 rgba(123, 97, 255, 0.15), 0 2px 4px 0 rgba(123, 97, 255, 0.1);
   }
   
-  .shadow-purple-lg {
-    box-shadow: 0 10px 30px 0 rgba(102, 126, 234, 0.2), 0 4px 8px 0 rgba(102, 126, 234, 0.15);
+  .shadow-primary-lg {
+    box-shadow: 0 10px 30px 0 rgba(123, 97, 255, 0.2), 0 4px 8px 0 rgba(123, 97, 255, 0.15);
+  }
+  
+  .shadow-warm {
+    box-shadow: 0 4px 14px 0 rgba(255, 94, 84, 0.15), 0 2px 4px 0 rgba(255, 94, 84, 0.1);
+  }
+  
+  .shadow-azure {
+    box-shadow: 0 4px 14px 0 rgba(40, 131, 235, 0.15), 0 2px 4px 0 rgba(40, 131, 235, 0.1);
   }
   
   /* Responsive text */

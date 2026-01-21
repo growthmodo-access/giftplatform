@@ -43,7 +43,7 @@ export function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen gradient-purple-subtle">
+    <div className="min-h-screen bg-white">
       <ScrollProgress />
       <a 
         href="#home" 
@@ -64,7 +64,7 @@ export function LandingPage() {
       </main>
       <Footer />
       <div className="fixed bottom-6 left-6 z-50">
-        <div className="w-14 h-14 gradient-purple rounded-full flex items-center justify-center shadow-purple-lg hover:scale-110 transition-transform cursor-pointer">
+        <div className="w-14 h-14 gradient-primary rounded-full flex items-center justify-center shadow-primary-lg hover:scale-110 transition-transform cursor-pointer">
           <span className="text-white font-semibold text-sm">Help</span>
         </div>
       </div>

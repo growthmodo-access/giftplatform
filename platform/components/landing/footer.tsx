@@ -10,7 +10,7 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="gradient-purple-light border-t border-purple-200/50 py-16">
+    <footer className="bg-[#F8F3EC]/50 border-t border-[#F8F3EC]/50 py-16">
       <div className="max-w-7xl mx-auto px-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
           {/* Logo and Social */}
@@ -58,11 +58,11 @@ export function Footer() {
 
         {/* Badges */}
         <div className="mt-12 pt-8 border-t border-border/50 flex flex-wrap gap-4">
-          <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg border border-purple-200/50 shadow-sm">
+          <div className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-lg border border-[#F8F3EC]/50 shadow-sm">
             <span className="text-xs font-bold text-foreground">ACTA</span>
             <span className="text-sm font-semibold text-foreground">500</span>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg border border-purple-200/50 shadow-sm">
+          <div className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-lg border border-[#F8F3EC]/50 shadow-sm">
             <span className="text-lg">🌱</span>
             <span className="text-sm font-semibold text-foreground">Eco-Friendly</span>
           </div>

@@ -277,7 +277,7 @@ export function Sidebar({ userRole }: SidebarProps) {
 
       {/* Sidebar */}
       <aside className={cn(
-        "bg-white/80 backdrop-blur-lg border-r border-purple-200/50 flex flex-col transition-all duration-300 ease-in-out shadow-purple",
+        "bg-white/95 backdrop-blur-lg border-r border-[#F8F3EC]/50 flex flex-col transition-all duration-300 ease-in-out shadow-sm",
         // Mobile: fixed positioning with slide animation
         "lg:sticky fixed top-0 h-screen z-[50]",
         // Mobile: slide in/out
@@ -337,35 +337,35 @@ export function Sidebar({ userRole }: SidebarProps) {
                   <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
                     {category.label}
                   </span>
-                </div>
+      </div>
               )}
               {category.items.map((item) => {
-                const Icon = item.icon
-                const active = isActive(item.href)
-                
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
+          const Icon = item.icon
+          const active = isActive(item.href)
+          
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative",
                       "hover:bg-muted/60 active:scale-[0.98]",
-                      active
-                        ? "bg-muted text-foreground font-semibold shadow-sm"
-                        : "text-muted-foreground hover:text-foreground",
+                active
+                        ? "bg-[#F8F3EC] text-[#7B61FF] font-semibold shadow-sm border-l-2 border-[#7B61FF]"
+                        : "text-muted-foreground hover:text-[#7B61FF] hover:bg-[#F8F3EC]/50",
                       isCollapsed && "justify-center lg:justify-center"
                     )}
                     title={isCollapsed ? item.label : undefined}
                   >
                     <div className={cn(
                       "absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full transition-all",
-                      active ? "bg-foreground opacity-100" : "bg-transparent opacity-0"
+                      active ? "bg-[#7B61FF] opacity-100" : "bg-transparent opacity-0"
                     )} />
                     <Icon className={cn(
                       "w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-all",
                       active 
-                        ? "text-foreground scale-110" 
-                        : "text-muted-foreground group-hover:text-foreground group-hover:scale-105"
+                        ? "text-[#7B61FF] scale-110" 
+                        : "text-muted-foreground group-hover:text-[#7B61FF] group-hover:scale-105"
                     )} />
                     <span className={cn(
                       "transition-opacity duration-300 whitespace-nowrap text-sm font-medium",
@@ -379,13 +379,13 @@ export function Sidebar({ userRole }: SidebarProps) {
                         <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-r-4 border-r-foreground border-b-4 border-b-transparent"></div>
                       </div>
                     )}
-                  </Link>
-                )
-              })}
+            </Link>
+          )
+        })}
             </div>
           ))}
-        </nav>
-        
+      </nav>
+      
         {/* Footer */}
         <div className="p-3 lg:p-4 border-t border-border/50 flex-shrink-0">
           <button
@@ -410,8 +410,8 @@ export function Sidebar({ userRole }: SidebarProps) {
               </div>
             )}
           </button>
-        </div>
-      </aside>
+      </div>
+    </aside>
     </>
   )
 }

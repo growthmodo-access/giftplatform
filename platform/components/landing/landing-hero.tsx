@@ -21,7 +21,7 @@ export function LandingHero() {
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Trust Badge */}
           <div className="mb-6">
-            <span className="inline-block gradient-purple-light text-foreground px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wide border border-purple-200/50 shadow-sm">
+            <span className="inline-block bg-[#F8F3EC] text-foreground px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wide border border-[#F8F3EC]/50 shadow-sm">
               Your trusted partner for global gifting.
             </span>
           </div>
@@ -41,7 +41,7 @@ export function LandingHero() {
             <Button
               onClick={handleRequestDemo}
               size="lg"
-              className="gradient-button text-white px-8 py-6 text-lg font-medium shadow-purple-lg"
+              className="gradient-button text-white px-8 py-6 text-lg font-medium shadow-primary-lg"
             >
               Request a demo
             </Button>
@@ -49,7 +49,7 @@ export function LandingHero() {
               onClick={handleExploreCountries}
               variant="outline"
               size="lg"
-              className="border-purple-300/50 bg-white/80 backdrop-blur-sm hover:bg-purple-50/80 px-8 py-6 text-lg font-medium text-purple-700"
+              className="border-[#7B61FF]/30 bg-white/90 backdrop-blur-sm hover:bg-[#F8F3EC]/80 px-8 py-6 text-lg font-medium text-[#7B61FF]"
             >
               Explore countries
             </Button>

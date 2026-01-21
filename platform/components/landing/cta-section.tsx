@@ -25,7 +25,7 @@ export function CTASection() {
           <Button
             onClick={handleRequestDemo}
             size="lg"
-            className="px-8 py-6 text-lg font-medium mb-12"
+            className="gradient-button text-white px-8 py-6 text-lg font-medium mb-12 shadow-primary-lg"
           >
             Request a demo
           </Button>
