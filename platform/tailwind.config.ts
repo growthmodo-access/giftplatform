@@ -21,6 +21,7 @@ const config = {
         sans: ['var(--font-plus-jakarta)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
         inter: ['var(--font-inter)', 'sans-serif'],
         jakarta: ['var(--font-plus-jakarta)', 'sans-serif'],
+        'dm-sans': ['var(--font-dm-sans)', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 
 const footerLinks = {
   Company: ['About', 'Careers', 'Contact', 'Partners'],
@@ -17,15 +16,9 @@ export function Footer() {
           {/* Logo and Social */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="relative w-96 h-48 max-w-[160px] max-h-[80px] sm:max-w-[200px] sm:max-h-[100px] lg:max-w-[280px] lg:max-h-[140px] xl:max-w-[384px] xl:max-h-[192px]">
-                <Image
-                  src="/goodies.png"
-                  alt="Goodies.so Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
+              <span className="font-dm-sans text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+                goodies
+              </span>
             </div>
             <p className="text-muted-foreground text-sm mb-6">
               © 2024 Goodies.so. All rights reserved.

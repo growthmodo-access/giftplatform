@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -99,15 +98,9 @@ export default function SignupPage() {
       <Card className="w-full max-w-md border border-border/50">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
-            <div className="relative w-[448px] h-[224px] max-w-full">
-              <Image
-                src="/goodies.png"
-                alt="Goodies.so Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+            <span className="font-dm-sans text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
+              goodies
+            </span>
           </div>
           <CardTitle className="text-2xl font-semibold text-center text-foreground">Create an account</CardTitle>
           <CardDescription className="text-center text-muted-foreground">

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -50,15 +49,9 @@ export function LandingHeader() {
           <div className="flex items-center justify-between gap-4 min-h-20 py-3 lg:min-h-24 lg:py-4">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-              <div className="relative w-96 h-48 group-hover:scale-105 transition-transform max-w-[120px] max-h-[60px] sm:max-w-[160px] sm:max-h-[80px] lg:max-w-[240px] lg:max-h-[120px] xl:max-w-[384px] xl:max-h-[192px]">
-                <Image
-                  src="/goodies.png"
-                  alt="Goodies.so Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
+              <span className="font-dm-sans text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground group-hover:opacity-80 transition-opacity">
+                goodies
+              </span>
             </Link>
 
             {/* Desktop Navigation */}

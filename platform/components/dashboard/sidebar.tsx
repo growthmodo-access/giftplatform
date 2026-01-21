@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { 
   LayoutDashboard, 
@@ -297,15 +296,9 @@ export function Sidebar({ userRole }: SidebarProps) {
                 isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
               )}
             >
-              <div className="relative w-72 h-40 flex-shrink-0 max-w-[140px] max-h-[80px] lg:max-w-[200px] lg:max-h-[110px] xl:max-w-[288px] xl:max-h-[160px]">
-                <Image
-                  src="/goodies.png"
-                  alt="Goodies.so Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
+              <span className="font-dm-sans text-xl lg:text-2xl xl:text-3xl font-bold text-foreground">
+                goodies
+              </span>
             </Link>
             <div className="flex items-center gap-1.5">
               {/* Mobile close button */}

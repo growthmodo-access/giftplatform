@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/providers'
 import { ErrorBoundary } from '@/components/error-boundary'
@@ -17,6 +17,13 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
   variable: '--font-plus-jakarta',
+  display: 'swap',
+})
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-dm-sans',
   display: 'swap',
 })
 
@@ -57,7 +64,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${plusJakartaSans.variable} font-sans`}>
+      <body className={`${inter.variable} ${plusJakartaSans.variable} ${dmSans.variable} font-sans`}>
         <CSSVariablesCheck />
         <ErrorBoundary>
           <TooltipProviderWrapper>
