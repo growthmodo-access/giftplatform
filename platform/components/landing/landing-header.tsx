@@ -46,11 +46,11 @@ export function LandingHeader() {
             : "bg-background/85 backdrop-blur-lg border-border/50"
         )}
       >
-        <div className="max-w-7xl mx-auto px-10">
-          <div className="flex items-center justify-between min-h-24 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="flex items-center justify-between gap-4 min-h-20 py-3 lg:min-h-24 lg:py-4">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-              <div className="relative w-96 h-48 group-hover:scale-105 transition-transform max-w-[200px] max-h-[100px] lg:max-w-[384px] lg:max-h-[192px]">
+              <div className="relative w-96 h-48 group-hover:scale-105 transition-transform max-w-[120px] max-h-[60px] sm:max-w-[160px] sm:max-h-[80px] lg:max-w-[240px] lg:max-h-[120px] xl:max-w-[384px] xl:max-h-[192px]">
                 <Image
                   src="/goodies.png"
                   alt="Goodies.so Logo"
@@ -62,38 +62,38 @@ export function LandingHeader() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-8">
-              <a href="#home" className="text-muted-foreground hover:text-foreground font-medium transition-colors">
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 flex-shrink-0">
+              <a href="#home" className="text-muted-foreground hover:text-foreground font-medium transition-colors whitespace-nowrap">
                 Home
               </a>
-              <a href="#solutions" className="text-muted-foreground hover:text-foreground font-medium transition-colors flex items-center gap-1">
+              <a href="#solutions" className="text-muted-foreground hover:text-foreground font-medium transition-colors flex items-center gap-1 whitespace-nowrap">
                 Solutions <span className="text-xs">▼</span>
               </a>
-              <a href="#products" className="text-muted-foreground hover:text-foreground font-medium transition-colors flex items-center gap-1">
+              <a href="#products" className="text-muted-foreground hover:text-foreground font-medium transition-colors flex items-center gap-1 whitespace-nowrap">
                 Products <span className="text-xs">▼</span>
               </a>
-              <a href="#pricing" className="text-muted-foreground hover:text-foreground font-medium transition-colors">
+              <a href="#pricing" className="text-muted-foreground hover:text-foreground font-medium transition-colors whitespace-nowrap">
                 Pricing
               </a>
-              <a href="#blog" className="text-muted-foreground hover:text-foreground font-medium transition-colors">
+              <a href="#blog" className="text-muted-foreground hover:text-foreground font-medium transition-colors whitespace-nowrap">
                 Blog
               </a>
-              <a href="#contact" className="text-muted-foreground hover:text-foreground font-medium transition-colors">
+              <a href="#contact" className="text-muted-foreground hover:text-foreground font-medium transition-colors whitespace-nowrap">
                 Contact
               </a>
             </nav>
 
             {/* Header Actions */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
               <button
                 onClick={handleLogin}
-                className="text-muted-foreground hover:text-foreground font-medium text-sm transition-colors"
+                className="text-muted-foreground hover:text-foreground font-medium text-sm transition-colors whitespace-nowrap"
               >
                 Login
               </button>
               <button
                 onClick={handleGetStarted}
-                className="bg-foreground text-background px-6 py-2.5 rounded-md font-medium hover:opacity-90 transition-opacity"
+                className="bg-foreground text-background px-6 py-2.5 rounded-md font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
                 aria-label="Get started with Goodies.so"
               >
                 Get Started

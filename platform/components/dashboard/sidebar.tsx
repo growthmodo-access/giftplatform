@@ -288,7 +288,7 @@ export function Sidebar({ userRole }: SidebarProps) {
         isCollapsed ? "w-16 lg:w-16" : "w-64 lg:w-64"
       )}>
         {/* Header */}
-        <div className="p-4 lg:p-5 border-b border-border/50 flex-shrink-0">
+        <div className="p-3 lg:p-4 border-b border-border/50 flex-shrink-0">
           <div className="flex items-center justify-between">
             <Link 
               href="/dashboard"
@@ -297,7 +297,7 @@ export function Sidebar({ userRole }: SidebarProps) {
                 isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
               )}
             >
-              <div className="relative w-72 h-40 flex-shrink-0 max-w-[180px] max-h-[100px] lg:max-w-[288px] lg:max-h-[160px]">
+              <div className="relative w-72 h-40 flex-shrink-0 max-w-[140px] max-h-[80px] lg:max-w-[200px] lg:max-h-[110px] xl:max-w-[288px] xl:max-h-[160px]">
                 <Image
                   src="/goodies.png"
                   alt="Goodies.so Logo"
