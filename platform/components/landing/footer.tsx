@@ -16,7 +16,7 @@ export function Footer() {
           {/* Logo and Social */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="font-dm-sans text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+              <span className="font-dm-sans text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">
                 goodies
               </span>
             </div>

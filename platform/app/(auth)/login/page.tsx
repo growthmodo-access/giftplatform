@@ -179,7 +179,7 @@ function LoginForm() {
       <Card className="w-full max-w-md border border-border/50">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
-            <span className="font-dm-sans text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
+            <span className="font-dm-sans text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
               goodies
             </span>
           </div>

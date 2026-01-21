@@ -49,7 +49,7 @@ export function LandingHeader() {
           <div className="flex items-center justify-between gap-4 min-h-20 py-3 lg:min-h-24 lg:py-4">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-              <span className="font-dm-sans text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground group-hover:opacity-80 transition-opacity">
+              <span className="font-dm-sans text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-foreground group-hover:opacity-80 transition-opacity">
                 goodies
               </span>
             </Link>

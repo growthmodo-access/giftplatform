@@ -296,7 +296,7 @@ export function Sidebar({ userRole }: SidebarProps) {
                 isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
               )}
             >
-              <span className="font-dm-sans text-xl lg:text-2xl xl:text-3xl font-bold text-foreground">
+              <span className="font-dm-sans text-lg lg:text-xl xl:text-2xl font-bold text-foreground">
                 goodies
               </span>
             </Link>
