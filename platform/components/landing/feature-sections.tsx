@@ -8,11 +8,11 @@ export function FeatureSections() {
         <div className="max-w-7xl mx-auto px-10">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div className="flex justify-center">
-              <div className="bg-muted/30 p-12 rounded-3xl w-full max-w-lg grid grid-cols-3 gap-6 border border-border/50">
+              <div className="gradient-purple-light p-12 rounded-3xl w-full max-w-lg grid grid-cols-3 gap-6 border border-purple-200/50 shadow-purple">
                 {['🎒', '☕', '🧢', '👕', '🧥', '📓'].map((item, i) => (
                   <div
                     key={i}
-                    className="bg-background backdrop-blur-xl rounded-2xl aspect-square flex items-center justify-center text-6xl shadow-sm hover:scale-105 transition-transform border border-border/50"
+                    className="bg-white/90 backdrop-blur-xl rounded-2xl aspect-square flex items-center justify-center text-6xl shadow-purple hover:scale-105 transition-transform border border-purple-200/30"
                   >
                     {item}
                   </div>
@@ -29,7 +29,7 @@ export function FeatureSections() {
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 Access hassle-free global swag with no shipping or customs fees. Premium swag in any volume, on-demand or in bulk, warehoused and delivered to over 80 countries.
               </p>
-              <Button variant="outline" className="border-border/50">
+              <Button variant="outline" className="border-purple-300/50 bg-white/80 hover:bg-purple-50/80 text-purple-700">
                 Learn more &gt;
               </Button>
             </div>
@@ -42,11 +42,11 @@ export function FeatureSections() {
         <div className="max-w-7xl mx-auto px-10">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div className="lg:order-2 flex justify-center">
-              <div className="bg-muted/30 p-12 rounded-3xl w-full max-w-lg grid grid-cols-3 gap-6 border border-border/50">
+              <div className="gradient-purple-light p-12 rounded-3xl w-full max-w-lg grid grid-cols-3 gap-6 border border-purple-200/50 shadow-purple">
                 {['📷', '☕', '💳', '🎁', '🍫', '📦'].map((item, i) => (
                   <div
                     key={i}
-                    className="bg-background backdrop-blur-xl rounded-2xl aspect-square flex items-center justify-center text-6xl shadow-sm hover:scale-105 transition-transform border border-border/50"
+                    className="bg-white/90 backdrop-blur-xl rounded-2xl aspect-square flex items-center justify-center text-6xl shadow-purple hover:scale-105 transition-transform border border-purple-200/30"
                   >
                     {item}
                   </div>

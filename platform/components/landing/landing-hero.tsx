@@ -16,19 +16,19 @@ export function LandingHero() {
   }
 
   return (
-    <section id="home" className="relative py-20 lg:py-32 overflow-hidden">
+    <section id="home" className="relative py-20 lg:py-32 overflow-hidden gradient-hero">
       <div className="max-w-7xl mx-auto px-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Trust Badge */}
           <div className="mb-6">
-            <span className="inline-block bg-muted text-foreground px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wide border border-border/50">
+            <span className="inline-block gradient-purple-light text-foreground px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wide border border-purple-200/50 shadow-sm">
               Your trusted partner for global gifting.
             </span>
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold text-foreground mb-6 leading-tight">
-            Boost engagement globally, send premium swag and gifts
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-6 leading-tight">
+            <span className="gradient-text">Boost engagement globally, send premium swag and gifts</span>
           </h1>
 
           {/* Subtitle */}
@@ -41,7 +41,7 @@ export function LandingHero() {
             <Button
               onClick={handleRequestDemo}
               size="lg"
-              className="px-8 py-6 text-lg font-medium"
+              className="gradient-button text-white px-8 py-6 text-lg font-medium shadow-purple-lg"
             >
               Request a demo
             </Button>
@@ -49,7 +49,7 @@ export function LandingHero() {
               onClick={handleExploreCountries}
               variant="outline"
               size="lg"
-              className="border-border/50 px-8 py-6 text-lg font-medium"
+              className="border-purple-300/50 bg-white/80 backdrop-blur-sm hover:bg-purple-50/80 px-8 py-6 text-lg font-medium text-purple-700"
             >
               Explore countries
             </Button>

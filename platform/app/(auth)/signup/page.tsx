@@ -94,8 +94,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md border border-border/50">
+    <div className="min-h-screen flex items-center justify-center gradient-purple-subtle p-4">
+      <Card className="w-full max-w-md border border-purple-200/50 gradient-card shadow-purple-lg">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
             <span className="font-dm-sans text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
@@ -289,7 +289,7 @@ export default function SignupPage() {
               </TabsContent>
             </Tabs>
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full gradient-button text-white shadow-purple" disabled={loading}>
               {loading ? 'Creating account...' : 'Sign up'}
             </Button>
             <div className="text-center text-sm text-muted-foreground">

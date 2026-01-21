@@ -30,7 +30,7 @@ export function LandingHeader() {
   return (
     <>
       {/* Banner */}
-      <div className="bg-muted text-foreground py-3 text-center text-sm font-medium border-b border-border/50">
+      <div className="gradient-purple-light text-foreground py-3 text-center text-sm font-medium border-b border-purple-200/50">
         <div className="max-w-7xl mx-auto px-10">
           <span>Your trusted partner for global gifting.</span>
         </div>
@@ -41,8 +41,8 @@ export function LandingHeader() {
         className={cn(
           "sticky top-0 z-50 transition-all duration-300 border-b",
           isScrolled
-            ? "bg-background/95 backdrop-blur-lg shadow-sm border-border/50"
-            : "bg-background/85 backdrop-blur-lg border-border/50"
+            ? "bg-white/95 backdrop-blur-lg shadow-purple border-purple-200/50"
+            : "bg-gradient-to-r from-white/90 via-purple-50/80 to-white/90 backdrop-blur-lg border-purple-200/30"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
@@ -86,7 +86,7 @@ export function LandingHeader() {
               </button>
               <button
                 onClick={handleGetStarted}
-                className="bg-foreground text-background px-6 py-2.5 rounded-md font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
+                className="gradient-button text-white px-6 py-2.5 rounded-md font-medium shadow-purple whitespace-nowrap"
                 aria-label="Get started with Goodies.so"
               >
                 Get Started
@@ -140,7 +140,7 @@ export function LandingHeader() {
                       handleGetStarted()
                       setIsMenuOpen(false)
                     }}
-                    className="bg-foreground text-background px-6 py-2.5 rounded-md font-medium w-full"
+                    className="gradient-button text-white px-6 py-2.5 rounded-md font-medium shadow-purple w-full"
                   >
                     Get Started
                   </button>

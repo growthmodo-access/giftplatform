@@ -43,7 +43,7 @@ export async function StatsCards() {
         return (
           <Card 
             key={stat.label} 
-            className="border border-border/50 bg-card hover:border-foreground/20 hover:shadow-sm transition-all duration-200 group"
+            className="border border-purple-200/50 gradient-card hover:border-purple-300/50 hover:shadow-purple transition-all duration-200 group"
             style={{
               animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`
             }}

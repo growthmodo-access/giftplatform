@@ -277,7 +277,7 @@ export function Sidebar({ userRole }: SidebarProps) {
 
       {/* Sidebar */}
       <aside className={cn(
-        "bg-background border-r border-border/50 flex flex-col transition-all duration-300 ease-in-out",
+        "bg-white/80 backdrop-blur-lg border-r border-purple-200/50 flex flex-col transition-all duration-300 ease-in-out shadow-purple",
         // Mobile: fixed positioning with slide animation
         "lg:sticky fixed top-0 h-screen z-[50]",
         // Mobile: slide in/out
