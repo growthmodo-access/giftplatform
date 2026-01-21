@@ -50,7 +50,7 @@ export function LandingHeader() {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative w-32 h-16 group-hover:scale-105 transition-transform">
+              <div className="relative w-48 h-24 group-hover:scale-105 transition-transform">
                 <Image
                   src="/goodies.png"
                   alt="Goodies.so Logo"

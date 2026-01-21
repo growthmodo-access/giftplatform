@@ -17,7 +17,7 @@ export function Footer() {
           {/* Logo and Social */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="relative w-32 h-16">
+              <div className="relative w-48 h-24">
                 <Image
                   src="/goodies.png"
                   alt="Goodies.so Logo"
