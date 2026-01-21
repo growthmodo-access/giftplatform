@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const footerLinks = {
   Company: ['About', 'Careers', 'Contact', 'Partners'],
@@ -16,8 +17,14 @@ export function Footer() {
           {/* Logo and Social */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">G</span>
+              <div className="relative w-8 h-8">
+                <Image
+                  src="/goodies.png"
+                  alt="Goodies.so Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
               <span className="font-bold text-lg bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
                 Goodies.so

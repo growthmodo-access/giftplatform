@@ -21,16 +21,23 @@ export const metadata: Metadata = {
   description: 'Boost engagement globally, send premium swag and gifts. Improve your culture and increase sales, all in one global gifting platform.',
   keywords: ['employee gifting', 'swag platform', 'corporate gifts', 'global gifting', 'employee engagement'],
   authors: [{ name: 'Goodies.so' }],
+  icons: {
+    icon: '/goodies.png',
+    shortcut: '/goodies.png',
+    apple: '/goodies.png',
+  },
   openGraph: {
     title: 'Goodies.so - Global Gifting & Swag Platform',
     description: 'Boost engagement globally, send premium swag and gifts.',
     type: 'website',
     url: 'https://goodies.so',
+    images: ['/goodies.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Goodies.so - Global Gifting & Swag Platform',
     description: 'Boost engagement globally, send premium swag and gifts.',
+    images: ['/goodies.png'],
   },
   viewport: {
     width: 'device-width',

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -70,8 +71,14 @@ export default function SignupPage() {
       <Card className="w-full max-w-md glass">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">G</span>
+            <div className="relative w-12 h-12">
+              <Image
+                src="/goodies.png"
+                alt="Goodies.so Logo"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
           </div>
           <CardTitle className="text-2xl text-center">Create an account</CardTitle>
