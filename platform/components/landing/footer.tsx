@@ -26,9 +26,6 @@ export function Footer() {
                   priority
                 />
               </div>
-              <span className="font-semibold text-lg text-foreground">
-                Goodies.so
-              </span>
             </div>
             <p className="text-muted-foreground text-sm mb-6">
               © 2024 Goodies.so. All rights reserved.

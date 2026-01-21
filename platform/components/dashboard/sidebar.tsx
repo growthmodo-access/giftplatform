@@ -306,14 +306,6 @@ export function Sidebar({ userRole }: SidebarProps) {
                   priority
                 />
               </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-base text-foreground leading-tight">
-                  Goodies.so
-                </span>
-                <span className="text-[10px] text-muted-foreground leading-tight">
-                  Gift Platform
-                </span>
-              </div>
             </Link>
             <div className="flex items-center gap-1.5">
               {/* Mobile close button */}

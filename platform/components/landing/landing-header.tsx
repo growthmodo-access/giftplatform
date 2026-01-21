@@ -59,9 +59,6 @@ export function LandingHeader() {
                   priority
                 />
               </div>
-              <span className="font-semibold text-xl text-foreground">
-                Goodies.so
-              </span>
             </Link>
 
             {/* Desktop Navigation */}
