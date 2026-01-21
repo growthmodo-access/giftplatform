@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 export function FeatureSections() {
   return (
@@ -8,15 +9,15 @@ export function FeatureSections() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-center">
             <div className="flex justify-center order-2 lg:order-1">
-              <div className="gradient-primary-light p-6 sm:p-8 md:p-10 lg:p-12 rounded-2xl sm:rounded-3xl w-full max-w-lg grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 border border-[#7B61FF]/20 shadow-primary">
-                {['🎒', '☕', '🧢', '👕', '🧥', '📓'].map((item, i) => (
-                  <div
-                    key={i}
-                    className="bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl aspect-square flex items-center justify-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl shadow-primary hover:scale-105 transition-transform border border-[#7B61FF]/10"
-                  >
-                    {item}
-                  </div>
-                ))}
+              <div className="w-full max-w-lg">
+                <Image
+                  src="/IMG1.png"
+                  alt="Premium swag and gifts showcase"
+                  width={600}
+                  height={400}
+                  className="w-full h-auto rounded-2xl sm:rounded-3xl object-contain"
+                  priority
+                />
               </div>
             </div>
             <div className="order-1 lg:order-2">
