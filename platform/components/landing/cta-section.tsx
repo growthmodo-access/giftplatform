@@ -13,7 +13,7 @@ export function CTASection() {
   }
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-transparent">
+    <section className="py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-4 sm:mb-6 px-4 sm:px-0 leading-tight">

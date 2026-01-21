@@ -16,7 +16,7 @@ export function LandingHero() {
   }
 
   return (
-    <section id="home" className="relative py-12 sm:py-16 md:py-20 lg:py-28 xl:py-32 overflow-hidden gradient-hero">
+    <section id="home" className="relative py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40 overflow-hidden gradient-hero">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Trust Badge */}

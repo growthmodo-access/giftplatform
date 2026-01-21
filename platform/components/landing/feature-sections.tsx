@@ -4,7 +4,7 @@ export function FeatureSections() {
   return (
     <>
       {/* Order Premium Swag Section */}
-      <section id="swag" className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-transparent">
+      <section id="swag" className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-center">
             <div className="flex justify-center order-2 lg:order-1">
@@ -38,7 +38,7 @@ export function FeatureSections() {
       </section>
 
       {/* Explore Gifts Section */}
-      <section id="gifts" className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-transparent">
+      <section id="gifts" className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-center">
             <div className="lg:order-2 flex justify-center order-2 lg:order-2">
@@ -72,7 +72,7 @@ export function FeatureSections() {
       </section>
 
       {/* Automate Gifts Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-transparent">
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-center">
             <div className="flex justify-center order-2 lg:order-1">
