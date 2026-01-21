@@ -95,7 +95,11 @@
   }
   
   .gradient-hero {
-    background: linear-gradient(135deg, #FFFFFF 0%, #F8F3EC 25%, rgba(123, 97, 255, 0.05) 50%, rgba(40, 131, 235, 0.05) 75%, #FFFFFF 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8F3EC 15%, #FFFFFF 50%, #F8F3EC 85%, #FFFFFF 100%);
+  }
+  
+  .gradient-landing {
+    background: linear-gradient(to bottom, #FFFFFF 0%, #F8F3EC 2%, #FFFFFF 100%);
   }
   
   .gradient-card {

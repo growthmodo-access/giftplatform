@@ -13,7 +13,7 @@ const blogPosts = [
 
 export function BlogSection() {
   return (
-    <section id="blog" className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-transparent">
+    <section id="blog" className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">

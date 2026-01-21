@@ -16,7 +16,7 @@ export function LandingHero() {
   }
 
   return (
-    <section id="home" className="relative overflow-hidden gradient-hero">
+    <section id="home" className="relative overflow-hidden gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
         {/* Centered Hero Content */}
         <div className="min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center py-12 sm:py-16 md:py-20">
