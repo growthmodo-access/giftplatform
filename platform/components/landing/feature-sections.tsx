@@ -77,28 +77,15 @@ export function FeatureSections() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-center">
             <div className="flex justify-center order-2 lg:order-1">
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md">
-                {[
-                  { title: 'WORK ANNIVERSARY!', stars: '⭐⭐⭐' },
-                  { title: 'Welcome to the team!', photo: '👤' },
-                  { title: 'Happy Birthday!', photo: '👤' },
-                ].map((card, i) => (
-                  <div
-                    key={i}
-                    className="bg-background backdrop-blur-xl p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl shadow-sm border border-border/50 hover:scale-105 transition-transform relative overflow-hidden"
-                  >
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-foreground" />
-                    <div className="flex flex-col items-center justify-center gap-2 sm:gap-3 min-h-[120px] sm:min-h-[150px] md:min-h-[180px]">
-                      {card.photo && (
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-muted/50 flex items-center justify-center text-2xl sm:text-3xl border border-border/50">
-                          {card.photo}
-                        </div>
-                      )}
-                      {card.stars && <div className="text-xl sm:text-2xl">{card.stars}</div>}
-                      <div className="text-xs sm:text-sm md:text-base font-semibold text-foreground text-center px-1">{card.title}</div>
-                    </div>
-                  </div>
-                ))}
+              <div className="w-full max-w-lg">
+                <Image
+                  src="/f2.png"
+                  alt="Use cases visualization"
+                  width={1536}
+                  height={1024}
+                  className="w-full h-auto rounded-2xl sm:rounded-3xl object-contain"
+                  priority
+                />
               </div>
             </div>
             <div className="order-1 lg:order-2">
