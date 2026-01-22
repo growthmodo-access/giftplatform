@@ -9,7 +9,7 @@ export function IntegrationsSection() {
     <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">
             How it works
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-4 sm:px-0">
@@ -24,7 +24,7 @@ export function IntegrationsSection() {
               className="bg-background backdrop-blur-xl p-6 sm:p-7 md:p-8 rounded-xl border border-border/50 hover:shadow-sm transition-all text-center"
             >
               <div className="text-4xl sm:text-5xl font-bold text-[#7B61FF] mb-3 sm:mb-4">{step.number}</div>
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">{step.title}</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">{step.title}</h3>
               <p className="text-sm sm:text-base text-muted-foreground">{step.description}</p>
             </div>
           ))}

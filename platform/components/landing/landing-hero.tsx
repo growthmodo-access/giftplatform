@@ -30,7 +30,7 @@ export function LandingHero() {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold mb-4 sm:mb-6 leading-[1.1] sm:leading-tight px-2">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-[1.1] sm:leading-tight px-2">
               <span className="gradient-text">Corporate gifting that actually builds relationships</span>
             </h1>
 

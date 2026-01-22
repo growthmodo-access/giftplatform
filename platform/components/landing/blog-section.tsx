@@ -16,7 +16,7 @@ export function BlogSection() {
     <section id="blog" className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">
             Resources for better gifting
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 px-4 sm:px-0">
@@ -41,7 +41,7 @@ export function BlogSection() {
               <div className="text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
                 {post.emoji}
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-semibold text-foreground leading-tight">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-foreground leading-tight">
                 {post.title}
               </h3>
             </Card>

@@ -16,7 +16,7 @@ export function CTASection() {
     <section className="py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-4 sm:mb-6 px-4 sm:px-0 leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 px-4 sm:px-0 leading-tight">
             Ready to build stronger relationships through gifting?
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-4 sm:px-0 leading-relaxed">
