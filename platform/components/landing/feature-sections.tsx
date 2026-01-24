@@ -44,15 +44,16 @@ export function FeatureSections() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 lg:gap-24 items-center">
             <div className="lg:order-2 flex justify-center order-2 lg:order-2">
-              <div className="gradient-primary-light p-8 sm:p-10 md:p-12 lg:p-14 rounded-3xl sm:rounded-[2rem] w-full max-w-xl grid grid-cols-3 gap-4 sm:gap-5 md:gap-6 border-2 border-[#7B61FF]/30 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
-                {['📷', '☕', '💳', '🎁', '🍫', '📦'].map((item, i) => (
-                  <div
-                    key={i}
-                    className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl aspect-square flex items-center justify-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300 border-2 border-[#7B61FF]/20"
-                  >
-                    {item}
-                  </div>
-                ))}
+              <div className="w-full max-w-xl relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#7B61FF]/10 to-[#2883EB]/10 rounded-3xl blur-2xl -z-10"></div>
+                <Image
+                  src="/d4.png"
+                  alt="Thoughtful gifts showcase"
+                  width={1536}
+                  height={1024}
+                  className="w-full h-auto rounded-3xl sm:rounded-[2rem] object-contain shadow-2xl hover:shadow-3xl transition-shadow duration-300"
+                  priority
+                />
               </div>
             </div>
             <div className="lg:order-1 order-1 lg:order-1 space-y-6 sm:space-y-8">
