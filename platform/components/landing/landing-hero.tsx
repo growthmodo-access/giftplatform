@@ -24,19 +24,22 @@ export function LandingHero() {
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto w-full">
             {/* Trust Badge */}
             <div className="mb-6 sm:mb-8 md:mb-10">
-              <span className="inline-block bg-[#F8F3EC] text-foreground px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wide border border-[#F8F3EC]/50 shadow-md hover:shadow-lg transition-shadow">
-                Made in India, delivered globally
+              <span className="inline-flex items-center gap-2 bg-[#F8F3EC] text-foreground px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide border border-[#F8F3EC]/50 shadow-md hover:shadow-lg transition-shadow">
+                <span className="text-base sm:text-lg">⭐</span>
+                Trusted by 20,000+ companies
               </span>
             </div>
 
             {/* Main Heading */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 md:mb-10 leading-[1.1] sm:leading-tight px-4 sm:px-6">
-              <span className="gradient-text">Corporate gifting that actually builds relationships</span>
+              <span className="text-foreground">Business gifting</span>
+              <br />
+              <span className="text-foreground">made easy</span>
             </h1>
 
             {/* Subtitle */}
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-10 md:mb-12 max-w-3xl px-4 sm:px-6 leading-relaxed">
-              Send premium, branded gifts to employees, clients, and events worldwide. We handle inventory, fulfillment, and logistics so you can focus on building relationships.
+              Send <strong className="text-foreground">flexible</strong>, <strong className="text-foreground">delightful</strong> corporate gifts and swag, all on one platform.
             </p>
 
             {/* CTA Buttons */}
@@ -46,17 +49,12 @@ export function LandingHero() {
                 size="lg"
                 className="gradient-button text-white px-8 py-6 sm:px-10 sm:py-7 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200 w-full sm:w-auto"
               >
-                Talk to sales
-              </Button>
-              <Button
-                onClick={handleExploreCountries}
-                variant="outline"
-                size="lg"
-                className="border-2 border-[#7B61FF]/40 bg-white/95 backdrop-blur-sm hover:bg-[#F8F3EC]/90 hover:border-[#7B61FF]/60 px-8 py-6 sm:px-10 sm:py-7 text-base sm:text-lg font-semibold text-[#7B61FF] hover:scale-105 transition-all duration-200 w-full sm:w-auto"
-              >
-                See how it works
+                Start gifting
               </Button>
             </div>
+            <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 px-4 sm:px-0">
+              It's free and takes less than a minute.
+            </p>
 
             {/* Trust Indicators */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-12 text-muted-foreground px-4">

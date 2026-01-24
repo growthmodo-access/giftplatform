@@ -6,6 +6,7 @@ import { LandingHero } from './landing-hero'
 import { ClientLogos } from './client-logos'
 import { FeatureSections } from './feature-sections'
 import { IndustryLeaders } from './industry-leaders'
+import { ServicesSection } from './services-section'
 import { Testimonials } from './testimonials'
 import { BlogSection } from './blog-section'
 import { IntegrationsSection } from './integrations-section'
@@ -57,6 +58,7 @@ export function LandingPage() {
         <ClientLogos />
         <FeatureSections />
         <IndustryLeaders />
+        <ServicesSection />
         <Testimonials />
         <BlogSection />
         <IntegrationsSection />

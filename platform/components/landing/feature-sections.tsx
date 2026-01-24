@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
@@ -31,7 +33,10 @@ export function FeatureSections() {
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed">
                 We own inventory across 80+ countries. Order branded swag, premium gifts, or curated selections. We handle warehousing, customs, and delivery. No volume minimums, no logistics headaches.
               </p>
-              <Button variant="outline" className="border-2 border-[#7B61FF]/40 bg-white/95 hover:bg-[#F8F3EC]/90 hover:border-[#7B61FF]/60 text-[#7B61FF] px-8 py-6 text-base sm:text-lg font-semibold hover:scale-105 transition-all duration-200 shadow-md">
+              <Button
+                onClick={() => window.location.href = '/signup'}
+                className="gradient-button text-white px-8 py-6 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200"
+              >
                 Talk to sales
               </Button>
             </div>
@@ -66,7 +71,10 @@ export function FeatureSections() {
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed">
                 Gift cards feel transactional. Branded, curated gifts show you care. We curate premium selections that recipients actually want, from tech accessories to wellness products. Every gift reinforces your brand and strengthens relationships.
               </p>
-              <Button variant="outline" className="border-2 border-[#7B61FF]/40 bg-white/95 hover:bg-[#F8F3EC]/90 hover:border-[#7B61FF]/60 text-[#7B61FF] px-8 py-6 text-base sm:text-lg font-semibold hover:scale-105 transition-all duration-200 shadow-md">
+              <Button
+                onClick={() => window.location.href = '/signup'}
+                className="gradient-button text-white px-8 py-6 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200"
+              >
                 Talk to sales
               </Button>
             </div>
@@ -115,7 +123,10 @@ export function FeatureSections() {
                   </p>
                 </div>
               </div>
-              <Button variant="outline" className="border-2 border-[#7B61FF]/40 bg-white/95 hover:bg-[#F8F3EC]/90 hover:border-[#7B61FF]/60 text-[#7B61FF] px-8 py-6 text-base sm:text-lg font-semibold hover:scale-105 transition-all duration-200 shadow-md">
+              <Button
+                onClick={() => window.location.href = '/signup'}
+                className="gradient-button text-white px-8 py-6 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200"
+              >
                 Talk to sales
               </Button>
             </div>

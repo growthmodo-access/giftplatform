@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
@@ -13,7 +15,10 @@ export function IndustryLeaders() {
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-lg">
               Built in India, shipping worldwide. We understand local preferences and global scale. Whether you're a startup expanding internationally or an enterprise managing distributed teams, we have you covered.
             </p>
-            <Button className="px-8 py-6 text-base sm:text-lg font-semibold gradient-button text-white shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200">
+            <Button
+              onClick={() => window.location.href = '/signup'}
+              className="gradient-button text-white px-8 py-6 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200"
+            >
               Talk to sales
             </Button>
           </div>
