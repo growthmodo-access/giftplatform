@@ -20,7 +20,7 @@ export function CTASection() {
             Ready to build stronger relationships through gifting?
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-4 sm:px-0 leading-relaxed">
-            Let's talk about your gifting needs. We'll show you how premium, branded gifts can transform how you engage with employees, clients, and events.
+            Let's talk about your gifting needs. We'll show you how premium, branded gifts can transform how you engage with employees, clients, and events worldwide.
           </p>
           <Button
             onClick={handleRequestDemo}

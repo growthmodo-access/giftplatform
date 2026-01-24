@@ -29,7 +29,7 @@ const testimonials = [
     company: "Startup, Hyderabad",
   },
   {
-    quote: "We use it for employee onboarding and client thank-yous. The branded packaging makes a real impression.",
+    quote: "We use it for employee onboarding and client thank yous. The branded packaging makes a real impression.",
     author: "Meera R.",
     role: "HR Manager",
     company: "Enterprise, Chennai",
@@ -53,8 +53,8 @@ export function Testimonials() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">
             What our customers are saying
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
-            We're early, but we're building something special. Here's what our first customers have to say.
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
+            We're early, but we're building something special. Here's what our customers have to say.
           </p>
         </div>
 

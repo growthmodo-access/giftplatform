@@ -28,7 +28,7 @@ export function FeatureSections() {
                 Premium swag and gifts, shipped worldwide
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
-                We own inventory across 80+ countries. Order branded swag, premium gifts, or curated selections—we handle warehousing, customs, and delivery. No volume minimums, no logistics headaches.
+                We own inventory across 80+ countries. Order branded swag, premium gifts, or curated selections. We handle warehousing, customs, and delivery. No volume minimums, no logistics headaches.
               </p>
               <Button variant="outline" className="border-[#7B61FF]/30 bg-white/90 hover:bg-[#F8F3EC]/80 text-[#7B61FF] text-sm sm:text-base">
                 Talk to sales
@@ -62,7 +62,7 @@ export function FeatureSections() {
                 Thoughtful gifts build stronger relationships
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
-                Gift cards feel transactional. Branded, curated gifts show you care. We curate premium selections that recipients actually want—from tech accessories to wellness products. Every gift reinforces your brand and strengthens relationships.
+                Gift cards feel transactional. Branded, curated gifts show you care. We curate premium selections that recipients actually want, from tech accessories to wellness products. Every gift reinforces your brand and strengthens relationships.
               </p>
               <Button variant="outline" className="border-[#7B61FF]/30 bg-white/90 hover:bg-[#F8F3EC]/80 text-[#7B61FF] text-sm sm:text-base">
                 Talk to sales
@@ -97,7 +97,7 @@ export function FeatureSections() {
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed space-y-2">
                 <span className="block"><strong>Employee recognition:</strong> Welcome kits, work anniversaries, performance rewards</span>
-                <span className="block"><strong>Client appreciation:</strong> Thank-you gifts, deal closings, partnership milestones</span>
+                <span className="block"><strong>Client appreciation:</strong> Thank you gifts, deal closings, partnership milestones</span>
                 <span className="block"><strong>Events & campaigns:</strong> Conference swag, product launches, team offsites</span>
               </p>
               <Button variant="outline" className="border-[#7B61FF]/30 bg-white/90 hover:bg-[#F8F3EC]/80 text-[#7B61FF] text-sm sm:text-base">

@@ -25,7 +25,7 @@ export function LandingHero() {
             {/* Trust Badge */}
             <div className="mb-4 sm:mb-6">
               <span className="inline-block bg-[#F8F3EC] text-foreground px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wide border border-[#F8F3EC]/50 shadow-sm">
-                Built in India, shipping globally
+                Made in India, delivered globally
               </span>
             </div>
 
@@ -36,7 +36,7 @@ export function LandingHero() {
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl px-4 sm:px-0 leading-relaxed">
-              Send premium, branded gifts to employees, clients, and events worldwide. We handle inventory, fulfillment, and logistics—you focus on relationships.
+              Send premium, branded gifts to employees, clients, and events worldwide. We handle inventory, fulfillment, and logistics so you can focus on building relationships.
             </p>
 
             {/* CTA Buttons */}
@@ -66,7 +66,7 @@ export function LandingHero() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-foreground text-base sm:text-lg">🎁</span>
-                <span className="text-xs sm:text-sm font-semibold">Premium inventory, human-managed</span>
+                <span className="text-xs sm:text-sm font-semibold">Premium inventory, human managed</span>
               </div>
             </div>
           </div>

@@ -13,7 +13,7 @@ export function IntegrationsSection() {
             How it works
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-4 sm:px-0">
-            Simple, human-managed process. No complex automation required.
+            Simple, human managed process. No complex automation required.
           </p>
         </div>
 
