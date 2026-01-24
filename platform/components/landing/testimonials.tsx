@@ -44,31 +44,31 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 gradient-landing">
+    <section className="py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <div className="text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
+        <div className="text-center mb-12 sm:mb-16 md:mb-20">
+          <div className="text-muted-foreground text-xs sm:text-sm font-bold uppercase tracking-widest mb-4 sm:mb-6">
             EARLY CUSTOMERS
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight px-4 sm:px-0">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 sm:mb-8 leading-tight px-4 sm:px-0">
             What our customers are saying
           </h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4 sm:px-0">
             We're early, but we're building something special. Here's what our customers have to say.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial, index) => (
             <Card
               key={index}
               className={`
-                p-5 sm:p-6 md:p-8 glass hover:shadow-xl transition-all
-                ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-2 border-border/50' : ''}
+                p-6 sm:p-8 md:p-10 glass hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-white/50
+                ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-[#7B61FF]/30' : ''}
               `}
             >
-              <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
-                <p className="text-sm sm:text-base text-foreground leading-relaxed flex-1">
+              <div className="flex flex-col gap-5 sm:gap-6 md:gap-8">
+                <p className="text-base sm:text-lg text-foreground leading-relaxed flex-1">
                   "{testimonial.quote}"
                 </p>
                 <div className="flex items-start gap-2 sm:gap-3">

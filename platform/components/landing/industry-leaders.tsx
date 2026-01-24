@@ -78,28 +78,28 @@ const clients: Array<{
 
 export function IndustryLeaders() {
   return (
-    <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 gradient-landing">
+    <section className="py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-center">
-          <div className="order-2 lg:order-1">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 leading-tight">
+        <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 lg:gap-24 items-center">
+          <div className="order-2 lg:order-1 space-y-6 sm:space-y-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 sm:mb-8 leading-tight">
               From India to the world
             </h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed max-w-md">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-lg">
               Built in India, shipping worldwide. We understand local preferences and global scale. Whether you're a startup expanding internationally or an enterprise managing distributed teams, we have you covered.
             </p>
-            <Button className="text-sm sm:text-base">
+            <Button className="px-8 py-6 text-base sm:text-lg font-semibold gradient-button text-white shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200">
               Talk to sales
             </Button>
           </div>
-          <div className="bg-muted/30 p-6 sm:p-8 md:p-10 lg:p-12 rounded-2xl sm:rounded-3xl border border-border/50 order-1 lg:order-2">
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+          <div className="bg-white/60 backdrop-blur-sm p-8 sm:p-10 md:p-12 lg:p-14 rounded-3xl sm:rounded-[2rem] border-2 border-[#F8F3EC]/50 shadow-2xl hover:shadow-3xl transition-shadow duration-300 order-1 lg:order-2">
+            <div className="grid grid-cols-2 gap-4 sm:gap-5 md:gap-6">
               {clients.map((client, index) => (
                 <Card
                   key={client.name}
-                  className={`p-3 sm:p-4 md:p-6 glass hover:shadow-xl transition-all border-2 border-white/30 ${
+                  className={`p-4 sm:p-5 md:p-7 glass hover:shadow-2xl transition-all duration-300 border-2 border-white/50 ${
                     index % 2 === 0 ? 'rotate-[-1deg]' : 'rotate-[1deg]'
-                  } hover:rotate-0 hover:scale-105`}
+                  } hover:rotate-0 hover:scale-110`}
                 >
                   <div className="flex items-center justify-center min-h-[40px] sm:min-h-[50px] md:min-h-[60px]">
                     {client.logo}
