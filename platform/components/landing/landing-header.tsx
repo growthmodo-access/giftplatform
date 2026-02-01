@@ -49,14 +49,15 @@ export function LandingHeader() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between gap-4 min-h-20 py-3 lg:min-h-24 lg:py-4">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+            <Link href="/" className="flex items-center gap-2 group flex-shrink-0 relative z-10">
               <Image
                 src="/logogoodies.png"
                 alt="Goodies Logo"
-                width={120}
-                height={60}
-                className="h-8 sm:h-10 lg:h-12 xl:h-14 w-auto object-contain group-hover:opacity-80 transition-opacity"
+                width={240}
+                height={120}
+                className="h-8 sm:h-10 lg:h-12 xl:h-14 w-auto object-contain object-left group-hover:opacity-90 transition-opacity"
                 priority
+                unoptimized
               />
             </Link>
 
@@ -71,20 +72,12 @@ export function LandingHeader() {
                 Home
               </a>
               <a href="#solutions" className={cn(
-                "font-medium transition-colors flex items-center gap-1 whitespace-nowrap",
+                "font-medium transition-colors whitespace-nowrap",
                 isScrolled 
                   ? "text-muted-foreground hover:text-foreground" 
                   : "text-foreground/90 hover:text-foreground"
               )}>
-                Solutions <span className="text-xs">▼</span>
-              </a>
-              <a href="#products" className={cn(
-                "font-medium transition-colors flex items-center gap-1 whitespace-nowrap",
-                isScrolled 
-                  ? "text-muted-foreground hover:text-foreground" 
-                  : "text-foreground/90 hover:text-foreground"
-              )}>
-                Products <span className="text-xs">▼</span>
+                Solutions
               </a>
               <a href="#pricing" className={cn(
                 "font-medium transition-colors whitespace-nowrap",
@@ -93,14 +86,6 @@ export function LandingHeader() {
                   : "text-foreground/90 hover:text-foreground"
               )}>
                 Pricing
-              </a>
-              <a href="#blog" className={cn(
-                "font-medium transition-colors whitespace-nowrap",
-                isScrolled 
-                  ? "text-muted-foreground hover:text-foreground" 
-                  : "text-foreground/90 hover:text-foreground"
-              )}>
-                Blog
               </a>
               <a href="#contact" className={cn(
                 "font-medium transition-colors whitespace-nowrap",
@@ -157,14 +142,8 @@ export function LandingHeader() {
                 <a href="#solutions" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Solutions
                 </a>
-                <a href="#products" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
-                  Products
-                </a>
                 <a href="#pricing" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Pricing
-                </a>
-                <a href="#blog" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
-                  Blog
                 </a>
                 <a href="#contact" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Contact

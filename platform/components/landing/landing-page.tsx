@@ -8,7 +8,6 @@ import { FeatureSections } from './feature-sections'
 import { IndustryLeaders } from './industry-leaders'
 import { ServicesSection } from './services-section'
 import { Testimonials } from './testimonials'
-import { BlogSection } from './blog-section'
 import { IntegrationsSection } from './integrations-section'
 import { CTASection } from './cta-section'
 import { Footer } from './footer'
@@ -60,7 +59,6 @@ export function LandingPage() {
         <IndustryLeaders />
         <ServicesSection />
         <Testimonials />
-        <BlogSection />
         <IntegrationsSection />
         <CTASection />
       </main>
