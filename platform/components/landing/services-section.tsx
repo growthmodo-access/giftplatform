@@ -2,9 +2,9 @@ import Image from 'next/image'
 
 export function ServicesSection() {
   return (
-    <section id="services" className="py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
+    <section id="services" className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="text-center mb-12 sm:mb-16 md:mb-20">
+        <div className="text-center mb-10 sm:mb-16 md:mb-20">
           <div className="text-muted-foreground text-xs sm:text-sm font-bold uppercase tracking-widest mb-4 sm:mb-6">
             OUR SERVICES
           </div>

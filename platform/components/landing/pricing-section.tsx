@@ -52,7 +52,7 @@ export function PricingSection() {
             Transparent pricing. No hidden fees. Talk to our team for a quote tailored to your volume and needs.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-6 lg:gap-8">
           {plans.map((plan) => (
             <div
               key={plan.name}

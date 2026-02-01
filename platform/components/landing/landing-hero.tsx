@@ -23,7 +23,7 @@ export function LandingHero() {
         <div className="min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center py-16 sm:py-20 md:py-24 lg:py-28">
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto w-full">
             {/* Trust Badge + Social Proof Quote */}
-            <div className="mb-6 sm:mb-8 md:mb-10">
+            <div className="mb-4 sm:mb-8 md:mb-10">
               <span className="inline-flex items-center gap-2 bg-[#F8F3EC] text-foreground px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide border border-[#F8F3EC]/50 shadow-md hover:shadow-lg transition-shadow focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 <span className="text-base sm:text-lg">⭐</span>
                 Trusted by 20,000+ companies
@@ -34,19 +34,19 @@ export function LandingHero() {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 md:mb-10 leading-[1.1] sm:leading-tight px-4 sm:px-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-8 md:mb-10 leading-[1.1] sm:leading-tight px-2 sm:px-6">
               <span className="text-foreground">Business gifting</span>
               <br />
               <span className="text-foreground">made easy</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-10 md:mb-12 max-w-3xl px-4 sm:px-6 leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 sm:mb-10 md:mb-12 max-w-3xl px-2 sm:px-6 leading-relaxed">
               Send <strong className="text-foreground">flexible</strong>, <strong className="text-foreground">delightful</strong> corporate gifts and swag, all on one platform.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 mb-10 sm:mb-12 md:mb-16 w-full sm:w-auto px-4 sm:px-0 justify-center items-center">
+            {/* CTA Buttons - centered on mobile */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 mb-10 sm:mb-12 md:mb-16 w-full max-w-[min(100%,280px)] sm:max-w-none mx-auto px-4 sm:px-0 justify-center items-center">
               <Button
                 onClick={handleRequestDemo}
                 size="lg"
@@ -70,7 +70,7 @@ export function LandingHero() {
             </p>
 
             {/* Trust Indicators */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-12 text-muted-foreground px-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 md:gap-12 text-muted-foreground px-2 sm:px-4">
               <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm px-5 py-3 rounded-full border border-[#F8F3EC]/50 shadow-sm">
                 <span className="text-xl sm:text-2xl">🌍</span>
                 <span className="text-sm sm:text-base font-semibold">80+ countries, zero logistics hassle</span>
@@ -87,7 +87,7 @@ export function LandingHero() {
         </div>
 
         {/* Hero Image Visualization */}
-        <div className="pb-16 sm:pb-20 md:pb-24 lg:pb-28 relative px-4 sm:px-6 md:px-8">
+        <div className="pb-12 sm:pb-20 md:pb-24 lg:pb-28 relative px-4 sm:px-6 md:px-8">
           <div className="relative w-full max-w-7xl mx-auto">
             <Image
               src="/hero1.png"

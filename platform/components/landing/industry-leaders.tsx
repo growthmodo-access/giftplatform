@@ -5,10 +5,10 @@ import Image from 'next/image'
 
 export function IndustryLeaders() {
   return (
-    <section className="py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
+    <section className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 lg:gap-24 items-center">
-          <div className="order-2 lg:order-1 space-y-6 sm:space-y-8">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center">
+          <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 text-center sm:text-left flex flex-col items-center sm:items-start">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 sm:mb-8 leading-tight">
               From India to the world
             </h2>
@@ -17,7 +17,7 @@ export function IndustryLeaders() {
             </p>
             <Button
               onClick={() => window.location.href = '/signup'}
-              className="gradient-button text-white px-8 py-6 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200"
+              className="gradient-button text-white px-8 py-6 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200 w-full max-w-[280px] sm:max-w-none sm:w-auto"
             >
               Talk to sales
             </Button>

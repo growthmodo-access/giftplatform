@@ -44,9 +44,9 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
+    <section className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="text-center mb-12 sm:mb-16 md:mb-20">
+        <div className="text-center mb-10 sm:mb-16 md:mb-20">
           <div className="text-muted-foreground text-xs sm:text-sm font-bold uppercase tracking-widest mb-4 sm:mb-6">
             EARLY CUSTOMERS
           </div>
@@ -58,7 +58,7 @@ export function Testimonials() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
           {testimonials.map((testimonial, index) => (
             <Card
               key={index}
