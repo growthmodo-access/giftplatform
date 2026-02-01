@@ -176,8 +176,8 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4">
-      <Card className="w-full max-w-md border border-[#F8F3EC]/50 gradient-card shadow-primary-lg">
+    <div className="min-h-screen flex items-center justify-center bg-white p-3 sm:p-4 md:p-6 overflow-x-hidden">
+      <Card className="w-full max-w-md border border-[#F8F3EC]/50 gradient-card shadow-primary-lg min-w-0">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
             <Image
@@ -238,7 +238,7 @@ function LoginForm() {
           {/* Test User Quick Login */}
           <div className="mt-6 pt-6 border-t border-border/50">
             <p className="text-xs text-muted-foreground mb-3 text-center">Quick Login (Testing)</p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
               {testUsers.map((testUser) => (
                 <Button
                   key={testUser.email}

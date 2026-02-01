@@ -67,6 +67,9 @@ export function LandingHero() {
                 <span className="text-sm sm:text-base font-semibold">Premium inventory, human managed</span>
               </div>
             </div>
+            <p className="text-sm sm:text-base text-muted-foreground mt-6 px-4 text-center">
+              Trusted by startups and enterprises across India and beyond
+            </p>
           </div>
         </div>
 

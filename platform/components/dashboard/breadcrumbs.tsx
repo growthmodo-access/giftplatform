@@ -55,8 +55,8 @@ export function Breadcrumbs() {
   })
 
   return (
-    <Breadcrumb className="mb-4">
-      <BreadcrumbList>
+    <Breadcrumb className="mb-3 sm:mb-4">
+      <BreadcrumbList className="flex-wrap min-w-0">
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/dashboard" className="flex items-center gap-1">

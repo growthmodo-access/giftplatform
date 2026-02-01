@@ -3,7 +3,6 @@
 import { useEffect } from 'react'
 import { LandingHeader } from './landing-header'
 import { LandingHero } from './landing-hero'
-import { ClientLogos } from './client-logos'
 import { FeatureSections } from './feature-sections'
 import { IndustryLeaders } from './industry-leaders'
 import { ServicesSection } from './services-section'
@@ -43,7 +42,7 @@ export function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen gradient-landing">
+    <div className="min-h-screen gradient-landing overflow-x-hidden">
       <ScrollProgress />
       <a 
         href="#home" 
@@ -52,9 +51,8 @@ export function LandingPage() {
         Skip to main content
       </a>
       <LandingHeader />
-      <main>
+      <main className="overflow-x-hidden">
         <LandingHero />
-        <ClientLogos />
         <FeatureSections />
         <IndustryLeaders />
         <ServicesSection />

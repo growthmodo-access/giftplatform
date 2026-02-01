@@ -95,8 +95,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4">
-      <Card className="w-full max-w-md border border-[#F8F3EC]/50 gradient-card shadow-primary-lg">
+    <div className="min-h-screen flex items-center justify-center bg-white p-3 sm:p-4 md:p-6 overflow-x-hidden overflow-y-auto py-8">
+      <Card className="w-full max-w-md border border-[#F8F3EC]/50 gradient-card shadow-primary-lg min-w-0 my-auto">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
             <Image
@@ -226,7 +226,7 @@ export default function SignupPage() {
                     className="border-border/50"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="taxId" className="text-foreground">Tax ID</Label>
                     <Input
@@ -262,7 +262,7 @@ export default function SignupPage() {
                       onChange={(e) => setBillingStreet(e.target.value)}
                       className="border-border/50"
                     />
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <Input
                         placeholder="City"
                         value={billingCity}
@@ -276,7 +276,7 @@ export default function SignupPage() {
                         className="border-border/50"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <Input
                         placeholder="ZIP Code"
                         value={billingZip}

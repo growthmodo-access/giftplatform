@@ -27,15 +27,15 @@ export default async function DashboardPage() {
   const { stats } = await getDashboardStats()
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8 min-w-0">
       {/* Welcome Header with Quick Actions */}
-      <div className="pb-6 border-b border-border/50">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+      <div className="pb-4 sm:pb-6 border-b border-border/50">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 items-start">
           <div className="lg:col-span-2">
             <p className="text-sm text-muted-foreground mb-1.5">
               {getTimeGreeting()} • {getFormattedDate()}
             </p>
-            <h1 className="text-3xl lg:text-4xl font-semibold text-foreground mb-2">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground mb-2 break-words">
               Welcome back, {userName}
             </h1>
             <p className="text-muted-foreground text-base">
@@ -55,13 +55,13 @@ export default async function DashboardPage() {
       <StatsCards />
       
       {/* Charts and Top Products */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 min-w-0">
         <SalesChart />
         <TopProducts />
       </div>
       
       {/* Recent Orders and Activity Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 min-w-0">
         <div className="lg:col-span-2">
           <RecentOrders />
         </div>

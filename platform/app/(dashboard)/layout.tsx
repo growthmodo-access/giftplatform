@@ -88,17 +88,17 @@ export default async function DashboardLayout({
   const userInitials = getInitials(currentUser.name, userEmail)
 
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+    <div className="flex h-screen bg-white overflow-hidden min-w-0">
       <Sidebar userRole={userRole} />
-      <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0 pl-14 lg:pl-0">
         <Header 
           userName={userName}
           userEmail={userEmail}
           userInitials={userInitials}
         />
-        <main className="flex-1 overflow-y-auto bg-white">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-white">
           <KeyboardShortcuts />
-          <div className="container-padding py-6 lg:py-8 max-w-7xl mx-auto px-4 lg:px-6">
+          <div className="container-padding py-4 sm:py-6 lg:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Breadcrumbs />
             {children}
           </div>
