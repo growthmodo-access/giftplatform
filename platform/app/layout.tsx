@@ -57,6 +57,31 @@ export const metadata: Metadata = {
   charset: 'utf-8',
 }
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: 'Goodies.so',
+      url: 'https://goodies.so',
+      description: 'Global gifting and swag platform. Send premium corporate gifts and swag worldwide.',
+      logo: 'https://goodies.so/logogoodies.png',
+    },
+    {
+      '@type': 'WebSite',
+      name: 'Goodies.so',
+      url: 'https://goodies.so',
+      description: 'Boost engagement globally, send premium swag and gifts. Improve your culture and increase sales.',
+      publisher: { '@id': 'https://goodies.so/#organization' },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: { '@type': 'EntryPoint', urlTemplate: 'https://goodies.so/?q={search_term_string}' },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -65,6 +90,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${plusJakartaSans.variable} ${dmSans.variable} font-sans`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <CSSVariablesCheck />
         <ErrorBoundary>
           <TooltipProviderWrapper>

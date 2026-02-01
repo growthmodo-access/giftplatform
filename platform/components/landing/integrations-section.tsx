@@ -6,7 +6,7 @@ const steps = [
 
 export function IntegrationsSection() {
   return (
-    <section className="py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
+    <section id="solutions" className="py-20 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 sm:mb-8 leading-tight px-4 sm:px-0">

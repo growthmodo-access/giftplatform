@@ -1,9 +1,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Plus, Gift } from 'lucide-react'
 
-const gifts = [
+const gifts: {
+  id: string
+  recipient: string
+  product: string
+  status: string
+  sentDate: string
+}[] = [
   {
     id: '1',
     recipient: 'John Doe',
@@ -46,6 +53,14 @@ export default function GiftsPage() {
           <CardDescription>View and manage sent gifts</CardDescription>
         </CardHeader>
         <CardContent>
+          {gifts.length === 0 ? (
+            <EmptyState
+              icon={<Gift className="w-8 h-8 text-muted-foreground" />}
+              title="No gifts sent yet"
+              description="Send your first gift to an employee or client."
+              action={{ label: 'Send your first gift', onClick: () => {} }}
+            />
+          ) : (
           <div className="space-y-4">
             {gifts.map((gift) => (
               <div
@@ -67,6 +82,7 @@ export default function GiftsPage() {
               </div>
             ))}
           </div>
+          )}
         </CardContent>
       </Card>
     </div>

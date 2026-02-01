@@ -87,14 +87,14 @@ export function LandingHeader() {
               )}>
                 Pricing
               </a>
-              <a href="#contact" className={cn(
-                "font-medium transition-colors whitespace-nowrap",
+              <Link href="/contact" className={cn(
+                "font-medium transition-colors whitespace-nowrap focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded",
                 isScrolled 
                   ? "text-muted-foreground hover:text-foreground" 
                   : "text-foreground/90 hover:text-foreground"
               )}>
                 Contact
-              </a>
+              </Link>
             </nav>
 
             {/* Header Actions */}
@@ -145,9 +145,9 @@ export function LandingHeader() {
                 <a href="#pricing" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Pricing
                 </a>
-                <a href="#contact" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
                   Contact
-                </a>
+                </Link>
                 <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
                   <button
                     onClick={() => {

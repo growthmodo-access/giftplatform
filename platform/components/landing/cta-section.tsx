@@ -25,7 +25,8 @@ export function CTASection() {
           <Button
             onClick={handleRequestDemo}
             size="lg"
-            className="gradient-button text-white px-10 py-7 sm:px-12 sm:py-8 text-lg sm:text-xl font-semibold mb-10 sm:mb-14 md:mb-16 shadow-primary-lg hover:shadow-primary-xl hover:scale-110 transition-all duration-200"
+            className="gradient-button text-white px-10 py-7 sm:px-12 sm:py-8 text-lg sm:text-xl font-semibold mb-10 sm:mb-14 md:mb-16 shadow-primary-lg hover:shadow-primary-xl hover:scale-110 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            aria-label="Talk to sales"
           >
             Talk to sales
           </Button>

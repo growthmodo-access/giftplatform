@@ -8,8 +8,10 @@ import { OrderDetailsDialog } from './order-details-dialog'
 import { OrdersTable } from './orders-table'
 import { OrdersFilters, FilterState } from './orders-filters'
 import { Pagination } from '@/components/ui/pagination'
+import { EmptyState } from '@/components/ui/empty-state'
 import { useRealtimeOrders } from '@/hooks/use-realtime-orders'
 import { useRouter } from 'next/navigation'
+import { ShoppingCart } from 'lucide-react'
 
 type Order = {
   id: string
@@ -197,25 +199,33 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
       {/* Filters */}
       <OrdersFilters onFilterChange={handleFilterChange} />
 
-      {/* Orders Table */}
+      {/* Orders Table or Empty State */}
       <div className="space-y-4">
-        <OrdersTable 
-          orders={paginatedOrders} 
-          onOrderClick={(order) => {
-            setSelectedOrder(order)
-            setDetailsDialogOpen(true)
-          }}
-        />
-        
-        {/* Pagination */}
-        {filteredOrders.length > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            totalItems={filteredOrders.length}
-            itemsPerPage={ITEMS_PER_PAGE}
-            onPageChange={setCurrentPage}
+        {filteredOrders.length === 0 ? (
+          <EmptyState
+            icon={<ShoppingCart className="w-8 h-8 text-muted-foreground" />}
+            title="No orders yet"
+            description="Create your first order to start sending gifts to employees or clients."
+            action={canCreateOrders ? { label: 'Create your first order', onClick: () => setDialogOpen(true) } : undefined}
           />
+        ) : (
+          <>
+            <OrdersTable 
+              orders={paginatedOrders} 
+              onOrderClick={(order) => {
+                setSelectedOrder(order)
+                setDetailsDialogOpen(true)
+              }}
+            />
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filteredOrders.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={setCurrentPage}
+            />
+          </>
         )}
       </div>
 

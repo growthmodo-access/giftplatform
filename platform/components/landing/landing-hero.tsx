@@ -11,9 +11,9 @@ export function LandingHero() {
     router.push('/signup')
   }
 
-  const handleExploreCountries = () => {
-    // Scroll to countries section or show modal
-    // Navigate to signup or dashboard
+  const scrollToSolutions = () => {
+    const el = document.querySelector('#solutions')
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
@@ -22,12 +22,15 @@ export function LandingHero() {
         {/* Centered Hero Content */}
         <div className="min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center py-16 sm:py-20 md:py-24 lg:py-28">
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto w-full">
-            {/* Trust Badge */}
+            {/* Trust Badge + Social Proof Quote */}
             <div className="mb-6 sm:mb-8 md:mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#F8F3EC] text-foreground px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide border border-[#F8F3EC]/50 shadow-md hover:shadow-lg transition-shadow">
+              <span className="inline-flex items-center gap-2 bg-[#F8F3EC] text-foreground px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide border border-[#F8F3EC]/50 shadow-md hover:shadow-lg transition-shadow focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 <span className="text-base sm:text-lg">⭐</span>
                 Trusted by 20,000+ companies
               </span>
+              <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto italic">
+                &ldquo;Finally, a gifting platform that understands both Indian preferences and global scale.&rdquo; — Vikram D., COO
+              </p>
             </div>
 
             {/* Main Heading */}
@@ -43,13 +46,23 @@ export function LandingHero() {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 mb-10 sm:mb-12 md:mb-16 w-full sm:w-auto px-4 sm:px-0">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 mb-10 sm:mb-12 md:mb-16 w-full sm:w-auto px-4 sm:px-0 justify-center items-center">
               <Button
                 onClick={handleRequestDemo}
                 size="lg"
-                className="gradient-button text-white px-8 py-6 sm:px-10 sm:py-7 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200 w-full sm:w-auto"
+                className="gradient-button text-white px-8 py-6 sm:px-10 sm:py-7 text-base sm:text-lg font-semibold shadow-primary-lg hover:shadow-primary-xl hover:scale-105 transition-all duration-200 w-full sm:w-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                aria-label="Start gifting - sign up"
               >
                 Start gifting
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={scrollToSolutions}
+                className="w-full sm:w-auto border-2 border-[#7B61FF]/30 text-foreground hover:bg-[#F8F3EC]/50 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                aria-label="See how it works"
+              >
+                See how it works
               </Button>
             </div>
             <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 px-4 sm:px-0">
@@ -81,6 +94,7 @@ export function LandingHero() {
               alt="Global gifting visualization"
               width={1536}
               height={1024}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1280px"
               className="w-full h-auto rounded-3xl sm:rounded-[2rem] object-contain shadow-2xl hover:shadow-3xl transition-shadow duration-300"
               priority
             />

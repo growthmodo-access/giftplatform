@@ -1,16 +1,18 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { LandingHeader } from './landing-header'
 import { LandingHero } from './landing-hero'
 import { FeatureSections } from './feature-sections'
 import { IndustryLeaders } from './industry-leaders'
 import { ServicesSection } from './services-section'
-import { Testimonials } from './testimonials'
+import { PricingSection } from './pricing-section'
 import { IntegrationsSection } from './integrations-section'
 import { CTASection } from './cta-section'
 import { Footer } from './footer'
 import { ScrollProgress } from './scroll-progress'
+
+const Testimonials = lazy(() => import('./testimonials').then((m) => ({ default: m.Testimonials })))
 
 export function LandingPage() {
   useEffect(() => {
@@ -56,16 +58,21 @@ export function LandingPage() {
         <FeatureSections />
         <IndustryLeaders />
         <ServicesSection />
-        <Testimonials />
+        <PricingSection />
+        <Suspense fallback={<section className="py-20 gradient-landing min-h-[400px] flex items-center justify-center"><div className="animate-pulse text-muted-foreground">Loading...</div></section>}>
+          <Testimonials />
+        </Suspense>
         <IntegrationsSection />
         <CTASection />
       </main>
       <Footer />
-      <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 gradient-primary rounded-full flex items-center justify-center shadow-primary-lg hover:scale-110 transition-transform cursor-pointer">
-          <span className="text-white font-semibold text-xs sm:text-sm">Help</span>
-        </div>
-      </div>
+      <a
+        href="/contact"
+        className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 w-12 h-12 sm:w-14 sm:h-14 gradient-primary rounded-full flex items-center justify-center shadow-primary-lg hover:scale-110 transition-transform cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        aria-label="Get help or contact us"
+      >
+        <span className="text-white font-semibold text-xs sm:text-sm">Help</span>
+      </a>
     </div>
   )
 }

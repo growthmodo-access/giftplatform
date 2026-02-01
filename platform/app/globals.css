@@ -58,6 +58,17 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* Focus visible for accessibility */
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
 }
 
 @layer utilities {
