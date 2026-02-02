@@ -34,7 +34,7 @@ export function LandingHero() {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl font-bold mb-4 sm:mb-8 md:mb-10 leading-[1.1] sm:leading-tight px-2 sm:px-6">
+            <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-7xl font-extrabold mb-4 sm:mb-8 md:mb-10 leading-[1.05] sm:leading-tight px-2 sm:px-6">
               <span className="text-foreground">Business gifting</span>
               <br />
               <span className="text-foreground">made easy</span>
