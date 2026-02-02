@@ -20,7 +20,7 @@ export function LandingHero() {
     <section id="home" className="relative overflow-hidden gradient-landing">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
         {/* Centered Hero Content */}
-        <div className="min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center py-16 sm:py-20 md:py-24 lg:py-28">
+        <div className="flex items-center justify-center py-10 sm:py-14 md:py-16 lg:py-18">
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto w-full">
             {/* Trust Badge + Social Proof Quote */}
             <div className="mb-4 sm:mb-8 md:mb-10">
@@ -34,7 +34,7 @@ export function LandingHero() {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-8 md:mb-10 leading-[1.1] sm:leading-tight px-2 sm:px-6">
+            <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl font-bold mb-4 sm:mb-8 md:mb-10 leading-[1.1] sm:leading-tight px-2 sm:px-6">
               <span className="text-foreground">Business gifting</span>
               <br />
               <span className="text-foreground">made easy</span>
