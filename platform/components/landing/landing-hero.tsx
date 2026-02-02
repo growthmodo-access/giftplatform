@@ -59,7 +59,7 @@ export function LandingHero() {
                 variant="outline"
                 size="lg"
                 onClick={scrollToSolutions}
-                className="w-full sm:w-auto border-2 border-[#7B61FF]/30 text-foreground hover:bg-[#F8F3EC]/50 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                className="w-full sm:w-auto border-2 border-[#7B61FF] bg-white/90 text-[#7B61FF] hover:bg-[#7B61FF] hover:text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 aria-label="See how it works"
               >
                 See how it works
