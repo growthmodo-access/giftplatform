@@ -32,8 +32,9 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { useToast } from '@/hooks/use-toast'
-import { Building2, Users, Shield, Mail } from 'lucide-react'
+import { Building2, Users, Shield, Mail, UserPlus } from 'lucide-react'
 import { updateUserRole } from '@/actions/users'
+import { AddUserDialog } from './add-user-dialog'
 
 type User = {
   id: string
@@ -71,6 +72,7 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
   const { toast } = useToast()
   const [updating, setUpdating] = useState<string | null>(null)
   const [roleChangeDialog, setRoleChangeDialog] = useState<{ userId: string; newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE' } | null>(null)
+  const [addUserOpen, setAddUserOpen] = useState(false)
 
   const handleRoleChange = async (userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') => {
     setUpdating(userId)
@@ -109,10 +111,17 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-semibold text-foreground">User Management</h1>
-        <p className="text-muted-foreground mt-1">Manage all users and their access levels</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold text-foreground">User Management</h1>
+          <p className="text-muted-foreground mt-1">Manage all users and their access levels</p>
+        </div>
+        <Button onClick={() => setAddUserOpen(true)} className="shrink-0">
+          <UserPlus className="w-4 h-4 mr-2" />
+          Add user
+        </Button>
       </div>
+      <AddUserDialog open={addUserOpen} onOpenChange={setAddUserOpen} />
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
