@@ -65,13 +65,16 @@ export async function createUserProfile(
   
   const { error } = await supabase
     .from('users')
-    .insert({
-      id: userId,
-      email,
-      name: name || null,
-      role: companyId ? 'ADMIN' : 'EMPLOYEE', // If creating company, user becomes ADMIN
-      company_id: companyId,
-    })
+    .upsert(
+      {
+        id: userId,
+        email,
+        name: name || null,
+        role: companyId ? 'ADMIN' : 'EMPLOYEE', // If creating company, user becomes ADMIN
+        company_id: companyId,
+      },
+      { onConflict: 'id' }
+    )
 
   if (error) {
     // If user creation fails and we created a company, we should clean it up

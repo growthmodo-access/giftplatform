@@ -233,13 +233,16 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
     
     const { error: profileError } = await serviceSupabase
       .from('users')
-      .insert({
-        id: authData.user.id,
-        email,
-        name: name || null,
-        role: role,
-        company_id: finalCompanyId,
-      })
+      .upsert(
+        {
+          id: authData.user.id,
+          email,
+          name: name || null,
+          role: role,
+          company_id: finalCompanyId,
+        },
+        { onConflict: 'id' }
+      )
 
     if (profileError) {
       // If profile creation fails, delete the auth user
