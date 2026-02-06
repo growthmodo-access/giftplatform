@@ -312,10 +312,23 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ADMIN">Admin</SelectItem>
-                  <SelectItem value="HR">HR</SelectItem>
-                  <SelectItem value="MANAGER">Manager</SelectItem>
-                  <SelectItem value="EMPLOYEE">Employee</SelectItem>
+                  {(() => {
+                    const roleOptions: { value: string; label: string }[] = [
+                      { value: 'ADMIN', label: 'Admin' },
+                      { value: 'HR', label: 'HR' },
+                      { value: 'MANAGER', label: 'Manager' },
+                      { value: 'EMPLOYEE', label: 'Employee' },
+                    ]
+                    const allowed =
+                      userRole === 'HR'
+                        ? ['HR', 'MANAGER', 'EMPLOYEE']
+                        : userRole === 'ADMIN' || userRole === 'SUPER_ADMIN'
+                          ? ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE']
+                          : ['EMPLOYEE']
+                    return roleOptions
+                      .filter((r) => allowed.includes(r.value))
+                      .map((r) => <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>)
+                  })()}
                 </SelectContent>
               </Select>
             </div>

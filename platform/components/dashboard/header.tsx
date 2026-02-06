@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, Settings } from 'lucide-react'
+import { Search, Settings, LogOut } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -23,6 +23,19 @@ interface HeaderProps {
 
 export function Header({ userName, userEmail, userInitials }: HeaderProps) {
   const [searchOpen, setSearchOpen] = useState(false)
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', { method: 'POST' })
+      if (response.ok || response.redirected) {
+        window.location.href = response.redirected ? response.url : '/login'
+      } else {
+        window.location.href = '/login'
+      }
+    } catch {
+      window.location.href = '/login'
+    }
+  }
 
   return (
     <header className="h-14 lg:h-16 bg-white/95 backdrop-blur-md border-b border-black/[0.06] sticky top-0 z-30">
@@ -85,6 +98,14 @@ export function Header({ userName, userEmail, userInitials }: HeaderProps) {
                   <Settings className="w-4 h-4 mr-2.5 text-muted-foreground" />
                   <span className="text-sm">Settings</span>
                 </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="cursor-pointer focus:bg-muted text-muted-foreground focus:text-destructive"
+                onSelect={handleLogout}
+              >
+                <LogOut className="w-4 h-4 mr-2.5" />
+                <span className="text-sm">Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

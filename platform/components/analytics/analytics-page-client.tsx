@@ -21,6 +21,7 @@ export function AnalyticsPageClient({ initialData, currentUserRole }: AnalyticsP
   const [viewMode, setViewMode] = useState<'overview' | 'companies' | 'campaigns' | 'employees'>('overview')
 
   const canViewAllCompanies = currentUserRole === 'SUPER_ADMIN'
+  const canViewRevenue = currentUserRole !== 'HR'
 
   return (
     <div className="space-y-6">
@@ -93,7 +94,7 @@ export function AnalyticsPageClient({ initialData, currentUserRole }: AnalyticsP
         <>
           <EnhancedStatsCards timeRange={timeRange} />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <RevenueBreakdown timeRange={timeRange} />
+            {canViewRevenue && <RevenueBreakdown timeRange={timeRange} />}
             <CompanyPerformance timeRange={timeRange} canViewAll={canViewAllCompanies} />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

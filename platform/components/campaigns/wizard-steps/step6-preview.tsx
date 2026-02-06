@@ -149,6 +149,11 @@ export function CampaignStep6Preview({ data, onSuccess, onClose, onBack }: Step6
           </CardHeader>
           <CardContent>
             <div className="text-sm text-foreground">{recipientCount}</div>
+            <p className="text-xs text-muted-foreground mt-1.5">
+              {data.recipientSource === 'CSV'
+                ? "After you send, we'll email each recipient a personal gift link to choose their gift."
+                : 'Recipients will see this campaign in the app.'}
+            </p>
             {data.recipientSource === 'CSV' && (data.csvRows?.length ?? 0) > 0 && (
               <div className="mt-2 space-y-1 max-h-[150px] overflow-y-auto">
                 {data.csvRows!.slice(0, 10).map((row, i) => (
@@ -295,12 +300,12 @@ export function CampaignStep6Preview({ data, onSuccess, onClose, onBack }: Step6
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              {data.scheduleType === 'NOW' ? 'Sending...' : 'Creating...'}
+              {data.scheduleType === 'NOW' ? (data.recipientSource === 'CSV' ? 'Sending & emailing links...' : 'Sending...') : 'Creating...'}
             </>
           ) : (
             <>
               <Check className="w-4 h-4 mr-2" />
-              {data.scheduleType === 'NOW' ? 'Send Campaign' : 'Schedule Campaign'}
+              {data.scheduleType === 'NOW' ? (data.recipientSource === 'CSV' ? 'Send campaign & email gift links' : 'Send Campaign') : 'Schedule Campaign'}
             </>
           )}
         </Button>

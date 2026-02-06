@@ -109,8 +109,11 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold text-foreground mb-2">Select Recipients</h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground mb-1">
           Choose who should receive gifts from this campaign.
+        </p>
+        <p className="text-xs text-muted-foreground">
+          <strong>Upload CSV</strong> = we’ll email each person a personal link to choose their gift. <strong>Employees</strong> = people already in your company will see the campaign in the app.
         </p>
       </div>
 
@@ -133,29 +136,29 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
         <div className="flex items-center space-x-2 p-4 border border-border/50 rounded-lg hover:bg-muted/50 cursor-pointer">
           <RadioGroupItem value="CSV" id="csv" />
           <Label htmlFor="csv" className="cursor-pointer flex-1">
-            <div className="font-medium text-foreground">Upload CSV</div>
-            <div className="text-sm text-muted-foreground">Upload a list (name, email, designation, department, phone). Gift links sent by email.</div>
+            <div className="font-medium text-foreground">Upload CSV (email gift links)</div>
+            <div className="text-sm text-muted-foreground">Upload a list (name, email, designation, department, phone). We’ll email each recipient a personal link to choose their gift.</div>
           </Label>
         </div>
         <div className="flex items-center space-x-2 p-4 border border-border/50 rounded-lg hover:bg-muted/50 cursor-pointer">
           <RadioGroupItem value="ALL" id="all" />
           <Label htmlFor="all" className="cursor-pointer flex-1">
-            <div className="font-medium text-foreground">All Employees</div>
-            <div className="text-sm text-muted-foreground">Send to everyone in your company</div>
+            <div className="font-medium text-foreground">All Employees (in app)</div>
+            <div className="text-sm text-muted-foreground">Send to everyone in your company; they’ll see the campaign in the app.</div>
           </Label>
         </div>
         <div className="flex items-center space-x-2 p-4 border border-border/50 rounded-lg hover:bg-muted/50 cursor-pointer">
           <RadioGroupItem value="TEAM" id="team" />
           <Label htmlFor="team" className="cursor-pointer flex-1">
-            <div className="font-medium text-foreground">Select Teams</div>
-            <div className="text-sm text-muted-foreground">Send to specific teams</div>
+            <div className="font-medium text-foreground">Select Teams (in app)</div>
+            <div className="text-sm text-muted-foreground">Send to specific teams; they’ll see the campaign in the app.</div>
           </Label>
         </div>
         <div className="flex items-center space-x-2 p-4 border border-border/50 rounded-lg hover:bg-muted/50 cursor-pointer">
           <RadioGroupItem value="SELECTED" id="selected" />
           <Label htmlFor="selected" className="cursor-pointer flex-1">
-            <div className="font-medium text-foreground">Select Specific Employees</div>
-            <div className="text-sm text-muted-foreground">Choose individual employees to receive gifts</div>
+            <div className="font-medium text-foreground">Select Specific Employees (in app)</div>
+            <div className="text-sm text-muted-foreground">Choose individual employees; they’ll see the campaign in the app.</div>
           </Label>
         </div>
       </RadioGroup>
