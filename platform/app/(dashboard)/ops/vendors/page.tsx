@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { getVendors } from '@/actions/vendors'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ClipboardList, Plus, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Plus, ChevronRight, Truck } from 'lucide-react'
 import { VendorFormDialog } from './vendor-form-dialog'
 
 export default async function OpsVendorsPage() {
@@ -21,12 +21,17 @@ export default async function OpsVendorsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <Link href="/ops" className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Ops</Link>
-          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-            <ClipboardList className="w-6 h-6" />
+          <Link
+            href="/ops"
+            className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-flex items-center gap-1"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Ops
+          </Link>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2 mt-1">
+            <Truck className="w-6 h-6" />
             Vendors
           </h1>
-          <p className="text-muted-foreground mt-1">Manage vendors and view assignments.</p>
+          <p className="text-muted-foreground mt-1">Add vendors, view assignments, and update status or tracking.</p>
         </div>
         <VendorFormDialog trigger={<Button><Plus className="w-4 h-4 mr-2" /> Add vendor</Button>} />
       </div>

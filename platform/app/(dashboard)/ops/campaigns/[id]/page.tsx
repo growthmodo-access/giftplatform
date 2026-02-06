@@ -40,14 +40,24 @@ export default async function OpsCampaignOrdersPage({
     )
   }
 
+  const ordersWithVendor = orders.filter((o) => o.vendor_assignments.length > 0).length
+
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/ops" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-2">
+        <Link
+          href="/ops"
+          className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-3"
+        >
           <ArrowLeft className="w-4 h-4" /> Back to Ops
         </Link>
         <h1 className="text-2xl font-bold text-foreground">{campaign.name}</h1>
-        <p className="text-muted-foreground">Orders and vendor assignments for this campaign.</p>
+        <p className="text-muted-foreground mt-1">
+          {orders.length} order{orders.length !== 1 ? 's' : ''}
+          {orders.length > 0 && (
+            <> · {ordersWithVendor} with vendor{ordersWithVendor !== 1 ? 's' : ''} assigned</>
+          )}
+        </p>
         <a
           href={`/api/campaigns/${campaignId}/invoice`}
           target="_blank"

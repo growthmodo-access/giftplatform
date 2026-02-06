@@ -4,7 +4,42 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 /**
- * List campaigns for Ops view (SUPER_ADMIN only) with recipient and order counts.
+ * Ops dashboard summary (SUPER_ADMIN only): campaign count, order count, vendor count.
+ */
+export async function getOpsSummary() {
+  try {
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) redirect('/login')
+
+    const { data: currentUser } = await supabase.from('users').select('role').eq('id', user.id).single()
+    if (currentUser?.role !== 'SUPER_ADMIN') {
+      return { campaignsCount: 0, ordersCount: 0, vendorsCount: 0, error: 'Forbidden' }
+    }
+
+    const [
+      { count: campaignsCount },
+      { data: orderRecipients },
+      { count: vendorsCount },
+    ] = await Promise.all([
+      supabase.from('campaigns').select('*', { count: 'exact', head: true }),
+      supabase.from('orders').select('id').not('campaign_recipient_id', 'is', null),
+      supabase.from('vendors').select('*', { count: 'exact', head: true }),
+    ])
+
+    return {
+      campaignsCount: campaignsCount ?? 0,
+      ordersCount: orderRecipients?.length ?? 0,
+      vendorsCount: vendorsCount ?? 0,
+      error: null,
+    }
+  } catch (e) {
+    return { campaignsCount: 0, ordersCount: 0, vendorsCount: 0, error: e instanceof Error ? e.message : 'Failed to load summary' }
+  }
+}
+
+/**
+ * List campaigns for Ops view (SUPER_ADMIN only) with recipient and order counts and company name.
  */
 export async function getOpsCampaigns() {
   try {
@@ -24,6 +59,12 @@ export async function getOpsCampaigns() {
 
     if (error) return { data: [], error: error.message }
     if (!campaigns?.length) return { data: [], error: null }
+
+    const companyIds = [...new Set((campaigns ?? []).map((c) => c.company_id).filter(Boolean))] as string[]
+    const { data: companies } = companyIds.length
+      ? await supabase.from('companies').select('id, name').in('id', companyIds)
+      : { data: [] }
+    const companyMap = new Map((companies ?? []).map((co) => [co.id, co.name]))
 
     const campaignIds = campaigns.map((c) => c.id)
     const { data: recipientCounts } = await supabase
@@ -58,6 +99,7 @@ export async function getOpsCampaigns() {
       id: c.id,
       name: c.name,
       company_id: c.company_id,
+      company_name: (c.company_id && companyMap.get(c.company_id)) ?? null,
       status: c.status,
       created_at: c.created_at,
       recipient_count: countByCampaign[c.id] ?? 0,
