@@ -12,7 +12,8 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "seed:test-users": "npx tsx scripts/create-test-users.ts"
+    "seed:test-users": "npx tsx scripts/create-test-users.ts",
+    "seed:mock-data": "npx tsx scripts/seed-mock-data.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
