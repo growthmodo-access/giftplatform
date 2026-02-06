@@ -28,11 +28,18 @@ interface CampaignWizardProps {
   onSuccess: () => void
 }
 
+export type CsvRecipientRow = { name: string; email: string; designation?: string; department?: string; phone?: string }
+
 export interface CampaignWizardData {
   name: string
   description: string
   recipientType: 'ALL' | 'SELECTED' | 'TEAM' | 'DEPARTMENT'
   selectedRecipients: string[]
+  selectedTeams?: string[]
+  recipientSource: 'EMPLOYEES' | 'CSV'
+  csvRows: CsvRecipientRow[]
+  linkValidUntil: Date | null
+  allowEditWhenLive: boolean
   giftType: 'SINGLE' | 'CATALOG' | 'BUDGET'
   selectedProducts: string[]
   budget: number | null
@@ -60,6 +67,10 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
     recipientType: 'ALL',
     selectedRecipients: [],
     selectedTeams: [],
+    recipientSource: 'EMPLOYEES',
+    csvRows: [],
+    linkValidUntil: null,
+    allowEditWhenLive: true,
     giftType: 'SINGLE',
     selectedProducts: [],
     budget: null,
@@ -91,8 +102,11 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
       case 1:
         return !!campaignData.name.trim()
       case 2:
+        if (campaignData.recipientSource === 'CSV') {
+          return campaignData.csvRows.length > 0
+        }
         if (campaignData.recipientType === 'ALL') return true
-        if (campaignData.recipientType === 'TEAM') return campaignData.selectedTeams.length > 0
+        if (campaignData.recipientType === 'TEAM') return (campaignData.selectedTeams?.length ?? 0) > 0
         return campaignData.selectedRecipients.length > 0
       case 3:
         if (campaignData.giftType === 'SINGLE') {
@@ -122,6 +136,11 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
         description: '',
         recipientType: 'ALL',
         selectedRecipients: [],
+        selectedTeams: [],
+        recipientSource: 'EMPLOYEES',
+        csvRows: [],
+        linkValidUntil: null,
+        allowEditWhenLive: true,
         giftType: 'SINGLE',
         selectedProducts: [],
         budget: null,
@@ -143,6 +162,11 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
       description: '',
       recipientType: 'ALL',
       selectedRecipients: [],
+      selectedTeams: [],
+      recipientSource: 'EMPLOYEES',
+      csvRows: [],
+      linkValidUntil: null,
+      allowEditWhenLive: true,
       giftType: 'SINGLE',
       selectedProducts: [],
       budget: null,

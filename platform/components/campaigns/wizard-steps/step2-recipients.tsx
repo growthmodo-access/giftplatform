@@ -1,18 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Plus, Search } from 'lucide-react'
+import { Plus, Search, Upload, FileText } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { getEmployees } from '@/actions/employees'
 import { getTeams } from '@/actions/teams'
-import { CampaignWizardData } from '../campaign-wizard'
+import { CampaignWizardData, CsvRecipientRow } from '../campaign-wizard'
 import { AddEmployeeDialog } from '@/components/employees/add-employee-dialog'
+import { parseRecipientsCsv } from '@/actions/campaign-recipients'
 
 interface Step2Props {
   data: CampaignWizardData
@@ -25,6 +26,8 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [showAddEmployee, setShowAddEmployee] = useState(false)
+  const [csvError, setCsvError] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     loadEmployees()
@@ -83,6 +86,25 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
     return email[0]?.toUpperCase() || 'U'
   }
 
+  const handleCsvFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    setCsvError('')
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      const text = String(reader.result ?? '')
+      const { rows, error } = parseRecipientsCsv(text)
+      if (error) {
+        setCsvError(error)
+        onUpdate({ csvRows: [] })
+        return
+      }
+      onUpdate({ csvRows: rows })
+    }
+    reader.readAsText(file)
+    e.target.value = ''
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -93,16 +115,28 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
       </div>
 
       <RadioGroup
-        value={data.recipientType}
+        value={data.recipientSource === 'CSV' ? 'CSV' : data.recipientType}
         onValueChange={(value) => {
-          onUpdate({ 
-            recipientType: value as 'ALL' | 'SELECTED' | 'TEAM',
-            selectedRecipients: value === 'ALL' ? [] : data.selectedRecipients,
-            selectedTeams: value === 'ALL' ? [] : data.selectedTeams || []
-          })
+          if (value === 'CSV') {
+            onUpdate({ recipientSource: 'CSV', csvRows: data.csvRows })
+          } else {
+            onUpdate({
+              recipientSource: 'EMPLOYEES',
+              recipientType: value as 'ALL' | 'SELECTED' | 'TEAM',
+              selectedRecipients: value === 'ALL' ? [] : data.selectedRecipients,
+              selectedTeams: value === 'ALL' ? [] : (data.selectedTeams || []),
+            })
+          }
         }}
         className="space-y-4"
       >
+        <div className="flex items-center space-x-2 p-4 border border-border/50 rounded-lg hover:bg-muted/50 cursor-pointer">
+          <RadioGroupItem value="CSV" id="csv" />
+          <Label htmlFor="csv" className="cursor-pointer flex-1">
+            <div className="font-medium text-foreground">Upload CSV</div>
+            <div className="text-sm text-muted-foreground">Upload a list (name, email, designation, department, phone). Gift links sent by email.</div>
+          </Label>
+        </div>
         <div className="flex items-center space-x-2 p-4 border border-border/50 rounded-lg hover:bg-muted/50 cursor-pointer">
           <RadioGroupItem value="ALL" id="all" />
           <Label htmlFor="all" className="cursor-pointer flex-1">
@@ -126,7 +160,77 @@ export function CampaignStep2Recipients({ data, onUpdate }: Step2Props) {
         </div>
       </RadioGroup>
 
-      {data.recipientType === 'SELECTED' && (
+      {data.recipientSource === 'CSV' && (
+        <div className="space-y-4 pt-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv,text/csv"
+            className="hidden"
+            onChange={handleCsvFile}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            className="border-border/50"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Upload className="w-4 h-4 mr-2" />
+            Choose CSV file
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            CSV must have columns: name, email (optional: designation, department, phone).
+          </p>
+          {csvError && (
+            <p className="text-sm text-destructive">{csvError}</p>
+          )}
+          {data.csvRows.length > 0 && (
+            <>
+              <div className="flex items-center gap-2 text-sm text-foreground">
+                <FileText className="w-4 h-4" />
+                {data.csvRows.length} recipient{data.csvRows.length !== 1 ? 's' : ''} loaded
+              </div>
+              <ScrollArea className="h-[200px] border border-border/50 rounded-md p-2">
+                <div className="space-y-1">
+                  {data.csvRows.slice(0, 50).map((row, i) => (
+                    <div key={i} className="text-xs text-muted-foreground">
+                      {row.name || row.email} &lt;{row.email}&gt;
+                    </div>
+                  ))}
+                  {data.csvRows.length > 50 && (
+                    <div className="text-xs text-muted-foreground">... and {data.csvRows.length - 50} more</div>
+                  )}
+                </div>
+              </ScrollArea>
+            </>
+          )}
+          <div className="grid gap-4 sm:grid-cols-2 pt-2 border-t border-border/50">
+            <div className="space-y-2">
+              <Label className="text-foreground">Link valid until</Label>
+              <Input
+                type="date"
+                value={data.linkValidUntil ? new Date(data.linkValidUntil).toISOString().slice(0, 10) : ''}
+                onChange={(e) => {
+                  const v = e.target.value
+                  onUpdate({ linkValidUntil: v ? new Date(v + 'T23:59:59') : null })
+                }}
+                className="border-border/50"
+              />
+              <p className="text-xs text-muted-foreground">Leave empty for no expiry.</p>
+            </div>
+            <div className="flex items-center gap-2 pt-8">
+              <Checkbox
+                id="allow_edit"
+                checked={data.allowEditWhenLive}
+                onCheckedChange={(checked) => onUpdate({ allowEditWhenLive: !!checked })}
+              />
+              <Label htmlFor="allow_edit" className="text-sm cursor-pointer">Allow editing campaign when live</Label>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {data.recipientSource === 'EMPLOYEES' && data.recipientType === 'SELECTED' && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <div className="relative flex-1">

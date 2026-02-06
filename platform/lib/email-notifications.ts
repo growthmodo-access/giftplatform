@@ -10,43 +10,43 @@ export interface EmailNotification {
   text?: string
 }
 
+const RESEND_API_URL = 'https://api.resend.com/emails'
+const FROM_EMAIL = process.env.EMAIL_FROM ?? 'Goodies <onboarding@resend.dev>'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodies.so'
+
 /**
- * Send email notification
- * In production, this should call Supabase Edge Function or external service (SendGrid, Resend, etc.)
+ * Send email notification via Resend when RESEND_API_KEY is set; otherwise log in dev.
  */
 export async function sendEmailNotification(notification: EmailNotification): Promise<{ success: boolean; error?: string }> {
   try {
-    // TODO: Implement actual email sending
-    // Option 1: Supabase Edge Function
-    // const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-email`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
-    //   },
-    //   body: JSON.stringify(notification),
-    // })
-
-    // Option 2: External service (Resend, SendGrid, etc.)
-    // const response = await fetch('https://api.resend.com/emails', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     from: 'noreply@goodies.so',
-    //     to: notification.to,
-    //     subject: notification.subject,
-    //     html: notification.html,
-    //   }),
-    // })
-
-    // For now, just log (in production, implement actual sending)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Email notification:', notification)
+    const apiKey = process.env.RESEND_API_KEY
+    if (apiKey) {
+      const response = await fetch(RESEND_API_URL, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: FROM_EMAIL,
+          to: notification.to,
+          subject: notification.subject,
+          html: notification.html,
+          text: notification.text,
+        }),
+      })
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}))
+        return {
+          success: false,
+          error: (err as { message?: string }).message ?? response.statusText,
+        }
+      }
+      return { success: true }
     }
-
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Email notification (no RESEND_API_KEY):', notification)
+    }
     return { success: true }
   } catch (error) {
     return {
@@ -108,6 +108,65 @@ export async function sendCampaignNotificationEmail(
   return sendEmailNotification({
     to: email,
     subject: `You've Received a Gift from ${campaignName}`,
+    html,
+  })
+}
+
+/**
+ * Send gift link email to a campaign recipient (CSV flow). Link is valid until campaign's link_valid_until.
+ */
+export async function sendGiftLinkEmail(
+  email: string,
+  recipientName: string,
+  campaignName: string,
+  giftLinkUrl: string,
+  expiresText?: string
+): Promise<{ success: boolean; error?: string }> {
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2>You've been selected for a gift! 🎁</h2>
+      <p>Hi ${recipientName || 'there'},</p>
+      <p>You've been invited to choose a gift from the <strong>${campaignName}</strong> campaign.</p>
+      <div style="text-align: center; margin: 28px 0;">
+        <a href="${giftLinkUrl}" style="background: #7B61FF; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: 600;">
+          Choose your gift
+        </a>
+      </div>
+      ${expiresText ? `<p style="color: #666; font-size: 14px;">${expiresText}</p>` : ''}
+      <p style="color: #666; font-size: 14px;">If the button doesn't work, copy and paste this link into your browser:<br/><a href="${giftLinkUrl}">${giftLinkUrl}</a></p>
+    </div>
+  `
+  return sendEmailNotification({
+    to: email,
+    subject: `Choose your gift from ${campaignName}`,
+    html,
+  })
+}
+
+/**
+ * Send gift selection confirmation email after recipient submits their choice.
+ */
+export async function sendGiftConfirmationEmail(
+  email: string,
+  recipientName: string,
+  orderNumber: string,
+  productName: string
+): Promise<{ success: boolean; error?: string }> {
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2>Your gift selection is confirmed</h2>
+      <p>Hi ${recipientName || 'there'},</p>
+      <p>We've received your gift selection.</p>
+      <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <p><strong>Order:</strong> ${orderNumber}</p>
+        <p><strong>Gift:</strong> ${productName}</p>
+      </div>
+      <p>We'll process your order and notify you when it ships.</p>
+    </div>
+  `
+  return sendEmailNotification({
+    to: email,
+    subject: `Gift confirmed - ${orderNumber}`,
     html,
   })
 }

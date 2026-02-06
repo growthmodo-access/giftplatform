@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { createRecipientsFromCsv, sendGiftLinkEmailsForCampaign } from '@/actions/campaign-recipients'
 
 export async function getCampaigns() {
   try {
@@ -421,6 +422,10 @@ export async function createGiftCampaign(formData: FormData) {
     const scheduleType = formData.get('schedule_type') as string || 'NOW'
     const scheduledDateStr = formData.get('scheduled_date') as string
     const customMessage = formData.get('custom_message') as string || ''
+    const recipientSource = (formData.get('recipient_source') as string) || 'EMPLOYEES'
+    const linkValidUntilStr = formData.get('link_valid_until') as string | null
+    const allowEditWhenLive = formData.get('allow_edit_when_live') !== 'false'
+    const csvRowsJson = formData.get('csv_rows') as string || '[]'
 
     if (!name) {
       return { error: 'Campaign name is required' }
@@ -449,24 +454,35 @@ export async function createGiftCampaign(formData: FormData) {
     }
 
     // Validate recipients
-    if (recipientType === 'SELECTED' && recipientIds.length === 0) {
+    let csvRows: { name: string; email: string; designation?: string; department?: string; phone?: string }[] = []
+    if (recipientSource === 'CSV') {
+      try {
+        csvRows = JSON.parse(csvRowsJson)
+      } catch {
+        csvRows = []
+      }
+      if (csvRows.length === 0) {
+        return { error: 'Please upload a CSV with at least one recipient' }
+      }
+    } else if (recipientType === 'SELECTED' && recipientIds.length === 0) {
       return { error: 'Please select at least one recipient' }
     }
 
     const budget = budgetStr ? parseFloat(budgetStr) : null
     const perRecipientBudget = perRecipientBudgetStr ? parseFloat(perRecipientBudgetStr) : null
     const scheduledDate = scheduledDateStr ? new Date(scheduledDateStr) : null
+    const linkValidUntil = linkValidUntilStr ? new Date(linkValidUntilStr) : null
 
     // Determine status
     const status = scheduleType === 'NOW' ? 'SENT' : scheduledDate ? 'SCHEDULED' : 'DRAFT'
 
     // Create campaign record
-    const campaignData: any = {
+    const campaignPayload: any = {
       name: name.trim(),
       company_id: currentUser.company_id,
       campaign_type: 'MANUAL',
-      recipient_type: recipientType,
-      recipient_ids: recipientIds,
+      recipient_type: recipientSource === 'CSV' ? 'CSV' : recipientType,
+      recipient_ids: recipientSource === 'CSV' ? [] : recipientIds,
       gift_type: giftType,
       selected_products: selectedProducts,
       budget: budget,
@@ -482,10 +498,14 @@ export async function createGiftCampaign(formData: FormData) {
         description: description,
       },
     }
+    if (linkValidUntil) {
+      campaignPayload.link_valid_until = linkValidUntil.toISOString()
+    }
+    campaignPayload.allow_edit_when_live = allowEditWhenLive
 
     const { data: campaign, error: createError } = await supabase
       .from('campaigns')
-      .insert(campaignData)
+      .insert(campaignPayload)
       .select()
       .single()
 
@@ -493,8 +513,24 @@ export async function createGiftCampaign(formData: FormData) {
       return { error: createError.message }
     }
 
-    // If sending now, create gifts immediately
-    if (status === 'SENT') {
+    if (recipientSource === 'CSV' && csvRows.length > 0) {
+      const recipientResult = await createRecipientsFromCsv(
+        campaign.id,
+        csvRows,
+        linkValidUntil
+      )
+      if (recipientResult.error) {
+        console.error('Campaign created but recipients failed:', recipientResult.error)
+      } else if (status === 'SENT') {
+        const emailResult = await sendGiftLinkEmailsForCampaign(campaign.id)
+        if (emailResult.error) {
+          console.error('Gift link emails failed:', emailResult.error)
+        }
+      }
+    }
+
+    // If sending now (employee-based), create gifts immediately
+    if (status === 'SENT' && recipientSource !== 'CSV') {
       const giftResult = await sendCampaignGifts(campaign.id, {
         recipientType,
         recipientIds,
@@ -506,7 +542,6 @@ export async function createGiftCampaign(formData: FormData) {
       })
 
       if (giftResult.error) {
-        // Campaign was created but gifts failed - still return success but log error
         console.error('Campaign created but gifts failed:', giftResult.error)
       }
     }

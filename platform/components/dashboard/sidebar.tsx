@@ -18,7 +18,8 @@ import {
   ChevronLeft,
   X,
   Building2,
-  CreditCard
+  CreditCard,
+  ClipboardList
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -43,6 +44,7 @@ const allMenuItems: MenuItem[] = [
   { icon: BarChart3, label: 'Analytics', href: '/analytics', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
   { icon: Building2, label: 'Companies', href: '/companies', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
   { icon: Users, label: 'Users', href: '/users', allowedRoles: ['SUPER_ADMIN'] },
+  { icon: ClipboardList, label: 'Ops', href: '/ops', allowedRoles: ['SUPER_ADMIN'] },
   { icon: Settings, label: 'Settings', href: '/settings', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
 ]
 

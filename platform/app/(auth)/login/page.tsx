@@ -16,6 +16,8 @@ function LoginForm() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [useMagicLink, setUseMagicLink] = useState(false)
+  const [magicLinkSent, setMagicLinkSent] = useState(false)
 
   // Check for error in URL params (from redirects)
   useEffect(() => {
@@ -46,6 +48,26 @@ function LoginForm() {
     }
     checkUser()
   }, [router, searchParams])
+
+  const handleMagicLink = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    try {
+      const { error: otpError } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: {
+          emailRedirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/api/auth/callback`,
+        },
+      })
+      if (otpError) throw otpError
+      setMagicLinkSent(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send magic link')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -195,45 +217,75 @@ function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            {error && (
-              <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
-                {error}
+          {magicLinkSent ? (
+            <div className="space-y-4 text-center py-4">
+              <p className="text-foreground font-medium">Check your email</p>
+              <p className="text-sm text-muted-foreground">
+                We sent a sign-in link to <strong>{email}</strong>. Click the link to sign in.
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full border-border/50"
+                onClick={() => { setMagicLinkSent(false); setError('') }}
+              >
+                Use a different email
+              </Button>
+            </div>
+          ) : (
+            <form onSubmit={useMagicLink ? handleMagicLink : handleLogin} className="space-y-4">
+              {error && (
+                <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
+                  {error}
+                </div>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-foreground">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="border-border/50"
+                />
               </div>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="name@company.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="border-border/50"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-foreground">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="border-border/50"
-              />
-            </div>
-            <Button type="submit" className="w-full gradient-button text-white shadow-primary" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign in'}
-            </Button>
-            <div className="text-center text-sm text-muted-foreground">
-              Don't have an account?{' '}
-              <a href="/signup" className="text-foreground hover:underline font-medium">
-                Sign up
-              </a>
-            </div>
-          </form>
+              {!useMagicLink && (
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-foreground">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="border-border/50"
+                  />
+                </div>
+              )}
+              <Button type="submit" className="w-full gradient-button text-white shadow-primary" disabled={loading}>
+                {loading
+                  ? (useMagicLink ? 'Sending link...' : 'Signing in...')
+                  : (useMagicLink ? 'Send magic link' : 'Sign in')}
+              </Button>
+              <div className="flex items-center justify-center gap-2">
+                <button
+                  type="button"
+                  className="text-sm text-muted-foreground hover:text-foreground"
+                  onClick={() => { setUseMagicLink(!useMagicLink); setError(''); setMagicLinkSent(false); }}
+                >
+                  {useMagicLink ? 'Sign in with password instead' : 'Sign in with magic link instead'}
+                </button>
+              </div>
+              <div className="text-center text-sm text-muted-foreground">
+                Don't have an account?{' '}
+                <a href="/signup" className="text-foreground hover:underline font-medium">
+                  Sign up
+                </a>
+              </div>
+            </form>
+          )}
 
           {/* Test User Quick Login */}
           <div className="mt-6 pt-6 border-t border-border/50">

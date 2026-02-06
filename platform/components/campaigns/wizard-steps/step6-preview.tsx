@@ -68,6 +68,14 @@ export function CampaignStep6Preview({ data, onSuccess, onClose, onBack }: Step6
         formData.append('scheduled_date', data.scheduledDate.toISOString())
       }
       formData.append('custom_message', data.customMessage)
+      formData.append('recipient_source', data.recipientSource ?? 'EMPLOYEES')
+      formData.append('allow_edit_when_live', data.allowEditWhenLive !== false ? 'true' : 'false')
+      if (data.linkValidUntil) {
+        formData.append('link_valid_until', data.linkValidUntil.toISOString())
+      }
+      if (data.recipientSource === 'CSV' && data.csvRows?.length) {
+        formData.append('csv_rows', JSON.stringify(data.csvRows))
+      }
 
       const result = await createGiftCampaign(formData)
 
@@ -83,12 +91,17 @@ export function CampaignStep6Preview({ data, onSuccess, onClose, onBack }: Step6
     }
   }
 
-  const recipientCount = data.recipientType === 'ALL' 
-    ? 'All Employees' 
+  const recipientCount = data.recipientSource === 'CSV'
+    ? `${data.csvRows?.length ?? 0} recipient${(data.csvRows?.length ?? 0) !== 1 ? 's' : ''} (CSV)`
+    : data.recipientType === 'ALL'
+    ? 'All Employees'
     : `${data.selectedRecipients.length} Selected Employee${data.selectedRecipients.length !== 1 ? 's' : ''}`
 
-  const totalBudget = data.perRecipientBudget && data.selectedRecipients.length > 0
-    ? data.perRecipientBudget * data.selectedRecipients.length
+  const recipientCountNum = data.recipientSource === 'CSV'
+    ? (data.csvRows?.length ?? 0)
+    : data.selectedRecipients.length
+  const totalBudget = data.perRecipientBudget && recipientCountNum > 0
+    ? data.perRecipientBudget * recipientCountNum
     : data.budget || 0
 
   return (
@@ -136,7 +149,19 @@ export function CampaignStep6Preview({ data, onSuccess, onClose, onBack }: Step6
           </CardHeader>
           <CardContent>
             <div className="text-sm text-foreground">{recipientCount}</div>
-            {data.recipientType === 'SELECTED' && employees.length > 0 && (
+            {data.recipientSource === 'CSV' && (data.csvRows?.length ?? 0) > 0 && (
+              <div className="mt-2 space-y-1 max-h-[150px] overflow-y-auto">
+                {data.csvRows!.slice(0, 10).map((row, i) => (
+                  <div key={i} className="text-xs text-muted-foreground">
+                    • {row.name || row.email}
+                  </div>
+                ))}
+                {(data.csvRows?.length ?? 0) > 10 && (
+                  <div className="text-xs text-muted-foreground">... and {(data.csvRows?.length ?? 0) - 10} more</div>
+                )}
+              </div>
+            )}
+            {data.recipientSource === 'EMPLOYEES' && data.recipientType === 'SELECTED' && employees.length > 0 && (
               <div className="mt-2 space-y-1 max-h-[150px] overflow-y-auto">
                 {employees.slice(0, 10).map((emp) => (
                   <div key={emp.id} className="text-xs text-muted-foreground">
