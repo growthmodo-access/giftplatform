@@ -25,6 +25,7 @@ export async function getDashboardStats() {
 
     if (currentUserError || !currentUser) {
       return {
+        canViewRevenue: false,
         stats: {
           todayOrders: 0,
           totalRevenue: 0,
@@ -262,8 +263,10 @@ export async function getDashboardStats() {
         return orderDate >= date && orderDate < nextDate
       }) || []
 
-      const dayRevenue = dayOrders.reduce((sum, order) => sum + Number(order.total || 0), 0)
-      
+      const dayRevenue = isSuperAdmin
+      ? dayOrders.reduce((sum, order) => sum + Number(order.total || 0), 0)
+      : 0
+
       chartData.push({
         date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
         revenue: dayRevenue,
@@ -271,26 +274,37 @@ export async function getDashboardStats() {
       })
     }
 
+    // Zero out revenue for non-SUPER_ADMIN (sensitive; platform-level only)
+    const safeTotalRevenue = isSuperAdmin ? totalRevenue : 0
+    const safeMonthlyRevenue = isSuperAdmin ? monthlyRevenue : 0
+    const safeRevenueChange = isSuperAdmin ? Math.round(revenueChange * 10) / 10 : 0
+    const safeTopProducts = topProducts.map((p) => ({
+      ...p,
+      revenue: isSuperAdmin ? p.revenue : 0
+    }))
+
     return {
+      canViewRevenue: isSuperAdmin,
       stats: {
         todayOrders: todayOrders.length,
         totalOrders,
-        totalRevenue,
+        totalRevenue: safeTotalRevenue,
         totalEmployees,
         totalProducts,
         activeCampaigns,
         totalCampaigns,
         totalGifts,
-        monthlyRevenue,
-        revenueChange: Math.round(revenueChange * 10) / 10
+        monthlyRevenue: safeMonthlyRevenue,
+        revenueChange: safeRevenueChange
       },
-      topProducts,
+      topProducts: safeTopProducts,
       recentOrders,
       chartData
     }
   } catch (error) {
     console.error('Dashboard stats error:', error)
     return {
+      canViewRevenue: false,
       stats: {
         todayOrders: 0,
         totalOrders: 0,

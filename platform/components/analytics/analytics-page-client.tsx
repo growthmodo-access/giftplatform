@@ -21,7 +21,7 @@ export function AnalyticsPageClient({ initialData, currentUserRole }: AnalyticsP
   const [viewMode, setViewMode] = useState<'overview' | 'companies' | 'campaigns' | 'employees'>('overview')
 
   const canViewAllCompanies = currentUserRole === 'SUPER_ADMIN'
-  const canViewRevenue = currentUserRole !== 'HR'
+  const canViewRevenue = currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">

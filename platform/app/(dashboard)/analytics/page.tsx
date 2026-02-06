@@ -22,6 +22,10 @@ export default async function AnalyticsPage() {
 
   const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
 
+  if (userRole === 'EMPLOYEE') {
+    redirect('/dashboard')
+  }
+
   return (
     <AnalyticsPageClient 
       initialData={null}

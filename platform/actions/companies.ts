@@ -89,11 +89,12 @@ export async function getCompanies() {
       return acc
     }, {} as Record<string, { orders: number; revenue: number }>) || {}
 
+    const isSuperAdmin = currentUser.role === 'SUPER_ADMIN'
     const companiesWithStats = companies?.map(company => ({
       ...company,
       employeeCount: employeeCounts[company.id] || 0,
       orderCount: orderStats[company.id]?.orders || 0,
-      revenue: orderStats[company.id]?.revenue || 0,
+      revenue: isSuperAdmin ? (orderStats[company.id]?.revenue || 0) : 0,
     })) || []
 
     return { data: companiesWithStats, error: null }

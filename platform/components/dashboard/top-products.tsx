@@ -4,7 +4,7 @@ import { getDashboardStats } from '@/actions/dashboard'
 
 
 export async function TopProducts() {
-  const { topProducts } = await getDashboardStats()
+  const { topProducts, canViewRevenue } = await getDashboardStats()
 
   if (topProducts.length === 0) {
     return (
@@ -81,10 +81,12 @@ export async function TopProducts() {
                     </div>
                   </div>
                 </div>
-                <div className="text-left sm:text-right flex-shrink-0">
-                  <p className="font-semibold text-sm text-foreground">${(product.revenue / 1000).toFixed(1)}k</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Revenue</p>
-                </div>
+                {canViewRevenue && (
+                  <div className="text-left sm:text-right flex-shrink-0">
+                    <p className="font-semibold text-sm text-foreground">${(product.revenue / 1000).toFixed(1)}k</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Revenue</p>
+                  </div>
+                )}
               </div>
             )
           })}

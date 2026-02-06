@@ -61,10 +61,16 @@ export async function getEnhancedAnalytics(timeRange: '7d' | '30d' | '90d' | '1y
 
     const { data: prevOrders } = await prevOrdersQuery
 
-    // Calculate revenue
-    const totalRevenue = orders?.reduce((sum, o) => sum + Number(o.total || 0), 0) || 0
-    const prevRevenue = prevOrders?.reduce((sum, o) => sum + Number(o.total || 0), 0) || 0
-    const revenueChange = prevRevenue > 0 ? ((totalRevenue - prevRevenue) / prevRevenue) * 100 : 0
+    const isSuperAdmin = currentUser.role === 'SUPER_ADMIN'
+    const totalRevenue = isSuperAdmin
+      ? (orders?.reduce((sum, o) => sum + Number(o.total || 0), 0) || 0)
+      : 0
+    const prevRevenue = isSuperAdmin
+      ? (prevOrders?.reduce((sum, o) => sum + Number(o.total || 0), 0) || 0)
+      : 0
+    const revenueChange = isSuperAdmin && prevRevenue > 0
+      ? ((totalRevenue - prevRevenue) / prevRevenue) * 100
+      : 0
 
     // Get campaigns
     let campaignsQuery = supabase
@@ -119,6 +125,7 @@ export async function getEnhancedAnalytics(timeRange: '7d' | '30d' | '90d' | '1y
 
     return {
       data: {
+        canViewRevenue: isSuperAdmin,
         totalRevenue,
         revenueChange,
         totalOrders: orders?.length || 0,

@@ -132,6 +132,7 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
             companies={companies} 
             onEdit={handleEdit}
             canEdit={isSuperAdmin || currentUserRole === 'ADMIN'}
+            showRevenue={isSuperAdmin}
           />
         </>
       )}

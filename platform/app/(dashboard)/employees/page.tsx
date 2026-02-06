@@ -15,17 +15,18 @@ export default async function EmployeesPage() {
     redirect('/login')
   }
 
-  // Get current user's role to check permissions
   const { data: currentUser, error: userError } = await supabase
     .from('users')
     .select('role, company_id')
     .eq('id', user.id)
     .single()
 
-  const { data: employees, error } = await getEmployees()
-
-  // Ensure proper type casting for role
   const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
+  if (userRole !== 'SUPER_ADMIN' && userRole !== 'ADMIN' && userRole !== 'HR') {
+    redirect('/dashboard')
+  }
+
+  const { data: employees, error } = await getEmployees()
 
   return (
     <EmployeesPageClient 

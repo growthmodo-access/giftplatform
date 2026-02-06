@@ -3,7 +3,7 @@ import { Package, Gift, Users, DollarSign, TrendingUp, TrendingDown, Sparkles, T
 import { getDashboardStats } from '@/actions/dashboard'
 
 export async function StatsCards() {
-  const { stats } = await getDashboardStats()
+  const { stats, canViewRevenue } = await getDashboardStats()
 
   const statsData = [
     {
@@ -13,13 +13,17 @@ export async function StatsCards() {
       trend: "up",
       icon: Package,
     },
-    {
-      label: "Total Revenue",
-      value: `$${(stats.totalRevenue / 1000).toFixed(1)}k`,
-      change: stats.revenueChange >= 0 ? `+${stats.revenueChange.toFixed(1)}%` : `${stats.revenueChange.toFixed(1)}%`,
-      trend: stats.revenueChange >= 0 ? "up" : "down",
-      icon: DollarSign,
-    },
+    ...(canViewRevenue
+      ? [
+          {
+            label: "Total Revenue",
+            value: `$${(stats.totalRevenue / 1000).toFixed(1)}k`,
+            change: stats.revenueChange >= 0 ? `+${stats.revenueChange.toFixed(1)}%` : `${stats.revenueChange.toFixed(1)}%`,
+            trend: (stats.revenueChange >= 0 ? "up" : "down") as "up" | "down",
+            icon: DollarSign,
+          },
+        ]
+      : []),
     {
       label: "Active Employees",
       value: stats.totalEmployees.toString(),

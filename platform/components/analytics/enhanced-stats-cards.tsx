@@ -37,15 +37,20 @@ export function EnhancedStatsCards({ timeRange }: EnhancedStatsCardsProps) {
     )
   }
 
+  const canViewRevenue = stats.canViewRevenue === true
   const statsData = [
-    {
-      label: "Total Revenue",
-      value: `$${(stats.totalRevenue / 1000).toFixed(1)}k`,
-      change: stats.revenueChange,
-      trend: stats.revenueChange >= 0 ? "up" : "down",
-      icon: DollarSign,
-      description: `${stats.totalOrders} orders`,
-    },
+    ...(canViewRevenue
+      ? [
+          {
+            label: "Total Revenue",
+            value: `$${(stats.totalRevenue / 1000).toFixed(1)}k`,
+            change: stats.revenueChange,
+            trend: (stats.revenueChange >= 0 ? "up" : "down") as "up" | "down",
+            icon: DollarSign,
+            description: `${stats.totalOrders} orders`,
+          },
+        ]
+      : []),
     {
       label: "Active Campaigns",
       value: stats.activeCampaigns.toString(),

@@ -114,7 +114,8 @@ This document outlines the complete role-based access control system implemented
 | **View All Gifts** | ✅ All | ✅ Company | ✅ Company | ✅ (own campaigns) | ❌ |
 | **View Own Gifts** | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Redeem Gifts** | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **View Analytics** | ✅ All | ✅ Company | ✅ (employee only) | ✅ (team only) | ❌ |
+| **View Analytics** | ✅ All | ✅ Company | ✅ (engagement) | ✅ (team) | ❌ |
+| **View Revenue** | ✅ Platform only | ❌ | ❌ | ❌ | ❌ |
 | **Company Settings** | ✅ All | ✅ | ❌ | ❌ | ❌ |
 
 ## Implementation Details

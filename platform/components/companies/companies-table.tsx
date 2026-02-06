@@ -29,9 +29,10 @@ interface CompaniesTableProps {
   companies: Company[]
   onEdit: (company: Company) => void
   canEdit: boolean
+  showRevenue?: boolean
 }
 
-export function CompaniesTable({ companies, onEdit, canEdit }: CompaniesTableProps) {
+export function CompaniesTable({ companies, onEdit, canEdit, showRevenue = true }: CompaniesTableProps) {
   return (
     <div className="border border-border/50 rounded-lg overflow-hidden">
       <Table>
@@ -41,7 +42,7 @@ export function CompaniesTable({ companies, onEdit, canEdit }: CompaniesTablePro
             <TableHead className="text-foreground font-semibold">Domain</TableHead>
             <TableHead className="text-foreground font-semibold">Employees</TableHead>
             <TableHead className="text-foreground font-semibold">Orders</TableHead>
-            <TableHead className="text-foreground font-semibold">Revenue</TableHead>
+            {showRevenue && <TableHead className="text-foreground font-semibold">Revenue</TableHead>}
             <TableHead className="text-foreground font-semibold">Budget</TableHead>
             {canEdit && (
               <TableHead className="text-foreground font-semibold w-[100px]">Actions</TableHead>
@@ -87,14 +88,16 @@ export function CompaniesTable({ companies, onEdit, canEdit }: CompaniesTablePro
                   <span className="text-sm text-foreground">{company.orderCount}</span>
                 </div>
               </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <DollarSign className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm text-foreground">
-                    ${(company.revenue / 1000).toFixed(1)}k
-                  </span>
-                </div>
-              </TableCell>
+              {showRevenue && (
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-foreground">
+                      ${(company.revenue / 1000).toFixed(1)}k
+                    </span>
+                  </div>
+                </TableCell>
+              )}
               <TableCell>
                 <span className="text-sm text-foreground">
                   ${company.budget.toLocaleString()}
