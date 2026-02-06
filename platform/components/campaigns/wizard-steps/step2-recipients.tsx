@@ -13,7 +13,7 @@ import { getEmployees } from '@/actions/employees'
 import { getTeams } from '@/actions/teams'
 import { CampaignWizardData, CsvRecipientRow } from '../campaign-wizard'
 import { AddEmployeeDialog } from '@/components/employees/add-employee-dialog'
-import { parseRecipientsCsv } from '@/actions/campaign-recipients'
+import { parseRecipientsCsv } from '@/lib/parse-recipients-csv'
 
 interface Step2Props {
   data: CampaignWizardData
