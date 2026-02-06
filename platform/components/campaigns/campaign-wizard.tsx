@@ -20,8 +20,6 @@ import { CampaignStep3Gifts } from './wizard-steps/step3-gifts'
 import { CampaignStep4Budget } from './wizard-steps/step4-budget'
 import { CampaignStep5Schedule } from './wizard-steps/step5-schedule'
 import { CampaignStep6Preview } from './wizard-steps/step6-preview'
-import { X } from 'lucide-react'
-
 interface CampaignWizardProps {
   open: boolean
   onClose: () => void
@@ -202,12 +200,7 @@ export function CampaignWizard({ open, onClose, onSuccess }: CampaignWizardProps
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto border-border/50">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-foreground">Create Gift Campaign</DialogTitle>
-            <Button variant="ghost" size="icon" onClick={handleClose} className="border-border/50">
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
+          <DialogTitle className="text-foreground">Create Gift Campaign</DialogTitle>
         </DialogHeader>
         
         {/* Progress Bar */}
