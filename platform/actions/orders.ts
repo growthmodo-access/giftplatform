@@ -66,15 +66,14 @@ export async function getOrders() {
       return { data: [], error: null }
     }
 
-    // Get user IDs and product IDs
-    const userIds = [...new Set(orders.map(o => o.user_id))]
+    // Get user IDs and product IDs (user_id can be null for campaign gift orders)
+    const userIds = [...new Set(orders.map(o => o.user_id).filter((id): id is string => id != null))]
     const orderIds = orders.map(o => o.id)
 
-    // Fetch users
-    const { data: users } = await supabase
-      .from('users')
-      .select('id, name, email')
-      .in('id', userIds)
+    // Fetch users (only when we have user IDs)
+    const { data: users } = userIds.length > 0
+      ? await supabase.from('users').select('id, name, email').in('id', userIds)
+      : { data: [] }
 
     // Get company IDs
     const companyIds = [...new Set(orders.map(o => o.company_id).filter(Boolean))]
