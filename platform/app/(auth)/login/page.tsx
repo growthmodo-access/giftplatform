@@ -177,7 +177,7 @@ function LoginForm() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white p-3 sm:p-4 md:p-6 overflow-x-hidden">
-      <Card className="w-full max-w-md border border-[#F8F3EC]/50 gradient-card shadow-primary-lg min-w-0">
+      <Card className="w-full max-w-md border border-black/[0.06] gradient-card shadow-xl min-w-0">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
             <Image

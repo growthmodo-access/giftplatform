@@ -47,7 +47,7 @@ export default function GiftsPage() {
         </Button>
       </div>
 
-      <Card className="glass">
+      <Card className="border border-black/[0.06] shadow-sm">
         <CardHeader>
           <CardTitle>All Gifts</CardTitle>
           <CardDescription>View and manage sent gifts</CardDescription>

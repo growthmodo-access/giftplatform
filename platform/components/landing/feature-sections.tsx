@@ -107,17 +107,17 @@ export function FeatureSections() {
                 Gifts for employees, clients, and events
               </h2>
               <div className="space-y-4 sm:space-y-5 mb-8 sm:mb-10 w-full">
-                <div className="bg-white/60 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-[#F8F3EC]/50 shadow-sm text-left">
+                <div className="bg-white/60 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-black/[0.06] shadow-sm text-left">
                   <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
                     <strong className="text-foreground">Employee recognition:</strong> Welcome kits, work anniversaries, performance rewards
                   </p>
                 </div>
-                <div className="bg-white/60 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-[#F8F3EC]/50 shadow-sm text-left">
+                <div className="bg-white/60 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-black/[0.06] shadow-sm text-left">
                   <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
                     <strong className="text-foreground">Client appreciation:</strong> Thank you gifts, deal closings, partnership milestones
                   </p>
                 </div>
-                <div className="bg-white/60 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-[#F8F3EC]/50 shadow-sm text-left">
+                <div className="bg-white/60 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-black/[0.06] shadow-sm text-left">
                   <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
                     <strong className="text-foreground">Events & campaigns:</strong> Conference swag, product launches, team offsites
                   </p>

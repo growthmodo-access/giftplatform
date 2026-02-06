@@ -28,7 +28,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen gradient-landing overflow-x-hidden">
-      <header className="border-b border-[#F8F3EC]/50 bg-white/60 backdrop-blur-sm sticky top-0 z-40">
+      <header className="border-b border-black/[0.06] bg-white/95 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
             <Image src="/logogoodies.png" alt="Goodies Logo" width={180} height={90} className="h-8 sm:h-10 w-auto object-contain" unoptimized />
@@ -48,7 +48,7 @@ export default function ContactPage() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <Card className="border border-[#F8F3EC]/50 gradient-card shadow-primary-lg">
+        <Card className="border border-black/[0.06] gradient-card shadow-xl">
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-2xl sm:text-3xl font-semibold text-foreground">Contact us</CardTitle>
             <CardDescription className="text-muted-foreground">

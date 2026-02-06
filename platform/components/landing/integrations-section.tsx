@@ -21,7 +21,7 @@ export function IntegrationsSection() {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="bg-white/80 backdrop-blur-xl p-8 sm:p-10 md:p-12 rounded-3xl border-2 border-[#F8F3EC]/50 hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
+              className="bg-white backdrop-blur-xl p-8 sm:p-10 md:p-12 rounded-3xl border border-black/[0.06] shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-center"
             >
               <div className="text-5xl sm:text-6xl md:text-7xl font-bold text-[#7B61FF] mb-4 sm:mb-6">{step.number}</div>
               <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">{step.title}</h3>

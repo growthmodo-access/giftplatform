@@ -31,7 +31,7 @@ export function LandingHeader() {
   return (
     <>
       {/* Banner */}
-      <div className="bg-[#F8F3EC] text-foreground py-2 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-[#F8F3EC]/50">
+      <div className="bg-[#FAFAFA] text-foreground py-2 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-black/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <span>Built in India, shipping globally</span>
         </div>
@@ -42,8 +42,8 @@ export function LandingHeader() {
         className={cn(
           "sticky top-0 z-50 transition-all duration-300",
           isScrolled
-            ? "bg-white/70 backdrop-blur-sm shadow-sm border-b border-[#F8F3EC]/20"
-            : "bg-white/40 backdrop-blur-sm border-b border-transparent"
+            ? "bg-white/90 backdrop-blur-sm shadow-sm border-b border-black/[0.06]"
+            : "bg-white/95 backdrop-blur-sm border-b border-transparent"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">

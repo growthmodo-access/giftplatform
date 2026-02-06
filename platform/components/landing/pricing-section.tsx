@@ -59,7 +59,7 @@ export function PricingSection() {
               className={`rounded-2xl border-2 p-6 sm:p-8 flex flex-col ${
                 plan.highlighted
                   ? 'border-[#7B61FF] bg-white/80 shadow-primary-lg scale-[1.02] md:scale-105'
-                  : 'border-[#F8F3EC]/50 bg-white/60'
+                  : 'border-black/[0.06] bg-white'
               }`}
             >
               <h3 className="text-xl font-semibold text-foreground mb-1">{plan.name}</h3>

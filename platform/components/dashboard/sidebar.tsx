@@ -180,7 +180,7 @@ export function Sidebar({ userRole }: SidebarProps) {
 
       {/* Sidebar */}
       <aside className={cn(
-        "bg-white/95 backdrop-blur-lg border-r border-[#F8F3EC]/50 flex flex-col transition-all duration-300 ease-in-out shadow-sm",
+        "bg-white backdrop-blur-lg border-r border-black/[0.06] flex flex-col transition-all duration-300 ease-in-out shadow-sm",
         // Mobile: fixed positioning with slide animation
         "lg:sticky fixed top-0 h-screen z-[50]",
         // Mobile: slide in/out
@@ -250,8 +250,8 @@ export function Sidebar({ userRole }: SidebarProps) {
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative",
                   "hover:bg-muted/60 active:scale-[0.98]",
                   active
-                    ? "bg-[#F8F3EC] text-[#7B61FF] font-semibold shadow-sm border-l-2 border-[#7B61FF]"
-                    : "text-muted-foreground hover:text-[#7B61FF] hover:bg-[#F8F3EC]/50",
+                    ? "bg-primary/5 text-[#7B61FF] font-semibold shadow-sm border-l-2 border-[#7B61FF]"
+                    : "text-muted-foreground hover:text-[#7B61FF] hover:bg-black/[0.03]",
                   isCollapsed && "justify-center lg:justify-center"
                 )}
                 title={isCollapsed ? item.label : undefined}

@@ -24,7 +24,7 @@ export function LandingHero() {
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto w-full">
             {/* Trust Badge + Social Proof Quote */}
             <div className="mb-4 sm:mb-8 md:mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#F8F3EC] text-foreground px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide border border-[#F8F3EC]/50 shadow-md hover:shadow-lg transition-shadow focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+              <span className="inline-flex items-center gap-2 bg-white text-foreground px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide border border-black/[0.08] shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 <span className="text-base sm:text-lg">⭐</span>
                 Trusted by 20,000+ companies
               </span>
@@ -71,11 +71,11 @@ export function LandingHero() {
 
             {/* Trust Indicators */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 md:gap-12 text-muted-foreground px-2 sm:px-4">
-              <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm px-5 py-3 rounded-full border border-[#F8F3EC]/50 shadow-sm">
+              <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm px-5 py-3 rounded-full border border-black/[0.06] shadow-sm">
                 <span className="text-xl sm:text-2xl">🌍</span>
                 <span className="text-sm sm:text-base font-semibold">80+ countries, zero logistics hassle</span>
               </div>
-              <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm px-5 py-3 rounded-full border border-[#F8F3EC]/50 shadow-sm">
+              <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm px-5 py-3 rounded-full border border-black/[0.06] shadow-sm">
                 <span className="text-foreground text-xl sm:text-2xl">🎁</span>
                 <span className="text-sm sm:text-base font-semibold">Premium inventory, human managed</span>
               </div>

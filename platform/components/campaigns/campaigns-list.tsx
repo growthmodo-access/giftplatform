@@ -148,7 +148,7 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {campaigns.map((campaign) => (
-        <Card key={campaign.id} className="glass hover:shadow-lg transition-shadow">
+        <Card key={campaign.id} className="hover:shadow-md transition-shadow">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="p-2 bg-purple-50 rounded-lg">

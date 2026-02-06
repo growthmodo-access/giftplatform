@@ -63,8 +63,8 @@ export function Testimonials() {
             <Card
               key={index}
               className={`
-                p-6 sm:p-8 md:p-10 glass hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-white/50
-                ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-[#7B61FF]/30' : ''}
+                p-6 sm:p-8 md:p-10 bg-white hover:shadow-lg hover:scale-[1.01] transition-all duration-300 border border-black/[0.06] shadow-sm
+                ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-[#7B61FF]/20' : ''}
               `}
             >
               <div className="flex flex-col gap-5 sm:gap-6 md:gap-8">

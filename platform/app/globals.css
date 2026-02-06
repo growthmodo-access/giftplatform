@@ -15,7 +15,7 @@
     --primary-foreground: 0 0% 100%;
     --secondary: 40 100% 66%; /* Lemon and Banana #FFE450 */
     --secondary-foreground: 0 0% 16%;
-    --muted: 30 30% 96%; /* Creamy Milk #F8F3EC */
+    --muted: 0 0% 98%; /* Near white */
     --muted-foreground: 0 0% 45%;
     --accent: 210 88% 54%; /* Azure Cornflower #2883EB */
     --accent-foreground: 0 0% 100%;
@@ -23,8 +23,8 @@
     --destructive-foreground: 0 0% 100%;
     --success: 142 71% 45%; /* Light Malachite #28BF5D */
     --success-foreground: 0 0% 100%;
-    --border: 30 20% 90%;
-    --input: 30 20% 96%;
+    --border: 0 0% 94%;
+    --input: 0 0% 97%;
     --ring: 252 100% 71%;
     --radius: 0.5rem;
     
@@ -50,7 +50,7 @@
     text-rendering: optimizeLegibility;
     font-feature-settings: 'kern' 1, 'liga' 1;
     font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: #FFFFFF;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FCFCFC 50%, #FFFFFF 100%);
     background-attachment: fixed;
   }
   
@@ -72,12 +72,12 @@
 }
 
 @layer utilities {
-  /* Glassmorphism utilities */
+  /* Premium glass - white based */
   .glass {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
   }
   
   /* Beautiful Gradient Utilities with Premium Colors */
@@ -102,20 +102,21 @@
   }
   
   .gradient-subtle {
-    background: linear-gradient(to bottom, #FFFFFF 0%, #F8F3EC 50%, #FFFFFF 100%);
+    background: linear-gradient(to bottom, #FFFFFF 0%, #FAFAFA 50%, #FFFFFF 100%);
   }
   
   .gradient-hero {
-    background: linear-gradient(135deg, #FFFFFF 0%, #F8F3EC 15%, #FFFFFF 50%, #F8F3EC 85%, #FFFFFF 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #FCFCFC 20%, #FFFFFF 50%, #FCFCFC 80%, #FFFFFF 100%);
   }
   
+  /* White-based, very light gradient for premium feel */
   .gradient-landing {
-    background: linear-gradient(to bottom, #FFFFFF 0%, rgba(248, 243, 236, 0.3) 50%, #FFFFFF 100%);
+    background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 30%, #FFFFFF 60%, #F8F8F8 100%);
   }
   
   .gradient-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 243, 236, 0.5) 100%);
-    border: 1px solid rgba(123, 97, 255, 0.1);
+    background: linear-gradient(145deg, #FFFFFF 0%, #FCFCFC 100%);
+    border: 1px solid rgba(0, 0, 0, 0.06);
   }
   
   .gradient-button {
