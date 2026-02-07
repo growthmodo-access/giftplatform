@@ -64,20 +64,20 @@ export async function QuickActions() {
               Quick Actions
             </span>
           </div>
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 flex-1 min-w-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3 flex-1 min-w-0">
             {actions.map((action) => {
               const Icon = action.icon
               return (
                 <Link
                   key={action.title}
                   href={action.href}
-                  className="group flex items-center gap-3 rounded-xl border border-border/50 bg-background/60 hover:bg-muted/50 hover:border-primary/20 p-3 sm:min-w-[180px] transition-all duration-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  className="group flex items-center gap-3 rounded-xl border border-border/50 bg-background/60 hover:bg-muted/50 hover:border-primary/20 p-3 sm:min-w-[180px] transition-all duration-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-w-0"
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/15 transition-colors">
                     <Icon className="h-5 w-5" strokeWidth={1.75} />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-sm text-foreground leading-tight break-words">
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <p className="font-semibold text-sm text-foreground leading-tight">
                       {action.title}
                     </p>
                     <p className="text-xs text-muted-foreground leading-snug mt-0.5 line-clamp-2">

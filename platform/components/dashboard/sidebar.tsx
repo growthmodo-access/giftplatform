@@ -248,17 +248,17 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
                   'hover:bg-muted/50 active:scale-[0.99]',
                   active
                     ? 'bg-primary/10 text-primary font-semibold'
-                    : 'text-muted-foreground hover:text-foreground',
+                    : 'text-foreground hover:text-foreground lg:text-muted-foreground lg:hover:text-foreground',
                   isCollapsed && 'justify-center lg:justify-center'
                 )}
                 title={isCollapsed ? item.label : undefined}
               >
                 <Icon className={cn(
                   'w-5 h-5 flex-shrink-0',
-                  active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
+                  active ? 'text-primary' : 'text-foreground group-hover:text-foreground lg:text-muted-foreground lg:group-hover:text-foreground'
                 )} />
                 <span className={cn(
-                  'transition-opacity duration-300 whitespace-nowrap text-sm font-medium',
+                  'transition-opacity duration-300 whitespace-nowrap text-sm font-medium min-w-0',
                   isCollapsed ? 'opacity-0 w-0 overflow-hidden lg:opacity-0' : 'opacity-100'
                 )}>
                   {item.label}
