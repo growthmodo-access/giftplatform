@@ -10,7 +10,7 @@ export function Header() {
 
   return (
     <header className="h-14 lg:h-16 bg-white/95 backdrop-blur-sm sm:bg-white sm:backdrop-blur-none border-b border-transparent sm:border-border/50 sticky top-0 z-30 shrink-0">
-      <div className="h-full pl-4 pr-4 sm:pl-5 sm:pr-6 lg:px-6 flex items-center justify-between gap-3 min-w-0">
+      <div className="h-full pl-[58px] pr-4 sm:pl-5 sm:pr-6 lg:px-6 flex items-center justify-between gap-3 min-w-0">
         {/* Search - opens command palette */}
         <div className="hidden md:flex flex-1 max-w-md">
           <button
