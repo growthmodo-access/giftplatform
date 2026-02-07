@@ -21,13 +21,13 @@ export function ValueStrip() {
             return (
               <div
                 key={item.label}
-                className="flex items-center gap-4 rounded-2xl bg-white border border-border/40 px-5 py-4 sm:px-6 sm:py-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 min-w-0 flex-1 sm:flex-initial sm:min-w-[200px] max-w-[280px]"
+                className="flex items-center gap-3 sm:gap-4 rounded-2xl bg-white border border-border/40 px-4 py-3 sm:px-6 sm:py-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 min-w-0 flex-1 sm:flex-initial sm:min-w-[200px] max-w-[280px]"
               >
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <Icon className="h-5 w-5" strokeWidth={1.75} />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-foreground leading-tight">{item.label}</p>
+                  <p className="font-semibold text-sm sm:text-base text-foreground leading-tight">{item.label}</p>
                   <p className="text-xs text-muted-foreground leading-snug mt-0.5">{item.desc}</p>
                 </div>
               </div>

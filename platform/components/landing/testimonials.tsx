@@ -36,7 +36,7 @@ export function Testimonials() {
           </h2>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto min-w-0">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}

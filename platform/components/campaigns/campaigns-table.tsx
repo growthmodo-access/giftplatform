@@ -169,8 +169,8 @@ export function CampaignsTable({ campaigns, currentUserRole }: CampaignsTablePro
 
   return (
     <>
-      <div className="border rounded-lg">
-        <Table>
+      <div className="border rounded-lg overflow-x-auto min-w-0">
+        <Table className="min-w-[720px]">
           <TableHeader>
             <TableRow>
               <TableHead>Campaign ID</TableHead>

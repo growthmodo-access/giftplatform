@@ -43,7 +43,8 @@ export function InvoicesList({ invoices, showCompany = true }: InvoicesListProps
   return (
     <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
       <CardContent className="p-0">
-        <Table>
+        <div className="overflow-x-auto min-w-0">
+          <Table className="min-w-[600px]">
           <TableHeader>
             <TableRow className="border-border/40 hover:bg-transparent">
               <TableHead className="font-semibold">Invoice #</TableHead>
@@ -87,7 +88,8 @@ export function InvoicesList({ invoices, showCompany = true }: InvoicesListProps
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   )

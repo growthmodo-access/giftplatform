@@ -47,8 +47,8 @@ export default function ContactPage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <Card className="border border-black/[0.06] gradient-card shadow-xl">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-24 w-full min-w-0">
+        <Card className="border border-black/[0.06] gradient-card shadow-xl w-full min-w-0">
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-2xl sm:text-3xl font-semibold text-foreground">Contact us</CardTitle>
             <CardDescription className="text-muted-foreground">

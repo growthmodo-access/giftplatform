@@ -95,8 +95,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-3 sm:p-4 md:p-6 overflow-x-hidden overflow-y-auto py-8">
-      <Card className="w-full max-w-md border border-black/[0.06] gradient-card shadow-xl min-w-0 my-auto">
+    <div className="min-h-screen flex items-center justify-center bg-white p-3 sm:p-4 md:p-6 overflow-x-hidden overflow-y-auto py-6 sm:py-8 min-w-0 w-full">
+      <Card className="w-full max-w-md border border-black/[0.06] gradient-card shadow-xl min-w-0 max-w-[calc(100vw-1.5rem)] my-auto">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
             <Image

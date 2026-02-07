@@ -12,8 +12,8 @@ export const metadata: Metadata = buildMetadata({
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-6 text-center">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 min-w-0 w-full">
+      <div className="w-full max-w-md space-y-6 text-center min-w-0 px-2">
         <div className="space-y-2">
           <h1 className="text-6xl font-bold text-foreground" aria-hidden>404</h1>
           <h2 className="text-2xl font-semibold text-foreground">Page not found</h2>

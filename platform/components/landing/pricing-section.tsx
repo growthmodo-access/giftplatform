@@ -70,7 +70,7 @@ export function PricingSection() {
               key={plan.name}
               className={`rounded-2xl border p-6 sm:p-8 flex flex-col transition-all duration-200 ${
                 plan.highlighted
-                  ? 'border-primary/40 bg-white shadow-xl shadow-primary/10 ring-2 ring-primary/20 scale-[1.02] md:scale-105'
+                  ? 'border-primary/40 bg-white shadow-xl shadow-primary/10 ring-2 ring-primary/20 md:scale-[1.02] lg:scale-105'
                   : 'border-border/50 bg-white shadow-lg shadow-black/5 hover:shadow-xl hover:border-primary/20'
               }`}
             >

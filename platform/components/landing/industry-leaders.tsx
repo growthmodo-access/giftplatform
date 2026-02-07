@@ -17,7 +17,7 @@ export function IndustryLeaders() {
   return (
     <section id="problem" className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
-        <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-center min-w-0">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center min-w-0">
           <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
             <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold uppercase tracking-widest">
               <AlertCircle className="h-4 w-4" strokeWidth={2} />
@@ -47,7 +47,7 @@ export function IndustryLeaders() {
               See the better way
             </Button>
           </div>
-          <div className="order-1 lg:order-2 w-full">
+          <div className="order-1 lg:order-2 w-full min-w-0">
             <div className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-muted/20 ring-1 ring-black/5">
               <Image
                 src="/g4.png"

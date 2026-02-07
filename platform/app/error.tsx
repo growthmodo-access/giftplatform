@@ -20,8 +20,8 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-4 text-center">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 min-w-0 w-full">
+      <div className="w-full max-w-md space-y-4 text-center min-w-0">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
           <AlertCircle className="h-6 w-6 text-destructive" />
         </div>

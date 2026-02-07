@@ -39,7 +39,7 @@ export function IntegrationsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto w-full relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto w-full relative min-w-0">
           {/* Connector line on desktop */}
           <div className="hidden md:block absolute top-20 left-1/2 -translate-x-1/2 w-[calc(100%-8rem)] h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent pointer-events-none" />
 

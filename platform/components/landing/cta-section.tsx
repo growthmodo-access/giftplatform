@@ -14,7 +14,7 @@ export function CTASection() {
   return (
     <section className="relative py-20 sm:py-24 lg:py-28 bg-gradient-to-b from-primary/10 via-primary/5 to-transparent border-t border-border/40 w-full max-w-full overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,hsl(var(--primary)/0.08),transparent)] pointer-events-none" />
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0 overflow-x-hidden">
         <div className="text-center flex flex-col items-center w-full">
           <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold uppercase tracking-widest mb-6">
             <Sparkles className="h-4 w-4" strokeWidth={2} />

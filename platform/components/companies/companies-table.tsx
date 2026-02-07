@@ -34,8 +34,8 @@ interface CompaniesTableProps {
 
 export function CompaniesTable({ companies, onEdit, canEdit, showRevenue = true }: CompaniesTableProps) {
   return (
-    <div className="border border-border/50 rounded-lg overflow-hidden">
-      <Table>
+    <div className="border border-border/50 rounded-lg overflow-x-auto overflow-hidden min-w-0">
+      <Table className="min-w-[640px]">
         <TableHeader>
           <TableRow className="border-border/50">
             <TableHead className="text-foreground font-semibold">Company</TableHead>

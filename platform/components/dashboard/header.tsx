@@ -33,11 +33,11 @@ export function Header({ onOpenMobileMenu }: HeaderProps) {
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
-            className="relative w-full flex items-center gap-2 pl-10 pr-4 py-2.5 h-10 rounded-lg border border-border/60 bg-muted/40 text-left text-sm text-muted-foreground hover:bg-muted/60 transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="relative w-full flex items-center gap-2 pl-10 pr-4 py-2.5 h-10 rounded-lg border border-border/60 bg-muted/40 text-left text-sm text-muted-foreground hover:bg-muted/60 transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-w-0"
             aria-label="Search pages (opens with ⌘K)"
           >
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" />
-            <span>Search products, orders, employees...</span>
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none shrink-0" />
+            <span className="truncate">Search products, orders, employees...</span>
             <kbd className="hidden lg:inline-flex ml-auto items-center gap-0.5 px-1.5 py-0.5 text-xs font-medium text-muted-foreground bg-background border border-border/60 rounded">
               ⌘K
             </kbd>

@@ -23,8 +23,8 @@ const legalLinks = [
 export function Footer() {
   return (
     <footer className="bg-foreground text-background w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 w-full max-w-full box-border min-w-0">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 sm:gap-12 lg:gap-14 min-w-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 w-full max-w-full box-border min-w-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 lg:gap-14 min-w-0">
           <div className="lg:col-span-2 min-w-0">
             <Link href="/" className="inline-block mb-5" aria-label="Goodies home">
               <Image

@@ -25,8 +25,8 @@ export function FeatureSections() {
       {/* Core benefit 1 */}
       <section id="benefits" className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
-          <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-center min-w-0">
-            <div className="flex justify-center order-2 lg:order-1 w-full">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center min-w-0">
+            <div className="flex justify-center order-2 lg:order-1 w-full min-w-0">
               <div className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-muted/20 ring-1 ring-black/5">
                 <Image
                   src="/IMG1.png"
@@ -67,8 +67,8 @@ export function FeatureSections() {
       {/* Core benefit 2 */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-muted/30 w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
-          <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-center min-w-0">
-            <div className="lg:order-2 flex justify-center w-full">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center min-w-0">
+            <div className="lg:order-2 flex justify-center w-full min-w-0">
               <div className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-white ring-1 ring-black/5">
                 <Image
                   src="/d4.png"
@@ -108,8 +108,8 @@ export function FeatureSections() {
       {/* Core benefit 3 + What you can send + Use cases */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
-          <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-center min-w-0">
-            <div className="flex justify-center order-2 lg:order-1 w-full">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center min-w-0">
+            <div className="flex justify-center order-2 lg:order-1 w-full min-w-0">
               <div className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-muted/20 ring-1 ring-black/5">
                 <Image
                   src="/f2.png"
