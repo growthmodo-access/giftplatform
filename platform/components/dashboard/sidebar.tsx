@@ -34,15 +34,16 @@ interface MenuItem {
   allowedRoles: UserRole[]
 }
 
+// V1: Company Admin = view/billing only; HR = hero (campaigns/employees); Employee = no dashboard (Gifts only)
 const allMenuItems: MenuItem[] = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: Package, label: 'Products', href: '/products', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: ShoppingCart, label: 'Orders', href: '/orders', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: Gift, label: 'Gifts', href: '/gifts', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: CreditCard, label: 'Billing', href: '/billing', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
+  { icon: Package, label: 'Products', href: '/products', allowedRoles: ['SUPER_ADMIN', 'HR', 'MANAGER'] },
+  { icon: ShoppingCart, label: 'Orders', href: '/orders', allowedRoles: ['SUPER_ADMIN', 'HR', 'MANAGER'] },
+  { icon: Gift, label: 'Gifts', href: '/gifts', allowedRoles: ['SUPER_ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+  { icon: CreditCard, label: 'Billing', href: '/billing', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
   { icon: Users, label: 'Employees', href: '/employees', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR'] },
   { icon: Zap, label: 'Campaigns', href: '/campaigns', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
-  { icon: BarChart3, label: 'Analytics', href: '/analytics', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
+  { icon: BarChart3, label: 'Analytics', href: '/analytics', allowedRoles: ['SUPER_ADMIN', 'HR', 'MANAGER'] },
   { icon: Building2, label: 'Companies', href: '/companies', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
   { icon: Users, label: 'Users', href: '/users', allowedRoles: ['SUPER_ADMIN'] },
   { icon: ClipboardList, label: 'Ops', href: '/ops', allowedRoles: ['SUPER_ADMIN'] },

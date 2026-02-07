@@ -271,8 +271,8 @@ export async function createOrder(formData: FormData) {
       return { error: 'User profile not found' }
     }
 
-    // Check permissions - ADMIN, MANAGER, SUPER_ADMIN can create orders
-    if (!['ADMIN', 'MANAGER', 'SUPER_ADMIN'].includes(currentUser.role || '')) {
+    // Check permissions - V1: only HR, MANAGER, SUPER_ADMIN can create orders (Company Admin is view-only)
+    if (!['HR', 'MANAGER', 'SUPER_ADMIN'].includes(currentUser.role || '')) {
       return { error: 'You do not have permission to create orders' }
     }
 

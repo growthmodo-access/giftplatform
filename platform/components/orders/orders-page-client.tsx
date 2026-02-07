@@ -56,8 +56,8 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
   })
   const [currentPage, setCurrentPage] = useState(1)
 
-  // Only ADMIN, MANAGER, and SUPER_ADMIN can create orders (HR cannot)
-  const canCreateOrders = currentUserRole === 'ADMIN' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  // V1: only HR, MANAGER, SUPER_ADMIN can create orders (Company Admin is view-only)
+  const canCreateOrders = currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
 
   // Safety check for orders
   const safeOrders = orders || []

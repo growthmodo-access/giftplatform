@@ -30,7 +30,7 @@ interface AutomationPageClientProps {
 export function AutomationPageClient({ campaigns, currentUserRole }: AutomationPageClientProps) {
   const router = useRouter()
   const [wizardOpen, setWizardOpen] = useState(false)
-  const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canCreateCampaigns = currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">

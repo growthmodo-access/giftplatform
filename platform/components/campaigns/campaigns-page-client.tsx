@@ -36,7 +36,8 @@ export function CampaignsPageClient({ campaigns, managementCampaigns = [], curre
   const [wizardOpen, setWizardOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('all')
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table')
-  const canCreateCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  // V1: only HR, MANAGER, SUPER_ADMIN can create (Company Admin is view-only)
+  const canCreateCampaigns = currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
   const canViewManagement = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
 
   return (
