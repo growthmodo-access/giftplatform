@@ -45,37 +45,37 @@ export async function StatsCards() {
   ]
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {statsData.map((stat) => {
         const Icon = stat.icon
         return (
           <div
             key={stat.label}
-            className="rounded-2xl bg-muted/25 p-4 sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm sm:hover:shadow-md sm:p-5 transition-all duration-200 overflow-hidden"
+            className="rounded-xl border border-border/40 bg-white p-5 shadow-sm transition-shadow hover:shadow-md overflow-hidden"
           >
-            <div className="flex items-start justify-between gap-2 mb-3 sm:mb-4">
-              <div className={`p-2 rounded-xl sm:p-2.5 ${stat.iconBg}`}>
+            <div className="flex items-start justify-between gap-2 mb-4">
+              <div className={`p-2 rounded-lg ${stat.iconBg}`}>
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               {stat.change && (
                 <span
-                  className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-medium shrink-0 sm:px-2 sm:py-1 sm:rounded-lg sm:text-xs ${
-                    stat.trend === 'up' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-red-500/10 text-red-600'
+                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium shrink-0 ${
+                    stat.trend === 'up' ? 'text-emerald-600 bg-emerald-500/10' : 'text-red-600 bg-red-500/10'
                   }`}
                 >
-                  {stat.trend === 'up' ? <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> : <TrendingDown className="w-2.5 h-2.5 sm:w-3 sm:h-3" />}
+                  {stat.trend === 'up' ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                   {stat.change}
                 </span>
               )}
             </div>
-            <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wider mb-0.5 sm:mb-1">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
               {stat.label}
             </p>
-            <p className="text-lg sm:text-2xl font-semibold text-foreground tracking-tight">
+            <p className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
               {stat.value}
             </p>
             {stat.change && (
-              <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 sm:mt-1.5">vs last month</p>
+              <p className="text-xs text-muted-foreground mt-1.5">from last month</p>
             )}
           </div>
         )

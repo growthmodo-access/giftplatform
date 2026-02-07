@@ -9,9 +9,9 @@ export async function TopProducts() {
 
   if (topProducts.length === 0) {
     return (
-      <Card className="card-mobile-soft rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+      <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
         <CardHeader className="pb-3 pt-4 sm:pt-5">
-          <CardTitle className="text-base font-semibold text-foreground">Top Products</CardTitle>
+          <CardTitle className="text-lg font-semibold text-foreground">Top Products</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">Most popular this month</CardDescription>
         </CardHeader>
         <CardContent>
@@ -28,11 +28,11 @@ export async function TopProducts() {
   }
 
   return (
-    <Card className="card-mobile-soft rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+    <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
       <CardHeader className="pb-3 pt-4 sm:pt-5">
         <div className="flex items-center gap-2">
           <Trophy className="w-4 h-4 text-amber-500" />
-          <CardTitle className="text-base font-semibold text-foreground">Top Products</CardTitle>
+          <CardTitle className="text-lg font-semibold text-foreground">Top Products</CardTitle>
         </div>
         <CardDescription className="text-sm text-muted-foreground">Most popular this month</CardDescription>
       </CardHeader>

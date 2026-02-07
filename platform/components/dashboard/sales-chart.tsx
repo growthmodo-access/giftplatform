@@ -13,11 +13,11 @@ export async function SalesChart() {
   const maxValue = canViewRevenue ? maxRevenue : maxOrders
 
   return (
-    <Card className="card-mobile-soft rounded-2xl border-0 bg-muted/20 shadow-none overflow-hidden sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+    <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
       <CardHeader className="pb-3 pt-4 sm:pt-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <CardTitle className="text-base font-semibold text-foreground">
+            <CardTitle className="text-lg font-semibold text-foreground">
               {canViewRevenue ? 'Revenue Overview' : 'Order Volume'}
             </CardTitle>
             <CardDescription className="text-sm text-muted-foreground">Last 7 days</CardDescription>

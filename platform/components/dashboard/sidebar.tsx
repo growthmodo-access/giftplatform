@@ -240,7 +240,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
                   'lg:px-3 lg:py-2.5 lg:rounded-xl',
                   'hover:bg-muted/50 active:scale-[0.99]',
                   active
-                    ? 'bg-primary/10 text-primary font-semibold'
+                    ? 'bg-muted/70 text-foreground font-semibold'
                     : 'text-foreground hover:text-foreground lg:text-muted-foreground lg:hover:text-foreground',
                   isCollapsed && 'justify-center lg:justify-center'
                 )}
@@ -248,7 +248,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
               >
                 <Icon className={cn(
                   'w-5 h-5 flex-shrink-0',
-                  active ? 'text-primary' : 'text-foreground group-hover:text-foreground lg:text-muted-foreground lg:group-hover:text-foreground'
+                  active ? 'text-foreground' : 'text-foreground group-hover:text-foreground lg:text-muted-foreground lg:group-hover:text-foreground'
                 )} />
                 <span className={cn(
                   'transition-opacity duration-300 whitespace-nowrap text-sm font-medium min-w-0',

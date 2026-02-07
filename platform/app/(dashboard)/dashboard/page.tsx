@@ -28,26 +28,28 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6 sm:space-y-6 lg:space-y-8 min-w-0">
-      {/* Quick Actions */}
-      <QuickActions />
-
-      {/* Welcome Header - borderless on mobile */}
-      <div className="pb-5 sm:pb-6 sm:border-b sm:border-border/40">
-        <p className="text-xs sm:text-sm text-muted-foreground mb-1.5">
-          {getTimeGreeting()} • {getFormattedDate()}
-        </p>
-        <h1 className="text-xl sm:text-2xl lg:text-4xl font-semibold text-foreground mb-1.5 break-words leading-tight">
-          Welcome back, {userName}
-        </h1>
-        <p className="text-sm sm:text-base text-muted-foreground leading-snug">
+      {/* Page title + context — reference-style header */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-1">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
+            Dashboard
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {getTimeGreeting()}, {userName} · {getFormattedDate()}
+          </p>
+        </div>
+        <p className="text-sm text-muted-foreground sm:text-right">
           {stats.todayOrders > 0 
-            ? `You have ${stats.todayOrders} order${stats.todayOrders > 1 ? 's' : ''} today`
-            : "Here's what's happening with your gift platform today."
+            ? `${stats.todayOrders} order${stats.todayOrders > 1 ? 's' : ''} today`
+            : 'Overview of your gift platform'
           }
         </p>
       </div>
+
+      {/* Quick Actions — subtle strip */}
+      <QuickActions />
       
-      {/* Stats Cards */}
+      {/* KPI Stats */}
       <StatsCards />
       
       {/* Charts and Top Products */}
