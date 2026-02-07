@@ -1,7 +1,7 @@
 const steps = [
-  { number: '1', title: 'Choose your gifts', description: 'Browse curated selections or work with us to customize' },
-  { number: '2', title: 'We handle fulfillment', description: 'Inventory, branding, packaging, and shipping' },
-  { number: '3', title: 'Recipients receive gifts', description: 'Delivered worldwide with tracking and support' },
+  { number: '1', title: 'Pick gifts and add recipients', description: 'Browse the catalog, select items, and upload your list (or sync with your HR/CRM). Set budgets and approval rules once.' },
+  { number: '2', title: 'We handle the rest', description: 'Inventory, branding, packaging, and shipping—including customs and tracking. One invoice, one point of contact.' },
+  { number: '3', title: 'See every delivery', description: 'Dashboard visibility for every order: status, tracking, and proof of delivery. No more "did it ship?" threads.' },
 ]
 
 export function IntegrationsSection() {
@@ -13,7 +13,7 @@ export function IntegrationsSection() {
             How it works
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Simple, human managed process. No complex automation required.
+            Three steps. No vendor coordination. Full visibility.
           </p>
         </div>
 

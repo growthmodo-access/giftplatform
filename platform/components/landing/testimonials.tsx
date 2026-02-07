@@ -4,38 +4,38 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 const testimonials = [
   {
-    quote: "The quality of gifts is excellent, and our team actually uses them. Way better than gift cards that get forgotten.",
+    quote: "We cut our gifting admin from a few days per campaign to under an hour. One catalog, one approval, and we can see exactly who received what. No more spreadsheets.",
     author: "Priya S.",
     role: "Head of People Ops",
     company: "Tech Startup, Bangalore",
     featured: true,
   },
   {
-    quote: "We ship to 15 countries. Goodies handles all the customs and logistics—we just pick the gifts and they handle the rest.",
+    quote: "We send to 15 countries. Goodies handles customs and logistics—we just pick the gifts. Delivery and tracking are in one place.",
     author: "Raj K.",
     role: "Marketing Director",
     company: "SaaS Company, Mumbai",
   },
   {
-    quote: "Our clients love the branded gifts. It's become a differentiator for us in how we show appreciation.",
+    quote: "Client gifts used to be a coordination nightmare. Now we run thank-you and milestone gifts from the same platform. Our clients notice the difference.",
     author: "Sarah M.",
     role: "VP of Sales",
     company: "B2B Services, Delhi",
   },
   {
-    quote: "The platform is simple, but the real value is in the fulfillment. They make global gifting feel local.",
+    quote: "We needed global gifting without hiring a logistics person. Goodies gave us one dashboard and one invoice. Setup took a day.",
     author: "Arjun P.",
     role: "Founder",
     company: "Startup, Hyderabad",
   },
   {
-    quote: "We use it for employee onboarding and client thank yous. The branded packaging makes a real impression.",
+    quote: "Onboarding kits and anniversary gifts are on autopilot. We set the rules once; finance approves once. No more chasing vendors or delivery status.",
     author: "Meera R.",
     role: "HR Manager",
     company: "Enterprise, Chennai",
   },
   {
-    quote: "Finally, a gifting platform that understands both Indian preferences and global scale. Exactly what we needed.",
+    quote: "Indian preferences and global scale in one product. We standardized gifting across regions without adding headcount.",
     author: "Vikram D.",
     role: "COO",
     company: "Global Company, Pune",
@@ -48,13 +48,13 @@ export function Testimonials() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
         <div className="text-center mb-10 sm:mb-16">
           <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
-            EARLY CUSTOMERS
+            CUSTOMERS
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight px-4 sm:px-0">
-            What our customers are saying
+            What HR and Ops teams say about Goodies
           </h2>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4 sm:px-0">
-            We're early, but we're building something special. Here's what our customers have to say.
+            Outcomes, not just feedback.
           </p>
         </div>
 

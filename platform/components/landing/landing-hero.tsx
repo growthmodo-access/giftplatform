@@ -27,32 +27,29 @@ export function LandingHero() {
                 <span className="text-base sm:text-lg">🇮🇳</span>
                 Built for India · Ships to 80+ countries
               </span>
-              <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto px-1 text-center">
-                &ldquo;One platform for employees, clients, and events—from startup to enterprise.&rdquo;
-              </p>
             </div>
 
-            {/* Main Heading - modern startup */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-[1.1] tracking-tight text-foreground w-full px-1 sm:px-4">
-              Corporate gifting
+            {/* Main Heading */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-[1.1] tracking-tight text-foreground w-full px-1 sm:px-4">
+              Corporate gifting without the spreadsheets.
               <br />
-              <span className="text-primary">that scales with you</span>
+              <span className="text-primary">One platform. One catalog. Global delivery.</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 md:mb-10 max-w-2xl w-full px-2 sm:px-4 leading-relaxed text-center">
-              Send branded gifts and swag in <strong className="text-foreground">INR or USD</strong>. One dashboard, one catalog, global delivery—for teams and enterprises.
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl w-full px-2 sm:px-4 leading-relaxed text-center">
+              Send branded gifts and swag in <strong className="text-foreground">INR or USD</strong> from a single dashboard. No vendor wrangling, no tracking spreadsheets, no surprise delays. Built for HR, People Ops, and operations teams.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-10 md:mb-12 w-full max-w-sm sm:max-w-none mx-auto px-2 sm:px-0 justify-center items-stretch sm:items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-10 w-full max-w-sm sm:max-w-none mx-auto px-2 sm:px-0 justify-center items-stretch sm:items-center">
               <Button
                 onClick={handleRequestDemo}
                 size="lg"
                 className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 sm:px-8 sm:py-6 text-sm sm:text-base font-semibold shadow-sm w-full sm:w-auto"
-                aria-label="Start gifting - sign up"
+                aria-label="Book a demo"
               >
-                Start gifting
+                Book a demo
               </Button>
               <Button
                 variant="outline"
@@ -65,22 +62,22 @@ export function LandingHero() {
               </Button>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8 px-2 text-center">
-              No credit card required · Get started in under 2 minutes
+              No credit card required · Live in under 2 minutes
             </p>
 
             {/* Trust Indicators */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-6 text-muted-foreground w-full sm:w-auto max-w-md sm:max-w-none mx-auto px-2">
               <div className="flex items-center gap-3 bg-muted/20 border border-border/40 px-4 py-3 rounded-xl w-full sm:w-auto text-left shadow-sm">
                 <span className="text-xl flex-shrink-0">🌍</span>
-                <span className="text-xs sm:text-sm font-medium">80+ countries · No logistics hassle</span>
+                <span className="text-xs sm:text-sm font-medium">80+ countries · We handle customs and delivery</span>
               </div>
               <div className="flex items-center gap-3 bg-muted/20 border border-border/40 px-4 py-3 rounded-xl w-full sm:w-auto text-left shadow-sm">
                 <span className="text-xl flex-shrink-0">🎁</span>
-                <span className="text-xs sm:text-sm font-medium">Curated catalog · INR & USD</span>
+                <span className="text-xs sm:text-sm font-medium">One catalog · INR & USD · No minimums</span>
               </div>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground mt-4 px-2 text-center w-full">
-              Trusted by startups and enterprises · India-first, global reach
+              Trusted by HR and Ops teams · India-first, global reach
             </p>
           </div>
         </div>

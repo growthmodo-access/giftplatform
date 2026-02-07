@@ -3,10 +3,10 @@
 import { Globe, Gift, Zap, Headphones } from 'lucide-react'
 
 const items = [
-  { icon: Globe, label: '80+ countries', desc: 'Ship anywhere' },
-  { icon: Gift, label: 'Premium catalog', desc: 'Curated gifts' },
-  { icon: Zap, label: 'No minimums', desc: 'Start small' },
-  { icon: Headphones, label: 'Human support', desc: 'We’re here to help' },
+  { icon: Globe, label: '80+ countries', desc: 'One platform, one invoice' },
+  { icon: Gift, label: 'One catalog', desc: 'Curated gifts, no vendor RFPs' },
+  { icon: Zap, label: 'No minimums', desc: 'Start small, scale when ready' },
+  { icon: Headphones, label: 'Real support', desc: 'Dedicated help when you need it' },
 ]
 
 export function ValueStrip() {

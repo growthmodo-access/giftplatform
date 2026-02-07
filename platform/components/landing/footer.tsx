@@ -38,7 +38,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs mb-4">
-              Corporate gifting and swag, built for India. Ship to 80+ countries from one platform.
+              One platform to send corporate gifts globally—without spreadsheets, vendors, or chaos. Built in India. Ships to 80+ countries.
             </p>
             <div className="text-sm text-muted-foreground space-y-1">
               <p className="font-medium text-foreground">Goodies.so</p>

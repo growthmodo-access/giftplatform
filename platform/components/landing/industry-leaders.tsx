@@ -9,17 +9,18 @@ export function IndustryLeaders() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
           <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
+            <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4">The old way</div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight max-w-xl">
-              From India to the world
+              Gifting at scale usually means spreadsheets, vendor chaos, and zero visibility.
             </h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Built in India, shipping worldwide. We understand local preferences and global scale. Whether you're a startup expanding internationally or an enterprise managing distributed teams, we have you covered.
+              Juggling multiple vendors. Chasing delivery status in email. Pushing finance for approvals. Scaling gifting across offices and regions turns into a part-time job. Late or failed deliveries, wrong items, and no single view of who got what. Sound familiar?
             </p>
             <Button
-              onClick={() => window.location.href = '/signup'}
+              onClick={() => document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' })}
               className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 text-sm sm:text-base font-semibold w-full sm:max-w-[280px] lg:max-w-none lg:w-auto"
             >
-              Talk to sales
+              See the better way
             </Button>
           </div>
           <div className="order-1 lg:order-2 w-full">

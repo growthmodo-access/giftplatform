@@ -33,7 +33,7 @@ export function LandingHeader() {
       {/* Banner */}
       <div className="bg-muted/30 text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/40 w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 box-border">
-          <span>Built in India, shipping globally</span>
+          <span>Corporate gifting for HR & Ops—one platform, 80+ countries. <Link href="/signup" className="underline font-semibold hover:opacity-90">Book a demo</Link></span>
         </div>
       </div>
 

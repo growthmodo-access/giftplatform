@@ -17,19 +17,19 @@ export function CTASection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center flex flex-col items-center w-full">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4 sm:mb-6 px-2 sm:px-0 leading-tight max-w-3xl">
-            Ready to ship gifts that people actually love?
+            Stop managing gifting with spreadsheets. Start shipping from one platform.
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto px-2 sm:px-0 leading-relaxed">
-            Join teams that use Goodies to run employee recognition, client gifts, and swag campaigns—in INR or USD, from one dashboard.
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2 sm:px-0 leading-relaxed">
+            Join HR and Ops teams who run employee recognition, client gifts, and swag campaigns from a single dashboard—INR or USD, 80+ countries.
           </p>
           <div className="w-full flex justify-center mb-8 sm:mb-12 px-2">
             <Button
               onClick={handleRequestDemo}
               size="lg"
               className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base font-semibold shadow-sm w-full max-w-[280px] sm:max-w-none sm:w-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-              aria-label="Get started free"
+              aria-label="Book a demo"
             >
-              Get started free
+              Book a demo
             </Button>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 md:gap-10">

@@ -28,16 +28,16 @@ export function FeatureSections() {
                 GLOBAL FULFILLMENT
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight max-w-xl">
-                Premium swag and gifts, shipped worldwide
+                One catalog. One invoice. Delivery in 80+ countries.
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                We own inventory across 80+ countries. Order branded swag, premium gifts, or curated selections. We handle warehousing, customs, and delivery. No volume minimums, no logistics headaches.
+                Stop managing multiple vendors and RFPs. We hold inventory and handle fulfillment so you order from a single catalog. Warehousing, customs, and last-mile delivery are included. No volume minimums and no logistics team required.
               </p>
               <Button
                 onClick={() => window.location.href = '/signup'}
                 className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 text-sm sm:text-base font-semibold w-full sm:max-w-[280px] lg:max-w-none lg:w-auto"
               >
-                Talk to sales
+                Book a demo
               </Button>
             </div>
           </div>
@@ -63,19 +63,19 @@ export function FeatureSections() {
             </div>
             <div className="lg:order-1 order-1 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
               <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
-                WHY GIFTS BEAT GIFT CARDS
+                BETTER THAN GIFT CARDS
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight max-w-xl">
-                Thoughtful gifts build stronger relationships
+                Branded gifts that recipients actually use—and remember you for.
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                Gift cards feel transactional. Branded, curated gifts show you care. We curate premium selections that recipients actually want, from tech accessories to wellness products. Every gift reinforces your brand and strengthens relationships.
+                Gift cards get forgotten. Curated, branded gifts land in the right hands and reinforce your brand. From welcome kits and anniversaries to client thank-yous and event swag, every send is trackable and on-brand.
               </p>
               <Button
                 onClick={() => window.location.href = '/signup'}
                 className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 text-sm sm:text-base font-semibold w-full sm:max-w-[280px] lg:max-w-none lg:w-auto"
               >
-                Talk to sales
+                Book a demo
               </Button>
             </div>
           </div>
@@ -104,22 +104,22 @@ export function FeatureSections() {
                 USE CASES
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight max-w-xl">
-                Gifts for employees, clients, and events
+                Employee recognition, client appreciation, and campaigns—from one place.
               </h2>
               <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-10 w-full max-w-xl mx-auto lg:mx-0">
                 <div className="bg-white p-4 sm:p-5 rounded-xl border border-border/40 shadow-sm text-left">
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    <strong className="text-foreground">Employee recognition:</strong> Welcome kits, anniversaries, performance rewards
+                    <strong className="text-foreground">Employee recognition:</strong> Welcome kits, anniversaries, performance rewards—all with one approval workflow.
                   </p>
                 </div>
                 <div className="bg-white p-4 sm:p-5 rounded-xl border border-border/40 shadow-sm text-left">
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    <strong className="text-foreground">Client appreciation:</strong> Thank you gifts, deal closings, milestones
+                    <strong className="text-foreground">Client appreciation:</strong> Thank-you gifts, deal closings, milestones—track who received what and when.
                   </p>
                 </div>
                 <div className="bg-white p-4 sm:p-5 rounded-xl border border-border/40 shadow-sm text-left">
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    <strong className="text-foreground">Events & campaigns:</strong> Conference swag, launches, offsites
+                    <strong className="text-foreground">Events & campaigns:</strong> Conference swag, launches, offsites—run campaigns without spreadsheets or vendor chaos.
                   </p>
                 </div>
               </div>
@@ -127,7 +127,7 @@ export function FeatureSections() {
                 onClick={() => window.location.href = '/signup'}
                 className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 text-sm sm:text-base font-semibold w-full sm:max-w-[280px] lg:max-w-none lg:w-auto"
               >
-                Talk to sales
+                Book a demo
               </Button>
             </div>
           </div>

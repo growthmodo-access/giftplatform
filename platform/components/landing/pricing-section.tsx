@@ -7,7 +7,7 @@ import { Check } from 'lucide-react'
 const plans = [
   {
     name: 'Starter',
-    description: 'For small teams getting started',
+    description: 'For teams sending up to a few hundred gifts a year',
     price: 'Custom',
     features: ['Up to 100 gifts/month', '80+ countries', 'Premium catalog', 'Email support'],
     cta: 'Talk to sales',
@@ -15,7 +15,7 @@ const plans = [
   },
   {
     name: 'Growth',
-    description: 'For scaling teams and campaigns',
+    description: 'For scaling recognition and client gifting',
     price: 'Custom',
     features: ['Unlimited gifts', 'Dedicated account manager', 'Custom branding', 'API access', 'Priority support'],
     cta: 'Talk to sales',
@@ -23,9 +23,9 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    description: 'For global organizations',
+    description: 'For global orgs with compliance and integration needs',
     price: 'Custom',
-    features: ['Everything in Growth', 'SLA & compliance', 'On-prem options', 'Custom integrations'],
+    features: ['Everything in Growth', 'SLA & compliance', 'Custom integrations'],
     cta: 'Talk to sales',
     highlighted: false,
   },
@@ -46,10 +46,10 @@ export function PricingSection() {
             PRICING
           </p>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4 max-w-2xl mx-auto">
-            Plans that scale with you
+            Plans that fit your volume. No hidden fees.
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto">
-            Transparent pricing. No hidden fees. Talk to our team for a quote tailored to your volume and needs.
+            We quote based on your team size and gifting volume. Talk to us for a clear proposal and a short setup.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full">
