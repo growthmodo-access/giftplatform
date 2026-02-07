@@ -34,12 +34,18 @@ interface BillingPageClientProps {
 export function BillingPageClient({ invoices, wallet, currentUserRole }: BillingPageClientProps) {
   const [addFundsOpen, setAddFundsOpen] = useState(false)
 
+  const isSuperAdmin = currentUserRole === 'SUPER_ADMIN'
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-foreground">Billing & Invoices</h1>
-          <p className="text-muted-foreground mt-1">Manage your invoices and wallet</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Billing & Invoices</h1>
+          <p className="text-muted-foreground mt-1">
+            {isSuperAdmin
+              ? 'All invoices across companies and wallet'
+              : 'Manage your invoices and wallet'}
+          </p>
         </div>
       </div>
 
@@ -56,7 +62,7 @@ export function BillingPageClient({ invoices, wallet, currentUserRole }: Billing
         </TabsList>
 
         <TabsContent value="invoices" className="space-y-6">
-          <InvoicesList invoices={invoices} />
+          <InvoicesList invoices={invoices} showCompany={isSuperAdmin} />
         </TabsContent>
 
         <TabsContent value="wallet" className="space-y-6">

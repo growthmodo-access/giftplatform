@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Download } from 'lucide-react'
+import { Download, Building2 } from 'lucide-react'
 
 interface Invoice {
   id: string
@@ -19,6 +19,7 @@ interface Invoice {
 
 interface InvoicesListProps {
   invoices: Invoice[]
+  showCompany?: boolean
 }
 
 const statusColors: Record<string, string> = {
@@ -28,10 +29,10 @@ const statusColors: Record<string, string> = {
   CANCELLED: 'bg-gray-100 text-gray-700 border border-gray-200',
 }
 
-export function InvoicesList({ invoices }: InvoicesListProps) {
+export function InvoicesList({ invoices, showCompany = true }: InvoicesListProps) {
   if (invoices.length === 0) {
     return (
-      <Card>
+      <Card className="rounded-xl border border-border/40 bg-white shadow-sm">
         <CardContent className="py-12 text-center">
           <p className="text-muted-foreground">No invoices found</p>
         </CardContent>
@@ -40,24 +41,34 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
   }
 
   return (
-    <Card>
+    <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Invoice Number</TableHead>
-              <TableHead>Company</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Due Date</TableHead>
-              <TableHead>Actions</TableHead>
+            <TableRow className="border-border/40 hover:bg-transparent">
+              <TableHead className="font-semibold">Invoice #</TableHead>
+              {showCompany && (
+                <TableHead className="font-semibold">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Building2 className="w-4 h-4" /> Company
+                  </span>
+                </TableHead>
+              )}
+              <TableHead className="font-semibold">Amount</TableHead>
+              <TableHead className="font-semibold">Status</TableHead>
+              <TableHead className="font-semibold">Due Date</TableHead>
+              <TableHead className="font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {invoices.map((invoice) => (
-              <TableRow key={invoice.id}>
+              <TableRow key={invoice.id} className="border-border/40">
                 <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
-                <TableCell>{invoice.companyName}</TableCell>
+                {showCompany && (
+                  <TableCell>
+                    <span className="font-medium text-foreground">{invoice.companyName}</span>
+                  </TableCell>
+                )}
                 <TableCell>{invoice.amount}</TableCell>
                 <TableCell>
                   <Badge className={statusColors[invoice.status] || statusColors.PENDING}>
@@ -65,10 +76,10 @@ export function InvoicesList({ invoices }: InvoicesListProps) {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}
+                  {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : '—'}
                 </TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="sm">
+                <TableCell className="text-right">
+                  <Button variant="ghost" size="sm" className="h-8">
                     <Download className="w-4 h-4 mr-2" />
                     Download
                   </Button>

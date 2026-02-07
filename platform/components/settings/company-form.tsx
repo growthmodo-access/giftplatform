@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { updateCompanyInfo } from '@/actions/profile'
 import { useRouter } from 'next/navigation'
 
@@ -12,14 +13,16 @@ interface CompanyFormProps {
   initialName: string | null
   initialDomain: string | null
   initialBudget: number | null
+  initialCurrency: string | null
   canEdit: boolean
 }
 
-export function CompanyForm({ initialName, initialDomain, initialBudget, canEdit }: CompanyFormProps) {
+export function CompanyForm({ initialName, initialDomain, initialBudget, initialCurrency, canEdit }: CompanyFormProps) {
   const router = useRouter()
   const [companyName, setCompanyName] = useState(initialName || '')
   const [domain, setDomain] = useState(initialDomain || '')
   const [budget, setBudget] = useState(initialBudget?.toString() || '')
+  const [currency, setCurrency] = useState(initialCurrency || 'INR')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
@@ -40,6 +43,7 @@ export function CompanyForm({ initialName, initialDomain, initialBudget, canEdit
       formData.append('companyName', companyName)
       formData.append('domain', domain)
       formData.append('budget', budget)
+      formData.append('currency', currency)
 
       const result = await updateCompanyInfo(formData)
 
@@ -78,8 +82,12 @@ export function CompanyForm({ initialName, initialDomain, initialBudget, canEdit
           <div className="space-y-2">
             <Label className="text-muted-foreground">Budget</Label>
             <div className="text-sm text-foreground">
-              {initialBudget ? `$${initialBudget.toLocaleString()}` : 'Not set'}
+              {initialBudget != null ? `${(initialCurrency === 'INR' ? '₹' : '$')}${initialBudget.toLocaleString()}` : 'Not set'}
             </div>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-muted-foreground">Default currency</Label>
+            <div className="text-sm text-foreground">{initialCurrency || 'INR'}</div>
           </div>
         </CardContent>
       </Card>
@@ -87,11 +95,11 @@ export function CompanyForm({ initialName, initialDomain, initialBudget, canEdit
   }
 
   return (
-    <Card className="border border-border/50">
+    <Card className="rounded-xl border border-border/40 bg-white shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base font-semibold text-foreground">Company Information</CardTitle>
+        <CardTitle className="text-lg font-semibold text-foreground">Company Information</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">
-          Update your company details
+          Update your company details and default currency
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -128,6 +136,18 @@ export function CompanyForm({ initialName, initialDomain, initialBudget, canEdit
               className="border-border/50"
               placeholder="acme.com"
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="currency" className="text-foreground">Default currency</Label>
+            <Select value={currency} onValueChange={setCurrency}>
+              <SelectTrigger id="currency" className="border-border/50">
+                <SelectValue placeholder="Select currency" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="INR">INR - Indian Rupee</SelectItem>
+                <SelectItem value="USD">USD - US Dollar</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="budget" className="text-foreground">Monthly Budget</Label>

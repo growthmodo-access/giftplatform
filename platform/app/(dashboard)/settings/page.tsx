@@ -42,7 +42,8 @@ export default async function SettingsPage() {
         <CompanyForm
           initialName={company?.name || null}
           initialDomain={company?.domain || null}
-          initialBudget={company?.budget || null}
+          initialBudget={company?.budget ?? null}
+          initialCurrency={(company as { currency?: string } | null)?.currency || null}
           canEdit={canEditCompany}
         />
       </div>

@@ -46,13 +46,11 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [filters, setFilters] = useState<FilterState>({
+    name: '',
     orderId: '',
     status: 'all',
-    minAmount: '',
-    maxAmount: '',
     startDate: '',
     endDate: '',
-    mobile: '',
   })
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -68,6 +66,14 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
     
     return safeOrders.filter(order => {
       try {
+        // Name filter (employee/recipient name)
+        if (filters.name) {
+          const name = (order.employee || '').toLowerCase()
+          if (!name.includes(filters.name.toLowerCase())) {
+            return false
+          }
+        }
+
         // Order ID filter
         if (filters.orderId && order.orderNumber) {
           if (!order.orderNumber.toLowerCase().includes(filters.orderId.toLowerCase())) {
@@ -80,34 +86,15 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
           return false
         }
 
-        // Amount range filter
-        if (filters.minAmount || filters.maxAmount) {
-          try {
-            const orderAmount = parseFloat(order.amount?.replace(/[^0-9.]/g, '') || '0')
-            if (filters.minAmount && !isNaN(parseFloat(filters.minAmount))) {
-              if (orderAmount < parseFloat(filters.minAmount)) {
-                return false
-              }
-            }
-            if (filters.maxAmount && !isNaN(parseFloat(filters.maxAmount))) {
-              if (orderAmount > parseFloat(filters.maxAmount)) {
-                return false
-              }
-            }
-          } catch (e) {
-            // If amount parsing fails, skip amount filter
-          }
-        }
-
-        // Date range filter (using timestamp if available, otherwise parse formatted date)
+        // Date range filter
         if (filters.startDate || filters.endDate) {
           try {
-            const orderDate = order.dateTimestamp 
+            const orderDate = order.dateTimestamp
               ? new Date(order.dateTimestamp)
-              : order.date 
+              : order.date
                 ? new Date(order.date)
                 : null
-            
+
             if (!orderDate || isNaN(orderDate.getTime())) {
               // Skip date filter if date is invalid
             } else {
@@ -115,34 +102,24 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
                 const startDate = new Date(filters.startDate)
                 if (!isNaN(startDate.getTime())) {
                   startDate.setHours(0, 0, 0, 0)
-                  if (orderDate < startDate) {
-                    return false
-                  }
+                  if (orderDate < startDate) return false
                 }
               }
               if (filters.endDate) {
                 const endDate = new Date(filters.endDate)
                 if (!isNaN(endDate.getTime())) {
-                  endDate.setHours(23, 59, 59, 999) // Include entire end date
-                  if (orderDate > endDate) {
-                    return false
-                  }
+                  endDate.setHours(23, 59, 59, 999)
+                  if (orderDate > endDate) return false
                 }
               }
             }
           } catch (e) {
-            // If date parsing fails, skip date filter
+            // Skip date filter on parse error
           }
-        }
-
-        // Mobile filter
-        if (filters.mobile && order.mobile && !order.mobile.includes(filters.mobile)) {
-          return false
         }
 
         return true
       } catch (error) {
-        // If any filter fails, include the order to be safe
         console.error('Filter error:', error)
         return true
       }

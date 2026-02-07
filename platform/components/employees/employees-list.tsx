@@ -19,7 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { MoreVertical, Building2, MapPin } from 'lucide-react'
+import { MoreVertical, Building2, MapPin, Users } from 'lucide-react'
 
 type Employee = {
   id: string
@@ -113,7 +113,7 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
         return (
           <div
             key={employee.id}
-            className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors gap-3 sm:gap-4 bg-card"
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-xl border border-border/40 hover:bg-muted/30 transition-colors gap-3 sm:gap-4 bg-white"
           >
             <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
               <Avatar className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0">

@@ -36,7 +36,7 @@ export async function getCurrentUserProfile() {
     if (userProfile.company_id) {
       const { data: companyData, error: companyError } = await supabase
         .from('companies')
-        .select('id, name, domain, budget, logo')
+        .select('id, name, domain, budget, logo, currency')
         .eq('id', userProfile.company_id)
         .maybeSingle()
 
@@ -157,11 +157,13 @@ export async function updateCompanyInfo(formData: FormData) {
     const companyName = formData.get('companyName') as string
     const domain = formData.get('domain') as string
     const budget = formData.get('budget') as string
+    const currency = formData.get('currency') as string
 
     const updates: {
       name?: string
       domain?: string | null
       budget?: number
+      currency?: string
       updated_at: string
     } = {
       updated_at: new Date().toISOString(),
@@ -180,6 +182,10 @@ export async function updateCompanyInfo(formData: FormData) {
       if (!isNaN(budgetNum) && budgetNum >= 0) {
         updates.budget = budgetNum
       }
+    }
+
+    if (currency && (currency === 'INR' || currency === 'USD')) {
+      updates.currency = currency
     }
 
     const { error: updateError } = await supabase

@@ -3,8 +3,9 @@
 import { useState, useMemo } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Pagination } from '@/components/ui/pagination'
-import { Plus } from 'lucide-react'
+import { Plus, Search } from 'lucide-react'
 import { EmployeesList } from './employees-list'
 import { AddEmployeeDialog } from './add-employee-dialog'
 import { TeamsSection } from './teams-section'
@@ -29,60 +30,79 @@ const ITEMS_PER_PAGE = 10
 export function EmployeesPageClient({ employees, currentUserRole, currentUserId }: EmployeesPageClientProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+  const [search, setSearch] = useState('')
   const canInviteEmployees = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
 
-  // Paginate employees
+  const filteredEmployees = useMemo(() => {
+    if (!search.trim()) return employees
+    const q = search.trim().toLowerCase()
+    return employees.filter(
+      (e) =>
+        (e.name || '').toLowerCase().includes(q) ||
+        (e.email || '').toLowerCase().includes(q)
+    )
+  }, [employees, search])
+
   const paginatedEmployees = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-    const endIndex = startIndex + ITEMS_PER_PAGE
-    return employees.slice(startIndex, endIndex)
-  }, [employees, currentPage])
+    return filteredEmployees.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+  }, [filteredEmployees, currentPage])
 
-  const totalPages = Math.ceil(employees.length / ITEMS_PER_PAGE)
+  const totalPages = Math.ceil(filteredEmployees.length / ITEMS_PER_PAGE)
 
   return (
-    <div className="space-y-4 lg:space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Employees</h1>
-          <p className="text-sm lg:text-base text-gray-600 mt-1">Manage your team members</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Employees</h1>
+          <p className="text-sm text-muted-foreground mt-1">Manage your team members</p>
         </div>
         {canInviteEmployees && (
-          <Button 
-            size="sm"
-            className="gap-2 text-xs sm:text-sm w-full sm:w-auto" 
-            onClick={() => setDialogOpen(true)}
-          >
+          <Button size="sm" className="gap-2 w-full sm:w-auto" onClick={() => setDialogOpen(true)}>
             <Plus className="w-4 h-4" />
             Add Employee
           </Button>
         )}
       </div>
 
-      {/* Teams Section - Only for ADMIN, HR, SUPER_ADMIN */}
       {(currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN') && (
         <TeamsSection currentUserRole={currentUserRole} />
       )}
 
-      <Card className="border border-gray-200 shadow-sm">
+      <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
         <CardHeader className="pb-4">
-          <CardTitle className="text-lg lg:text-xl">All Employees</CardTitle>
-          <CardDescription className="text-sm">View and manage team members</CardDescription>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <CardTitle className="text-lg font-semibold text-foreground">All Employees</CardTitle>
+              <CardDescription className="text-sm">View and manage team members</CardDescription>
+            </div>
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+              <Input
+                placeholder="Search by name or email"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  setCurrentPage(1)
+                }}
+                className="pl-9 h-9 text-sm border-border/50"
+              />
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
-          <EmployeesList 
-            employees={paginatedEmployees} 
+          <EmployeesList
+            employees={paginatedEmployees}
             currentUserRole={currentUserRole}
             currentUserId={currentUserId}
           />
-          
-          {/* Pagination */}
-          {employees.length > ITEMS_PER_PAGE && (
+
+          {filteredEmployees.length > ITEMS_PER_PAGE && (
             <div className="mt-6">
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                totalItems={employees.length}
+                totalItems={filteredEmployees.length}
                 itemsPerPage={ITEMS_PER_PAGE}
                 onPageChange={setCurrentPage}
               />
