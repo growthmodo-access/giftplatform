@@ -18,12 +18,12 @@ export function LandingHero() {
 
   return (
     <section id="home" className="relative overflow-hidden bg-white w-full max-w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="flex items-center justify-center py-10 sm:py-14 md:py-16 lg:py-20">
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto w-full px-0 sm:px-2">
             {/* Trust Badge */}
             <div className="mb-6 sm:mb-8 md:mb-10 w-full">
-              <span className="inline-flex items-center justify-center gap-2 bg-primary/5 text-foreground px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium border border-primary/10">
+              <span className="inline-flex items-center justify-center gap-2 bg-primary/5 text-foreground px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium border border-border/40">
                 <span className="text-base sm:text-lg">🇮🇳</span>
                 Built for India · Ships to 80+ countries
               </span>
@@ -49,7 +49,7 @@ export function LandingHero() {
               <Button
                 onClick={handleRequestDemo}
                 size="lg"
-                className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 sm:px-8 sm:py-6 text-sm sm:text-base font-semibold shadow-md w-full sm:w-auto"
+                className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 sm:px-8 sm:py-6 text-sm sm:text-base font-semibold shadow-sm w-full sm:w-auto"
                 aria-label="Start gifting - sign up"
               >
                 Start gifting
@@ -58,7 +58,7 @@ export function LandingHero() {
                 variant="outline"
                 size="lg"
                 onClick={scrollToSolutions}
-                className="rounded-xl border-2 border-primary text-primary bg-white hover:bg-primary/5 w-full sm:w-auto"
+                className="rounded-xl border border-border/40 bg-white hover:bg-muted/30 w-full sm:w-auto"
                 aria-label="See how it works"
               >
                 See how it works
@@ -70,11 +70,11 @@ export function LandingHero() {
 
             {/* Trust Indicators */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-6 text-muted-foreground w-full sm:w-auto max-w-md sm:max-w-none mx-auto px-2">
-              <div className="flex items-center gap-3 bg-muted/30 px-4 py-3 rounded-2xl w-full sm:w-auto text-left">
+              <div className="flex items-center gap-3 bg-muted/20 border border-border/40 px-4 py-3 rounded-xl w-full sm:w-auto text-left shadow-sm">
                 <span className="text-xl flex-shrink-0">🌍</span>
                 <span className="text-xs sm:text-sm font-medium">80+ countries · No logistics hassle</span>
               </div>
-              <div className="flex items-center gap-3 bg-muted/30 px-4 py-3 rounded-2xl w-full sm:w-auto text-left">
+              <div className="flex items-center gap-3 bg-muted/20 border border-border/40 px-4 py-3 rounded-xl w-full sm:w-auto text-left shadow-sm">
                 <span className="text-xl flex-shrink-0">🎁</span>
                 <span className="text-xs sm:text-sm font-medium">Curated catalog · INR & USD</span>
               </div>
@@ -87,7 +87,7 @@ export function LandingHero() {
 
         {/* Hero Image */}
         <div className="pb-12 sm:pb-16 md:pb-24 lg:pb-28 relative w-full">
-          <div className="relative w-full max-w-7xl mx-auto rounded-2xl overflow-hidden border border-border/40 shadow-lg bg-white">
+          <div className="relative w-full max-w-7xl mx-auto rounded-xl overflow-hidden border border-border/40 shadow-sm bg-white">
             <Image
               src="/hero1.png"
               alt="Global gifting visualization"

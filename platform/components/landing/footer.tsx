@@ -22,11 +22,11 @@ const legalLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-muted/50 border-t border-border/60 w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 py-10 sm:py-12 lg:py-14 w-full max-w-full box-border min-w-0">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
+    <footer className="bg-muted/30 border-t border-border/40 w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 py-10 sm:py-12 w-full max-w-full box-border min-w-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-10 min-w-0">
           {/* Brand + address */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 min-w-0">
             <Link href="/" className="inline-block mb-4">
               <Image
                 src="/logogoodies.png"
@@ -65,7 +65,7 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold text-foreground text-sm uppercase tracking-wider mb-4">Company</h3>
+            <h3 className="font-semibold text-foreground text-xs uppercase tracking-wider mb-4">Company</h3>
             <ul className="space-y-2.5">
               {companyLinks.map((link) => (
                 <li key={link.href}>
@@ -79,7 +79,7 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-foreground text-sm uppercase tracking-wider mb-4">Legal</h3>
+            <h3 className="font-semibold text-foreground text-xs uppercase tracking-wider mb-4">Legal</h3>
             <ul className="space-y-2.5">
               {legalLinks.map((link) => (
                 <li key={link.href}>
@@ -92,7 +92,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-8 border-t border-border/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="mt-10 pt-8 border-t border-border/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="text-xs sm:text-sm text-muted-foreground">
             © {new Date().getFullYear()} Goodies.so. All rights reserved.
           </p>

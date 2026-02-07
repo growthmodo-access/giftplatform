@@ -7,7 +7,7 @@ const steps = [
 export function IntegrationsSection() {
   return (
     <section id="solutions" className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 bg-white w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center mb-10 sm:mb-16 md:mb-20 w-full px-2 sm:px-0">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-6 sm:mb-8 leading-tight max-w-3xl mx-auto">
             How it works
@@ -21,7 +21,7 @@ export function IntegrationsSection() {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="bg-white p-6 sm:p-8 md:p-10 rounded-xl border border-border/60 shadow-sm hover:shadow-md hover:border-border transition-all duration-200 text-center"
+              className="bg-white p-6 sm:p-8 rounded-xl border border-border/40 shadow-sm hover:shadow-md transition-all duration-200 text-center"
             >
               <div className="text-5xl sm:text-6xl md:text-7xl font-bold text-[#7B61FF] mb-4 sm:mb-6">{step.number}</div>
               <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">{step.title}</h3>

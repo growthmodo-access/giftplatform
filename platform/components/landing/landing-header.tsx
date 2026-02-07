@@ -31,8 +31,8 @@ export function LandingHeader() {
   return (
     <>
       {/* Banner */}
-      <div className="bg-muted/50 text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/60 w-full max-w-full overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 box-border">
+      <div className="bg-muted/30 text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/40 w-full max-w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 box-border">
           <span>Built in India, shipping globally</span>
         </div>
       </div>
@@ -41,10 +41,10 @@ export function LandingHeader() {
       <header
         className={cn(
           'sticky top-0 z-50 transition-all duration-300 bg-white border-b max-w-full',
-          isScrolled ? 'border-border/60 shadow-sm' : 'border-transparent'
+          isScrolled ? 'border-border/40 shadow-sm' : 'border-transparent'
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full max-w-full box-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border">
           <div className="flex items-center justify-between gap-3 min-h-16 py-3 sm:min-h-20 lg:min-h-24 lg:py-4 min-w-0">
             {/* Logo - balanced size */}
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0 relative z-10 min-w-0">
@@ -110,7 +110,7 @@ export function LandingHeader() {
               </button>
               <button
                 onClick={handleGetStarted}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-2.5 rounded-xl font-medium whitespace-nowrap"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-2.5 rounded-xl font-medium whitespace-nowrap shadow-sm"
                 aria-label="Get started with Goodies.so"
               >
                 Get Started
@@ -132,7 +132,7 @@ export function LandingHeader() {
 
           {/* Mobile Menu - full width, visible text and tap targets */}
           {isMenuOpen && (
-            <div className="lg:hidden border-t border-border bg-white py-4 w-full">
+            <div className="lg:hidden border-t border-border/40 bg-white py-4 w-full">
               <nav className="flex flex-col gap-1 w-full text-left" role="navigation" aria-label="Mobile menu">
                 <a href="#home" className="block py-3 px-2 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg active:bg-muted" onClick={() => setIsMenuOpen(false)}>
                   Home
@@ -153,7 +153,7 @@ export function LandingHeader() {
                       handleLogin()
                       setIsMenuOpen(false)
                     }}
-                    className="block w-full text-left py-3 px-4 text-base font-medium text-foreground hover:bg-muted/50 rounded-xl border border-border"
+                    className="block w-full text-left py-3 px-4 text-base font-medium text-foreground hover:bg-muted/30 rounded-xl border border-border/40"
                   >
                     Login
                   </button>

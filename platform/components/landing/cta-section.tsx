@@ -13,10 +13,10 @@ export function CTASection() {
   }
 
   return (
-    <section className="py-14 sm:py-20 md:py-28 lg:py-32 bg-white border-t border-border/60 w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
+    <section className="py-14 sm:py-20 lg:py-24 bg-white border-t border-border/40 w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center flex flex-col items-center w-full">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4 sm:mb-6 md:mb-8 px-2 sm:px-0 leading-tight max-w-3xl">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4 sm:mb-6 px-2 sm:px-0 leading-tight max-w-3xl">
             Ready to ship gifts that people actually love?
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto px-2 sm:px-0 leading-relaxed">
@@ -26,7 +26,7 @@ export function CTASection() {
             <Button
               onClick={handleRequestDemo}
               size="lg"
-              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base sm:text-lg font-semibold w-full max-w-[280px] sm:max-w-none sm:w-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base font-semibold shadow-sm w-full max-w-[280px] sm:max-w-none sm:w-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               aria-label="Get started free"
             >
               Get started free

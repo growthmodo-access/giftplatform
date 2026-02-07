@@ -44,13 +44,13 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 bg-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="text-center mb-10 sm:mb-16 md:mb-20">
-          <div className="text-muted-foreground text-xs sm:text-sm font-bold uppercase tracking-widest mb-4 sm:mb-6">
+    <section className="py-12 sm:py-24 lg:py-28 bg-muted/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
+        <div className="text-center mb-10 sm:mb-16">
+          <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
             EARLY CUSTOMERS
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 sm:mb-8 leading-tight px-4 sm:px-0">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight px-4 sm:px-0">
             What our customers are saying
           </h2>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4 sm:px-0">
@@ -63,8 +63,8 @@ export function Testimonials() {
             <Card
               key={index}
               className={`
-                p-6 sm:p-8 md:p-10 bg-white hover:shadow-lg hover:scale-[1.01] transition-all duration-300 border border-black/[0.06] shadow-sm
-                ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-[#7B61FF]/20' : ''}
+                p-6 sm:p-8 bg-white rounded-xl border border-border/40 shadow-sm hover:shadow-md transition-all duration-200
+                ${testimonial.featured ? 'md:col-span-2 lg:col-span-1 border-primary/20' : ''}
               `}
             >
               <div className="flex flex-col gap-5 sm:gap-6 md:gap-8">
