@@ -46,11 +46,16 @@ export function PricingSection() {
             PRICING
           </p>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4 max-w-2xl mx-auto">
-            Plans that fit your volume. No hidden fees.
+            Flexible plans that grow with your team
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto">
-            We quote based on your team size and gifting volume. Talk to us for a clear proposal and a short setup.
+          <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto mb-6">
+            Whether you&apos;re sending gifts occasionally or running gifting year-round, our plans adapt to your needs.
           </p>
+          <ul className="text-sm text-muted-foreground space-y-1 max-w-md mx-auto text-left list-disc list-inside">
+            <li>No vendor lock-ins</li>
+            <li>No operational overhead</li>
+            <li>Pay only for what you use</li>
+          </ul>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full">
           {plans.map((plan) => (

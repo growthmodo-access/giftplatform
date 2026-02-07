@@ -1,7 +1,7 @@
 const steps = [
-  { number: '1', title: 'Pick gifts and add recipients', description: 'Browse the catalog, select items, and upload your list (or sync with your HR/CRM). Set budgets and approval rules once.' },
-  { number: '2', title: 'We handle the rest', description: 'Inventory, branding, packaging, and shipping—including customs and tracking. One invoice, one point of contact.' },
-  { number: '3', title: 'See every delivery', description: 'Dashboard visibility for every order: status, tracking, and proof of delivery. No more "did it ship?" threads.' },
+  { number: '1', title: 'Choose your gifts', description: 'Select from curated products or create custom branded kits.' },
+  { number: '2', title: 'Add recipients', description: 'Upload a list or let recipients enter their own addresses securely.' },
+  { number: '3', title: 'We fulfill & deliver', description: 'We handle storage, packing, shipping, and tracking—while you monitor everything in one place.' },
 ]
 
 export function IntegrationsSection() {
@@ -10,10 +10,10 @@ export function IntegrationsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center mb-10 sm:mb-16 md:mb-20 w-full px-2 sm:px-0">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-6 sm:mb-8 leading-tight max-w-3xl mx-auto">
-            How it works
+            Gifting, simplified into 3 steps
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Three steps. No vendor coordination. Full visibility.
+            How it works
           </p>
         </div>
 

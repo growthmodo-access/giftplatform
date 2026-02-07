@@ -3,10 +3,25 @@
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
+const whatYouCanSend = [
+  'Employee onboarding kits',
+  'Company swag & merchandise',
+  'Client and partner gifts',
+  'Event & conference kits',
+  'Rewards and milestone gifts',
+]
+
+const useCases = [
+  { emoji: '🎉', title: 'Employee onboarding', copy: 'Deliver branded kits before day one—no coordination required.' },
+  { emoji: '🏆', title: 'Rewards & milestones', copy: 'Automate birthdays, anniversaries, and achievements.' },
+  { emoji: '🤝', title: 'Client & partner gifting', copy: 'Strengthen relationships with premium, timely gifts.' },
+  { emoji: '🎪', title: 'Events & conferences', copy: 'Ship kits to attendees before or after events—globally.' },
+]
+
 export function FeatureSections() {
   return (
     <>
-      {/* Order Premium Swag Section - dashboard-style cards */}
+      {/* Core benefit 1: Send gifts anywhere + Eliminate address chaos */}
       <section id="swag" className="py-12 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
           <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
@@ -25,13 +40,19 @@ export function FeatureSections() {
             </div>
             <div className="order-1 lg:order-2 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
               <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
-                GLOBAL FULFILLMENT
+                CORE BENEFITS
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight max-w-xl">
-                One catalog. One invoice. Delivery in 80+ countries.
+                Send gifts anywhere in the world
               </h2>
-              <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                Stop managing multiple vendors and RFPs. We hold inventory and handle fulfillment so you order from a single catalog. Warehousing, customs, and last-mile delivery are included. No volume minimums and no logistics team required.
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                Global fulfillment without managing multiple vendors or couriers.
+              </p>
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground max-w-xl mx-auto lg:mx-0">
+                Eliminate address chaos
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                Recipients securely enter their own delivery details—no more wrong addresses or re-shipments.
               </p>
               <Button
                 onClick={() => window.location.href = '/signup'}
@@ -44,7 +65,7 @@ export function FeatureSections() {
         </div>
       </section>
 
-      {/* Explore Gifts Section */}
+      {/* Core benefit 2: Branded swag + Full visibility */}
       <section id="gifts" className="py-12 sm:py-20 md:py-24 lg:py-28 bg-muted/30 w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
           <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
@@ -62,14 +83,17 @@ export function FeatureSections() {
               </div>
             </div>
             <div className="lg:order-1 order-1 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
-              <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
-                BETTER THAN GIFT CARDS
-              </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight max-w-xl">
-                Branded gifts that recipients actually use—and remember you for.
+                Branded swag people actually keep
               </h2>
-              <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                Gift cards get forgotten. Curated, branded gifts land in the right hands and reinforce your brand. From welcome kits and anniversaries to client thank-yous and event swag, every send is trackable and on-brand.
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                Premium, curated merchandise that reflects your brand—not cheap giveaways.
+              </p>
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground max-w-xl mx-auto lg:mx-0">
+                Full visibility, end to end
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                Track inventory, shipments, and deliveries in real time.
               </p>
               <Button
                 onClick={() => window.location.href = '/signup'}
@@ -82,7 +106,7 @@ export function FeatureSections() {
         </div>
       </section>
 
-      {/* Automate Gifts Section */}
+      {/* Core benefit 3: Finance-friendly + Scale + What you can send + Use cases */}
       <section className="py-12 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
           <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
@@ -100,29 +124,50 @@ export function FeatureSections() {
               </div>
             </div>
             <div className="order-1 lg:order-2 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
-              <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
-                USE CASES
-              </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight max-w-xl">
-                Employee recognition, client appreciation, and campaigns—from one place.
+                Finance-friendly by design
               </h2>
-              <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-10 w-full max-w-xl mx-auto lg:mx-0">
-                <div className="bg-white p-4 sm:p-5 rounded-xl border border-border/40 shadow-sm text-left">
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    <strong className="text-foreground">Employee recognition:</strong> Welcome kits, anniversaries, performance rewards—all with one approval workflow.
-                  </p>
-                </div>
-                <div className="bg-white p-4 sm:p-5 rounded-xl border border-border/40 shadow-sm text-left">
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    <strong className="text-foreground">Client appreciation:</strong> Thank-you gifts, deal closings, milestones—track who received what and when.
-                  </p>
-                </div>
-                <div className="bg-white p-4 sm:p-5 rounded-xl border border-border/40 shadow-sm text-left">
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    <strong className="text-foreground">Events & campaigns:</strong> Conference swag, launches, offsites—run campaigns without spreadsheets or vendor chaos.
-                  </p>
+              <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                Clear approvals, predictable pricing, and clean reporting.
+              </p>
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground max-w-xl mx-auto lg:mx-0">
+                Scale without changing your workflow
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                Send 10 gifts or 10,000 using the same process.
+              </p>
+
+              <div className="w-full max-w-xl mx-auto lg:mx-0">
+                <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-3">
+                  WHAT YOU CAN SEND
+                </p>
+                <ul className="space-y-2 mb-6 list-disc list-inside text-sm text-muted-foreground">
+                  {whatYouCanSend.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <p className="text-sm font-medium text-foreground mb-6">
+                  All customizable. All trackable. All handled for you.
+                </p>
+
+                <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4">
+                  USE CASES
+                </p>
+                <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-10 w-full">
+                  {useCases.map((uc) => (
+                    <div
+                      key={uc.title}
+                      className="bg-muted/30 p-4 sm:p-5 rounded-xl border border-border/40 text-left"
+                    >
+                      <p className="text-sm sm:text-base text-foreground font-semibold mb-1">
+                        {uc.emoji} {uc.title}
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{uc.copy}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
+
               <Button
                 onClick={() => window.location.href = '/signup'}
                 className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 text-sm sm:text-base font-semibold w-full sm:max-w-[280px] lg:max-w-none lg:w-auto"

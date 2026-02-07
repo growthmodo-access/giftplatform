@@ -9,12 +9,23 @@ export function IndustryLeaders() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
           <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
-            <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4">The old way</div>
+            <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4">The problem</div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight max-w-xl">
-              Gifting at scale usually means spreadsheets, vendor chaos, and zero visibility.
+              Gifting breaks the moment your company grows
             </h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Juggling multiple vendors. Chasing delivery status in email. Pushing finance for approvals. Scaling gifting across offices and regions turns into a part-time job. Late or failed deliveries, wrong items, and no single view of who got what. Sound familiar?
+            <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed max-w-xl mx-auto lg:mx-0">
+              Corporate gifting should be simple. Instead, it becomes messy fast.
+            </p>
+            <ul className="text-sm text-muted-foreground space-y-2 mb-8 max-w-xl mx-auto lg:mx-0 list-disc list-inside">
+              <li>Excel sheets with outdated addresses</li>
+              <li>Endless vendor coordination</li>
+              <li>Late deliveries and zero tracking</li>
+              <li>Manual approvals stuck in email threads</li>
+              <li>Different vendors for different countries</li>
+              <li>No visibility on inventory or spend</li>
+            </ul>
+            <p className="text-sm text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0">
+              What starts as a &ldquo;small task&rdquo; turns into weeks of follow-ups.
             </p>
             <Button
               onClick={() => document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' })}

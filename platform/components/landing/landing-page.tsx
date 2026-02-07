@@ -7,8 +7,10 @@ import { ValueStrip } from './value-strip'
 import { FeatureSections } from './feature-sections'
 import { IndustryLeaders } from './industry-leaders'
 import { ServicesSection } from './services-section'
+import { IndiaSection } from './india-section'
 import { PricingSection } from './pricing-section'
 import { IntegrationsSection } from './integrations-section'
+import { FAQSection } from './faq-section'
 import { CTASection } from './cta-section'
 import { Footer } from './footer'
 import { ScrollProgress } from './scroll-progress'
@@ -65,6 +67,7 @@ export function LandingPage() {
           <Testimonials />
         </Suspense>
         <IntegrationsSection />
+        <FAQSection />
         <CTASection />
       </main>
       <Footer />

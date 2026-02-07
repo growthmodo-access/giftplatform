@@ -6,13 +6,19 @@ export function ServicesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center mb-10 sm:mb-16 md:mb-20 w-full">
           <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
-            ONE PLATFORM
+            SOLUTION
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight px-2 sm:px-0 max-w-4xl mx-auto">
-            Send corporate gifts globally—without spreadsheets, vendors, or chaos.
+            One platform that handles everything for you
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto px-2 sm:px-0">
-            One dashboard. One curated catalog. One fulfillment partner. Choose gifts, add recipients, approve once. We handle inventory, branding, packaging, and delivery to 80+ countries. You get tracking and visibility so nothing falls through the cracks.
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto px-2 sm:px-0 mb-4">
+            We built a system specifically for teams that need to send gifts at scale—without adding operational burden.
+          </p>
+          <p className="text-base font-semibold text-foreground max-w-3xl mx-auto px-2 sm:px-0 mb-2">
+            You decide what to send. We handle everything else.
+          </p>
+          <p className="text-sm sm:text-base text-muted-foreground max-w-3xl mx-auto px-2 sm:px-0">
+            From storage and customization to shipping and tracking—globally.
           </p>
         </div>
 

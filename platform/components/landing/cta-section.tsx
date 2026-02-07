@@ -17,12 +17,12 @@ export function CTASection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center flex flex-col items-center w-full">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4 sm:mb-6 px-2 sm:px-0 leading-tight max-w-3xl">
-            Stop managing gifting with spreadsheets. Start shipping from one platform.
+            Stop managing gifting. Start automating it.
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2 sm:px-0 leading-relaxed">
-            Join HR and Ops teams who run employee recognition, client gifts, and swag campaigns from a single dashboard—INR or USD, 80+ countries.
+            Send gifts people actually love—without the operational headache.
           </p>
-          <div className="w-full flex justify-center mb-8 sm:mb-12 px-2">
+          <div className="w-full flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-2">
             <Button
               onClick={handleRequestDemo}
               size="lg"
@@ -30,6 +30,15 @@ export function CTASection() {
               aria-label="Book a demo"
             >
               Book a demo
+            </Button>
+            <Button
+              onClick={() => router.push('/signup')}
+              size="lg"
+              variant="outline"
+              className="rounded-xl border-border/40 hover:bg-muted/30 px-8 py-6 text-base font-semibold w-full max-w-[280px] sm:max-w-none sm:w-auto"
+              aria-label="Get started in minutes"
+            >
+              Get started in minutes
             </Button>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12 px-2 text-center">
