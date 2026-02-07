@@ -28,7 +28,7 @@ export async function RecentOrders() {
 
   if (recentOrders.length === 0) {
     return (
-      <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+      <Card className="card-mobile-soft rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
         <CardHeader className="pb-3 pt-4 sm:pt-5">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
@@ -64,7 +64,7 @@ export async function RecentOrders() {
   }
 
   return (
-    <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+    <Card className="card-mobile-soft rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
       <CardHeader className="pb-3 pt-4 sm:pt-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>

@@ -12,7 +12,7 @@ export async function SalesChart() {
   const maxValue = canViewRevenue ? maxRevenue : maxOrders
 
   return (
-    <Card className="rounded-2xl border-0 bg-muted/20 shadow-none overflow-hidden sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+    <Card className="card-mobile-soft rounded-2xl border-0 bg-muted/20 shadow-none overflow-hidden sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
       <CardHeader className="pb-3 pt-4 sm:pt-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>

@@ -131,6 +131,15 @@
     background: linear-gradient(145deg, #FFFFFF 0%, #FCFCFC 100%);
     border: 1px solid rgba(0, 0, 0, 0.06);
   }
+
+  /* Dashboard cards: borderless on mobile so they don't look boxy */
+  @media (max-width: 640px) {
+    .card-mobile-soft {
+      border: none !important;
+      box-shadow: none !important;
+      background: rgba(0, 0, 0, 0.03) !important;
+    }
+  }
   
   .gradient-button {
     background: linear-gradient(135deg, #7B61FF 0%, #2883EB 100%);

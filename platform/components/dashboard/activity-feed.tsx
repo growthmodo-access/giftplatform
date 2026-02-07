@@ -59,7 +59,7 @@ export function ActivityFeed() {
 
   if (activities.length === 0) {
     return (
-      <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+      <Card className="card-mobile-soft rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
         <CardHeader className="pb-3 pt-4 sm:pt-5">
           <CardTitle className="text-base font-semibold text-foreground">Activity Feed</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">Recent activity</CardDescription>
@@ -78,7 +78,7 @@ export function ActivityFeed() {
   }
 
   return (
-    <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+    <Card className="card-mobile-soft rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
       <CardHeader className="pb-3 pt-4 sm:pt-5">
         <CardTitle className="text-base font-semibold text-foreground">Activity Feed</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">Recent activity</CardDescription>
