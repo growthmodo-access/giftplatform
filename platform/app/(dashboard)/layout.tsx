@@ -99,7 +99,7 @@ export default async function DashboardLayout({
         <Header />
         <main className="flex-1 overflow-y-auto overflow-x-hidden bg-white">
           <KeyboardShortcuts />
-          <div className="w-full max-w-7xl mx-auto py-4 pl-14 pr-14 sm:px-5 sm:py-6 lg:px-8 lg:py-8 min-w-0">
+          <div className="w-full max-w-7xl mx-auto py-4 px-3 sm:px-5 sm:py-6 lg:px-8 lg:py-8 min-w-0">
             <Breadcrumbs />
             {children}
           </div>
