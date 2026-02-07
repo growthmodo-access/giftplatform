@@ -28,22 +28,22 @@ export async function RecentOrders() {
 
   if (recentOrders.length === 0) {
     return (
-      <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
-        <CardHeader className="pb-3">
+      <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+        <CardHeader className="pb-3 pt-4 sm:pt-5">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <CardTitle className="text-base font-semibold text-foreground">Recent Orders</CardTitle>
               <CardDescription className="text-sm text-muted-foreground">Latest gift orders</CardDescription>
             </div>
             <Link href="/orders">
-              <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto rounded-lg">
+              <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto rounded-xl">
                 See All <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center justify-center py-16 text-center">
+          <div className="flex flex-col items-center justify-center py-12 sm:py-16 text-center">
             <div className="p-4 rounded-xl bg-muted/50 mb-4">
               <Package className="w-8 h-8 text-muted-foreground" />
             </div>
@@ -64,21 +64,21 @@ export async function RecentOrders() {
   }
 
   return (
-    <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
-      <CardHeader className="pb-3">
+    <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+      <CardHeader className="pb-3 pt-4 sm:pt-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <CardTitle className="text-base font-semibold text-foreground">Recent Orders</CardTitle>
             <CardDescription className="text-sm text-muted-foreground">Latest gift orders</CardDescription>
           </div>
           <Link href="/orders">
-            <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted/50 text-xs sm:text-sm w-full sm:w-auto rounded-lg">
+            <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted/50 text-xs sm:text-sm w-full sm:w-auto rounded-xl">
               See All <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-0">
         <div className="space-y-0.5">
           {recentOrders.map((order) => {
             const status = order.status as keyof typeof statusColors
@@ -86,7 +86,7 @@ export async function RecentOrders() {
             const initials = getInitials(order.employee, employeeEmail)
             return (
               <Link key={order.id} href={`/orders?order=${order.id}`}>
-                <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/50 transition-colors group cursor-pointer">
+                <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-muted/40 active:bg-muted/50 transition-colors group cursor-pointer sm:rounded-xl">
                   <Avatar className="w-9 h-9 flex-shrink-0">
                     <AvatarFallback className="text-xs bg-muted/50">
                       {initials}

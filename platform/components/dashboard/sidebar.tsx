@@ -164,7 +164,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
       {/* Mobile menu button - hamburger to open full menu */}
       <button
         onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-3 left-3 z-[60] p-3 rounded-xl bg-white border border-border/60 hover:bg-muted/50 transition-all shadow-sm active:scale-95 flex items-center justify-center touch-manipulation"
+        className="lg:hidden fixed top-3 left-3 z-[60] p-3 rounded-2xl bg-muted/40 hover:bg-muted/60 active:scale-95 transition-all flex items-center justify-center touch-manipulation sm:bg-white sm:border sm:border-border/50 sm:shadow-sm"
         aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
       >
         {isMobileOpen ? (
@@ -183,16 +183,16 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
         />
       )}
 
-      {/* Sidebar - full menu on mobile when open, collapsible on desktop */}
+      {/* Sidebar - clean drawer on mobile, collapsible on desktop */}
       <aside className={cn(
-        'flex flex-col bg-white border-r border-border/60 transition-all duration-300 ease-out',
+        'flex flex-col bg-white transition-all duration-300 ease-out',
         'lg:sticky fixed top-0 h-screen z-[50]',
-        'lg:translate-x-0',
-        isMobileOpen ? 'translate-x-0 w-[min(280px,85vw)]' : '-translate-x-full lg:translate-x-0',
+        'lg:translate-x-0 lg:border-r lg:border-border/60',
+        isMobileOpen ? 'translate-x-0 w-[min(280px,88vw)] shadow-xl' : '-translate-x-full lg:translate-x-0 lg:shadow-none',
         isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'
       )}>
         {/* Logo + collapse */}
-        <div className="p-3 lg:p-4 border-b border-border/50 flex-shrink-0">
+        <div className="p-4 lg:p-4 border-b border-border/40 flex-shrink-0">
           <div className="flex items-center justify-between gap-2">
             <Link
               href="/dashboard"
@@ -212,15 +212,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
               />
             </Link>
             <div className="flex items-center gap-1 shrink-0">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleMobileMenu}
-                className="lg:hidden h-9 w-9 rounded-lg hover:bg-muted/60"
-                aria-label="Close menu"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+              {/* Desktop only: collapse/expand. On mobile, close is the floating hamburger (X) and overlay tap. */}
               <Button
                 variant="ghost"
                 size="icon"
@@ -234,8 +226,8 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
           </div>
         </div>
         
-        {/* Navigation - full menu (mobile + desktop) */}
-        <nav className="flex-1 p-2 lg:p-3 space-y-0.5 overflow-y-auto overflow-x-hidden">
+        {/* Navigation - generous tap targets on mobile */}
+        <nav className="flex-1 p-3 lg:p-3 space-y-0.5 overflow-y-auto overflow-x-hidden">
           {menuItems.map((item) => {
             const Icon = item.icon
             const active = isActive(item.href)
@@ -244,7 +236,8 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative',
+                  'flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group relative touch-manipulation',
+                  'lg:px-3 lg:py-2.5 lg:rounded-xl',
                   'hover:bg-muted/50 active:scale-[0.99]',
                   active
                     ? 'bg-primary/10 text-primary font-semibold'
@@ -273,8 +266,8 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
           })}
         </nav>
 
-        {/* Bottom left: Profile (avatar + name, dropdown: Settings, Log out) */}
-        <div className="p-3 lg:p-4 border-t border-border/50 flex-shrink-0">
+        {/* Bottom: Profile */}
+        <div className="p-3 lg:p-4 border-t border-border/40 flex-shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button

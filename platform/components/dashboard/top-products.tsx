@@ -8,8 +8,8 @@ export async function TopProducts() {
 
   if (topProducts.length === 0) {
     return (
-      <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
-        <CardHeader className="pb-3">
+      <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+        <CardHeader className="pb-3 pt-4 sm:pt-5">
           <CardTitle className="text-base font-semibold text-foreground">Top Products</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">Most popular this month</CardDescription>
         </CardHeader>
@@ -27,8 +27,8 @@ export async function TopProducts() {
   }
 
   return (
-    <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
-      <CardHeader className="pb-3">
+    <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+      <CardHeader className="pb-3 pt-4 sm:pt-5">
         <div className="flex items-center gap-2">
           <Trophy className="w-4 h-4 text-amber-500" />
           <CardTitle className="text-base font-semibold text-foreground">Top Products</CardTitle>
@@ -46,7 +46,7 @@ export async function TopProducts() {
             return (
               <div
                 key={product.id}
-                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors gap-3 group"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-2xl hover:bg-muted/40 active:bg-muted/50 transition-colors gap-3 group sm:rounded-xl"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 ${

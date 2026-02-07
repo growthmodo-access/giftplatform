@@ -59,8 +59,8 @@ export function ActivityFeed() {
 
   if (activities.length === 0) {
     return (
-      <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
-        <CardHeader className="pb-3">
+      <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+        <CardHeader className="pb-3 pt-4 sm:pt-5">
           <CardTitle className="text-base font-semibold text-foreground">Activity Feed</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">Recent activity</CardDescription>
         </CardHeader>
@@ -78,19 +78,19 @@ export function ActivityFeed() {
   }
 
   return (
-    <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
-      <CardHeader className="pb-3">
+    <Card className="rounded-2xl border-0 bg-muted/20 shadow-none sm:rounded-xl sm:border sm:border-border/50 sm:bg-white sm:shadow-sm">
+      <CardHeader className="pb-3 pt-4 sm:pt-5">
         <CardTitle className="text-base font-semibold text-foreground">Activity Feed</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">Recent activity</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-0">
         <div className="space-y-1">
           {activities.map((activity) => {
             const Icon = activity.icon
             return (
               <div
                 key={activity.id}
-                className="flex items-start gap-3 p-3 rounded-xl hover:bg-muted/50 transition-colors group"
+                className="flex items-start gap-3 p-3 rounded-2xl hover:bg-muted/40 active:bg-muted/50 transition-colors group sm:rounded-xl"
               >
                 <div className="p-2 rounded-lg bg-muted/50 flex-shrink-0 mt-0.5">
                   <Icon className="w-4 h-4 text-foreground" />

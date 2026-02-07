@@ -27,16 +27,16 @@ export default async function DashboardPage() {
   const { stats } = await getDashboardStats()
 
   return (
-    <div className="space-y-5 sm:space-y-6 lg:space-y-8 min-w-0">
-      {/* Quick Actions - horizontal strip across all dashboards */}
+    <div className="space-y-6 sm:space-y-6 lg:space-y-8 min-w-0">
+      {/* Quick Actions */}
       <QuickActions />
 
-      {/* Welcome Header */}
-      <div className="pb-4 sm:pb-6 border-b border-border/50">
+      {/* Welcome Header - borderless on mobile */}
+      <div className="pb-5 sm:pb-6 sm:border-b sm:border-border/40">
         <p className="text-xs sm:text-sm text-muted-foreground mb-1.5">
           {getTimeGreeting()} • {getFormattedDate()}
         </p>
-        <h1 className="text-xl sm:text-2xl lg:text-4xl font-semibold text-foreground mb-2 break-words leading-tight">
+        <h1 className="text-xl sm:text-2xl lg:text-4xl font-semibold text-foreground mb-1.5 break-words leading-tight">
           Welcome back, {userName}
         </h1>
         <p className="text-sm sm:text-base text-muted-foreground leading-snug">
