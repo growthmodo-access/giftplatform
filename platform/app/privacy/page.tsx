@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { buildMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy | Goodies.so',
-  description: 'Privacy policy for Goodies.so corporate gifting platform.',
-}
+export const metadata: Metadata = buildMetadata({
+  title: 'Privacy Policy',
+  description: 'Privacy policy for Goodies. How we collect, use, and protect your information when you use our corporate gifting platform.',
+  path: 'privacy',
+})
 
 export default function PrivacyPage() {
   return (

@@ -31,12 +31,15 @@ export default function Error({
             {error.message || 'An unexpected error occurred. Please try again.'}
           </p>
         </div>
-        <div className="flex gap-2 justify-center">
+        <div className="flex flex-wrap gap-3 justify-center">
           <Button onClick={reset} variant="default">
             Try again
           </Button>
-          <Button onClick={() => window.location.href = '/dashboard'} variant="outline">
-            Go to Dashboard
+          <Button asChild variant="outline">
+            <a href="/">Go Home</a>
+          </Button>
+          <Button asChild variant="outline">
+            <a href="/dashboard">Dashboard</a>
           </Button>
         </div>
       </div>

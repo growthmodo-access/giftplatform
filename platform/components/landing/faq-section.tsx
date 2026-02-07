@@ -1,25 +1,7 @@
 'use client'
 
 import { ChevronDown } from 'lucide-react'
-
-const faqs = [
-  {
-    question: 'Do you handle international shipping?',
-    answer: 'Yes. We manage global fulfillment and delivery across multiple regions.',
-  },
-  {
-    question: 'Can recipients choose their own address?',
-    answer: 'Yes. Recipients securely enter their details themselves.',
-  },
-  {
-    question: 'Is this suitable for large teams?',
-    answer: 'Absolutely. The platform is built to scale from small teams to enterprises.',
-  },
-  {
-    question: 'Can we customize gifts with our branding?',
-    answer: 'Yes. Branding and custom kits are fully supported.',
-  },
-]
+import { faqItems } from '@/lib/faq-data'
 
 export function FAQSection() {
   return (
@@ -34,7 +16,7 @@ export function FAQSection() {
           </h2>
         </div>
         <div className="space-y-3 w-full">
-          {faqs.map((faq, index) => (
+          {faqItems.map((faq, index) => (
             <details
               key={index}
               className="group rounded-2xl border border-border/50 bg-white shadow-sm hover:shadow-md overflow-hidden transition-shadow [&[open]]:shadow-md [&[open]]:ring-2 [&[open]]:ring-primary/20"

@@ -6,8 +6,10 @@ import { ErrorBoundary } from '@/components/error-boundary'
 import { CSSVariablesCheck } from '@/components/css-variables-check'
 import { TooltipProviderWrapper } from '@/components/tooltip-provider-wrapper'
 import { Toaster } from '@/components/ui/toaster'
+import { buildMetadata, getOrganizationJsonLd } from '@/lib/seo'
+import { siteConfig } from '@/lib/site'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
@@ -28,58 +30,27 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Goodies.so - Global Gifting & Swag Platform',
-  description: 'Boost engagement globally, send premium swag and gifts. Improve your culture and increase sales, all in one global gifting platform.',
-  keywords: ['employee gifting', 'swag platform', 'corporate gifts', 'global gifting', 'employee engagement'],
-  authors: [{ name: 'Goodies.so' }],
+  ...buildMetadata({
+    title: 'Global Gifting & Swag Platform',
+    description: siteConfig.description,
+    path: '',
+    image: '/hero1.png',
+  }),
+  keywords: ['corporate gifting', 'employee gifting', 'swag platform', 'corporate gifts', 'global gifting', 'HR gifting', 'client gifts', 'employee engagement'],
+  authors: [{ name: siteConfig.shortName, url: siteConfig.url }],
+  creator: siteConfig.shortName,
   icons: {
     icon: '/goodies.png',
     shortcut: '/goodies.png',
     apple: '/goodies.png',
   },
-  openGraph: {
-    title: 'Goodies.so - Global Gifting & Swag Platform',
-    description: 'Boost engagement globally, send premium swag and gifts.',
-    type: 'website',
-    url: 'https://goodies.so',
-    images: ['/goodies.png'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Goodies.so - Global Gifting & Swag Platform',
-    description: 'Boost engagement globally, send premium swag and gifts.',
-    images: ['/goodies.png'],
-  },
   viewport: {
     width: 'device-width',
     initialScale: 1,
+    maximumScale: 5,
   },
   charset: 'utf-8',
-}
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      name: 'Goodies.so',
-      url: 'https://goodies.so',
-      description: 'Global gifting and swag platform. Send premium corporate gifts and swag worldwide.',
-      logo: 'https://goodies.so/logogoodies.png',
-    },
-    {
-      '@type': 'WebSite',
-      name: 'Goodies.so',
-      url: 'https://goodies.so',
-      description: 'Boost engagement globally, send premium swag and gifts. Improve your culture and increase sales.',
-      publisher: { '@id': 'https://goodies.so/#organization' },
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: { '@type': 'EntryPoint', urlTemplate: 'https://goodies.so/?q={search_term_string}' },
-        'query-input': 'required name=search_term_string',
-      },
-    },
-  ],
+  category: 'technology',
 }
 
 export default function RootLayout({
@@ -92,7 +63,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${plusJakartaSans.variable} ${dmSans.variable} font-sans`}>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationJsonLd()) }}
         />
         <CSSVariablesCheck />
         <ErrorBoundary>
