@@ -59,21 +59,22 @@ export function LandingPage() {
       <main className="overflow-x-hidden w-full max-w-full min-w-0 box-border">
         <LandingHero />
         <ValueStrip />
-        <FeatureSections />
         <IndustryLeaders />
         <ServicesSection />
+        <FeatureSections />
+        <IndiaSection />
+        <IntegrationsSection />
         <PricingSection />
-        <Suspense fallback={<section className="py-20 bg-white min-h-[400px] flex items-center justify-center"><div className="animate-pulse text-muted-foreground">Loading...</div></section>}>
+        <Suspense fallback={<section className="py-20 bg-white min-h-[320px] flex items-center justify-center"><div className="animate-pulse text-muted-foreground text-sm">Loading...</div></section>}>
           <Testimonials />
         </Suspense>
-        <IntegrationsSection />
         <FAQSection />
         <CTASection />
       </main>
       <Footer />
       <a
         href="/contact"
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-sm hover:bg-primary/90 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center shadow-lg shadow-primary/25 hover:bg-primary/90 hover:shadow-xl transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         aria-label="Get help or contact us"
       >
         <span className="font-semibold text-xs sm:text-sm">Help</span>

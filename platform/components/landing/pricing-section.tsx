@@ -9,7 +9,7 @@ const plans = [
     name: 'Starter',
     description: 'For teams sending up to a few hundred gifts a year',
     price: 'Custom',
-    features: ['Up to 100 gifts/month', '80+ countries', 'Premium catalog', 'Email support'],
+    features: ['Up to 100 gifts/month', '100+ countries', 'Premium catalog', 'Email support'],
     cta: 'Talk to sales',
     highlighted: false,
   },
@@ -39,48 +39,58 @@ export function PricingSection() {
   }
 
   return (
-    <section id="pricing" className="py-20 sm:py-24 md:py-28 lg:py-32 bg-white w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
-        <div className="text-center mb-12 sm:mb-16 w-full px-2 sm:px-0">
-          <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4">
-            PRICING
+    <section id="pricing" className="py-16 sm:py-20 md:py-24 lg:py-28 bg-muted/30 w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
+        <div className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+          <p className="text-primary text-xs font-semibold uppercase tracking-widest mb-4">
+            Pricing
           </p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4 max-w-2xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold text-foreground tracking-tight mb-4 leading-tight">
             Flexible plans that grow with your team
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto mb-6">
+          <p className="text-base text-muted-foreground mb-6">
             Whether you&apos;re sending gifts occasionally or running gifting year-round, our plans adapt to your needs.
           </p>
-          <ul className="text-sm text-muted-foreground space-y-1 max-w-md mx-auto text-left list-disc list-inside">
-            <li>No vendor lock-ins</li>
-            <li>No operational overhead</li>
-            <li>Pay only for what you use</li>
+          <ul className="text-sm text-muted-foreground space-y-2 max-w-md mx-auto text-left flex flex-wrap justify-center gap-x-6 gap-y-1">
+            <li className="flex items-center gap-2">
+              <Check className="h-4 w-4 text-primary shrink-0" /> No vendor lock-ins
+            </li>
+            <li className="flex items-center gap-2">
+              <Check className="h-4 w-4 text-primary shrink-0" /> No operational overhead
+            </li>
+            <li className="flex items-center gap-2">
+              <Check className="h-4 w-4 text-primary shrink-0" /> Pay only for what you use
+            </li>
           </ul>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 w-full max-w-5xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`rounded-xl border p-6 sm:p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow ${
+              className={`rounded-2xl border p-6 sm:p-8 flex flex-col transition-all duration-200 ${
                 plan.highlighted
-                  ? 'border-primary/30 bg-primary/5 border-primary/40'
-                  : 'border-border/40 bg-white'
+                  ? 'border-primary/40 bg-white shadow-xl shadow-primary/10 ring-2 ring-primary/20 scale-[1.02] md:scale-105'
+                  : 'border-border/50 bg-white shadow-lg shadow-black/5 hover:shadow-xl hover:border-primary/20'
               }`}
             >
-              <h3 className="text-xl font-semibold text-foreground mb-1">{plan.name}</h3>
+              <h3 className="text-xl font-bold text-foreground mb-2">{plan.name}</h3>
               <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
               <p className="text-2xl font-bold text-foreground mb-6">{plan.price}</p>
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-foreground">
-                    <Check className="w-4 h-4 text-[#28BF5D] flex-shrink-0" />
+                  <li key={f} className="flex items-center gap-3 text-sm text-foreground">
+                    <Check className="h-5 w-5 text-primary flex-shrink-0" strokeWidth={2} />
                     {f}
                   </li>
                 ))}
               </ul>
               <Button
                 onClick={handleTalkToSales}
-                className={plan.highlighted ? 'rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 w-full shadow-sm' : 'rounded-xl w-full border border-border/40 hover:bg-muted/30'}
+                className={plan.highlighted
+                  ? 'rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 w-full py-6 font-semibold shadow-lg shadow-primary/20'
+                  : 'rounded-xl w-full py-6 font-semibold border-2 border-border/60 hover:bg-muted/50 hover:border-primary/30'
+                }
                 aria-label={`Talk to sales for ${plan.name}`}
               >
                 {plan.cta}

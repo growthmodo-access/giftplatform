@@ -2,8 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-
-const ctaItems = ['👜', '📓', '💧', '🔊', '🧥', '☕']
+import { ArrowRight, Sparkles } from 'lucide-react'
 
 export function CTASection() {
   const router = useRouter()
@@ -13,47 +12,43 @@ export function CTASection() {
   }
 
   return (
-    <section className="py-14 sm:py-20 lg:py-24 bg-white border-t border-border/40 w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
+    <section className="relative py-20 sm:py-24 lg:py-28 bg-gradient-to-b from-primary/10 via-primary/5 to-transparent border-t border-border/40 w-full max-w-full overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,hsl(var(--primary)/0.08),transparent)] pointer-events-none" />
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center flex flex-col items-center w-full">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4 sm:mb-6 px-2 sm:px-0 leading-tight max-w-3xl">
+          <div className="inline-flex items-center gap-2 text-primary text-xs font-semibold uppercase tracking-widest mb-6">
+            <Sparkles className="h-4 w-4" strokeWidth={2} />
+            Get started
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold text-foreground tracking-tight mb-4 sm:mb-5 leading-tight max-w-3xl">
             Stop managing gifting. Start automating it.
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2 sm:px-0 leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8 sm:mb-10 max-w-2xl leading-relaxed">
             Send gifts people actually love—without the operational headache.
           </p>
-          <div className="w-full flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-2">
+          <div className="flex flex-col sm:flex-row gap-4 mb-8 sm:mb-10 w-full justify-center items-center">
             <Button
               onClick={handleRequestDemo}
               size="lg"
-              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base font-semibold shadow-sm w-full max-w-[280px] sm:max-w-none sm:w-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-xl w-full sm:w-auto inline-flex items-center gap-2"
               aria-label="Book a demo"
             >
               Book a demo
+              <ArrowRight className="h-5 w-5" strokeWidth={2} />
             </Button>
             <Button
               onClick={() => router.push('/signup')}
               size="lg"
               variant="outline"
-              className="rounded-xl border-border/40 hover:bg-muted/30 px-8 py-6 text-base font-semibold w-full max-w-[280px] sm:max-w-none sm:w-auto"
+              className="rounded-xl border-2 border-border/60 bg-white hover:bg-muted/40 px-8 py-6 text-base font-semibold w-full sm:w-auto"
               aria-label="Get started in minutes"
             >
               Get started in minutes
             </Button>
           </div>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12 px-2 text-center">
+          <p className="text-sm text-muted-foreground">
             No credit card required · Custom quote in 24 hours
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 md:gap-10">
-            {ctaItems.map((item, index) => (
-              <div
-                key={index}
-                className="text-3xl sm:text-4xl md:text-5xl hover:scale-125 transition-transform duration-300 cursor-default"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
-import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+'use client'
+
+import { Quote } from 'lucide-react'
 
 const testimonials = [
   {
@@ -25,49 +25,39 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-12 sm:py-24 lg:py-28 bg-muted/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
-        <div className="text-center mb-10 sm:mb-16">
-          <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
-            CUSTOMERS
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight px-4 sm:px-0">
+    <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
+        <div className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+          <p className="text-primary text-xs font-semibold uppercase tracking-widest mb-4">
             Testimonials
+          </p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight leading-tight">
+            What teams say about us
           </h2>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
+        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
           {testimonials.map((testimonial, index) => (
-            <Card
+            <div
               key={index}
-              className="p-6 sm:p-8 bg-white rounded-xl border border-border/40 shadow-sm hover:shadow-md transition-all duration-200"
+              className="relative p-6 sm:p-8 rounded-2xl border border-border/50 bg-white shadow-lg shadow-black/5 hover:shadow-xl hover:border-primary/20 transition-all duration-200 flex flex-col"
             >
-              <div className="flex flex-col gap-5 sm:gap-6 md:gap-8">
-                <p className="text-base sm:text-lg text-foreground leading-relaxed flex-1">
-                  "{testimonial.quote}"
-                </p>
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-                    <AvatarFallback className="text-xs sm:text-sm">👤</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    {testimonial.author && (
-                      <div className="text-sm sm:text-base font-semibold text-foreground">{testimonial.author}</div>
-                    )}
-                    {testimonial.role && (
-                      <div className="text-xs sm:text-sm text-muted-foreground">{testimonial.role}</div>
-                    )}
-                  </div>
+              <Quote className="absolute top-5 right-5 h-8 w-8 text-primary/20" strokeWidth={1.5} />
+              <p className="text-base sm:text-lg text-foreground leading-relaxed flex-1 pr-8">
+                &ldquo;{testimonial.quote}&rdquo;
+              </p>
+              <div className="mt-6 pt-4 border-t border-border/40 flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
+                  {testimonial.author.charAt(0)}
                 </div>
-                {testimonial.company && (
-                  <div className="pt-4 border-t border-border/50">
-                    <Badge variant="outline" className="text-foreground border-border/50">
-                      {testimonial.company}
-                    </Badge>
-                  </div>
-                )}
+                <div>
+                  <p className="font-semibold text-foreground">{testimonial.author}</p>
+                  {testimonial.role && (
+                    <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                  )}
+                </div>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>

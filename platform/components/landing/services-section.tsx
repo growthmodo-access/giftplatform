@@ -2,34 +2,34 @@ import Image from 'next/image'
 
 export function ServicesSection() {
   return (
-    <section id="services" className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 bg-muted/30 w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 w-full max-w-full box-border min-w-0">
-        <div className="text-center mb-10 sm:mb-16 md:mb-20 w-full">
-          <div className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-4 sm:mb-6">
-            SOLUTION
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-6 sm:mb-8 leading-tight px-2 sm:px-0 max-w-4xl mx-auto">
+    <section id="services" className="py-16 sm:py-20 md:py-24 lg:py-28 bg-muted/30 w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
+        <div className="text-center mb-12 sm:mb-16 md:mb-20 max-w-3xl mx-auto">
+          <p className="text-primary text-xs font-semibold uppercase tracking-widest mb-4">
+            Solution
+          </p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold text-foreground tracking-tight mb-6 leading-tight">
             One platform that handles everything for you
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto px-2 sm:px-0 mb-4">
+          <p className="text-base text-muted-foreground mb-4 leading-relaxed">
             We built a system specifically for teams that need to send gifts at scale—without adding operational burden.
           </p>
-          <p className="text-base font-semibold text-foreground max-w-3xl mx-auto px-2 sm:px-0 mb-2">
+          <p className="text-lg font-semibold text-foreground mb-2">
             You decide what to send. We handle everything else.
           </p>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-3xl mx-auto px-2 sm:px-0">
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
             From storage and customization to shipping and tracking—globally.
           </p>
         </div>
 
-        <div className="w-full max-w-6xl mx-auto px-0 sm:px-2">
-          <div className="relative rounded-xl overflow-hidden border border-border/40 shadow-sm bg-white">
+        <div className="w-full max-w-6xl mx-auto">
+          <div className="relative rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-white ring-1 ring-black/5">
             <Image
               src="/services-grid.png"
-              alt="Corporate gifting services - Employees, Clients, Sales Prospecting, Swag, Global Gifting, Holidays"
+              alt="Corporate gifting services - Employees, Clients, Swag, Global Gifting"
               width={1536}
               height={1024}
-              className="w-full h-auto object-contain transition-shadow duration-300"
+              className="w-full h-auto object-contain"
               priority
             />
           </div>
