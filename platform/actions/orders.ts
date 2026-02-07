@@ -335,6 +335,9 @@ export async function createOrder(formData: FormData) {
       return { error: orderError.message }
     }
 
+    const { insertAuditLog } = await import('@/lib/audit')
+    await insertAuditLog(user.id, 'order.create', 'order', newOrder.id, { order_number: newOrder.order_number })
+
     // Create order items
     const { error: itemsError } = await supabase
       .from('order_items')
@@ -357,5 +360,27 @@ export async function createOrder(formData: FormData) {
     return { 
       error: error instanceof Error ? error.message : 'An unexpected error occurred' 
     }
+  }
+}
+
+/** Export orders as CSV (same scope as getOrders by role). */
+export async function exportOrdersAsCsv(): Promise<{ csv: string; error?: string }> {
+  try {
+    const { data: orders, error } = await getOrders()
+    if (error) return { csv: '', error }
+    if (!orders?.length) {
+      const header = 'Order Number,Employee,Email,Status,Amount,Currency,Date\n'
+      return { csv: header }
+    }
+    const rows = orders.map((o) => {
+      const emp = (o.employee ?? '').replace(/"/g, '""')
+      const email = (o.employeeEmail ?? '').replace(/"/g, '""')
+      const amount = (o.amount ?? '').replace(/"/g, '""')
+      return `"${o.orderNumber}","${emp}","${email}","${o.status}","${amount}","USD","${o.date}"`
+    })
+    const header = 'Order Number,Employee,Email,Status,Amount,Currency,Date\n'
+    return { csv: header + rows.join('\n') }
+  } catch (e) {
+    return { csv: '', error: e instanceof Error ? e.message : 'Export failed' }
   }
 }

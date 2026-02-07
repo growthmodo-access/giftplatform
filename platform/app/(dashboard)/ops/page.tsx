@@ -163,7 +163,7 @@ export default async function OpsPage() {
                       <p className="text-sm text-muted-foreground mt-0.5">
                         {c.company_name && <span className="text-foreground/80">{c.company_name}</span>}
                         {c.company_name && ' · '}
-                        {format(new Date(c.created_at), 'MMM d, yyyy')} · {c.recipient_count} recipient{c.recipient_count !== 1 ? 's' : ''} · {c.order_count} order{c.order_count !== 1 ? 's' : ''}
+                        {format(new Date(c.created_at), 'MMM d, yyyy')} · {c.recipient_count} recipient{c.recipient_count !== 1 ? 's' : ''} · {c.order_count} redeemed{c.recipient_count > 0 ? ` (${Math.round((c.order_count / c.recipient_count) * 100)}%)` : ''}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">

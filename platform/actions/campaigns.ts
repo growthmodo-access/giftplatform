@@ -154,6 +154,9 @@ export async function createCampaign(formData: FormData) {
       return { error: error.message }
     }
 
+    const { insertAuditLog } = await import('@/lib/audit')
+    await insertAuditLog(user.id, 'campaign.create', 'campaign', data.id, { name: data.name })
+
     revalidatePath('/campaigns')
     return { success: true, data }
   } catch (error) {

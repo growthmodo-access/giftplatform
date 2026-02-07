@@ -19,7 +19,8 @@ import {
   X,
   Building2,
   CreditCard,
-  ClipboardList
+  ClipboardList,
+  ScrollText
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -45,6 +46,7 @@ const allMenuItems: MenuItem[] = [
   { icon: Building2, label: 'Companies', href: '/companies', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
   { icon: Users, label: 'Users', href: '/users', allowedRoles: ['SUPER_ADMIN'] },
   { icon: ClipboardList, label: 'Ops', href: '/ops', allowedRoles: ['SUPER_ADMIN'] },
+  { icon: ScrollText, label: 'Audit log', href: '/audit', allowedRoles: ['SUPER_ADMIN'] },
   { icon: Settings, label: 'Settings', href: '/settings', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
 ]
 

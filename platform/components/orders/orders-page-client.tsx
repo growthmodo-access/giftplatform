@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Plus, Download } from 'lucide-react'
 import { NewOrderDialog } from './new-order-dialog'
+import { exportOrdersAsCsv } from '@/actions/orders'
 import { OrderDetailsDialog } from './order-details-dialog'
 import { OrdersTable } from './orders-table'
 import { OrdersFilters, FilterState } from './orders-filters'
@@ -175,16 +176,33 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
         <div>
           <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Order</h1>
         </div>
-        {canCreateOrders && (
-          <Button 
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
             size="sm"
             className="gap-2 text-sm"
-            onClick={() => setDialogOpen(true)}
+            onClick={async () => {
+              const { csv, error } = await exportOrdersAsCsv()
+              if (error) return
+              const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url
+              a.download = `orders-${new Date().toISOString().slice(0, 10)}.csv`
+              a.click()
+              URL.revokeObjectURL(url)
+            }}
           >
-            <Plus className="w-4 h-4" />
-            New Order
+            <Download className="w-4 h-4" />
+            Export CSV
           </Button>
-        )}
+          {canCreateOrders && (
+            <Button size="sm" className="gap-2 text-sm" onClick={() => setDialogOpen(true)}>
+              <Plus className="w-4 h-4" />
+              New Order
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Error Message */}

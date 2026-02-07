@@ -159,13 +159,19 @@ export async function assignVendorToOrder(orderId: string, vendorId: string, cos
     const { data: currentUser } = await supabase.from('users').select('role').eq('id', user.id).single()
     if (currentUser?.role !== 'SUPER_ADMIN') return { error: 'Forbidden' }
 
-    const { error } = await supabase.from('order_vendor_assignments').insert({
-      order_id: orderId,
-      vendor_id: vendorId,
-      status: 'PENDING',
-      cost: cost ?? null,
-    })
+    const { data: assignment, error } = await supabase
+      .from('order_vendor_assignments')
+      .insert({
+        order_id: orderId,
+        vendor_id: vendorId,
+        status: 'PENDING',
+        cost: cost ?? null,
+      })
+      .select('id')
+      .single()
     if (error) return { error: error.message }
+    const { insertAuditLog } = await import('@/lib/audit')
+    if (assignment?.id) await insertAuditLog(user.id, 'vendor.assign', 'order_vendor_assignment', assignment.id, { order_id: orderId, vendor_id: vendorId })
     revalidatePath('/ops')
     revalidatePath('/ops/campaigns')
     return { success: true }
