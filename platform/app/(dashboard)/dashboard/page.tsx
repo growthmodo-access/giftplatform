@@ -28,27 +28,23 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6 sm:space-y-8 min-w-0">
-      {/* Welcome Header with Quick Actions */}
+      {/* Quick Actions - horizontal strip across all dashboards */}
+      <QuickActions />
+
+      {/* Welcome Header */}
       <div className="pb-4 sm:pb-6 border-b border-border/50">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 items-start">
-          <div className="lg:col-span-2">
-            <p className="text-sm text-muted-foreground mb-1.5">
-              {getTimeGreeting()} • {getFormattedDate()}
-            </p>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground mb-2 break-words">
-              Welcome back, {userName}
-            </h1>
-            <p className="text-muted-foreground text-base">
-              {stats.todayOrders > 0 
-                ? `You have ${stats.todayOrders} order${stats.todayOrders > 1 ? 's' : ''} today`
-                : "Here's what's happening with your gift platform today."
-              }
-            </p>
-          </div>
-          <div className="lg:col-span-1">
-            <QuickActions />
-          </div>
-        </div>
+        <p className="text-sm text-muted-foreground mb-1.5">
+          {getTimeGreeting()} • {getFormattedDate()}
+        </p>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground mb-2 break-words">
+          Welcome back, {userName}
+        </h1>
+        <p className="text-muted-foreground text-base">
+          {stats.todayOrders > 0 
+            ? `You have ${stats.todayOrders} order${stats.todayOrders > 1 ? 's' : ''} today`
+            : "Here's what's happening with your gift platform today."
+          }
+        </p>
       </div>
       
       {/* Stats Cards */}

@@ -147,7 +147,29 @@ CREATE POLICY "Admins can delete campaigns" ON campaigns
   );
 
 -- ============================================
--- 4. Add Billing & Wallet Tables
+-- 4. Audit log (SUPER_ADMIN only read)
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.audit_log (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  action TEXT NOT NULL,
+  resource_type TEXT NOT NULL,
+  resource_id TEXT,
+  details JSONB,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_audit_log_created_at ON public.audit_log(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_log_resource ON public.audit_log(resource_type, resource_id);
+CREATE INDEX IF NOT EXISTS idx_audit_log_user_id ON public.audit_log(user_id);
+ALTER TABLE public.audit_log ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Authenticated users can insert audit_log" ON public.audit_log;
+CREATE POLICY "Authenticated users can insert audit_log" ON public.audit_log FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+DROP POLICY IF EXISTS "Only super admin can read audit_log" ON public.audit_log;
+CREATE POLICY "Only super admin can read audit_log" ON public.audit_log FOR SELECT
+  USING (EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'SUPER_ADMIN'));
+
+-- ============================================
+-- 5. Add Billing & Wallet Tables
 -- ============================================
 CREATE TABLE IF NOT EXISTS wallets (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -265,5 +287,5 @@ CREATE POLICY "System can create invoices" ON invoices
 -- Verify tables were created:
 -- SELECT table_name FROM information_schema.tables 
 -- WHERE table_schema = 'public' 
--- AND table_name IN ('wallets', 'wallet_transactions', 'invoices')
+-- AND table_name IN ('audit_log', 'wallets', 'wallet_transactions', 'invoices')
 -- ORDER BY table_name;
