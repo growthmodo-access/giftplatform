@@ -27,19 +27,19 @@ export default async function DashboardPage() {
   const { stats } = await getDashboardStats()
 
   return (
-    <div className="space-y-6 sm:space-y-8 min-w-0">
+    <div className="space-y-5 sm:space-y-6 lg:space-y-8 min-w-0">
       {/* Quick Actions - horizontal strip across all dashboards */}
       <QuickActions />
 
       {/* Welcome Header */}
       <div className="pb-4 sm:pb-6 border-b border-border/50">
-        <p className="text-sm text-muted-foreground mb-1.5">
+        <p className="text-xs sm:text-sm text-muted-foreground mb-1.5">
           {getTimeGreeting()} • {getFormattedDate()}
         </p>
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground mb-2 break-words">
+        <h1 className="text-xl sm:text-2xl lg:text-4xl font-semibold text-foreground mb-2 break-words leading-tight">
           Welcome back, {userName}
         </h1>
-        <p className="text-muted-foreground text-base">
+        <p className="text-sm sm:text-base text-muted-foreground leading-snug">
           {stats.todayOrders > 0 
             ? `You have ${stats.todayOrders} order${stats.todayOrders > 1 ? 's' : ''} today`
             : "Here's what's happening with your gift platform today."

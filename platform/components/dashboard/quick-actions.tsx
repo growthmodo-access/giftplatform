@@ -77,10 +77,10 @@ export async function QuickActions() {
                     <Icon className="h-5 w-5" strokeWidth={1.75} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-sm text-foreground leading-tight truncate">
+                    <p className="font-semibold text-sm text-foreground leading-tight break-words">
                       {action.title}
                     </p>
-                    <p className="text-xs text-muted-foreground leading-tight truncate mt-0.5">
+                    <p className="text-xs text-muted-foreground leading-snug mt-0.5 line-clamp-2">
                       {action.description}
                     </p>
                   </div>

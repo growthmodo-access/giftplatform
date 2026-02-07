@@ -44,7 +44,7 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 gradient-landing">
+    <section className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="text-center mb-10 sm:mb-16 md:mb-20">
           <div className="text-muted-foreground text-xs sm:text-sm font-bold uppercase tracking-widest mb-4 sm:mb-6">

@@ -58,6 +58,16 @@
     scroll-behavior: smooth;
   }
 
+  /* Mobile: prevent overflow and ensure readable base size */
+  @media (max-width: 640px) {
+    html {
+      font-size: 16px;
+    }
+    body {
+      overflow-x: hidden;
+    }
+  }
+
   /* Focus visible for accessibility */
   a:focus-visible,
   button:focus-visible,

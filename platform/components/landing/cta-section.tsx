@@ -13,20 +13,20 @@ export function CTASection() {
   }
 
   return (
-    <section className="py-14 sm:py-28 md:py-32 lg:py-40 xl:py-48 gradient-landing">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="text-center flex flex-col items-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-4 sm:mb-8 md:mb-10 px-2 sm:px-0 leading-tight">
+    <section className="py-14 sm:py-20 md:py-28 lg:py-32 bg-white border-t border-border/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
+        <div className="text-center flex flex-col items-center w-full">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4 sm:mb-6 md:mb-8 px-2 sm:px-0 leading-tight max-w-3xl">
             Ready to build stronger relationships through gifting?
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-2 sm:px-0 leading-relaxed">
-            Let's talk about your gifting needs. We'll show you how premium, branded gifts can transform how you engage with employees, clients, and events worldwide.
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto px-2 sm:px-0 leading-relaxed">
+            We'll show you how premium, branded gifts can transform how you engage with employees, clients, and events worldwide.
           </p>
-          <div className="w-full flex justify-center mb-8 sm:mb-14 md:mb-16">
+          <div className="w-full flex justify-center mb-8 sm:mb-12 px-2">
             <Button
               onClick={handleRequestDemo}
               size="lg"
-              className="gradient-button text-white px-10 py-7 sm:px-12 sm:py-8 text-lg sm:text-xl font-semibold w-full max-w-[280px] sm:max-w-none sm:w-auto shadow-primary-lg hover:shadow-primary-xl hover:scale-110 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base sm:text-lg font-semibold w-full max-w-[280px] sm:max-w-none sm:w-auto focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               aria-label="Talk to sales"
             >
               Talk to sales

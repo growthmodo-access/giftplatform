@@ -39,27 +39,27 @@ export function PricingSection() {
   }
 
   return (
-    <section id="pricing" className="py-20 sm:py-24 md:py-28 lg:py-32 gradient-landing">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="text-center mb-12 sm:mb-16">
+    <section id="pricing" className="py-20 sm:py-24 md:py-28 lg:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
+        <div className="text-center mb-12 sm:mb-16 w-full px-2 sm:px-0">
           <p className="text-muted-foreground text-xs sm:text-sm font-bold uppercase tracking-widest mb-4">
             PRICING
           </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 max-w-2xl mx-auto">
             Plans that scale with you
           </h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto">
             Transparent pricing. No hidden fees. Talk to our team for a quote tailored to your volume and needs.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`rounded-2xl border-2 p-6 sm:p-8 flex flex-col ${
+              className={`rounded-xl border border-border/60 p-6 sm:p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow ${
                 plan.highlighted
-                  ? 'border-[#7B61FF] bg-white/80 shadow-primary-lg scale-[1.02] md:scale-105'
-                  : 'border-black/[0.06] bg-white'
+                  ? 'border-primary/40 bg-primary/5 ring-2 ring-primary/20 scale-[1.02] md:scale-[1.02]'
+                  : 'bg-white'
               }`}
             >
               <h3 className="text-xl font-semibold text-foreground mb-1">{plan.name}</h3>
@@ -75,7 +75,7 @@ export function PricingSection() {
               </ul>
               <Button
                 onClick={handleTalkToSales}
-                className={plan.highlighted ? 'gradient-button text-white w-full' : 'w-full border-2'}
+                className={plan.highlighted ? 'rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 w-full' : 'rounded-xl w-full border-2 border-border'}
                 aria-label={`Talk to sales for ${plan.name}`}
               >
                 {plan.cta}

@@ -164,7 +164,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
       {/* Mobile menu button - hamburger to open full menu */}
       <button
         onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-4 left-4 z-[60] p-2.5 rounded-xl bg-white border border-border/60 hover:bg-muted/50 transition-all shadow-sm active:scale-95 flex items-center justify-center"
+        className="lg:hidden fixed top-3 left-3 z-[60] p-3 rounded-xl bg-white border border-border/60 hover:bg-muted/50 transition-all shadow-sm active:scale-95 flex items-center justify-center touch-manipulation"
         aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
       >
         {isMobileOpen ? (
@@ -206,7 +206,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
                 alt="Goodies"
                 width={200}
                 height={100}
-                className="h-6 lg:h-8 w-auto object-contain"
+                className="h-9 w-auto object-contain"
                 priority
                 unoptimized
               />

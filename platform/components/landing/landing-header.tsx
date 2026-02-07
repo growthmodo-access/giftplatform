@@ -31,31 +31,29 @@ export function LandingHeader() {
   return (
     <>
       {/* Banner */}
-      <div className="bg-[#FAFAFA] text-foreground py-2 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-black/[0.06]">
+      <div className="bg-muted/50 text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <span>Built in India, shipping globally</span>
         </div>
       </div>
 
-      {/* Header */}
+      {/* Header - dashboard-aligned */}
       <header
         className={cn(
-          "sticky top-0 z-50 transition-all duration-300",
-          isScrolled
-            ? "bg-white/90 backdrop-blur-sm shadow-sm border-b border-black/[0.06]"
-            : "bg-white/95 backdrop-blur-sm border-b border-transparent"
+          'sticky top-0 z-50 transition-all duration-300 bg-white border-b',
+          isScrolled ? 'border-border/60 shadow-sm' : 'border-transparent'
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex items-center justify-between gap-4 min-h-20 py-3 lg:min-h-24 lg:py-4">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group flex-shrink-0 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full">
+          <div className="flex items-center justify-between gap-3 min-h-16 py-3 sm:min-h-20 lg:min-h-24 lg:py-4">
+            {/* Logo - balanced size */}
+            <Link href="/" className="flex items-center gap-2 group flex-shrink-0 relative z-10 min-w-0">
               <Image
                 src="/logogoodies.png"
-                alt="Goodies Logo"
-                width={240}
-                height={120}
-                className="h-8 sm:h-10 lg:h-12 xl:h-14 w-auto object-contain object-left group-hover:opacity-90 transition-opacity"
+                alt="Goodies"
+                width={200}
+                height={100}
+                className="h-10 sm:h-11 lg:h-12 w-auto max-w-[140px] sm:max-w-[160px] lg:max-w-[180px] object-contain object-left group-hover:opacity-90 transition-opacity"
                 priority
                 unoptimized
               />
@@ -112,7 +110,7 @@ export function LandingHeader() {
               </button>
               <button
                 onClick={handleGetStarted}
-                className="gradient-button text-white px-6 py-2.5 rounded-md font-medium shadow-primary whitespace-nowrap"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-2.5 rounded-xl font-medium whitespace-nowrap"
                 aria-label="Get started with Goodies.so"
               >
                 Get Started
@@ -132,11 +130,11 @@ export function LandingHeader() {
             </button>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu - full width, left-aligned */}
           {isMenuOpen && (
-            <div className="lg:hidden border-t border-border/50 py-4">
-              <nav className="flex flex-col gap-4">
-                <a href="#home" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
+            <div className="lg:hidden border-t border-border/50 py-4 w-full">
+              <nav className="flex flex-col gap-4 w-full text-left">
+                <a href="#home" className="text-muted-foreground hover:text-foreground font-medium py-1" onClick={() => setIsMenuOpen(false)}>
                   Home
                 </a>
                 <a href="#solutions" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
@@ -163,7 +161,7 @@ export function LandingHeader() {
                       handleGetStarted()
                       setIsMenuOpen(false)
                     }}
-                    className="gradient-button text-white px-6 py-2.5 rounded-md font-medium shadow-purple w-full"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 rounded-xl font-medium w-full"
                   >
                     Get Started
                   </button>
