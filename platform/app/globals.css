@@ -4,20 +4,20 @@
 
 @layer base {
   :root {
-    /* Premium Color Palette - White Base */
+    /* Startup + enterprise: clean, confident, India-first */
     --background: 0 0% 100%;
-    --foreground: 0 0% 16%; /* Signal Black #282828 */
+    --foreground: 222 47% 11%; /* Strong readability */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 16%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 16%;
-    --primary: 252 100% 71%; /* Amethyst Bellflower #7B61FF */
+    --popover-foreground: 222 47% 11%;
+    --primary: 252 100% 71%; /* #7B61FF - amethyst, works with gradients */
     --primary-foreground: 0 0% 100%;
-    --secondary: 40 100% 66%; /* Lemon and Banana #FFE450 */
-    --secondary-foreground: 0 0% 16%;
-    --muted: 0 0% 97%; /* Near white */
-    --muted-foreground: 0 0% 45%;
-    --accent: 210 88% 54%; /* Azure Cornflower #2883EB */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 88% 54%; /* Azure */
     --accent-foreground: 0 0% 100%;
     --destructive: 4 100% 65%; /* Watermelon with Carrot #FF5E54 */
     --destructive-foreground: 0 0% 100%;

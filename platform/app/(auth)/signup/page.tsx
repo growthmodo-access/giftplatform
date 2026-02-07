@@ -27,7 +27,7 @@ export default function SignupPage() {
   const [billingState, setBillingState] = useState('')
   const [billingCountry, setBillingCountry] = useState('')
   const [billingZip, setBillingZip] = useState('')
-  const [currency, setCurrency] = useState('USD')
+  const [currency, setCurrency] = useState('INR')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 

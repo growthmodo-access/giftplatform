@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Trophy, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { getDashboardStats } from '@/actions/dashboard'
+import { formatCurrencyShort } from '@/lib/currency'
 
 
 export async function TopProducts() {
@@ -83,7 +84,7 @@ export async function TopProducts() {
                 </div>
                 {canViewRevenue && (
                   <div className="text-left sm:text-right flex-shrink-0">
-                    <p className="font-semibold text-sm text-foreground">${(product.revenue / 1000).toFixed(1)}k</p>
+                    <p className="font-semibold text-sm text-foreground">{formatCurrencyShort(product.revenue, 'INR')}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">Revenue</p>
                   </div>
                 )}

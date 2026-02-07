@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Download, TrendingUp } from 'lucide-react'
 import { getDashboardStats } from '@/actions/dashboard'
+import { formatCurrency, formatCurrencyShort } from '@/lib/currency'
 
 export async function SalesChart() {
   const { chartData, stats, canViewRevenue } = await getDashboardStats()
@@ -33,7 +34,7 @@ export async function SalesChart() {
             <div className="flex items-center gap-6 pb-4 border-b border-border/50">
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Monthly Revenue</p>
-                <p className="text-2xl font-semibold text-foreground tracking-tight">${(stats.monthlyRevenue / 1000).toFixed(1)}k</p>
+                <p className="text-2xl font-semibold text-foreground tracking-tight">{formatCurrencyShort(stats.monthlyRevenue, 'INR')}</p>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-muted">
@@ -81,7 +82,7 @@ export async function SalesChart() {
                           <div className="bg-foreground text-background text-xs rounded-md py-1.5 px-2.5 whitespace-nowrap shadow-lg">
                             {canViewRevenue ? (
                               <>
-                                <div className="font-semibold">${data.revenue.toFixed(2)}</div>
+                                <div className="font-semibold">{formatCurrency(data.revenue, 'INR')}</div>
                                 <div className="text-[10px] opacity-80 mt-0.5">{data.orders} order{data.orders !== 1 ? 's' : ''}</div>
                               </>
                             ) : (
@@ -101,9 +102,9 @@ export async function SalesChart() {
             </div>
             {canViewRevenue && (
               <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-muted-foreground pr-2 pointer-events-none">
-                <span className="font-medium">${(maxRevenue / 1000).toFixed(1)}k</span>
-                <span className="font-medium">${(maxRevenue / 2000).toFixed(1)}k</span>
-                <span>$0</span>
+                <span className="font-medium">{formatCurrencyShort(maxRevenue, 'INR')}</span>
+                <span className="font-medium">{formatCurrencyShort(maxRevenue / 2, 'INR')}</span>
+                <span>₹0</span>
               </div>
             )}
           </div>

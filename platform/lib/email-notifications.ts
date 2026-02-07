@@ -12,6 +12,7 @@ export interface EmailNotification {
 
 const RESEND_API_URL = 'https://api.resend.com/emails'
 const FROM_EMAIL = process.env.EMAIL_FROM ?? 'Goodies <onboarding@resend.dev>'
+const REPLY_TO = process.env.REPLY_TO ?? undefined
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodies.so'
 
 /**
@@ -33,6 +34,7 @@ export async function sendEmailNotification(notification: EmailNotification): Pr
           subject: notification.subject,
           html: notification.html,
           text: notification.text,
+          ...(REPLY_TO && { reply_to: REPLY_TO }),
         }),
       })
       if (!response.ok) {

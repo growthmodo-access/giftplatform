@@ -1,5 +1,6 @@
 import { Package, Gift, Users, DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
 import { getDashboardStats } from '@/actions/dashboard'
+import { formatCurrencyShort } from '@/lib/currency'
 
 export async function StatsCards() {
   const { stats, canViewRevenue } = await getDashboardStats()
@@ -17,7 +18,7 @@ export async function StatsCards() {
       ? [
           {
             label: 'Total Revenue',
-            value: `$${(stats.totalRevenue / 1000).toFixed(1)}k`,
+            value: formatCurrencyShort(stats.totalRevenue, 'INR'),
             change: stats.revenueChange >= 0 ? `+${stats.revenueChange.toFixed(1)}%` : `${stats.revenueChange.toFixed(1)}%`,
             trend: (stats.revenueChange >= 0 ? 'up' : 'down') as 'up' | 'down',
             icon: DollarSign,

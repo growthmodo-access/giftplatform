@@ -23,25 +23,25 @@ export function LandingHero() {
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto w-full px-0 sm:px-2">
             {/* Trust Badge */}
             <div className="mb-6 sm:mb-8 md:mb-10 w-full">
-              <span className="inline-flex items-center justify-center gap-2 bg-white text-foreground px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold tracking-wide border border-border/60 shadow-sm">
-                <span className="text-base sm:text-lg">⭐</span>
-                Trusted by 20,000+ companies
+              <span className="inline-flex items-center justify-center gap-2 bg-primary/5 text-foreground px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium border border-primary/10">
+                <span className="text-base sm:text-lg">🇮🇳</span>
+                Built for India · Ships to 80+ countries
               </span>
-              <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto italic px-1 text-center">
-                &ldquo;Finally, a gifting platform that understands both Indian preferences and global scale.&rdquo; — Vikram D., COO
+              <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto px-1 text-center">
+                &ldquo;One platform for employees, clients, and events—from startup to enterprise.&rdquo;
               </p>
             </div>
 
-            {/* Main Heading - dashboard-style typography */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight text-foreground w-full px-1 sm:px-4">
-              Business gifting
+            {/* Main Heading - modern startup */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-[1.1] tracking-tight text-foreground w-full px-1 sm:px-4">
+              Corporate gifting
               <br />
-              <span className="text-primary">made easy</span>
+              <span className="text-primary">that scales with you</span>
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 md:mb-10 max-w-2xl w-full px-2 sm:px-4 leading-relaxed text-center">
-              Send <strong className="text-foreground">flexible</strong>, <strong className="text-foreground">delightful</strong> corporate gifts and swag, all on one platform.
+              Send branded gifts and swag in <strong className="text-foreground">INR or USD</strong>. One dashboard, one catalog, global delivery—for teams and enterprises.
             </p>
 
             {/* CTA Buttons */}
@@ -65,22 +65,22 @@ export function LandingHero() {
               </Button>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8 px-2 text-center">
-              Free to start — takes less than a minute.
+              No credit card required · Get started in under 2 minutes
             </p>
 
-            {/* Trust Indicators - card style */}
+            {/* Trust Indicators */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-6 text-muted-foreground w-full sm:w-auto max-w-md sm:max-w-none mx-auto px-2">
-              <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-xl border border-border/60 shadow-sm w-full sm:w-auto text-left sm:text-left">
+              <div className="flex items-center gap-3 bg-muted/30 px-4 py-3 rounded-2xl w-full sm:w-auto text-left">
                 <span className="text-xl flex-shrink-0">🌍</span>
-                <span className="text-xs sm:text-sm font-medium">80+ countries, zero logistics hassle</span>
+                <span className="text-xs sm:text-sm font-medium">80+ countries · No logistics hassle</span>
               </div>
-              <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-xl border border-border/60 shadow-sm w-full sm:w-auto text-left sm:text-left">
+              <div className="flex items-center gap-3 bg-muted/30 px-4 py-3 rounded-2xl w-full sm:w-auto text-left">
                 <span className="text-xl flex-shrink-0">🎁</span>
-                <span className="text-xs sm:text-sm font-medium">Premium inventory, human managed</span>
+                <span className="text-xs sm:text-sm font-medium">Curated catalog · INR & USD</span>
               </div>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground mt-4 px-2 text-center w-full">
-              Trusted by startups and enterprises across India and beyond
+              Trusted by startups and enterprises · India-first, global reach
             </p>
           </div>
         </div>

@@ -32,7 +32,7 @@ export function ActivityFeed() {
         id: '2',
         type: 'revenue',
         title: 'Revenue milestone',
-        description: 'Monthly revenue exceeded $10k',
+        description: 'Monthly revenue exceeded ₹10k',
         time: '1h ago',
         icon: TrendingUp,
       },

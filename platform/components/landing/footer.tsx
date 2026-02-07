@@ -1,31 +1,105 @@
 import Image from 'next/image'
+import Link from 'next/link'
+
+const productLinks = [
+  { label: 'Corporate gifting', href: '#solutions' },
+  { label: 'Employee recognition', href: '#solutions' },
+  { label: 'Campaigns & swag', href: '#solutions' },
+  { label: 'Pricing', href: '#pricing' },
+]
+
+const companyLinks = [
+  { label: 'About us', href: '/contact' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Careers', href: '/contact#careers' },
+]
+
+const legalLinks = [
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' },
+  { label: 'Cookie Policy', href: '/privacy#cookies' },
+]
 
 export function Footer() {
   return (
-    <footer className="bg-muted/40 border-t border-border/60 py-6 sm:py-10 w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 w-full">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/logogoodies.png"
-              alt="Goodies"
-              width={200}
-              height={100}
-              className="h-9 sm:h-10 w-auto max-w-[120px] sm:max-w-[140px] object-contain"
-              unoptimized
-            />
+    <footer className="bg-muted/50 border-t border-border/60 w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 py-10 sm:py-12 lg:py-14 w-full max-w-full box-border min-w-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
+          {/* Brand + address */}
+          <div className="lg:col-span-2">
+            <Link href="/" className="inline-block mb-4">
+              <Image
+                src="/logogoodies.png"
+                alt="Goodies"
+                width={200}
+                height={100}
+                className="h-9 sm:h-10 w-auto max-w-[140px] object-contain"
+                unoptimized
+              />
+            </Link>
+            <p className="text-sm text-muted-foreground max-w-xs mb-4">
+              Corporate gifting and swag, built for India. Ship to 80+ countries from one platform.
+            </p>
+            <div className="text-sm text-muted-foreground space-y-1">
+              <p className="font-medium text-foreground">Goodies.so</p>
+              <p>India · Shipping globally</p>
+              <a href="mailto:hello@goodies.so" className="text-primary hover:underline block mt-2">
+                hello@goodies.so
+              </a>
+            </div>
           </div>
-          <nav className="flex flex-wrap gap-x-6 gap-y-1 text-sm justify-center sm:justify-end">
-            <a href="#solutions" className="text-muted-foreground hover:text-foreground transition-colors">Solutions</a>
-            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
-            <a href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Terms</a>
-          </nav>
+
+          {/* Product */}
+          <div>
+            <h3 className="font-semibold text-foreground text-sm uppercase tracking-wider mb-4">Product</h3>
+            <ul className="space-y-2.5">
+              {productLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3 className="font-semibold text-foreground text-sm uppercase tracking-wider mb-4">Company</h3>
+            <ul className="space-y-2.5">
+              {companyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="font-semibold text-foreground text-sm uppercase tracking-wider mb-4">Legal</h3>
+            <ul className="space-y-2.5">
+              {legalLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <p className="text-muted-foreground text-xs sm:text-sm mt-6 pt-6 border-t border-border/60 text-center sm:text-left">
-          © {new Date().getFullYear()} Goodies.so. All rights reserved.
-        </p>
+
+        <div className="mt-10 pt-8 border-t border-border/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Goodies.so. All rights reserved.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Built in India · Startups to enterprise
+          </p>
+        </div>
       </div>
     </footer>
   )
