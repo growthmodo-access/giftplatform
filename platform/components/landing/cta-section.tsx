@@ -13,8 +13,8 @@ export function CTASection() {
   }
 
   return (
-    <section className="py-14 sm:py-20 md:py-28 lg:py-32 bg-white border-t border-border/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
+    <section className="py-14 sm:py-20 md:py-28 lg:py-32 bg-white border-t border-border/60 w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
         <div className="text-center flex flex-col items-center w-full">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4 sm:mb-6 md:mb-8 px-2 sm:px-0 leading-tight max-w-3xl">
             Ready to build stronger relationships through gifting?

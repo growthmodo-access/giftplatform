@@ -39,8 +39,8 @@ export function PricingSection() {
   }
 
   return (
-    <section id="pricing" className="py-20 sm:py-24 md:py-28 lg:py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
+    <section id="pricing" className="py-20 sm:py-24 md:py-28 lg:py-32 bg-white w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
         <div className="text-center mb-12 sm:mb-16 w-full px-2 sm:px-0">
           <p className="text-muted-foreground text-xs sm:text-sm font-bold uppercase tracking-widest mb-4">
             PRICING

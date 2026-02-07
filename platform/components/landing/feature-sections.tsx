@@ -7,9 +7,9 @@ export function FeatureSections() {
   return (
     <>
       {/* Order Premium Swag Section - dashboard-style cards */}
-      <section id="swag" className="py-12 sm:py-20 md:py-24 lg:py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
-          <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center">
+      <section id="swag" className="py-12 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
+          <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
             <div className="flex justify-center order-2 lg:order-1 w-full">
               <div className="w-full max-w-xl relative mx-auto">
                 <div className="absolute inset-0 bg-primary/5 rounded-2xl -z-10" />
@@ -45,9 +45,9 @@ export function FeatureSections() {
       </section>
 
       {/* Explore Gifts Section */}
-      <section id="gifts" className="py-12 sm:py-20 md:py-24 lg:py-28 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
-          <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center">
+      <section id="gifts" className="py-12 sm:py-20 md:py-24 lg:py-28 bg-muted/30 w-full max-w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
+          <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
             <div className="lg:order-2 flex justify-center order-2 w-full">
               <div className="w-full max-w-xl relative mx-auto">
                 <div className="absolute inset-0 bg-primary/5 rounded-2xl -z-10" />
@@ -83,9 +83,9 @@ export function FeatureSections() {
       </section>
 
       {/* Automate Gifts Section */}
-      <section className="py-12 sm:py-20 md:py-24 lg:py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
-          <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center">
+      <section className="py-12 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
+          <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
             <div className="flex justify-center order-2 lg:order-1 w-full">
               <div className="w-full max-w-xl relative mx-auto">
                 <div className="absolute inset-0 bg-primary/5 rounded-2xl -z-10" />

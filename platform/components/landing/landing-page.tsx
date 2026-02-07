@@ -45,7 +45,7 @@ export function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white overflow-x-hidden w-full max-w-full box-border">
       <ScrollProgress />
       <a 
         href="#home" 
@@ -54,7 +54,7 @@ export function LandingPage() {
         Skip to main content
       </a>
       <LandingHeader />
-      <main className="overflow-x-hidden w-full">
+      <main className="overflow-x-hidden w-full max-w-full min-w-0 box-border">
         <LandingHero />
         <ValueStrip />
         <FeatureSections />

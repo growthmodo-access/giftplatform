@@ -5,9 +5,9 @@ import Image from 'next/image'
 
 export function IndustryLeaders() {
   return (
-    <section className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center">
+    <section className="py-12 sm:py-24 md:py-28 lg:py-32 xl:py-36 bg-white w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 md:gap-20 lg:gap-24 items-center min-w-0">
           <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-6 sm:mb-8 leading-tight max-w-xl">
               From India to the world

@@ -17,8 +17,8 @@ export function LandingHero() {
   }
 
   return (
-    <section id="home" className="relative overflow-hidden bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full box-border">
+    <section id="home" className="relative overflow-hidden bg-white w-full max-w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-full box-border min-w-0">
         <div className="flex items-center justify-center py-10 sm:py-14 md:py-16 lg:py-20">
           <div className="flex flex-col items-center text-center max-w-5xl mx-auto w-full px-0 sm:px-2">
             {/* Trust Badge */}

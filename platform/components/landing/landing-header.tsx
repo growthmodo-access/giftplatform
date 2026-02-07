@@ -31,8 +31,8 @@ export function LandingHeader() {
   return (
     <>
       {/* Banner */}
-      <div className="bg-muted/50 text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
+      <div className="bg-muted/50 text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/60 w-full max-w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 box-border">
           <span>Built in India, shipping globally</span>
         </div>
       </div>
@@ -40,12 +40,12 @@ export function LandingHeader() {
       {/* Header - dashboard-aligned */}
       <header
         className={cn(
-          'sticky top-0 z-50 transition-all duration-300 bg-white border-b',
+          'sticky top-0 z-50 transition-all duration-300 bg-white border-b max-w-full',
           isScrolled ? 'border-border/60 shadow-sm' : 'border-transparent'
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full">
-          <div className="flex items-center justify-between gap-3 min-h-16 py-3 sm:min-h-20 lg:min-h-24 lg:py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full max-w-full box-border">
+          <div className="flex items-center justify-between gap-3 min-h-16 py-3 sm:min-h-20 lg:min-h-24 lg:py-4 min-w-0">
             {/* Logo - balanced size */}
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0 relative z-10 min-w-0">
               <Image
@@ -130,38 +130,40 @@ export function LandingHeader() {
             </button>
           </div>
 
-          {/* Mobile Menu - full width, left-aligned */}
+          {/* Mobile Menu - full width, visible text and tap targets */}
           {isMenuOpen && (
-            <div className="lg:hidden border-t border-border/50 py-4 w-full">
-              <nav className="flex flex-col gap-4 w-full text-left">
-                <a href="#home" className="text-muted-foreground hover:text-foreground font-medium py-1" onClick={() => setIsMenuOpen(false)}>
+            <div className="lg:hidden border-t border-border bg-white py-4 w-full">
+              <nav className="flex flex-col gap-1 w-full text-left" role="navigation" aria-label="Mobile menu">
+                <a href="#home" className="block py-3 px-2 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg active:bg-muted" onClick={() => setIsMenuOpen(false)}>
                   Home
                 </a>
-                <a href="#solutions" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
+                <a href="#solutions" className="block py-3 px-2 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg active:bg-muted" onClick={() => setIsMenuOpen(false)}>
                   Solutions
                 </a>
-                <a href="#pricing" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
+                <a href="#pricing" className="block py-3 px-2 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg active:bg-muted" onClick={() => setIsMenuOpen(false)}>
                   Pricing
                 </a>
-                <Link href="/contact" className="text-muted-foreground hover:text-foreground font-medium" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/contact" className="block py-3 px-2 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg active:bg-muted" onClick={() => setIsMenuOpen(false)}>
                   Contact
                 </Link>
-                <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
+                <div className="flex flex-col gap-2 pt-4 mt-2 border-t border-border">
                   <button
+                    type="button"
                     onClick={() => {
                       handleLogin()
                       setIsMenuOpen(false)
                     }}
-                    className="text-muted-foreground hover:text-foreground font-medium text-left"
+                    className="block w-full text-left py-3 px-4 text-base font-medium text-foreground hover:bg-muted/50 rounded-xl border border-border"
                   >
                     Login
                   </button>
                   <button
+                    type="button"
                     onClick={() => {
                       handleGetStarted()
                       setIsMenuOpen(false)
                     }}
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 rounded-xl font-medium w-full"
+                    className="w-full py-3 px-4 rounded-xl font-medium text-base bg-primary text-primary-foreground hover:bg-primary/90"
                   >
                     Get Started
                   </button>
