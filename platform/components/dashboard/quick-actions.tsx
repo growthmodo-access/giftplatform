@@ -56,7 +56,7 @@ export async function QuickActions() {
   }
 
   return (
-    <Card className="overflow-hidden border border-border/50 bg-card/80 shadow-sm backdrop-blur-sm">
+    <Card className="overflow-hidden border border-border/60 bg-white rounded-xl shadow-sm">
       <CardContent className="p-3 sm:p-4">
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <div className="flex items-center gap-2 shrink-0 mb-1 sm:mb-0 sm:mr-2 sm:border-r sm:border-border/60 sm:pr-4">

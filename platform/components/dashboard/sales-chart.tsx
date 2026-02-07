@@ -12,25 +12,25 @@ export async function SalesChart() {
   const maxValue = canViewRevenue ? maxRevenue : maxOrders
 
   return (
-    <Card className="border border-border">
+    <Card className="bg-white border border-border/60 rounded-xl shadow-sm overflow-hidden">
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <CardTitle className="text-base font-semibold text-foreground">
               {canViewRevenue ? 'Revenue Overview' : 'Order Volume'}
             </CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">Last 7 days performance</CardDescription>
+            <CardDescription className="text-sm text-muted-foreground">Last 7 days</CardDescription>
           </div>
-          <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto border-border">
-              <Download className="w-4 h-4" />
+          <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto border-border/60 rounded-lg">
+            <Download className="w-4 h-4" />
             Export
-            </Button>
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {canViewRevenue && (
-            <div className="flex items-center gap-6 pb-4 border-b border-border">
+            <div className="flex items-center gap-6 pb-4 border-b border-border/50">
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Monthly Revenue</p>
                 <p className="text-2xl font-semibold text-foreground tracking-tight">${(stats.monthlyRevenue / 1000).toFixed(1)}k</p>
@@ -74,7 +74,7 @@ export async function SalesChart() {
                   >
                     <div className="relative w-full flex items-end justify-center h-full">
                       <div
-                        className="w-full rounded-t bg-foreground/80 hover:bg-foreground transition-all duration-200 cursor-pointer group-hover:scale-105 origin-bottom"
+                        className="w-full rounded-t bg-primary/80 hover:bg-primary transition-all duration-200 cursor-pointer origin-bottom"
                         style={{ height: `${Math.max(height, 8)}px` }}
                       >
                         <div className="absolute -top-14 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">

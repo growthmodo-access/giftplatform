@@ -28,15 +28,15 @@ export async function RecentOrders() {
 
   if (recentOrders.length === 0) {
     return (
-      <Card className="border border-border">
+      <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <CardTitle className="text-base font-semibold text-foreground">Recent Orders</CardTitle>
-              <CardDescription className="text-sm text-muted-foreground">Latest gift orders and their status</CardDescription>
+              <CardDescription className="text-sm text-muted-foreground">Latest gift orders</CardDescription>
             </div>
             <Link href="/orders">
-              <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto">
+              <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto rounded-lg">
                 See All <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
@@ -44,14 +44,14 @@ export async function RecentOrders() {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="p-4 rounded-full bg-muted/50 mb-4">
+            <div className="p-4 rounded-xl bg-muted/50 mb-4">
               <Package className="w-8 h-8 text-muted-foreground" />
             </div>
             <h3 className="font-semibold text-foreground mb-1">No orders yet</h3>
             <p className="text-sm text-muted-foreground mb-4 max-w-sm">
-              Get started by creating your first gift order
+              Create your first gift order to get started
             </p>
-            <Button asChild>
+            <Button asChild className="rounded-lg">
               <Link href="/orders">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Order
@@ -64,29 +64,29 @@ export async function RecentOrders() {
   }
 
   return (
-    <Card className="border border-border">
+    <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <CardTitle className="text-base font-semibold text-foreground">Recent Orders</CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">Latest gift orders and their status</CardDescription>
+            <CardDescription className="text-sm text-muted-foreground">Latest gift orders</CardDescription>
           </div>
           <Link href="/orders">
-            <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted text-xs sm:text-sm w-full sm:w-auto">
-            See All <ArrowRight className="w-4 h-4" />
-          </Button>
+            <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted/50 text-xs sm:text-sm w-full sm:w-auto rounded-lg">
+              See All <ArrowRight className="w-4 h-4" />
+            </Button>
           </Link>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-1">
+        <div className="space-y-0.5">
           {recentOrders.map((order) => {
             const status = order.status as keyof typeof statusColors
             const employeeEmail = (order as any).employeeEmail || order.employee
             const initials = getInitials(order.employee, employeeEmail)
             return (
               <Link key={order.id} href={`/orders?order=${order.id}`}>
-                <div className="flex items-center gap-3 p-3 rounded-md hover:bg-muted transition-colors group cursor-pointer">
+                <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/50 transition-colors group cursor-pointer">
                   <Avatar className="w-9 h-9 flex-shrink-0">
                     <AvatarFallback className="text-xs bg-muted/50">
                       {initials}

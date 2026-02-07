@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card'
-import { Package, Gift, Users, DollarSign, TrendingUp, TrendingDown, Sparkles, Target } from 'lucide-react'
+import { Package, Gift, Users, DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
 import { getDashboardStats } from '@/actions/dashboard'
 
 export async function StatsCards() {
@@ -9,34 +9,38 @@ export async function StatsCards() {
     {
       label: "Today's Orders",
       value: stats.todayOrders.toString(),
-      change: stats.todayOrders > 0 ? "+" : "",
-      trend: "up",
+      change: stats.todayOrders > 0 ? '+' : '',
+      trend: 'up' as const,
       icon: Package,
+      iconBg: 'bg-primary/10 text-primary',
     },
     ...(canViewRevenue
       ? [
           {
-            label: "Total Revenue",
+            label: 'Total Revenue',
             value: `$${(stats.totalRevenue / 1000).toFixed(1)}k`,
             change: stats.revenueChange >= 0 ? `+${stats.revenueChange.toFixed(1)}%` : `${stats.revenueChange.toFixed(1)}%`,
-            trend: (stats.revenueChange >= 0 ? "up" : "down") as "up" | "down",
+            trend: (stats.revenueChange >= 0 ? 'up' : 'down') as 'up' | 'down',
             icon: DollarSign,
+            iconBg: 'bg-emerald-500/10 text-emerald-600',
           },
         ]
       : []),
     {
-      label: "Active Employees",
+      label: 'Active Employees',
       value: stats.totalEmployees.toString(),
-      change: "",
-      trend: "up",
+      change: '',
+      trend: 'up' as const,
       icon: Users,
+      iconBg: 'bg-blue-500/10 text-blue-600',
     },
     {
-      label: "Total Gifts Sent",
+      label: 'Total Gifts Sent',
       value: stats.totalGifts.toString(),
-      change: "",
-      trend: "up",
+      change: '',
+      trend: 'up' as const,
       icon: Gift,
+      iconBg: 'bg-amber-500/10 text-amber-600',
     },
   ]
 
@@ -45,46 +49,35 @@ export async function StatsCards() {
       {statsData.map((stat, index) => {
         const Icon = stat.icon
         return (
-          <Card 
-            key={stat.label} 
-            className="border border-black/[0.06] gradient-card hover:border-[#7B61FF]/20 hover:shadow-md transition-all duration-200 group"
-            style={{
-              animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`
-            }}
+          <Card
+            key={stat.label}
+            className="bg-white border border-border/60 rounded-xl shadow-sm hover:shadow-md hover:border-border transition-all duration-200 overflow-hidden"
           >
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="p-2.5 rounded-lg bg-muted/50 group-hover:bg-muted transition-colors">
-                  <Icon className="w-5 h-5 text-foreground" />
+            <div className="p-5">
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div className={`p-2.5 rounded-xl ${stat.iconBg}`}>
+                  <Icon className="w-5 h-5" />
                 </div>
                 {stat.change && (
-                  <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium ${
-                    stat.trend === 'up' 
-                      ? 'bg-muted text-foreground' 
-                      : 'bg-muted text-muted-foreground'
-                  }`}>
-                    {stat.trend === 'up' ? (
-                      <TrendingUp className="w-3 h-3" />
-                    ) : (
-                      <TrendingDown className="w-3 h-3" />
-                    )}
+                  <span
+                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium shrink-0 ${
+                      stat.trend === 'up' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-red-500/10 text-red-600'
+                    }`}
+                  >
+                    {stat.trend === 'up' ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                     {stat.change}
-                  </div>
+                  </span>
                 )}
               </div>
-              <div>
-                <p className="text-xs font-medium text-muted-foreground mb-1.5 uppercase tracking-wide">
-                  {stat.label}
-                </p>
-                <p className="text-3xl font-semibold text-foreground tracking-tight mb-1">
-                  {stat.value}
-                </p>
-                {stat.change && (
-                  <div className="flex items-center gap-1.5 mt-2">
-                    <p className="text-xs text-muted-foreground">vs last month</p>
-                  </div>
-                )}
-              </div>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                {stat.label}
+              </p>
+              <p className="text-2xl font-semibold text-foreground tracking-tight">
+                {stat.value}
+              </p>
+              {stat.change && (
+                <p className="text-xs text-muted-foreground mt-1.5">vs last month</p>
+              )}
             </div>
           </Card>
         )

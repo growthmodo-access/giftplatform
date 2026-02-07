@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingCart, 
-  Users, 
-  Zap, 
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  Zap,
   BarChart3,
   Settings,
   LogOut,
@@ -20,10 +20,19 @@ import {
   Building2,
   CreditCard,
   ClipboardList,
-  ScrollText
+  ScrollText,
+  ChevronUp,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu'
 
 type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
 
@@ -53,9 +62,12 @@ const allMenuItems: MenuItem[] = [
 
 interface SidebarProps {
   userRole: UserRole
+  userName: string
+  userEmail: string
+  userInitials: string
 }
 
-export function Sidebar({ userRole }: SidebarProps) {
+export function Sidebar({ userRole, userName, userEmail, userInitials }: SidebarProps) {
   const pathname = usePathname()
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
@@ -134,39 +146,26 @@ export function Sidebar({ userRole }: SidebarProps) {
     return pathname.startsWith(href)
   }
 
-  const handleLogout = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleLogout = async () => {
     try {
-      const response = await fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      
-      if (response.ok || response.redirected) {
-        if (response.redirected) {
-          window.location.href = response.url
-        } else {
-          window.location.href = '/login'
-        }
+      const response = await fetch('/api/auth/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' } })
+      if (response.ok) {
+        window.location.href = '/login'
       } else {
-        console.error('Logout error:', await response.text())
         window.location.href = '/login'
       }
-    } catch (error) {
-      console.error('Logout error:', error)
+    } catch {
       window.location.href = '/login'
     }
   }
 
   return (
     <>
-      {/* Mobile menu button */}
+      {/* Mobile menu button - hamburger to open full menu */}
       <button
         onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-4 left-4 z-[60] p-2.5 rounded-lg bg-background border border-border/50 hover:bg-muted transition-all shadow-md hover:shadow-lg active:scale-95"
-        aria-label="Toggle menu"
+        className="lg:hidden fixed top-4 left-4 z-[60] p-2.5 rounded-xl bg-white border border-border/60 hover:bg-muted/50 transition-all shadow-sm active:scale-95 flex items-center justify-center"
+        aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
       >
         {isMobileOpen ? (
           <X className="w-5 h-5 text-foreground" />
@@ -175,74 +174,67 @@ export function Sidebar({ userRole }: SidebarProps) {
         )}
       </button>
 
-      {/* Mobile overlay */}
+      {/* Mobile overlay - tap to collapse menu */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-md z-[45] transition-opacity animate-in fade-in duration-200"
+          className="lg:hidden fixed inset-0 bg-black/40 z-[45] transition-opacity duration-200"
           onClick={toggleMobileMenu}
+          aria-hidden="true"
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - full menu on mobile when open, collapsible on desktop */}
       <aside className={cn(
-        "bg-white backdrop-blur-lg border-r border-black/[0.06] flex flex-col transition-all duration-300 ease-in-out shadow-sm",
-        // Mobile: fixed positioning with slide animation
-        "lg:sticky fixed top-0 h-screen z-[50]",
-        // Mobile: slide in/out
-        "lg:translate-x-0",
-        isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
-        // Desktop: width based on collapsed state
-        isCollapsed ? "w-16 lg:w-16" : "w-64 lg:w-64"
+        'flex flex-col bg-white border-r border-border/60 transition-all duration-300 ease-out',
+        'lg:sticky fixed top-0 h-screen z-[50]',
+        'lg:translate-x-0',
+        isMobileOpen ? 'translate-x-0 w-[min(280px,85vw)]' : '-translate-x-full lg:translate-x-0',
+        isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'
       )}>
-        {/* Header */}
+        {/* Logo + collapse */}
         <div className="p-3 lg:p-4 border-b border-border/50 flex-shrink-0">
-          <div className="flex items-center justify-between">
-            <Link 
+          <div className="flex items-center justify-between gap-2">
+            <Link
               href="/dashboard"
               className={cn(
-                "flex items-center gap-2.5 transition-opacity duration-300 hover:opacity-80 flex-shrink-0",
-                isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                'flex items-center gap-2.5 transition-opacity duration-300 hover:opacity-80 flex-shrink-0 min-w-0',
+                isCollapsed ? 'opacity-0 w-0 overflow-hidden pointer-events-none' : 'opacity-100'
               )}
             >
               <Image
                 src="/logogoodies.png"
-                alt="Goodies Logo"
+                alt="Goodies"
                 width={200}
                 height={100}
-                className="h-6 lg:h-8 xl:h-10 w-auto object-contain"
+                className="h-6 lg:h-8 w-auto object-contain"
                 priority
                 unoptimized
               />
             </Link>
-            <div className="flex items-center gap-1.5">
-              {/* Mobile close button */}
+            <div className="flex items-center gap-1 shrink-0">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleMobileMenu}
-                className="lg:hidden h-8 w-8 hover:bg-muted"
+                className="lg:hidden h-9 w-9 rounded-lg hover:bg-muted/60"
+                aria-label="Close menu"
               >
                 <X className="h-4 w-4" />
               </Button>
-              {/* Desktop collapse button */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="hidden lg:flex h-8 w-8 hover:bg-muted"
-                title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                className="hidden lg:flex h-9 w-9 rounded-lg hover:bg-muted/60"
+                title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >
-                {isCollapsed ? (
-                  <Menu className="h-4 w-4" />
-                ) : (
-                  <ChevronLeft className="h-4 w-4" />
-                )}
+                {isCollapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
               </Button>
             </div>
           </div>
         </div>
         
-        {/* Navigation */}
+        {/* Navigation - full menu (mobile + desktop) */}
         <nav className="flex-1 p-2 lg:p-3 space-y-0.5 overflow-y-auto overflow-x-hidden">
           {menuItems.map((item) => {
             const Icon = item.icon
@@ -252,68 +244,88 @@ export function Sidebar({ userRole }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative",
-                  "hover:bg-muted/60 active:scale-[0.98]",
+                  'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group relative',
+                  'hover:bg-muted/50 active:scale-[0.99]',
                   active
-                    ? "bg-primary/5 text-[#7B61FF] font-semibold shadow-sm border-l-2 border-[#7B61FF]"
-                    : "text-muted-foreground hover:text-[#7B61FF] hover:bg-black/[0.03]",
-                  isCollapsed && "justify-center lg:justify-center"
+                    ? 'bg-primary/10 text-primary font-semibold'
+                    : 'text-muted-foreground hover:text-foreground',
+                  isCollapsed && 'justify-center lg:justify-center'
                 )}
                 title={isCollapsed ? item.label : undefined}
               >
-                <div className={cn(
-                  "absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full transition-all",
-                  active ? "bg-[#7B61FF] opacity-100" : "bg-transparent opacity-0"
-                )} />
                 <Icon className={cn(
-                  "w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-all",
-                  active
-                    ? "text-[#7B61FF] scale-110"
-                    : "text-muted-foreground group-hover:text-[#7B61FF] group-hover:scale-105"
+                  'w-5 h-5 flex-shrink-0',
+                  active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
                 )} />
                 <span className={cn(
-                  "transition-opacity duration-300 whitespace-nowrap text-sm font-medium",
-                  isCollapsed ? "opacity-0 w-0 overflow-hidden lg:opacity-0" : "opacity-100"
+                  'transition-opacity duration-300 whitespace-nowrap text-sm font-medium',
+                  isCollapsed ? 'opacity-0 w-0 overflow-hidden lg:opacity-0' : 'opacity-100'
                 )}>
                   {item.label}
                 </span>
                 {isCollapsed && (
-                  <div className="hidden lg:block absolute left-full ml-3 px-3 py-2 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-50 whitespace-nowrap shadow-xl">
+                  <div className="hidden lg:block absolute left-full ml-2 px-2.5 py-1.5 bg-popover border border-border text-popover-foreground text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
                     {item.label}
-                    <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-r-4 border-r-foreground border-b-4 border-b-transparent"></div>
                   </div>
                 )}
               </Link>
             )
           })}
         </nav>
-      
-        {/* Footer */}
+
+        {/* Bottom left: Profile (avatar + name, dropdown: Settings, Log out) */}
         <div className="p-3 lg:p-4 border-t border-border/50 flex-shrink-0">
-          <button
-            onClick={handleLogout}
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-foreground hover:bg-muted/60 hover:text-foreground w-full transition-all active:scale-[0.98] group relative",
-              isCollapsed && "justify-center lg:justify-center"
-            )}
-            title={isCollapsed ? "Log out" : undefined}
-          >
-            <LogOut className="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 transition-transform group-hover:rotate-[-15deg]" />
-            <span className={cn(
-              "transition-opacity duration-300 whitespace-nowrap text-sm font-medium",
-              isCollapsed ? "opacity-0 w-0 overflow-hidden lg:opacity-0" : "opacity-100"
-            )}>
-              Log out
-            </span>
-            {isCollapsed && (
-              <div className="hidden lg:block absolute left-full ml-3 px-3 py-2 bg-foreground text-background text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-50 whitespace-nowrap shadow-xl">
-                Log out
-                <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-r-4 border-r-foreground border-b-4 border-b-transparent"></div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className={cn(
+                  'flex items-center gap-3 w-full rounded-xl p-2.5 text-left hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+                  isCollapsed && 'justify-center lg:justify-center p-2'
+                )}
+                title={isCollapsed ? userName : undefined}
+              >
+                <Avatar className="h-9 w-9 shrink-0 border border-border/60">
+                  <AvatarFallback className="bg-muted text-foreground text-sm font-medium">
+                    {userInitials}
+                  </AvatarFallback>
+                </Avatar>
+                <div className={cn(
+                  'min-w-0 flex-1',
+                  isCollapsed && 'opacity-0 w-0 overflow-hidden lg:opacity-0'
+                )}>
+                  <p className="text-sm font-medium text-foreground truncate">{userName}</p>
+                  <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+                </div>
+                <ChevronUp className={cn(
+                  'w-4 h-4 shrink-0 text-muted-foreground rotate-180',
+                  isCollapsed && 'lg:hidden'
+                )} />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" side="top" className="w-56 border-border/60 bg-white">
+              <div className="px-3 py-2.5 border-b border-border/50">
+                <p className="text-sm font-semibold text-foreground truncate">{userName}</p>
+                <p className="text-xs text-muted-foreground truncate mt-0.5">{userEmail}</p>
               </div>
-            )}
-          </button>
-      </div>
-    </aside>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="cursor-pointer focus:bg-muted/50">
+                <Link href="/settings" className="flex items-center w-full">
+                  <Settings className="w-4 h-4 mr-2.5 text-muted-foreground" />
+                  <span className="text-sm">Settings</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="cursor-pointer focus:bg-muted/50 text-muted-foreground focus:text-destructive"
+                onSelect={handleLogout}
+              >
+                <LogOut className="w-4 h-4 mr-2.5" />
+                <span className="text-sm">Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </aside>
     </>
   )
 }

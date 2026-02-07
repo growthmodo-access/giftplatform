@@ -59,14 +59,14 @@ export function ActivityFeed() {
 
   if (activities.length === 0) {
     return (
-      <Card className="border border-border/50">
+      <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-semibold text-foreground">Activity Feed</CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">Recent platform activity</CardDescription>
+          <CardDescription className="text-sm text-muted-foreground">Recent activity</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="p-3 rounded-md bg-muted/50 mb-3">
+            <div className="p-3 rounded-xl bg-muted/50 mb-3">
               <Clock className="w-6 h-6 text-muted-foreground" />
             </div>
             <p className="text-muted-foreground font-medium mb-1">No recent activity</p>
@@ -78,22 +78,22 @@ export function ActivityFeed() {
   }
 
   return (
-    <Card className="border border-border/50">
+    <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-base font-semibold text-foreground">Activity Feed</CardTitle>
-        <CardDescription className="text-sm text-muted-foreground">Recent platform activity</CardDescription>
+        <CardDescription className="text-sm text-muted-foreground">Recent activity</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
+        <div className="space-y-1">
           {activities.map((activity) => {
             const Icon = activity.icon
             return (
               <div
                 key={activity.id}
-                className="flex items-start gap-3 p-2.5 rounded-md hover:bg-muted/50 transition-colors group"
+                className="flex items-start gap-3 p-3 rounded-xl hover:bg-muted/50 transition-colors group"
               >
-                <div className="p-1.5 rounded-md bg-muted/50 flex-shrink-0 mt-0.5">
-                  <Icon className="w-3.5 h-3.5 text-foreground" />
+                <div className="p-2 rounded-lg bg-muted/50 flex-shrink-0 mt-0.5">
+                  <Icon className="w-4 h-4 text-foreground" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm text-foreground mb-0.5">{activity.title}</p>

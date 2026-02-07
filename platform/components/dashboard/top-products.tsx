@@ -8,18 +8,18 @@ export async function TopProducts() {
 
   if (topProducts.length === 0) {
     return (
-      <Card className="border border-border">
+      <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-semibold text-foreground">Top Products</CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">Most popular gifts this month</CardDescription>
+          <CardDescription className="text-sm text-muted-foreground">Most popular this month</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="p-3 rounded-md bg-muted mb-3">
+            <div className="p-3 rounded-xl bg-muted/50 mb-3">
               <Trophy className="w-6 h-6 text-muted-foreground" />
             </div>
             <p className="text-muted-foreground font-medium mb-1">No products yet</p>
-            <p className="text-sm text-muted-foreground">Product rankings will appear here</p>
+            <p className="text-sm text-muted-foreground">Rankings will appear here</p>
           </div>
         </CardContent>
       </Card>
@@ -27,16 +27,16 @@ export async function TopProducts() {
   }
 
   return (
-    <Card className="border border-border">
+    <Card className="bg-white border border-border/60 rounded-xl shadow-sm">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <Trophy className="w-4 h-4 text-foreground" />
+          <Trophy className="w-4 h-4 text-amber-500" />
           <CardTitle className="text-base font-semibold text-foreground">Top Products</CardTitle>
         </div>
-        <CardDescription className="text-sm text-muted-foreground">Most popular gifts this month</CardDescription>
+        <CardDescription className="text-sm text-muted-foreground">Most popular this month</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-1">
+        <div className="space-y-0.5">
           {topProducts.map((product, index) => {
             // Simulate growth indicator (in real app, compare with previous period)
             const growth = index === 0 ? 12.5 : index === 1 ? 8.3 : index === 2 ? -2.1 : 0
@@ -44,9 +44,9 @@ export async function TopProducts() {
             const hasDecline = growth < 0
             
             return (
-              <div 
-                key={product.id} 
-                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-md hover:bg-muted transition-colors gap-3 group"
+              <div
+                key={product.id}
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-xl hover:bg-muted/50 transition-colors gap-3 group"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 ${
