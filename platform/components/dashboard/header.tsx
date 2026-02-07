@@ -1,18 +1,35 @@
 'use client'
 
 import { useState } from 'react'
-import { Search } from 'lucide-react'
+import { Search, Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SearchDialog } from './search-dialog'
+import { cn } from '@/lib/utils'
 
-export function Header() {
+interface HeaderProps {
+  onOpenMobileMenu?: () => void
+}
+
+export function Header({ onOpenMobileMenu }: HeaderProps) {
   const [searchOpen, setSearchOpen] = useState(false)
 
   return (
     <header className="h-14 lg:h-16 bg-white/95 backdrop-blur-sm sm:bg-white sm:backdrop-blur-none border-b border-transparent sm:border-border/50 sticky top-0 z-30 shrink-0">
-      <div className="h-full pl-[58px] pr-4 sm:pl-5 sm:pr-6 lg:px-6 flex items-center justify-between gap-3 min-w-0">
+      <div className="h-full pl-3 pr-3 sm:pl-5 sm:pr-6 lg:px-6 flex items-center justify-between gap-3 min-w-0">
+        {/* Mobile: menu button (opens sidebar) - in header so it doesn't overlay content */}
+        {onOpenMobileMenu && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onOpenMobileMenu}
+            className="lg:hidden h-10 w-10 rounded-xl hover:bg-muted/50 shrink-0"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+        )}
         {/* Search - opens command palette */}
-        <div className="hidden md:flex flex-1 max-w-md">
+        <div className={cn('max-w-md', onOpenMobileMenu ? 'hidden md:flex flex-1' : 'flex-1')}>
           <button
             type="button"
             onClick={() => setSearchOpen(true)}

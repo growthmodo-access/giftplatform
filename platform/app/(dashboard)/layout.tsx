@@ -1,7 +1,4 @@
-import { Sidebar } from '@/components/dashboard/sidebar'
-import { Header } from '@/components/dashboard/header'
-import { Breadcrumbs } from '@/components/dashboard/breadcrumbs'
-import { KeyboardShortcuts } from '@/components/dashboard/keyboard-shortcuts'
+import { DashboardShell } from '@/components/dashboard/dashboard-shell'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -88,23 +85,13 @@ export default async function DashboardLayout({
   const userInitials = getInitials(currentUser.name, userEmail)
 
   return (
-    <div className="flex h-screen bg-white overflow-hidden min-w-0">
-      <Sidebar
-        userRole={userRole}
-        userName={userName}
-        userEmail={userEmail}
-        userInitials={userInitials}
-      />
-      <div className="flex-1 flex flex-col overflow-hidden min-w-0 pl-0 sm:pl-16 lg:pl-0">
-        <Header />
-        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-white">
-          <KeyboardShortcuts />
-          <div className="w-full max-w-7xl mx-auto py-4 px-3 sm:px-5 sm:py-6 lg:px-8 lg:py-8 min-w-0">
-            <Breadcrumbs />
-            {children}
-          </div>
-        </main>
-      </div>
-    </div>
+    <DashboardShell
+      userRole={userRole}
+      userName={userName}
+      userEmail={userEmail}
+      userInitials={userInitials}
+    >
+      {children}
+    </DashboardShell>
   )
 }

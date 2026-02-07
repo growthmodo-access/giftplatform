@@ -65,12 +65,17 @@ interface SidebarProps {
   userName: string
   userEmail: string
   userInitials: string
+  isMobileOpen?: boolean
+  onMobileOpenChange?: (open: boolean) => void
 }
 
-export function Sidebar({ userRole, userName, userEmail, userInitials }: SidebarProps) {
+export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileOpen: controlledMobileOpen, onMobileOpenChange }: SidebarProps) {
   const pathname = usePathname()
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [internalMobileOpen, setInternalMobileOpen] = useState(false)
+  const isMobileOpen = onMobileOpenChange ? (controlledMobileOpen ?? false) : internalMobileOpen
+  const setMobileOpen = onMobileOpenChange ?? setInternalMobileOpen
+  const setMobileOpenValue = (open: boolean) => (onMobileOpenChange ? onMobileOpenChange(open) : setInternalMobileOpen(open))
 
   // Validate role and ensure it's a valid UserRole type
   const normalizedRole: UserRole = (() => {
@@ -109,7 +114,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
 
   // Close mobile menu on route change
   useEffect(() => {
-    setIsMobileOpen(false)
+    setMobileOpenValue(false)
   }, [pathname])
 
   // Keyboard shortcuts
@@ -122,7 +127,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
       }
       // Close mobile menu with Escape
       if (e.key === 'Escape' && isMobileOpen) {
-        setIsMobileOpen(false)
+        setMobileOpenValue(false)
       }
     }
 
@@ -135,7 +140,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
   }
 
   const toggleMobileMenu = () => {
-    setIsMobileOpen(!isMobileOpen)
+    setMobileOpenValue(!isMobileOpen)
   }
   
   // Check if current path starts with any menu item href
@@ -161,24 +166,11 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
 
   return (
     <>
-      {/* Mobile menu button - hamburger to open full menu */}
-      <button
-        onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-3 left-3 z-[60] p-3 rounded-2xl bg-muted/40 hover:bg-muted/60 active:scale-95 transition-all flex items-center justify-center touch-manipulation sm:bg-white sm:border sm:border-border/50 sm:shadow-sm"
-        aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
-      >
-        {isMobileOpen ? (
-          <X className="w-5 h-5 text-foreground" />
-        ) : (
-          <Menu className="w-5 h-5 text-foreground" />
-        )}
-      </button>
-
-      {/* Mobile overlay - tap to collapse menu */}
+      {/* Mobile overlay - tap to close menu */}
       {isMobileOpen && (
         <div
           className="lg:hidden fixed inset-0 bg-black/40 z-[45] transition-opacity duration-200"
-          onClick={toggleMobileMenu}
+          onClick={() => setMobileOpenValue(false)}
           aria-hidden="true"
         />
       )}
@@ -191,7 +183,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
         isMobileOpen ? 'translate-x-0 w-[min(280px,88vw)] shadow-xl' : '-translate-x-full lg:translate-x-0 lg:shadow-none',
         isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'
       )}>
-        {/* Logo + collapse */}
+        {/* Logo + collapse / mobile close */}
         <div className="p-4 lg:p-4 border-b border-border/40 flex-shrink-0">
           <div className="flex items-center justify-between gap-2">
             <Link
@@ -212,7 +204,17 @@ export function Sidebar({ userRole, userName, userEmail, userInitials }: Sidebar
               />
             </Link>
             <div className="flex items-center gap-1 shrink-0">
-              {/* Desktop only: collapse/expand. On mobile, close is the floating hamburger (X) and overlay tap. */}
+              {/* Mobile: close button inside sidebar so it doesn't overlay the logo */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileOpenValue(false)}
+                className="lg:hidden h-9 w-9 rounded-lg hover:bg-muted/60"
+                aria-label="Close menu"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+              {/* Desktop: collapse/expand */}
               <Button
                 variant="ghost"
                 size="icon"
