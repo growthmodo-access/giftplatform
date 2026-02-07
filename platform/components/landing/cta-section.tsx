@@ -32,6 +32,9 @@ export function CTASection() {
               Book a demo
             </Button>
           </div>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-8 sm:mb-12 px-2 text-center">
+            No credit card required · Custom quote in 24 hours
+          </p>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 md:gap-10">
             {ctaItems.map((item, index) => (
               <div
