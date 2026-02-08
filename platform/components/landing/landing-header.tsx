@@ -55,10 +55,10 @@ export function LandingHeader() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border">
           <div className="flex items-center justify-between gap-4 min-h-[4rem] sm:min-h-[4.5rem] min-w-0">
-            <Link href="/" className="flex items-center gap-2 group flex-shrink-0 relative z-10 min-w-0" aria-label="Goodies home">
+            <Link href="/" className="flex items-center gap-2 group flex-shrink-0 relative z-10 min-w-0" aria-label="GiftPro home">
               <Image
                 src="/logogoodies.png"
-                alt="Goodies"
+                alt="GiftPro"
                 width={200}
                 height={100}
                 className="h-9 sm:h-10 lg:h-11 w-auto max-w-[140px] sm:max-w-[160px] lg:max-w-[180px] object-contain object-left group-hover:opacity-90 transition-opacity"

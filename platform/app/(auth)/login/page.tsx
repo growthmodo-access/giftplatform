@@ -204,7 +204,7 @@ function LoginForm() {
           <div className="flex items-center justify-center mb-6">
             <Image
               src="/logogoodies.png"
-              alt="Goodies Logo"
+              alt="GiftPro"
               width={160}
               height={80}
               className="h-12 sm:h-16 lg:h-20 w-auto object-contain"
@@ -213,7 +213,7 @@ function LoginForm() {
           </div>
           <CardTitle className="text-2xl font-semibold text-center text-foreground">Welcome back</CardTitle>
           <CardDescription className="text-center text-muted-foreground">
-            Sign in to your Goodies.so account
+            Sign in to your GiftPro account
           </CardDescription>
         </CardHeader>
         <CardContent>

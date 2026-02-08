@@ -31,7 +31,7 @@ export default function ContactPage() {
       <header className="border-b border-black/[0.06] bg-white/95 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
-            <Image src="/logogoodies.png" alt="Goodies Logo" width={180} height={90} className="h-8 sm:h-10 w-auto object-contain" unoptimized />
+            <Image src="/logogoodies.png" alt="GiftPro" width={180} height={90} className="h-8 sm:h-10 w-auto object-contain" unoptimized />
           </Link>
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-4">
             <Link href="/#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
@@ -122,8 +122,8 @@ export default function ContactPage() {
         </Card>
         <p className="text-center text-sm text-muted-foreground mt-8">
           Prefer email? Reach us at{' '}
-          <a href="mailto:hello@goodies.so" className="text-foreground font-medium hover:underline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
-            hello@goodies.so
+          <a href="mailto:hello@giftpro.so" className="text-foreground font-medium hover:underline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
+            hello@giftpro.so
           </a>
         </p>
       </main>
