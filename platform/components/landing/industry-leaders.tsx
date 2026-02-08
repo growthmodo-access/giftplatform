@@ -15,9 +15,9 @@ const pains = [
 
 export function IndustryLeaders() {
   return (
-    <section id="problem" className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
-        <div className="grid lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-16 xl:gap-20 items-center min-w-0">
+    <section id="problem" className="landing-section bg-white w-full max-w-full overflow-hidden">
+      <div className="landing-container">
+        <div className="landing-grid">
           {/* Visual left (desktop) / second on mobile */}
           <div className="order-2 lg:order-1 w-full min-w-0 flex justify-center lg:justify-start">
             <div className="relative w-full max-w-xl mx-auto lg:mx-0 rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-muted/20 ring-1 ring-black/5">
@@ -32,14 +32,12 @@ export function IndustryLeaders() {
             </div>
           </div>
           {/* Text right (desktop) / first on mobile */}
-          <div className="order-1 lg:order-2 space-y-5 sm:space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start w-full max-w-xl lg:max-w-none mx-auto lg:mx-0">
-            <p className="text-primary text-xs font-semibold uppercase tracking-widest">
-              The problem
-            </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight leading-tight">
+          <div className="order-1 lg:order-2 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full max-w-xl lg:max-w-none mx-auto lg:mx-0">
+            <p className="landing-label">The problem</p>
+            <h2 className="landing-heading">
               Gifting breaks the moment your company grows
             </h2>
-            <p className="text-base text-muted-foreground leading-relaxed">
+            <p className="landing-body">
               Corporate gifting should be simple. Instead, it becomes messy fast.
             </p>
             <ul className="text-sm sm:text-base text-muted-foreground space-y-2.5 text-left w-full">

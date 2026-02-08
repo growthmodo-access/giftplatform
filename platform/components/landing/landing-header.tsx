@@ -54,7 +54,7 @@ export function LandingHeader() {
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border">
-          <div className="flex items-center justify-between gap-4 min-h-16 sm:min-h-[4.25rem] min-w-0">
+          <div className="flex items-center justify-between gap-4 min-h-[4rem] sm:min-h-[4.5rem] min-w-0">
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0 relative z-10 min-w-0" aria-label="Goodies home">
               <Image
                 src="/logogoodies.png"

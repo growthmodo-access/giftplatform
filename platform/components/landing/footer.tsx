@@ -7,13 +7,11 @@ const productLinks = [
   { label: 'Pricing', href: '#pricing' },
   { label: 'Contact', href: '/contact' },
 ]
-
 const companyLinks = [
   { label: 'About us', href: '/contact' },
   { label: 'Contact', href: '/contact' },
   { label: 'Careers', href: '/contact#careers' },
 ]
-
 const legalLinks = [
   { label: 'Privacy Policy', href: '/privacy' },
   { label: 'Terms of Service', href: '/terms' },
@@ -23,20 +21,13 @@ const legalLinks = [
 export function Footer() {
   return (
     <footer className="bg-foreground text-background w-full max-w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 w-full max-w-full box-border min-w-0">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 lg:gap-14 min-w-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20 w-full max-w-full box-border min-w-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 sm:gap-12 lg:gap-16 min-w-0">
           <div className="lg:col-span-2 min-w-0">
-            <Link href="/" className="inline-block mb-5" aria-label="Goodies home">
-              <Image
-                src="/logogoodies.png"
-                alt="Goodies"
-                width={200}
-                height={100}
-                className="h-9 sm:h-10 w-auto max-w-[140px] object-contain brightness-0 invert"
-                unoptimized
-              />
+            <Link href="/" className="inline-block mb-6" aria-label="Goodies home">
+              <Image src="/logogoodies.png" alt="Goodies" width={200} height={100} className="h-9 sm:h-10 w-auto max-w-[140px] object-contain brightness-0 invert" unoptimized />
             </Link>
-            <p className="text-sm text-white/80 max-w-xs mb-5 leading-relaxed">
+            <p className="text-sm text-white/80 max-w-xs mb-6 leading-[1.65]">
               One platform to send corporate gifts globally—without spreadsheets, vendors, or chaos. Built in India. Ships to 100+ locations.
             </p>
             <div className="text-sm text-white/80 space-y-1">
@@ -47,54 +38,34 @@ export function Footer() {
               </a>
             </div>
           </div>
-
           <div>
-            <h3 className="font-semibold text-white text-sm uppercase tracking-wider mb-4">Product</h3>
-            <ul className="space-y-3">
+            <h3 className="font-semibold text-white text-sm uppercase tracking-[0.15em] mb-5">Product</h3>
+            <ul className="space-y-3.5">
               {productLinks.map((link) => (
-                <li key={link.href}>
-                  <a href={link.href} className="text-sm text-white/80 hover:text-white transition-colors">
-                    {link.label}
-                  </a>
-                </li>
+                <li key={link.href}><a href={link.href} className="text-sm text-white/80 hover:text-white transition-colors">{link.label}</a></li>
               ))}
             </ul>
           </div>
-
           <div>
-            <h3 className="font-semibold text-white text-sm uppercase tracking-wider mb-4">Company</h3>
-            <ul className="space-y-3">
+            <h3 className="font-semibold text-white text-sm uppercase tracking-[0.15em] mb-5">Company</h3>
+            <ul className="space-y-3.5">
               {companyLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-white/80 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
+                <li key={link.href}><Link href={link.href} className="text-sm text-white/80 hover:text-white transition-colors">{link.label}</Link></li>
               ))}
             </ul>
           </div>
-
           <div>
-            <h3 className="font-semibold text-white text-sm uppercase tracking-wider mb-4">Legal</h3>
-            <ul className="space-y-3">
+            <h3 className="font-semibold text-white text-sm uppercase tracking-[0.15em] mb-5">Legal</h3>
+            <ul className="space-y-3.5">
               {legalLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-white/80 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
+                <li key={link.href}><Link href={link.href} className="text-sm text-white/80 hover:text-white transition-colors">{link.label}</Link></li>
               ))}
             </ul>
           </div>
         </div>
-
-        <div className="mt-14 pt-8 border-t border-white/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <p className="text-xs sm:text-sm text-white/60">
-            © {new Date().getFullYear()} Goodies. All rights reserved.
-          </p>
-          <p className="text-xs text-white/60">
-            Built in India · Startups to enterprise
-          </p>
+        <div className="mt-16 pt-10 border-t border-white/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <p className="text-xs sm:text-sm text-white/60">© {new Date().getFullYear()} Goodies. All rights reserved.</p>
+          <p className="text-xs text-white/60">Built in India · Startups to enterprise</p>
         </div>
       </div>
     </footer>

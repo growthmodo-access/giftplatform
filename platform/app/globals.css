@@ -214,6 +214,32 @@
   .container-padding {
     @apply px-4 sm:px-6 lg:px-8;
   }
+
+  /* Landing: typography & space */
+  .landing-section {
+    @apply py-20 sm:py-24 md:py-28 lg:py-32;
+  }
+  .landing-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0;
+  }
+  .landing-label {
+    @apply text-primary text-xs font-semibold uppercase tracking-[0.2em];
+  }
+  .landing-heading {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold tracking-tight leading-[1.15] text-foreground;
+  }
+  .landing-heading-hero {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground;
+  }
+  .landing-body {
+    @apply text-base text-muted-foreground leading-[1.65];
+  }
+  .landing-body-lg {
+    @apply text-base sm:text-lg text-muted-foreground leading-[1.65];
+  }
+  .landing-grid {
+    @apply grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center min-w-0;
+  }
 }
 
 @keyframes fadeInUp {
