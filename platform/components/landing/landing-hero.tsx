@@ -18,7 +18,7 @@ export function LandingHero() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="landing-container relative">
-        <div className="flex items-center justify-center pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-12 sm:pb-16">
+        <div className="flex items-center justify-center pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-10 sm:pb-12">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto w-full px-0 sm:px-2">
             <div className="mb-8 sm:mb-10 w-full">
               <span className="inline-flex items-center justify-center gap-2 bg-white/90 backdrop-blur-sm text-foreground px-5 py-3 sm:px-6 sm:py-3.5 rounded-full text-xs sm:text-sm font-medium border border-border/50 shadow-sm">
@@ -82,7 +82,7 @@ export function LandingHero() {
           </div>
         </div>
 
-        <div className="pb-20 sm:pb-24 md:pb-28 lg:pb-32 relative w-full">
+        <div className="pb-14 sm:pb-18 md:pb-22 lg:pb-26 relative w-full">
           <div className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-white ring-1 ring-black/5">
             <Image
               src="/hero1.png"

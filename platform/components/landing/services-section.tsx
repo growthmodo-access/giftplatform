@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react'
 
 export function ServicesSection() {
   return (
-    <section id="services" className="landing-section bg-muted/30 w-full max-w-full overflow-hidden">
+    <section id="services" className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
       <div className="landing-container">
         <div className="landing-grid">
           {/* Visual left */}

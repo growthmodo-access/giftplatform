@@ -5,7 +5,7 @@ import { faqItems } from '@/lib/faq-data'
 
 export function FAQSection() {
   return (
-    <section className="landing-section bg-muted/30 w-full max-w-full overflow-hidden">
+    <section className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center mb-12 sm:mb-14 space-y-4">
           <p className="landing-label">FAQ</p>

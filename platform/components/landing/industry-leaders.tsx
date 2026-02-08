@@ -15,7 +15,7 @@ const pains = [
 
 export function IndustryLeaders() {
   return (
-    <section id="problem" className="landing-section bg-white w-full max-w-full overflow-hidden">
+    <section id="problem" className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
       <div className="landing-container">
         <div className="landing-grid">
           {/* Visual left (desktop) / second on mobile */}

@@ -2,7 +2,7 @@
 
 export function IndiaSection() {
   return (
-    <section className="landing-section bg-muted/30 w-full max-w-full overflow-hidden border-y border-border/40">
+    <section className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
       <div className="landing-container">
         <div className="text-center max-w-3xl mx-auto space-y-6 sm:space-y-8">
           <p className="landing-label">From India to the world</p>

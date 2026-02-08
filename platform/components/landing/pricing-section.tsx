@@ -2,64 +2,28 @@
 
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Check } from 'lucide-react'
-
-const plans = [
-  { name: 'Starter', description: 'For teams sending up to a few hundred gifts a year', price: 'Custom', features: ['Up to 100 gifts/month', '100+ countries', 'Premium catalog', 'Email support'], cta: 'Talk to sales', highlighted: false },
-  { name: 'Growth', description: 'For scaling recognition and client gifting', price: 'Custom', features: ['Unlimited gifts', 'Dedicated account manager', 'Custom branding', 'API access', 'Priority support'], cta: 'Talk to sales', highlighted: true },
-  { name: 'Enterprise', description: 'For global orgs with compliance and integration needs', price: 'Custom', features: ['Everything in Growth', 'SLA & compliance', 'Custom integrations'], cta: 'Talk to sales', highlighted: false },
-]
+import { ArrowRight } from 'lucide-react'
 
 export function PricingSection() {
   const router = useRouter()
-  const handleTalkToSales = () => router.push('/contact')
 
   return (
-    <section id="pricing" className="landing-section bg-muted/30 w-full max-w-full overflow-hidden">
+    <section id="pricing" className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
       <div className="landing-container">
-        <div className="text-center mb-14 sm:mb-16 max-w-2xl mx-auto space-y-6">
+        <div className="text-center max-w-2xl mx-auto space-y-6">
           <p className="landing-label">Pricing</p>
           <h2 className="landing-heading">Flexible plans that grow with your team</h2>
           <p className="landing-body">
-            Whether you&apos;re sending gifts occasionally or running gifting year-round, our plans adapt to your needs.
+            No vendor lock-ins. No operational overhead. Pay only for what you use. We adapt to your volume—occasional sends or year-round gifting.
           </p>
-          <ul className="text-sm text-muted-foreground space-y-2 max-w-md mx-auto text-left flex flex-wrap justify-center gap-x-6 gap-y-1">
-            <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary shrink-0" /> No vendor lock-ins</li>
-            <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary shrink-0" /> No operational overhead</li>
-            <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary shrink-0" /> Pay only for what you use</li>
-          </ul>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 w-full max-w-5xl mx-auto">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`rounded-2xl border p-6 sm:p-8 flex flex-col transition-all duration-200 ${
-                plan.highlighted
-                  ? 'border-primary/40 bg-white shadow-xl shadow-primary/10 ring-2 ring-primary/20 md:scale-[1.02] lg:scale-105'
-                  : 'border-border/50 bg-white shadow-lg shadow-black/5 hover:shadow-xl hover:border-primary/20'
-              }`}
-            >
-              <h3 className="text-xl font-bold text-foreground mb-2">{plan.name}</h3>
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{plan.description}</p>
-              <p className="text-2xl font-bold text-foreground mb-6">{plan.price}</p>
-              <ul className="space-y-3 mb-8 flex-1">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-sm text-foreground">
-                    <Check className="h-5 w-5 text-primary flex-shrink-0" strokeWidth={2} />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                onClick={handleTalkToSales}
-                className={plan.highlighted ? 'rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 w-full py-6 font-semibold shadow-lg shadow-primary/20' : 'rounded-xl w-full py-6 font-semibold border-2 border-border/60 hover:bg-muted/50 hover:border-primary/30'}
-                aria-label={`Talk to sales for ${plan.name}`}
-              >
-                {plan.cta}
-              </Button>
-            </div>
-          ))}
+          <Button
+            variant="outline"
+            onClick={() => router.push('/contact')}
+            className="rounded-xl border-2 border-primary text-primary bg-white hover:bg-primary/5 hover:border-primary/80 px-6 py-4 text-base font-semibold inline-flex items-center gap-2"
+          >
+            Talk to sales
+            <ArrowRight className="h-4 w-4" strokeWidth={2} />
+          </Button>
         </div>
       </div>
     </section>

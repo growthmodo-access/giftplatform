@@ -25,7 +25,7 @@ export function FeatureSections() {
   return (
     <>
       {/* Core benefit 1: image left, text right */}
-      <section id="benefits" className="landing-section bg-white w-full max-w-full overflow-hidden">
+      <section id="benefits" className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
         <div className="landing-container">
           <div className="landing-grid">
             <div className="order-2 lg:order-1 w-full min-w-0 flex justify-center lg:justify-start">
@@ -53,7 +53,7 @@ export function FeatureSections() {
       </section>
 
       {/* Core benefit 2: image left, text right */}
-      <section className="landing-section bg-muted/30 w-full max-w-full overflow-hidden">
+      <section className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
         <div className="landing-container">
           <div className="landing-grid">
             <div className="order-2 lg:order-1 w-full min-w-0 flex justify-center lg:justify-start">
@@ -81,7 +81,7 @@ export function FeatureSections() {
       </section>
 
       {/* Core benefit 3: image left, text right */}
-      <section className="landing-section bg-white w-full max-w-full overflow-hidden">
+      <section className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
         <div className="landing-container">
           <div className="landing-grid">
             <div className="order-2 lg:order-1 w-full min-w-0 flex justify-center lg:justify-start">

@@ -9,8 +9,7 @@ export function CTASection() {
   const handleRequestDemo = () => router.push('/signup')
 
   return (
-    <section className="relative landing-section bg-gradient-to-b from-primary/10 via-primary/5 to-transparent border-t border-border/40 w-full max-w-full overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,hsl(var(--primary)/0.08),transparent)] pointer-events-none" />
+    <section className="relative landing-section bg-white border-t border-border/40 w-full max-w-full overflow-hidden">
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0 overflow-x-hidden">
         <div className="text-center flex flex-col items-center w-full space-y-6 sm:space-y-8">
           <p className="landing-label">Get started</p>

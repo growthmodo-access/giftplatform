@@ -10,7 +10,7 @@ const steps = [
 
 export function IntegrationsSection() {
   return (
-    <section id="solutions" className="landing-section bg-white w-full max-w-full overflow-hidden">
+    <section id="solutions" className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
       <div className="landing-container">
         <div className="text-center mb-14 sm:mb-16 md:mb-20 max-w-2xl mx-auto space-y-4">
           <p className="landing-label">How it works</p>
