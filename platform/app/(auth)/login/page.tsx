@@ -33,11 +33,11 @@ function LoginForm() {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user } } = await supabase.auth.getUser()
         
-        if (user) {
-          const redirectTo = searchParams.get('redirect') || '/dashboard'
-          router.push(redirectTo)
+      if (user) {
+        const redirectTo = searchParams.get('redirect') || '/dashboard'
+        router.push(redirectTo)
         }
       } catch (err) {
         // Silently handle error - user can still log in
@@ -234,41 +234,41 @@ function LoginForm() {
             </div>
           ) : (
             <form onSubmit={useMagicLink ? handleMagicLink : handleLogin} className="space-y-4">
-              {error && (
+            {error && (
                 <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
-                  {error}
-                </div>
-              )}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-foreground">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="border-border/50"
-                />
+                {error}
               </div>
+            )}
+            <div className="space-y-2">
+                <Label htmlFor="email" className="text-foreground">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                  className="border-border/50"
+              />
+            </div>
               {!useMagicLink && (
-                <div className="space-y-2">
+            <div className="space-y-2">
                   <Label htmlFor="password" className="text-foreground">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
                     className="border-border/50"
-                  />
-                </div>
+              />
+            </div>
               )}
               <Button type="submit" className="w-full gradient-button text-white shadow-primary" disabled={loading}>
                 {loading
                   ? (useMagicLink ? 'Sending link...' : 'Signing in...')
                   : (useMagicLink ? 'Send magic link' : 'Sign in')}
-              </Button>
+            </Button>
               <div className="flex items-center justify-center gap-2">
                 <button
                   type="button"
@@ -279,12 +279,12 @@ function LoginForm() {
                 </button>
               </div>
               <div className="text-center text-sm text-muted-foreground">
-                Don't have an account?{' '}
+              Don't have an account?{' '}
                 <a href="/signup" className="text-foreground hover:underline font-medium">
-                  Sign up
-                </a>
-              </div>
-            </form>
+                Sign up
+              </a>
+            </div>
+          </form>
           )}
 
           {/* Test User Quick Login */}

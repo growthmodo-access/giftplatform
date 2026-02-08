@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  Users,
-  Zap,
+import { 
+  LayoutDashboard, 
+  Package, 
+  ShoppingCart, 
+  Users, 
+  Zap, 
   BarChart3,
   Settings,
   LogOut,
@@ -225,23 +225,23 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
                 {isCollapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
               </Button>
             </div>
-          </div>
         </div>
-        
+      </div>
+      
         {/* Navigation - generous tap targets on mobile */}
         <nav className="flex-1 p-3 lg:p-3 space-y-0.5 overflow-y-auto overflow-x-hidden">
-          {menuItems.map((item) => {
-            const Icon = item.icon
-            const active = isActive(item.href)
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
+        {menuItems.map((item) => {
+          const Icon = item.icon
+          const active = isActive(item.href)
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
                   'flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group relative touch-manipulation',
                   'lg:px-3 lg:py-2.5 lg:rounded-xl',
                   'hover:bg-muted/50 active:scale-[0.99]',
-                  active
+                active
                     ? 'bg-muted/70 text-foreground font-semibold'
                     : 'text-foreground hover:text-foreground lg:text-muted-foreground lg:hover:text-foreground',
                   isCollapsed && 'justify-center lg:justify-center'
@@ -263,16 +263,16 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
                     {item.label}
                   </div>
                 )}
-              </Link>
-            )
-          })}
-        </nav>
-
+            </Link>
+          )
+        })}
+      </nav>
+      
         {/* Bottom: Profile */}
         <div className="p-3 lg:p-4 border-t border-border/40 flex-shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button
+          <button
                 className={cn(
                   'flex items-center gap-3 w-full rounded-xl p-2.5 text-left hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                   isCollapsed && 'justify-center lg:justify-center p-2'
@@ -295,7 +295,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
                   'w-4 h-4 shrink-0 text-muted-foreground rotate-180',
                   isCollapsed && 'lg:hidden'
                 )} />
-              </button>
+          </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="top" className="w-56 border-border/60 bg-white">
               <div className="px-3 py-2.5 border-b border-border/50">
@@ -319,8 +319,8 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-      </aside>
+      </div>
+    </aside>
     </>
   )
 }
