@@ -4,6 +4,7 @@ import { useEffect, lazy, Suspense } from 'react'
 import { LandingHeader } from './landing-header'
 import { LandingHero } from './landing-hero'
 import { ValueStrip } from './value-strip'
+import { BrandsSection } from './brands-section'
 import { FeatureSections } from './feature-sections'
 import { IndustryLeaders } from './industry-leaders'
 import { ServicesSection } from './services-section'
@@ -59,6 +60,7 @@ export function LandingPage() {
       <main className="overflow-x-hidden w-full max-w-full min-w-0 box-border">
         <LandingHero />
         <ValueStrip />
+        <BrandsSection />
         <IndustryLeaders />
         <ServicesSection />
         <FeatureSections />
