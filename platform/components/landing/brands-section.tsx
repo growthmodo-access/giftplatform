@@ -24,7 +24,7 @@ const BRAND_LOGOS: Record<string, string> = {
 }
 
 const LOGO_CELL_CLASS =
-  'flex items-center justify-center h-10 sm:h-12 md:h-14 w-full max-w-[100px] sm:max-w-[120px] md:max-w-[140px] rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/30 hover:border-primary/20 transition-all duration-200 min-w-0'
+  'flex items-center justify-center h-12 sm:h-14 md:h-16 w-full rounded-xl border border-border/40 bg-muted/20 hover:bg-muted/30 hover:border-primary/30 transition-all duration-200 min-w-0'
 
 function BrandCell({ name }: { name: string }) {
   const logoSrc = BRAND_LOGOS[name]
@@ -34,7 +34,7 @@ function BrandCell({ name }: { name: string }) {
 
   return (
     <div className={LOGO_CELL_CLASS}>
-      <div className="relative h-6 w-[80px] sm:h-7 sm:w-[100px] md:h-8 md:w-[115px] flex items-center justify-center overflow-hidden">
+      <div className="relative h-7 w-[110px] sm:h-8 sm:w-[120px] md:h-9 md:w-[130px] flex items-center justify-center overflow-hidden">
         <Image
           src={logoSrc}
           alt={name}
@@ -60,12 +60,12 @@ export function BrandsSection() {
           Brands we&apos;ve worked with
         </h2>
         <div className="flex flex-col gap-3 sm:gap-5 max-w-4xl mx-auto px-0">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4 items-stretch justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4 items-stretch justify-items-center">
             {BRANDS_ROW_1.map((name) => (
               <BrandCell key={name} name={name} />
             ))}
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4 items-stretch justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4 items-stretch justify-items-center">
             {BRANDS_ROW_2.map((name) => (
               <BrandCell key={name} name={name} />
             ))}
