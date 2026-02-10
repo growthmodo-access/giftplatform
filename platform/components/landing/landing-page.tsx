@@ -57,7 +57,7 @@ export function LandingPage() {
         Skip to main content
       </a>
       <LandingHeader />
-      <main className="overflow-x-hidden w-full max-w-full min-w-0 box-border">
+      <main className="overflow-x-hidden w-full max-w-full min-w-0 box-border pb-20 sm:pb-24">
         <LandingHero />
         <ValueStrip />
         <BrandsSection />
