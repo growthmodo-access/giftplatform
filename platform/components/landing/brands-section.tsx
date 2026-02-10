@@ -3,12 +3,11 @@
 import Image from 'next/image'
 
 /**
- * Brands we've worked with — two rows of logos in dark teal/green on white.
- * SVG logo files live in /public as shown here:
- * https://github.com/growthmodo-access/giftplatform/tree/main/platform/public
+ * Brands we've worked with — 10 logos in 5/5 layout with upgraded presentation.
+ * SVG logo files live in /public (see repo platform/public).
  */
-const BRANDS_ROW_1 = ['Google', 'Swiggy', 'Zoho', 'Philips', 'Microsoft', 'Zomato', 'Paytm']
-const BRANDS_ROW_2 = ['Disney+ Hotstar', 'Snapdeal', 'Apna', 'Walmart', 'Uber', 'Philips', 'Adobe']
+const BRANDS_ROW_1 = ['Google', 'Swiggy', 'Zoho', 'Philips', 'Microsoft']
+const BRANDS_ROW_2 = ['Zomato', 'Paytm', 'Disney+ Hotstar', 'Snapdeal', 'Adobe']
 
 /** Map brand name -> public path for its logo SVG */
 const BRAND_LOGOS: Record<string, string> = {
@@ -21,25 +20,30 @@ const BRAND_LOGOS: Record<string, string> = {
   Paytm: '/paytm-1.svg',
   'Disney+ Hotstar': '/disney-2.svg',
   Snapdeal: '/snapdeal.svg',
-  Uber: '/uber-12.svg',
   Adobe: '/adobe-44195.svg',
-  // Apna and Walmart currently have no SVG configured
 }
+
+const LOGO_CELL_CLASS =
+  'flex items-center justify-center h-12 sm:h-14 w-[120px] sm:w-[140px] rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/30 hover:border-primary/20 transition-all duration-200'
 
 function BrandCell({ name }: { name: string }) {
   const logoSrc = BRAND_LOGOS[name]
   if (!logoSrc) return null
 
+  const isSmallLogo = name === 'Google' || name === 'Adobe'
+
   return (
-    <div className="flex items-center justify-center h-8 sm:h-9 md:h-10 w-full max-w-[160px] mx-auto">
-      <Image
-        src={logoSrc}
-        alt={name}
-        width={160}
-        height={40}
-        className="h-full w-auto object-contain object-center"
-        unoptimized
-      />
+    <div className={LOGO_CELL_CLASS}>
+      <div className="relative h-7 sm:h-8 w-[100px] sm:w-[115px] flex items-center justify-center overflow-hidden">
+        <Image
+          src={logoSrc}
+          alt={name}
+          width={160}
+          height={64}
+          className={`object-contain object-center ${isSmallLogo ? 'scale-110' : ''}`}
+          unoptimized
+        />
+      </div>
     </div>
   )
 }
@@ -55,15 +59,15 @@ export function BrandsSection() {
         <h2 className="landing-heading text-center mb-10 sm:mb-12">
           Brands we&apos;ve worked with
         </h2>
-        <div className="flex flex-col gap-6 sm:gap-8">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-4 sm:gap-6 md:gap-8 items-center justify-items-center">
-            {BRANDS_ROW_1.filter((name) => BRAND_LOGOS[name]).map((name) => (
+        <div className="flex flex-col gap-4 sm:gap-5 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 items-stretch justify-items-center">
+            {BRANDS_ROW_1.map((name) => (
               <BrandCell key={name} name={name} />
             ))}
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-4 sm:gap-6 md:gap-8 items-center justify-items-center">
-            {BRANDS_ROW_2.filter((name) => BRAND_LOGOS[name]).map((name) => (
-              <BrandCell key={`${name}-row2`} name={name} />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 items-stretch justify-items-center">
+            {BRANDS_ROW_2.map((name) => (
+              <BrandCell key={name} name={name} />
             ))}
           </div>
         </div>
