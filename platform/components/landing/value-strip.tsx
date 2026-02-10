@@ -15,13 +15,13 @@ export function ValueStrip() {
         <p className="text-center text-sm font-medium text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
           Trusted by fast-growing companies to deliver gifts across teams and borders
         </p>
-        <div className="flex flex-wrap items-stretch justify-center gap-5 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-4xl mx-auto">
           {items.map((item) => {
             const Icon = item.icon
             return (
               <div
                 key={item.label}
-                className="flex items-center gap-4 rounded-2xl bg-white border border-border/40 px-6 py-5 sm:px-7 sm:py-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 min-w-0 flex-1 sm:flex-initial sm:min-w-[220px] max-w-[300px]"
+                className="flex items-center gap-4 rounded-2xl bg-white border border-border/40 px-5 py-4 sm:px-7 sm:py-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 min-w-0 w-full"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <Icon className="h-5 w-5" strokeWidth={1.75} />
