@@ -31,13 +31,13 @@ function BrandCell({ name }: { name: string }) {
   if (!logoSrc) return null
 
   return (
-    <div className="flex items-center justify-center h-8 sm:h-9 w-full max-w-[140px] mx-auto">
+    <div className="flex items-center justify-center h-8 sm:h-9 md:h-10 w-full max-w-[160px] mx-auto">
       <Image
         src={logoSrc}
         alt={name}
-        width={140}
-        height={36}
-        className="w-full h-auto object-contain object-center"
+        width={160}
+        height={40}
+        className="h-full w-auto object-contain object-center"
         unoptimized
       />
     </div>
@@ -56,12 +56,12 @@ export function BrandsSection() {
           Brands we&apos;ve worked with
         </h2>
         <div className="flex flex-col gap-6 sm:gap-8">
-          <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 sm:gap-6 md:gap-8 items-center justify-items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-4 sm:gap-6 md:gap-8 items-center justify-items-center">
             {BRANDS_ROW_1.filter((name) => BRAND_LOGOS[name]).map((name) => (
               <BrandCell key={name} name={name} />
             ))}
           </div>
-          <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 sm:gap-6 md:gap-8 items-center justify-items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-4 sm:gap-6 md:gap-8 items-center justify-items-center">
             {BRANDS_ROW_2.filter((name) => BRAND_LOGOS[name]).map((name) => (
               <BrandCell key={`${name}-row2`} name={name} />
             ))}
