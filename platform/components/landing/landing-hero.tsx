@@ -79,7 +79,7 @@ export function LandingHero() {
           </div>
         </div>
 
-        <div className="pb-14 sm:pb-18 md:pb-22 lg:pb-26 relative w-full">
+        <div className="pb-14 sm:pb-16 md:pb-20 lg:pb-24 relative w-full">
           <div className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-white ring-1 ring-black/5">
             <Image
               src="https://raw.githubusercontent.com/growthmodo-access/giftplatform/refs/heads/main/platform/public/MAINIMAGE.png"
