@@ -23,6 +23,8 @@ export const siteConfig = {
     signup: '/signup',
     privacy: '/privacy',
     terms: '/terms',
+    instagram: 'https://instagram.com/goodies.so',
+    facebook: 'https://facebook.com/goodies.so',
   },
   organization: {
     name: 'Goodies',
