@@ -82,7 +82,7 @@ export function LandingHero() {
         <div className="pb-14 sm:pb-16 md:pb-20 lg:pb-24 relative w-full">
           <div className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-white ring-1 ring-black/5">
             <Image
-              src="https://raw.githubusercontent.com/growthmodo-access/giftplatform/refs/heads/main/platform/public/MAINIMAGE.png"
+              src="https://github.com/growthmodo-access/giftplatform/blob/main/platform/public/IMG1.png?raw=true"
               alt="Global gifting dashboard and delivery"
               width={1536}
               height={1024}
