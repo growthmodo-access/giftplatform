@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { siteConfig } from '@/lib/site'
 
 const productLinks = [
   { label: 'Corporate gifting', href: '#benefits' },
@@ -24,17 +25,21 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20 w-full max-w-full box-border min-w-0">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 sm:gap-12 lg:gap-16 min-w-0">
           <div className="lg:col-span-2 min-w-0">
-            <Link href="/" className="inline-block mb-6" aria-label="GiftPro home">
-              <Image src="/logogoodies.png" alt="GiftPro" width={200} height={100} className="h-9 sm:h-10 w-auto max-w-[140px] object-contain brightness-0 invert" unoptimized />
+            <Link href="/" className="inline-block mb-6" aria-label={`${siteConfig.name} home`}>
+              <Image src="/logogoodies.png" alt={siteConfig.name} width={200} height={100} className="h-9 sm:h-10 w-auto max-w-[140px] object-contain brightness-0 invert" unoptimized />
             </Link>
             <p className="text-sm text-white/80 max-w-xs mb-6 leading-[1.65]">
               One platform to send corporate gifts globally—without spreadsheets, vendors, or chaos. Built in India. Ships to 100+ locations.
             </p>
             <div className="text-sm text-white/80 space-y-1">
-              <p className="font-semibold text-white">GiftPro</p>
+              <p className="font-semibold text-white">{siteConfig.name}</p>
+              <p>{siteConfig.companyLegalName}</p>
               <p>India · Shipping globally</p>
-              <a href="mailto:hello@giftpro.so" className="text-primary-foreground hover:underline block mt-2 font-medium">
-                hello@giftpro.so
+              <a href={`mailto:${siteConfig.supportEmail}`} className="text-primary-foreground hover:underline block mt-2 font-medium">
+                {siteConfig.supportEmail}
+              </a>
+              <a href={`tel:${siteConfig.supportPhone.replace(/\s/g, '')}`} className="text-primary-foreground hover:underline block font-medium">
+                {siteConfig.supportPhone}
               </a>
             </div>
           </div>
@@ -64,7 +69,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-16 pt-10 border-t border-white/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <p className="text-xs sm:text-sm text-white/60">© {new Date().getFullYear()} GiftPro. All rights reserved.</p>
+          <p className="text-xs sm:text-sm text-white/60">© {new Date().getFullYear()} {siteConfig.companyLegalName}. All rights reserved.</p>
           <p className="text-xs text-white/60">Built in India · Startups to enterprise</p>
         </div>
       </div>

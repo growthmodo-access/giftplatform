@@ -36,7 +36,7 @@ export function LandingHeader() {
   return (
     <>
       {/* Top banner - compact */}
-      <div className="bg-primary/8 text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/40 w-full max-w-full overflow-hidden">
+      <div className="bg-white text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/50 w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 box-border">
           <span className="block sm:inline">
             Corporate gifting for HR & Ops—one platform, 100+ locations.{' '}

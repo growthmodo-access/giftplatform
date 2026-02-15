@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { buildMetadata } from '@/lib/seo'
+import { siteConfig } from '@/lib/site'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Privacy Policy',
-  description: 'Privacy policy for Goodies. How we collect, use, and protect your information when you use our corporate gifting platform.',
+  description: `Privacy policy for ${siteConfig.name} (${siteConfig.companyLegalName}). How we collect, use, and protect your information when you use our corporate gifting platform.`,
   path: 'privacy',
 })
 
@@ -12,18 +13,18 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="border-b border-border/60 py-4">
-        <div className="max-w-3xl mx-auto px-4">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Link href="/" className="text-primary font-semibold hover:underline">
-            ← Goodies.so
+            ← {siteConfig.name}
           </Link>
         </div>
       </header>
-      <main className="max-w-3xl mx-auto px-4 py-10 sm:py-14">
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Privacy Policy</h1>
         <p className="text-sm text-muted-foreground mb-8">Last updated: {new Date().toLocaleDateString('en-IN')}</p>
         <div className="prose prose-sm max-w-none text-foreground space-y-6">
           <p>
-            Goodies.so (&quot;we&quot;, &quot;our&quot;) is committed to protecting your privacy. This policy describes how we collect, use, and safeguard your information when you use our corporate gifting platform.
+            {siteConfig.companyLegalName} (&quot;we&quot;, &quot;our&quot;) operates {siteConfig.name} and is committed to protecting your privacy. This policy describes how we collect, use, and safeguard your information when you use our corporate gifting platform.
           </p>
           <h2 id="cookies" className="text-lg font-semibold mt-8">Cookies</h2>
           <p>
@@ -35,7 +36,7 @@ export default function PrivacyPage() {
           </p>
           <h2 className="text-lg font-semibold mt-8">Contact</h2>
           <p>
-            For privacy requests or questions: <a href="mailto:privacy@goodies.so" className="text-primary hover:underline">privacy@goodies.so</a>
+            For privacy requests or questions: <a href={`mailto:${siteConfig.supportEmail}`} className="text-primary hover:underline">{siteConfig.supportEmail}</a> or call <a href={`tel:${siteConfig.supportPhone.replace(/\s/g, '')}`} className="text-primary hover:underline">{siteConfig.supportPhone}</a>.
           </p>
         </div>
         <p className="mt-10">

@@ -13,9 +13,9 @@
     --popover-foreground: 222 47% 11%;
     --primary: 252 100% 71%; /* #7B61FF - amethyst, works with gradients */
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
+    --secondary: 0 0% 97%;
     --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
+    --muted: 0 0% 97%;
     --muted-foreground: 215 16% 47%;
     --accent: 210 88% 54%; /* Azure */
     --accent-foreground: 0 0% 100%;
@@ -23,7 +23,7 @@
     --destructive-foreground: 0 0% 100%;
     --success: 142 71% 45%; /* Light Malachite #28BF5D */
     --success-foreground: 0 0% 100%;
-    --border: 0 0% 92%;
+    --border: 0 0% 94%;
     --input: 0 0% 97%;
     --ring: 252 100% 71%;
     --radius: 0.5rem;
@@ -122,13 +122,13 @@
     background: linear-gradient(135deg, #FFFFFF 0%, #FCFCFC 20%, #FFFFFF 50%, #FCFCFC 80%, #FFFFFF 100%);
   }
   
-  /* White-based, very light gradient for premium feel */
+  /* Pure white backgrounds */
   .gradient-landing {
-    background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 30%, #FFFFFF 60%, #F8F8F8 100%);
+    background: #ffffff;
   }
   
   .gradient-card {
-    background: linear-gradient(145deg, #FFFFFF 0%, #FCFCFC 100%);
+    background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.06);
   }
 

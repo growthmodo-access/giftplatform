@@ -13,10 +13,7 @@ export function LandingHero() {
   }
 
   return (
-    <section id="home" className="relative overflow-hidden w-full max-w-full">
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] via-transparent to-muted/30 pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
+    <section id="home" className="relative overflow-hidden w-full max-w-full bg-white">
       <div className="landing-container relative">
         <div className="flex items-center justify-center pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-10 sm:pb-12">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto w-full px-0 sm:px-2">

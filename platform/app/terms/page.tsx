@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { buildMetadata } from '@/lib/seo'
+import { siteConfig } from '@/lib/site'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Terms of Service',
-  description: 'Terms of service for Goodies. By using our corporate gifting platform you agree to these terms.',
+  description: `Terms of service for ${siteConfig.name} (${siteConfig.companyLegalName}). By using our corporate gifting platform you agree to these terms.`,
   path: 'terms',
 })
 
@@ -12,18 +13,18 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="border-b border-border/60 py-4">
-        <div className="max-w-3xl mx-auto px-4">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Link href="/" className="text-primary font-semibold hover:underline">
-            ← Goodies.so
+            ← {siteConfig.name}
           </Link>
         </div>
       </header>
-      <main className="max-w-3xl mx-auto px-4 py-10 sm:py-14">
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Terms of Service</h1>
         <p className="text-sm text-muted-foreground mb-8">Last updated: {new Date().toLocaleDateString('en-IN')}</p>
         <div className="prose prose-sm max-w-none text-foreground space-y-6">
           <p>
-            By using Goodies.so, you agree to these terms. Our platform provides corporate gifting, swag, and campaign tools for businesses.
+            By using {siteConfig.name}, you agree to these terms. {siteConfig.companyLegalName} provides the platform for corporate gifting, swag, and campaign tools for businesses.
           </p>
           <h2 className="text-lg font-semibold mt-8">Use of the service</h2>
           <p>
@@ -35,7 +36,7 @@ export default function TermsPage() {
           </p>
           <h2 className="text-lg font-semibold mt-8">Contact</h2>
           <p>
-            For questions: <a href="mailto:hello@goodies.so" className="text-primary hover:underline">hello@goodies.so</a>
+            For questions: <a href={`mailto:${siteConfig.supportEmail}`} className="text-primary hover:underline">{siteConfig.supportEmail}</a> or call <a href={`tel:${siteConfig.supportPhone.replace(/\s/g, '')}`} className="text-primary hover:underline">{siteConfig.supportPhone}</a>.
           </p>
         </div>
         <p className="mt-10">
