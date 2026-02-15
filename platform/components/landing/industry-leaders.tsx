@@ -24,7 +24,8 @@ export function IndustryLeaders() {
       className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white"
     >
       <div className="landing-container">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 xl:gap-14 items-center min-w-0">
+        <div className="max-w-6xl mx-auto w-full">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 xl:gap-14 items-center min-w-0">
           <div className="order-1 w-full min-w-0 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-xl xl:max-w-2xl mx-auto lg:mx-0 rounded-2xl overflow-hidden">
               <Image
@@ -38,7 +39,7 @@ export function IndustryLeaders() {
               />
             </div>
           </div>
-          <div className="order-2 flex flex-col items-start w-full max-w-xl lg:max-w-none mx-auto lg:mx-0 text-left">
+          <div className="order-2 flex flex-col items-start w-full max-w-xl lg:max-w-2xl mx-auto lg:mx-0 text-left">
             <p className="landing-label mb-2">The problem</p>
             <h2 id="problem-heading" className="landing-heading text-balance mb-4">
               Gifting breaks the moment your company grows
@@ -67,6 +68,7 @@ export function IndustryLeaders() {
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
             </Button>
           </div>
+        </div>
         </div>
       </div>
     </section>
