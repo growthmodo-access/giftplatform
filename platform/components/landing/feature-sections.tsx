@@ -30,7 +30,7 @@ export function FeatureSections() {
           <div className="landing-grid">
             <div className="order-2 lg:order-1 w-full min-w-0 flex justify-center lg:justify-start">
               <div className="relative w-full max-w-xl mx-auto lg:mx-0 rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-muted/20 ring-1 ring-black/5">
-                <Image src="/IMG1.png" alt="Premium swag and gifts showcase" width={600} height={400} className="w-full h-auto object-contain" priority />
+                <Image src="/IMG3.png" alt="Premium swag and gifts showcase" width={600} height={400} className="w-full h-auto object-contain" priority />
               </div>
             </div>
             <div className="order-1 lg:order-2 space-y-6 sm:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start w-full max-w-xl lg:max-w-none mx-auto lg:mx-0">
