@@ -38,7 +38,7 @@ export function IndustryLeaders() {
               />
             </div>
           </div>
-          <div className="order-2 flex flex-col items-center lg:items-start w-full max-w-xl lg:max-w-none mx-auto lg:mx-0 text-center lg:text-left">
+          <div className="order-2 flex flex-col items-start w-full max-w-xl lg:max-w-none mx-auto lg:mx-0 text-left">
             <p className="landing-label mb-2">The problem</p>
             <h2 id="problem-heading" className="landing-heading text-balance mb-4">
               Gifting breaks the moment your company grows
