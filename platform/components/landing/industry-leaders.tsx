@@ -22,7 +22,7 @@ export function IndustryLeaders() {
           <div className="order-2 lg:order-1 w-full min-w-0 flex justify-center lg:justify-start">
             <div className="relative w-full max-w-xl mx-auto lg:mx-0 rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-muted/20 ring-1 ring-black/5">
               <Image
-                src="/g4.png"
+                src="/IMG1.png"
                 alt="Corporate gifting challenges - spreadsheets and coordination"
                 width={1536}
                 height={1024}
