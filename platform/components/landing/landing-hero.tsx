@@ -18,7 +18,7 @@ export function LandingHero() {
         <div className="flex items-center justify-center pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-10 sm:pb-12">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto w-full px-0 sm:px-2">
             <div className="mb-8 sm:mb-10 w-full">
-              <span className="inline-flex items-center justify-center gap-2 bg-white/90 backdrop-blur-sm text-foreground px-5 py-3 sm:px-6 sm:py-3.5 rounded-full text-xs sm:text-sm font-medium border border-border/50 shadow-sm">
+              <span className="inline-flex items-center justify-center gap-2 text-foreground/90 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium">
                 <span className="text-lg">🇮🇳</span>
                 Built for India · Ships to 100+ locations
               </span>
@@ -35,42 +35,40 @@ export function LandingHero() {
               Manage gifting, swag, addresses, approvals, branding, and worldwide delivery from one dashboard. No spreadsheets. No vendors to chase. No last-minute panic.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12 sm:mb-14 w-full max-w-sm sm:max-w-none mx-auto px-2 sm:px-0 justify-center items-stretch sm:items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-12 sm:mb-14 w-full max-w-sm sm:max-w-none mx-auto px-2 sm:px-0 justify-center items-stretch sm:items-center">
               <Button
                 onClick={handleRequestDemo}
-                size="lg"
-                className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-xl transition-all w-full sm:w-auto"
+                className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 text-sm font-medium w-full sm:w-auto transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
                 aria-label="Book a demo"
               >
                 Book a demo
               </Button>
               <Button
                 variant="outline"
-                size="lg"
                 onClick={() => router.push('/signup')}
-                className="rounded-xl border-2 border-primary text-primary bg-white hover:bg-primary/5 hover:border-primary/80 px-8 py-6 text-base font-semibold w-full sm:w-auto inline-flex items-center justify-center gap-2"
+                className="rounded-lg border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 px-6 py-3 text-sm font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
                 aria-label="Get started"
               >
                 Get started
-                <ArrowRight className="h-5 w-5" strokeWidth={2} />
+                <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
               </Button>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground mb-12 px-2 text-center">
               No credit card required · Live in under 2 minutes
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-2xl mx-auto">
-              <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm border border-border/40 px-5 py-3.5 rounded-xl shadow-sm hover:shadow transition-shadow">
-                <Globe className="h-5 w-5 text-primary shrink-0" strokeWidth={1.75} />
-                <span className="text-sm font-medium text-foreground">Ship to 100+ locations</span>
+            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 w-full max-w-2xl mx-auto">
+              <div className="flex items-center gap-2.5 text-foreground/90">
+                <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0" strokeWidth={1.75} />
+                <span className="text-xs sm:text-sm font-medium">Ship to 100+ locations</span>
               </div>
-              <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm border border-border/40 px-5 py-3.5 rounded-xl shadow-sm hover:shadow transition-shadow">
-                <Users className="h-5 w-5 text-primary shrink-0" strokeWidth={1.75} />
-                <span className="text-sm font-medium text-foreground">HR & Ops teams</span>
+              <div className="flex items-center gap-2.5 text-foreground/90">
+                <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0" strokeWidth={1.75} />
+                <span className="text-xs sm:text-sm font-medium">HR & Ops teams</span>
               </div>
-              <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm border border-border/40 px-5 py-3.5 rounded-xl shadow-sm hover:shadow transition-shadow">
-                <CheckCircle className="h-5 w-5 text-primary shrink-0" strokeWidth={1.75} />
-                <span className="text-sm font-medium text-foreground">Reliable & scalable</span>
+              <div className="flex items-center gap-2.5 text-foreground/90">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0" strokeWidth={1.75} />
+                <span className="text-xs sm:text-sm font-medium">Reliable & scalable</span>
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-6 px-2 text-center">
@@ -80,7 +78,7 @@ export function LandingHero() {
         </div>
 
         <div className="pb-14 sm:pb-16 md:pb-20 lg:pb-24 relative w-full">
-          <div className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-white ring-1 ring-black/5">
+          <div className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden">
             <Image
               src="https://github.com/growthmodo-access/giftplatform/blob/main/platform/public/MAINIMAGE.png?raw=true"
               alt="Global gifting dashboard and delivery"

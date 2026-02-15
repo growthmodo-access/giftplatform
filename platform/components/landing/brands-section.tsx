@@ -26,7 +26,7 @@ const BRAND_LOGOS: Record<string, string> = {
 }
 
 const LOGO_CELL_CLASS =
-  'flex items-center justify-center h-11 sm:h-14 md:h-16 w-full rounded-xl border border-border/40 bg-muted/20 hover:bg-muted/30 hover:border-primary/30 transition-all duration-200 min-w-0'
+  'flex items-center justify-center h-12 sm:h-14 md:h-16 w-full min-w-0 opacity-80 hover:opacity-100 transition-opacity'
 
 function BrandCell({ name }: { name: string }) {
   const logoSrc = BRAND_LOGOS[name]
@@ -53,16 +53,16 @@ function BrandCell({ name }: { name: string }) {
 export function BrandsSection() {
   return (
     <section
-      className="landing-section bg-white w-full max-w-full border-t border-border/40"
+      className="landing-section w-full max-w-full border-t border-border/20 bg-white"
       aria-label="Brands we've worked with"
     >
       <div className="landing-container">
         <p className="landing-label text-center mb-2">Trusted by</p>
-        <h2 className="landing-heading text-center mb-10 sm:mb-12 leading-[1.25] pt-0.5">
+        <h2 className="landing-heading text-center mb-8 sm:mb-10 leading-[1.25]">
           Brands we&apos;ve worked with
         </h2>
         <div className="max-w-4xl mx-auto px-0">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4 items-stretch justify-items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 items-stretch justify-items-center">
             {BRANDS.map((name) => (
               <BrandCell key={name} name={name} />
             ))}

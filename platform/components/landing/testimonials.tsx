@@ -10,29 +10,26 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="landing-section bg-white w-full max-w-full overflow-hidden border-t border-border/40">
+    <section className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white">
       <div className="landing-container">
-        <div className="text-center mb-14 sm:mb-16 max-w-2xl mx-auto space-y-4">
+        <div className="text-center mb-10 sm:mb-12 max-w-2xl mx-auto space-y-4">
           <p className="landing-label">Testimonials</p>
-          <h2 className="landing-heading">What teams say about us</h2>
+          <h2 className="landing-heading text-balance">What teams say about us</h2>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto min-w-0">
+        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 max-w-4xl mx-auto min-w-0">
           {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="relative p-8 sm:p-10 rounded-2xl border border-border/50 bg-white shadow-lg shadow-black/5 hover:shadow-xl hover:border-primary/20 transition-all duration-200 flex flex-col"
-            >
-              <Quote className="absolute top-6 right-6 h-8 w-8 text-primary/15" strokeWidth={1.5} />
-              <p className="text-base sm:text-lg text-foreground leading-[1.65] flex-1 pr-10">
+            <div key={index} className="flex flex-col">
+              <Quote className="h-6 w-6 text-primary/30 mb-4" strokeWidth={1.5} aria-hidden />
+              <p className="text-[15px] sm:text-base text-foreground leading-relaxed flex-1">
                 &ldquo;{testimonial.quote}&rdquo;
               </p>
-              <div className="mt-8 pt-5 border-t border-border/40 flex items-center gap-4">
-                <div className="h-11 w-11 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
+              <div className="mt-6 pt-4 flex items-center gap-3">
+                <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium text-xs">
                   {testimonial.author.charAt(0)}
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">{testimonial.author}</p>
+                  <p className="font-medium text-foreground text-sm">{testimonial.author}</p>
                   {testimonial.role && <p className="text-xs text-muted-foreground mt-0.5">{testimonial.role}</p>}
                 </div>
               </div>
