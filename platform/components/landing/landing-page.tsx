@@ -6,7 +6,6 @@ import { LandingHero } from './landing-hero'
 import { ValueStrip } from './value-strip'
 import { BrandsSection } from './brands-section'
 import { FeatureSections } from './feature-sections'
-import { WhatYouCanSendSection } from './what-you-can-send-section'
 import { UseCasesSection } from './use-cases-section'
 import { IndustryLeaders } from './industry-leaders'
 import { ServicesSection } from './services-section'
@@ -66,7 +65,6 @@ export function LandingPage() {
         <IndustryLeaders />
         <ServicesSection />
         <FeatureSections />
-        <WhatYouCanSendSection />
         <UseCasesSection />
         <IndiaSection />
         <IntegrationsSection />

@@ -3,7 +3,7 @@ import { buildMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Sign up',
-  description: 'Create your GiftPro account. Start sending corporate gifts and swag globally in minutes.',
+  description: 'Create your Goodies account. Start sending corporate gifts and swag globally in minutes.',
   path: 'signup',
   noIndex: true,
 })

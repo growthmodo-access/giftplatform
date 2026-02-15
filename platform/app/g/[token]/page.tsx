@@ -19,7 +19,7 @@ export default async function GiftPage({ params }: { params: Promise<{ token: st
             href="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
-            Go to GiftPro
+            Go to Goodies
           </Link>
         </div>
       </div>
@@ -31,7 +31,7 @@ export default async function GiftPage({ params }: { params: Promise<{ token: st
       <header className="border-b border-border/50 bg-card">
         <div className="mx-auto flex h-14 max-w-2xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logogoodies.png" alt="GiftPro" width={100} height={32} className="h-8 w-auto" />
+            <Image src="/logogoodies.png" alt="Goodies" width={100} height={32} className="h-8 w-auto" />
           </Link>
         </div>
       </header>

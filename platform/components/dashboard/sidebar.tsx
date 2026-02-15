@@ -195,7 +195,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
             >
               <Image
                 src="/logogoodies.png"
-                alt="GiftPro"
+                alt="Goodies"
                 width={200}
                 height={100}
                 className="h-9 w-auto object-contain"
