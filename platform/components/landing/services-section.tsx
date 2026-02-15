@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 
 const ctaLight =
-  'rounded-lg border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 px-5 py-2.5 text-sm font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none'
+  'rounded-xl border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 hover:text-primary px-6 py-3.5 text-base font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none'
 
 export function ServicesSection() {
   return (
@@ -41,7 +41,7 @@ export function ServicesSection() {
             </p>
             <Button variant="outline" onClick={() => window.location.href = '/contact'} className={ctaLight}>
               Talk to sales
-              <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
+              <ArrowRight className="h-4 w-4" strokeWidth={2} />
             </Button>
           </div>
           </div>

@@ -22,20 +22,20 @@ export function CTASection() {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center items-center pt-2">
             <Button
               onClick={handleTalkToSales}
-              className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 text-sm font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
+              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3.5 text-base font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
               aria-label="Talk to sales"
             >
               Talk to sales
-              <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
+              <ArrowRight className="h-4 w-4" strokeWidth={2} />
             </Button>
             <Button
               variant="outline"
               onClick={() => router.push('/contact')}
-              className="rounded-lg border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 px-6 py-3 text-sm font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
+              className="rounded-xl border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 hover:text-primary px-6 py-3.5 text-base font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
               aria-label="Talk to sales"
             >
               Talk to sales
-              <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
+              <ArrowRight className="h-4 w-4" strokeWidth={2} />
             </Button>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground pt-1">

@@ -19,10 +19,10 @@ export function PricingSection() {
           <Button
             variant="outline"
             onClick={() => router.push('/contact')}
-            className="rounded-lg border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 px-5 py-2.5 text-sm font-medium inline-flex items-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
+            className="rounded-xl border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 hover:text-primary px-6 py-3.5 text-base font-medium inline-flex items-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
           >
             Talk to sales
-            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
+            <ArrowRight className="h-4 w-4" strokeWidth={2} />
           </Button>
         </div>
       </div>
