@@ -13,7 +13,7 @@ export function ServicesSection() {
           <div className="order-2 lg:order-1 w-full min-w-0 flex justify-center lg:justify-start">
             <div className="relative w-full max-w-xl mx-auto lg:mx-0 rounded-2xl overflow-hidden border border-border/50 shadow-xl shadow-black/5 bg-white ring-1 ring-black/5">
               <Image
-                src="/services-grid.png"
+                src="/IMG2.png"
                 alt="Corporate gifting services - Employees, Clients, Swag, Global Gifting"
                 width={1536}
                 height={1024}
