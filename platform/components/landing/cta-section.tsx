@@ -19,23 +19,14 @@ export function CTASection() {
           <p className="text-[15px] sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
             Send gifts people actually love—without the operational headache.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center items-center pt-2">
+          <div className="w-full flex justify-center pt-2">
             <Button
               onClick={handleTalkToSales}
-              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3.5 text-base font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
+              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 text-lg font-semibold w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none shadow-lg hover:shadow-xl"
               aria-label="Talk to sales"
             >
               Talk to sales
-              <ArrowRight className="h-4 w-4" strokeWidth={2} />
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => router.push('/contact')}
-              className="rounded-xl border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 hover:text-primary px-6 py-3.5 text-base font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
-              aria-label="Talk to sales"
-            >
-              Talk to sales
-              <ArrowRight className="h-4 w-4" strokeWidth={2} />
+              <ArrowRight className="h-5 w-5" strokeWidth={2} />
             </Button>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground pt-1">

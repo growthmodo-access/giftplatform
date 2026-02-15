@@ -33,22 +33,14 @@ export function LandingHero() {
               Manage gifting, swag, addresses, approvals, branding, and worldwide delivery from one dashboard. No spreadsheets. No vendors to chase. No last-minute panic.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-12 sm:mb-14 w-full max-w-sm sm:max-w-none mx-auto px-2 sm:px-0 justify-center items-stretch sm:items-center">
+            <div className="mb-12 sm:mb-14 w-full max-w-sm sm:max-w-none mx-auto px-2 sm:px-0 flex justify-center">
               <Button
                 onClick={handleTalkToSales}
-                className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3.5 text-base font-medium w-full sm:w-auto transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
+                className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 text-lg font-semibold w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none shadow-lg hover:shadow-xl"
                 aria-label="Talk to sales"
               >
                 Talk to sales
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => router.push('/contact')}
-                className="rounded-xl border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 hover:text-primary px-6 py-3.5 text-base font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
-                aria-label="Talk to sales"
-              >
-                Talk to sales
-                <ArrowRight className="h-4 w-4" strokeWidth={2} />
+                <ArrowRight className="h-5 w-5" strokeWidth={2} />
               </Button>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground mb-12 px-2 text-center">
