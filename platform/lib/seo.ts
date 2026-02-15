@@ -14,7 +14,7 @@ export type SEOProps = {
   type?: 'website' | 'article'
 }
 
-const defaultImage = '/hero1.png'
+const defaultImage = '/MAINIMAGE.PNG'
 
 function absoluteUrl(path: string): string {
   const base = siteConfig.url.replace(/\/$/, '')

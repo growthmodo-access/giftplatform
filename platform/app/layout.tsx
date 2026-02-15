@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: 'Global Gifting & Swag Platform',
     description: siteConfig.description,
     path: '',
-    image: '/hero1.png',
+    image: '/MAINIMAGE.PNG',
   }),
   keywords: ['corporate gifting', 'employee gifting', 'swag platform', 'corporate gifts', 'global gifting', 'HR gifting', 'client gifts', 'employee engagement'],
   authors: [{ name: siteConfig.shortName, url: siteConfig.url }],
