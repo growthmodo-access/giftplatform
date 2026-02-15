@@ -59,11 +59,11 @@ export function IndustryLeaders() {
             </p>
             <Button
               variant="outline"
-              onClick={() => document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => window.location.href = '/contact'}
               className={ctaLight}
-              aria-label="See the better way - scroll to solutions"
+              aria-label="Talk to sales"
             >
-              See the better way
+              Talk to sales
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
             </Button>
           </div>

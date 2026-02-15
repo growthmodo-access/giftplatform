@@ -38,8 +38,8 @@ export function ServicesSection() {
             <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-8">
               From storage and customization to shipping and tracking—globally.
             </p>
-            <Button variant="outline" onClick={() => window.location.href = '/signup'} className={ctaLight}>
-              Learn more
+            <Button variant="outline" onClick={() => window.location.href = '/contact'} className={ctaLight}>
+              Talk to sales
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
             </Button>
           </div>

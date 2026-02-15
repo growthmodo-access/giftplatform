@@ -20,8 +20,8 @@ export function LandingHeader() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleGetStarted = () => {
-    router.push('/signup')
+  const handleTalkToSales = () => {
+    router.push('/contact')
   }
 
   const handleLogin = () => {
@@ -40,8 +40,8 @@ export function LandingHeader() {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 box-border">
           <span className="block sm:inline">
             Corporate gifting for HR & Ops—one platform, 100+ locations.{' '}
-            <Link href="/signup" className="underline font-semibold hover:opacity-90 decoration-2 underline-offset-2">
-              Book a demo
+            <Link href="/contact" className="underline font-semibold hover:opacity-90 decoration-2 underline-offset-2">
+              Talk to sales
             </Link>
           </span>
         </div>
@@ -85,11 +85,11 @@ export function LandingHeader() {
                 Login
               </button>
               <button
-                onClick={handleGetStarted}
+                onClick={() => window.location.href = '/contact'}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 px-5 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap shadow-sm hover:shadow transition-all"
-                aria-label="Get started"
+                aria-label="Talk to sales"
               >
-                Get Started
+                Talk to sales
               </button>
             </div>
 
@@ -117,8 +117,8 @@ export function LandingHeader() {
                   <button type="button" onClick={() => { handleLogin(); setIsMenuOpen(false) }} className="w-full text-left py-3 px-4 text-base font-medium text-foreground hover:bg-muted/30 rounded-xl border border-border/40">
                     Login
                   </button>
-                  <button type="button" onClick={() => { handleGetStarted(); setIsMenuOpen(false) }} className="w-full py-3 px-4 rounded-xl font-semibold text-base bg-primary text-primary-foreground hover:bg-primary/90">
-                    Get Started
+                  <button type="button" onClick={() => { handleTalkToSales(); setIsMenuOpen(false) }} className="w-full py-3 px-4 rounded-xl font-semibold text-base bg-primary text-primary-foreground hover:bg-primary/90">
+                    Talk to sales
                   </button>
                 </div>
               </nav>

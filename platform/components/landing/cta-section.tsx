@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react'
 
 export function CTASection() {
   const router = useRouter()
-  const handleRequestDemo = () => router.push('/signup')
+  const handleTalkToSales = () => router.push('/contact')
 
   return (
     <section className="relative landing-section bg-white border-t border-border/20 w-full max-w-full overflow-hidden">
@@ -21,20 +21,20 @@ export function CTASection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center items-center pt-2">
             <Button
-              onClick={handleRequestDemo}
+              onClick={handleTalkToSales}
               className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 text-sm font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
-              aria-label="Book a demo"
+              aria-label="Talk to sales"
             >
-              Book a demo
+              Talk to sales
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
             </Button>
             <Button
               variant="outline"
-              onClick={() => router.push('/signup')}
+              onClick={() => router.push('/contact')}
               className="rounded-lg border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 px-6 py-3 text-sm font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none"
-              aria-label="Get started in minutes"
+              aria-label="Talk to sales"
             >
-              Get started in minutes
+              Talk to sales
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
             </Button>
           </div>

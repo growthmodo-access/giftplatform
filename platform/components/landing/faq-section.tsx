@@ -9,7 +9,7 @@ export function FAQSection() {
       className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white"
       aria-labelledby="faq-heading"
     >
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
+      <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
         <div className="text-center mb-10 sm:mb-14 space-y-3">
           <p className="landing-label">FAQ</p>
           <h2 id="faq-heading" className="landing-heading text-balance">
