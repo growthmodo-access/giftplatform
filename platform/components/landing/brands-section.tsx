@@ -26,7 +26,7 @@ const BRAND_LOGOS: Record<string, string> = {
 }
 
 const LOGO_CELL_CLASS =
-  'flex items-center justify-center h-12 sm:h-14 md:h-16 w-full min-w-0 opacity-80 hover:opacity-100 transition-opacity'
+  'flex items-center justify-center min-h-[4rem] sm:min-h-[5rem] md:min-h-[5.5rem] w-full min-w-0 p-3 sm:p-4 opacity-80 hover:opacity-100 transition-opacity'
 
 function BrandCell({ name }: { name: string }) {
   const logoSrc = BRAND_LOGOS[name]
@@ -36,13 +36,13 @@ function BrandCell({ name }: { name: string }) {
 
   return (
     <div className={LOGO_CELL_CLASS}>
-      <div className="relative h-6 w-[90px] sm:h-8 sm:w-[120px] md:h-9 md:w-[130px] flex items-center justify-center overflow-hidden">
+      <div className="relative w-full max-w-[100px] sm:max-w-[120px] md:max-w-[130px] min-h-[2.75rem] sm:min-h-[3.25rem] md:min-h-[3.5rem] flex items-center justify-center">
         <Image
           src={logoSrc}
           alt={name}
           width={160}
-          height={64}
-          className={`object-contain object-center ${isSmallLogo ? 'scale-110' : ''}`}
+          height={80}
+          className={`object-contain object-center max-w-full max-h-[3.5rem] sm:max-h-[4rem] w-auto h-auto ${isSmallLogo ? 'scale-110' : ''}`}
           unoptimized
         />
       </div>
