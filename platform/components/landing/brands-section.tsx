@@ -3,11 +3,13 @@
 import Image from 'next/image'
 
 /**
- * Brands we've worked with — 10 logos in 5/5 layout with upgraded presentation.
- * SVG logo files live in /public (see repo platform/public).
+ * Brands we've worked with — 10 logos in one grid so 2-column view shows 5 left / 5 right (no empty cell).
+ * Order: fills row-by-row so grid-cols-2 gives col1 = 1,3,5,7,9 and col2 = 2,4,6,8,10.
  */
-const BRANDS_ROW_1 = ['Google', 'Swiggy', 'Zoho', 'Philips', 'Microsoft']
-const BRANDS_ROW_2 = ['Zomato', 'Paytm', 'Disney+ Hotstar', 'Snapdeal', 'Adobe']
+const BRANDS_ORDERED = [
+  'Google', 'Swiggy', 'Zoho', 'Philips', 'Microsoft',
+  'Zomato', 'Paytm', 'Disney+ Hotstar', 'Snapdeal', 'Adobe',
+]
 
 /** Map brand name -> public path for its logo SVG */
 const BRAND_LOGOS: Record<string, string> = {
@@ -59,17 +61,10 @@ export function BrandsSection() {
         <h2 className="landing-heading text-center mb-10 sm:mb-12 leading-[1.25] pt-0.5">
           Brands we&apos;ve worked with
         </h2>
-        <div className="flex flex-col gap-2 sm:gap-5 max-w-4xl mx-auto px-0">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-4 items-stretch justify-items-center">
-            {BRANDS_ROW_1.map((name) => (
-              <BrandCell key={name} name={name} />
-            ))}
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-4 items-stretch justify-items-center">
-            {BRANDS_ROW_2.map((name) => (
-              <BrandCell key={name} name={name} />
-            ))}
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-4 max-w-4xl mx-auto items-stretch justify-items-center">
+          {BRANDS_ORDERED.map((name) => (
+            <BrandCell key={name} name={name} />
+          ))}
         </div>
       </div>
     </section>
