@@ -25,7 +25,7 @@ export function IndustryLeaders() {
     >
       <div className="landing-container">
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 xl:gap-14 items-center min-w-0">
-          <div className="order-2 lg:order-1 w-full min-w-0 flex justify-center lg:justify-end">
+          <div className="order-1 w-full min-w-0 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-xl xl:max-w-2xl mx-auto lg:mx-0 rounded-2xl overflow-hidden">
               <Image
                 src="/IMG1.png"
@@ -38,7 +38,7 @@ export function IndustryLeaders() {
               />
             </div>
           </div>
-          <div className="order-1 lg:order-2 flex flex-col items-center lg:items-start w-full max-w-xl lg:max-w-none mx-auto lg:mx-0 text-center lg:text-left">
+          <div className="order-2 flex flex-col items-center lg:items-start w-full max-w-xl lg:max-w-none mx-auto lg:mx-0 text-center lg:text-left">
             <p className="landing-label mb-2">The problem</p>
             <h2 id="problem-heading" className="landing-heading text-balance mb-4">
               Gifting breaks the moment your company grows

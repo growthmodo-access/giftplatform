@@ -76,13 +76,6 @@ export function LandingPage() {
         <CTASection />
       </main>
       <Footer />
-      <a
-        href="/contact"
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center shadow-lg shadow-primary/25 hover:bg-primary/90 hover:shadow-xl transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-        aria-label="Get help or contact us"
-      >
-        <span className="font-semibold text-xs sm:text-sm">Help</span>
-      </a>
     </div>
   )
 }

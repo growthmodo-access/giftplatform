@@ -36,12 +36,12 @@ export function LandingHeader() {
 
   return (
     <>
-      {/* Top banner - compact */}
-      <div className="bg-white text-foreground py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium border-b border-border/50 w-full max-w-full overflow-hidden">
+      {/* Top banner - purple, white text */}
+      <div className="bg-primary text-white py-2.5 sm:py-3 text-center text-xs sm:text-sm font-medium w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 box-border">
           <span className="block sm:inline">
             Corporate gifting for HR & Ops—one platform, 100+ locations.{' '}
-            <Link href="/contact" className="underline font-semibold hover:opacity-90 decoration-2 underline-offset-2">
+            <Link href="/contact" className="underline font-semibold text-white/95 hover:text-white decoration-2 underline-offset-2">
               Talk to sales
             </Link>
           </span>
@@ -114,6 +114,7 @@ export function LandingHeader() {
                 <a href="#home" className="block py-3 px-4 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg" onClick={() => setIsMenuOpen(false)}>Home</a>
                 <a href="#solutions" className="block py-3 px-4 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg" onClick={() => setIsMenuOpen(false)}>How it works</a>
                 <a href="#pricing" className="block py-3 px-4 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg" onClick={() => setIsMenuOpen(false)}>Pricing</a>
+                <Link href="/about" className="block py-3 px-4 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg" onClick={() => setIsMenuOpen(false)}>About</Link>
                 <Link href="/contact" className="block py-3 px-4 text-base font-medium text-foreground hover:bg-muted/50 rounded-lg" onClick={() => setIsMenuOpen(false)}>Contact</Link>
                 <div className="flex flex-col gap-2 pt-4 mt-2 border-t border-border/40 px-4">
                   <button type="button" onClick={() => { handleLogin(); setIsMenuOpen(false) }} className="w-full text-left py-3 px-4 text-base font-medium text-foreground hover:bg-muted/30 rounded-xl border border-border/40">
