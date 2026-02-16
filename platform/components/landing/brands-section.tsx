@@ -53,7 +53,7 @@ function BrandCell({ name }: { name: string }) {
 export function BrandsSection() {
   return (
     <section
-      className="landing-section w-full max-w-full border-t border-border/20 bg-white"
+      className="landing-section w-full max-w-full border-t border-border/20 bg-transparent"
       aria-label="Brands we've worked with"
     >
       <div className="landing-container">

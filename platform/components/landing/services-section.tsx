@@ -9,7 +9,7 @@ const ctaLight =
 
 export function ServicesSection() {
   return (
-    <section id="services" className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white">
+    <section id="services" className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-transparent">
       <div className="landing-container">
         <div className="max-w-6xl mx-auto w-full">
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 items-center min-w-0">

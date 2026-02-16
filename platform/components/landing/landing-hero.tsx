@@ -12,7 +12,7 @@ export function LandingHero() {
   const handleTalkToSales = () => router.push('/contact')
 
   return (
-    <section id="home" className="relative overflow-hidden w-full max-w-full bg-white">
+    <section id="home" className="relative overflow-hidden w-full max-w-full bg-transparent">
       <div className="landing-container relative">
         <div className="flex flex-col items-center justify-center pt-10 sm:pt-14 md:pt-16 lg:pt-20 pb-8 sm:pb-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto w-full px-3 sm:px-4">

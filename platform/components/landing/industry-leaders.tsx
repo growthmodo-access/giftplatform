@@ -12,7 +12,7 @@ export function IndustryLeaders() {
     <section
       id="problem"
       aria-labelledby="problem-heading"
-      className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white"
+      className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-transparent"
     >
       <div className="landing-container">
         <div className="max-w-6xl mx-auto w-full">
