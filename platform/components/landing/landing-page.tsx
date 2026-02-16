@@ -49,7 +49,7 @@ export function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen landing-grid-pattern overflow-x-hidden w-full max-w-full box-border">
+    <div className="min-h-screen bg-white overflow-x-hidden w-full max-w-full box-border">
       <ScrollProgress />
       <a 
         href="#home" 
