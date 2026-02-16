@@ -4,15 +4,6 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 
-const pains = [
-  'Excel sheets with outdated addresses',
-  'Endless vendor coordination',
-  'Late deliveries and zero tracking',
-  'Manual approvals stuck in email threads',
-  'Different vendors for different countries',
-  'No visibility on inventory or spend',
-]
-
 const ctaLight =
   'rounded-xl border border-primary/40 text-primary bg-transparent hover:bg-primary/5 hover:border-primary/60 hover:text-primary px-6 py-3.5 text-base font-medium w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none'
 
@@ -40,23 +31,14 @@ export function IndustryLeaders() {
             </div>
           </div>
           <div className="order-2 flex flex-col items-start w-full max-w-xl lg:max-w-2xl mx-auto lg:mx-0 text-left">
-            <p className="landing-label mb-2">The problem</p>
+            <span className="inline-block text-primary text-xs sm:text-sm font-bold uppercase tracking-[0.2em] mb-3 pl-3 border-l-2 border-primary/60">
+              The problem
+            </span>
             <h2 id="problem-heading" className="landing-heading text-balance mb-4">
               Gifting breaks the moment your company grows
             </h2>
-            <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-4">
-              Corporate gifting should be simple. Instead, it becomes messy fast.
-            </p>
-            <ul role="list" className="w-full text-left space-y-2.5 mb-4">
-              {pains.map((item) => (
-                <li key={item} className="flex items-start gap-3 text-[15px] sm:text-base text-muted-foreground leading-relaxed">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary/80 shrink-0" aria-hidden />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-6">
-              What starts as a &ldquo;small task&rdquo; turns into weeks of follow-ups.
+            <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-8">
+              Corporate gifting should be simple but instead it turns into outdated Excel sheets, endless vendor follow ups, late deliveries, manual approvals stuck in email threads, different vendors for different countries, no tracking, and weeks of unnecessary chaos.
             </p>
             <Button
               variant="outline"
