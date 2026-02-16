@@ -1,7 +1,19 @@
+import { appendFileSync } from 'fs'
+import path from 'path'
 import { DashboardShell } from '@/components/dashboard/dashboard-shell'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
+
+const workspaceRoot = process.cwd().endsWith('platform') ? path.join(process.cwd(), '..') : process.cwd()
+const DEBUG_LOG_PATH = path.join(workspaceRoot, '.cursor', 'debug.log')
+function agentLog(payload: Record<string, unknown>) {
+  try {
+    appendFileSync(DEBUG_LOG_PATH, JSON.stringify(payload) + '\n')
+  } catch {
+    // ignore
+  }
+}
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -31,13 +43,21 @@ export default async function DashboardLayout({
 
   if (currentUserError) {
     console.error('[Layout] Error fetching user profile:', currentUserError)
-    // Redirect to login with error message
+    // #region agent log
+    const payload = { location: 'app/(dashboard)/layout.tsx', message: 'Dashboard layout redirect profile_error', data: { code: currentUserError.code }, timestamp: Date.now(), hypothesisId: 'H5' }
+    agentLog(payload)
+    fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{})
+    // #endregion
     redirect('/login?error=profile_error')
   }
 
   if (!currentUser) {
     console.error('[Layout] User profile not found for user:', user.id, user.email)
-    // Redirect to login with error message
+    // #region agent log
+    const payload = { location: 'app/(dashboard)/layout.tsx', message: 'Dashboard layout redirect profile_not_found', data: { userId: user?.id }, timestamp: Date.now(), hypothesisId: 'H5' }
+    agentLog(payload)
+    fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{})
+    // #endregion
     redirect('/login?error=profile_not_found')
   }
 

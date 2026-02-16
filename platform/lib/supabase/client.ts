@@ -15,9 +15,12 @@ function getSupabaseClient() {
     const supabaseUrl = env.supabase.url
     const supabaseAnonKey = env.supabase.anonKey
 
+    // #region agent log
     if (!supabaseUrl || !supabaseAnonKey) {
+      fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'lib/supabase/client.ts:getSupabaseClient',message:'Supabase env missing',data:{hasUrl:!!supabaseUrl,hasAnonKey:!!supabaseAnonKey},timestamp:Date.now(),hypothesisId:'H1'})}).catch(()=>{});
       throw new Error('Supabase URL and API key are required')
     }
+    // #endregion
 
     supabaseInstance = createBrowserClient(
       supabaseUrl,

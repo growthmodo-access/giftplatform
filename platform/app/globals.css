@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    --font-fustat: 'Fustat', system-ui, sans-serif;
     /* Startup + enterprise: clean, confident, India-first */
     --background: 0 0% 100%;
     --foreground: 222 47% 11%; /* Strong readability */
@@ -49,7 +50,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: 'kern' 1, 'liga' 1;
-    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: var(--font-fustat), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: #ffffff;
   }
   

@@ -36,13 +36,24 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setName('')
-    setEmail('')
-    setPhone('')
-    setCompany('')
-    setTopic('')
-    setMessage('')
+    // #region agent log
+    fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/contact/page.tsx:handleSubmit',message:'Contact submit start',data:{hasName:!!name,hasEmail:!!email},timestamp:Date.now(),hypothesisId:'H4'})}).catch(()=>{});
+    // #endregion
+    try {
+      setSubmitted(true)
+      setName('')
+      setEmail('')
+      setPhone('')
+      setCompany('')
+      setTopic('')
+      setMessage('')
+      // #region agent log
+      fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/contact/page.tsx:handleSubmit',message:'Contact submit success',data:{},timestamp:Date.now(),hypothesisId:'H4'})}).catch(()=>{});
+      // #endregion
+    } catch (err) {
+      fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/contact/page.tsx:handleSubmit',message:'Contact submit error',data:{errorMessage:err instanceof Error ? err.message : String(err)},timestamp:Date.now(),hypothesisId:'H4'})}).catch(()=>{});
+      throw err
+    }
   }
 
   return (
