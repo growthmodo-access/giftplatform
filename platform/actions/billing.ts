@@ -91,14 +91,20 @@ export async function getWalletBalance() {
       return { data: null, error: error.message }
     }
 
-    // Create wallet if it doesn't exist
+    // Create wallet if it doesn't exist (use company currency, default INR)
     if (!wallet) {
+      let currency = 'INR'
+      const { data: userRow } = await supabase.from('users').select('company_id').eq('id', user.id).maybeSingle()
+      if (userRow?.company_id) {
+        const { data: company } = await supabase.from('companies').select('currency').eq('id', userRow.company_id).maybeSingle()
+        if (company?.currency) currency = company.currency
+      }
       const { data: newWallet, error: createError } = await supabase
         .from('wallets')
         .insert({
           user_id: user.id,
           balance: 0,
-          currency: 'USD',
+          currency,
         })
         .select()
         .single()
@@ -110,6 +116,16 @@ export async function getWalletBalance() {
       return { 
         data: { balance: Number(newWallet.balance), currency: newWallet.currency }, 
         error: null 
+      }
+    }
+
+    // Sync existing wallet currency to company currency (e.g. HR company is INR)
+    const { data: userRow } = await supabase.from('users').select('company_id').eq('id', user.id).maybeSingle()
+    if (userRow?.company_id) {
+      const { data: company } = await supabase.from('companies').select('currency').eq('id', userRow.company_id).maybeSingle()
+      if (company?.currency && company.currency !== wallet.currency) {
+        await supabase.from('wallets').update({ currency: company.currency }).eq('user_id', user.id)
+        return { data: { balance: Number(wallet.balance), currency: company.currency }, error: null }
       }
     }
 
@@ -150,12 +166,18 @@ export async function addFundsToWallet(amount: number, paymentMethod: 'stripe' |
       .single()
 
     if (!wallet) {
+      let currency = 'INR'
+      const { data: userRow } = await supabase.from('users').select('company_id').eq('id', user.id).maybeSingle()
+      if (userRow?.company_id) {
+        const { data: company } = await supabase.from('companies').select('currency').eq('id', userRow.company_id).maybeSingle()
+        if (company?.currency) currency = company.currency
+      }
       const { data: newWallet, error: createError } = await supabase
         .from('wallets')
         .insert({
           user_id: user.id,
           balance: 0,
-          currency: 'USD',
+          currency,
         })
         .select()
         .single()

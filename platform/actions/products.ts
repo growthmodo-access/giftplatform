@@ -29,10 +29,9 @@ export async function createProduct(formData: FormData) {
       return { error: 'Failed to fetch user data' }
     }
 
-    // SUPER_ADMIN can create products without company_id (will need company_id in form)
-    // Other roles need company_id
-    if (userData?.role !== 'SUPER_ADMIN' && !userData?.company_id) {
-      return { error: 'You must be part of a company to create products' }
+    // Only SUPER_ADMIN can create products (and assign company for visibility)
+    if (userData?.role !== 'SUPER_ADMIN') {
+      return { error: 'Only Super Admin can add products. Products are company-scoped when you assign a company.' }
     }
 
     // Validate required fields
@@ -45,16 +44,11 @@ export async function createProduct(formData: FormData) {
       return { error: 'Missing required fields: name, price, sku, and type are required' }
     }
 
-    // Handle company_id - SUPER_ADMIN can select any company, others use their own
-    let company_id: string | null = null
-    if (userData?.role === 'SUPER_ADMIN') {
-      const formCompanyId = formData.get('company_id') as string
-      company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
-    } else {
-      company_id = userData?.company_id || null
-    }
+    // SUPER_ADMIN assigns company for product visibility (custom swag per company)
+    const formCompanyId = formData.get('company_id') as string
+    const company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
 
-    const currency = (formData.get('currency') as string)?.trim() || 'USD'
+    const currency = (formData.get('currency') as string)?.trim() || 'INR'
 
     const product = {
       name: name.trim(),
@@ -84,10 +78,7 @@ export async function createProduct(formData: FormData) {
       return { error: 'Invalid product type' }
     }
 
-    const { isCompanyHRDb } = await import('@/lib/roles')
-    if (userData?.role !== 'SUPER_ADMIN' && !isCompanyHRDb(userData?.role)) {
-      return { error: 'You do not have permission to create products.' }
-    }
+    // Only SUPER_ADMIN can create (enforced above)
 
     const { data, error } = await supabase
       .from('products')
@@ -152,18 +143,8 @@ export async function updateProduct(id: string, formData: FormData) {
       return { error: 'Failed to fetch user data' }
     }
 
-    const { isCompanyHRDb } = await import('@/lib/roles')
-    if (userData.role !== 'SUPER_ADMIN' && !isCompanyHRDb(userData.role)) {
-      return { error: 'You do not have permission to update products.' }
-    }
-
-    // Check if user owns the product (same company) or is super admin
-    if (
-      existingProduct.company_id &&
-      userData.company_id !== existingProduct.company_id &&
-      userData.role !== 'SUPER_ADMIN'
-    ) {
-      return { error: 'You do not have permission to update this product' }
+    if (userData.role !== 'SUPER_ADMIN') {
+      return { error: 'Only Super Admin can edit products.' }
     }
 
     const price = formData.get('price') as string
@@ -208,11 +189,8 @@ export async function updateProduct(id: string, formData: FormData) {
       updates.price = parsedPrice
     }
 
-    // SUPER_ADMIN can update company_id
-    if (userData.role === 'SUPER_ADMIN') {
-      const formCompanyId = formData.get('company_id') as string
-      updates.company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
-    }
+    const formCompanyId = formData.get('company_id') as string
+    updates.company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
 
     if (stock !== null) {
       const parsedStock = parseInt(stock)

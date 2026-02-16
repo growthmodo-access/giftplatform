@@ -20,7 +20,7 @@ interface ProductsPageClientProps {
 const ITEMS_PER_PAGE = 12
 
 export function ProductsPageClient({ initialProducts, currentUserRole }: ProductsPageClientProps) {
-  const canManageProducts = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canManageProducts = currentUserRole === 'SUPER_ADMIN'
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('grid')
   const [dialogOpen, setDialogOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)

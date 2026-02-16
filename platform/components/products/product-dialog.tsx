@@ -46,7 +46,7 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
     sku: '',
     type: '' as 'SWAG' | 'GIFT_CARD' | 'PHYSICAL_GIFT' | 'EXPERIENCE' | '',
     company_id: '',
-    currency: 'USD',
+    currency: 'INR',
     image: '',
   })
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -71,7 +71,7 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
         sku: product.sku || '',
         type: product.type || '',
         company_id: product.company_id || '',
-        currency: product.currency || 'USD',
+        currency: product.currency || 'INR',
         image: product.image || '',
       })
       setImagePreview(product.image || '')
@@ -87,7 +87,7 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
         sku: '',
         type: '',
         company_id: '',
-        currency: 'USD',
+        currency: 'INR',
         image: '',
       })
       setImagePreview('')
@@ -123,6 +123,11 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const form = e.currentTarget
+    if (!form || form.nodeName !== 'FORM') {
+      setError('Invalid form')
+      return
+    }
     setLoading(true)
     setError('')
 
@@ -143,6 +148,9 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
           })
 
         if (uploadError) {
+          if (uploadError.message?.toLowerCase().includes('bucket') || uploadError.message?.toLowerCase().includes('not found')) {
+            throw new Error('Image upload failed: Storage bucket "product-images" not found. Create it in Supabase Dashboard → Storage → New bucket (see docs/STORAGE_SETUP.md).')
+          }
           throw new Error(`Image upload failed: ${uploadError.message}`)
         }
 
@@ -153,7 +161,6 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
         imageUrl = publicUrl
       }
 
-      const form = e.currentTarget
       const submitFormData = new FormData(form)
       
       // Ensure type is included
@@ -186,7 +193,7 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
           sku: '',
           type: '',
           company_id: '',
-          currency: 'USD',
+          currency: 'INR',
           image: '',
         })
         setImagePreview('')
@@ -316,7 +323,8 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="USD">USD</SelectItem>
+                      <SelectItem value="INR">INR - Indian Rupee</SelectItem>
+                      <SelectItem value="USD">USD - US Dollar</SelectItem>
                       <SelectItem value="EUR">EUR</SelectItem>
                       <SelectItem value="GBP">GBP</SelectItem>
                       <SelectItem value="CAD">CAD</SelectItem>

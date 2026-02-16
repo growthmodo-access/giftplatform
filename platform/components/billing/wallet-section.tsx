@@ -16,7 +16,7 @@ interface WalletSectionProps {
 
 export function WalletSection({ wallet, onAddFunds }: WalletSectionProps) {
   const balance = wallet?.balance || 0
-  const currency = wallet?.currency || 'USD'
+  const currency = wallet?.currency || 'INR'
 
   return (
     <div className="space-y-6">
