@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { inviteEmployee, importEmployeesFromCSV } from '@/actions/employees'
-import { getCompanies } from '@/actions/companies'
+import { getCompaniesForInvite } from '@/actions/companies'
 import { Loader2, Upload, FileText } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
 
@@ -56,29 +56,15 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
       if (currentUser) {
         setUserRole(currentUser.role)
         setUserCompanyId(currentUser.company_id)
-        
-        // If SUPER_ADMIN, load all companies
-        if (currentUser.role === 'SUPER_ADMIN') {
-          const result = await getCompanies()
-          if (result.data && result.data.length > 0) {
-            setCompanies(result.data.map(c => ({ id: c.id, name: c.name })))
-            // Auto-select first company if none selected
-            if (!selectedCompanyId && result.data.length > 0) {
-              setSelectedCompanyId(result.data[0].id)
-            }
-          }
-        } else if (currentUser.company_id) {
-          // For other roles, fetch their company name
-          const { data: company } = await supabase
-            .from('companies')
-            .select('id, name')
-            .eq('id', currentUser.company_id)
-            .single()
-          
-          if (company) {
-            setSelectedCompanyId(currentUser.company_id)
-            setCompanies([{ id: company.id, name: company.name }])
-          }
+      }
+
+      const result = await getCompaniesForInvite()
+      if (result.data?.length) {
+        setCompanies(result.data.map(c => ({ id: c.id, name: c.name })))
+        if (currentUser?.company_id) {
+          setSelectedCompanyId(currentUser.company_id)
+        } else if (result.data.length > 0) {
+          setSelectedCompanyId(result.data[0].id)
         }
       }
     } catch (err) {
@@ -251,45 +237,41 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
               <Label htmlFor="company">
                 Company <span className="text-red-500">*</span>
               </Label>
-              {userRole === 'SUPER_ADMIN' && companies.length > 0 ? (
-                <Select 
-                  required 
-                  disabled={loading}
-                  value={selectedCompanyId}
-                  onValueChange={setSelectedCompanyId}
-                >
-                  <SelectTrigger id="company">
-                    <SelectValue placeholder="Select a company" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {companies.map((company) => (
-                      <SelectItem key={company.id} value={company.id}>
-                        {company.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              ) : userRole === 'SUPER_ADMIN' && companies.length === 0 ? (
-                <div className="p-2 bg-amber-50 border border-amber-200 rounded-md">
-                  <p className="text-sm text-amber-800">
-                    No companies available. Please create a company first.
-                  </p>
-                </div>
-              ) : userCompanyId && companies.length > 0 ? (
-                <div className="space-y-2">
-                  <div className="p-2.5 bg-muted/50 border border-border/50 rounded-md">
-                    <p className="text-sm font-medium text-foreground">
-                      {companies[0]?.name || 'Your Company'}
+              {companies.length > 0 ? (
+                userCompanyId && companies.length === 1 ? (
+                  <div className="space-y-2">
+                    <div className="p-2.5 bg-muted/50 border border-border/50 rounded-md">
+                      <p className="text-sm font-medium text-foreground">
+                        {companies[0]?.name || 'Your Company'}
+                      </p>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Employee will be added to this company
                     </p>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Employee will be added to this company
-                  </p>
-                </div>
+                ) : (
+                  <Select
+                    required
+                    disabled={loading}
+                    value={selectedCompanyId}
+                    onValueChange={setSelectedCompanyId}
+                  >
+                    <SelectTrigger id="company">
+                      <SelectValue placeholder="Select a company" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {companies.map((company) => (
+                        <SelectItem key={company.id} value={company.id}>
+                          {company.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )
               ) : (
                 <div className="p-2 bg-amber-50 border border-amber-200 rounded-md">
                   <p className="text-sm text-amber-800">
-                    You are not associated with a company. Please contact an administrator.
+                    No companies available. Create a company first (Super Admin), or ask an administrator to link your account to a company.
                   </p>
                 </div>
               )}

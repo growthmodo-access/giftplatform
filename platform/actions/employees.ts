@@ -154,8 +154,10 @@ export async function inviteEmployee(email: string, name: string, role: 'SUPER_A
     if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to invite employees' }
     }
-    if (currentUser.role !== 'SUPER_ADMIN' && !currentUser?.company_id) {
-      return { error: 'You must be part of a company to invite employees' }
+    // Company HR must have a company: either linked to their profile or selected in the form
+    const hasCompany = !!currentUser?.company_id || !!companyId
+    if (currentUser.role !== 'SUPER_ADMIN' && !hasCompany) {
+      return { error: 'Please select a company or ask an administrator to link your account to a company.' }
     }
     // Only SUPER_ADMIN can invite SUPER_ADMIN
     if (role === 'SUPER_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
@@ -211,19 +213,15 @@ export async function inviteEmployee(email: string, name: string, role: 'SUPER_A
       return { error: `Failed to create user: ${authUserError?.message || 'Unknown error'}` }
     }
 
-    // Create user profile with role and company
-    // SUPER_ADMIN can invite to any company via companyId parameter
-    // Other roles use their own company_id
     const finalCompanyId = companyId || currentUser?.company_id || null
-    
-    // Validate company_id for SUPER_ADMIN
-    if (currentUser.role === 'SUPER_ADMIN' && companyId) {
+
+    // Validate company exists when one is specified (SUPER_ADMIN or HR selecting a company)
+    if (finalCompanyId) {
       const { data: companyExists } = await supabase
         .from('companies')
         .select('id')
-        .eq('id', companyId)
+        .eq('id', finalCompanyId)
         .single()
-      
       if (!companyExists) {
         return { error: 'Selected company does not exist' }
       }

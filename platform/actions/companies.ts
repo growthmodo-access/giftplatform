@@ -96,6 +96,40 @@ export async function getCompanies() {
 }
 
 /**
+ * Get companies for the invite-employee flow.
+ * SUPER_ADMIN: all companies. Company HR with company_id: their company. Company HR without company_id: all companies (so they can select one).
+ */
+export async function getCompaniesForInvite() {
+  try {
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return { data: [], error: null }
+
+    const { data: currentUser } = await supabase.from('users').select('role, company_id').eq('id', user.id).maybeSingle()
+    if (!currentUser) return { data: [], error: null }
+
+    if (currentUser.role === 'SUPER_ADMIN') {
+      const { data } = await supabase.from('companies').select('id, name').order('created_at', { ascending: false })
+      return { data: data || [], error: null }
+    }
+
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (!isCompanyHRDb(currentUser.role)) return { data: [], error: null }
+
+    if (currentUser.company_id) {
+      const { data } = await supabase.from('companies').select('id, name').eq('id', currentUser.company_id).single()
+      return { data: data ? [data] : [], error: null }
+    }
+
+    // Company HR without company_id: allow selecting any company so they can still invite
+    const { data } = await supabase.from('companies').select('id, name').order('created_at', { ascending: false })
+    return { data: data || [], error: null }
+  } catch {
+    return { data: [], error: null }
+  }
+}
+
+/**
  * Create a new company
  * Only SUPER_ADMIN can create companies
  */
