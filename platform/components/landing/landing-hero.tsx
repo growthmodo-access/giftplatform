@@ -16,7 +16,7 @@ export function LandingHero() {
       <div className="landing-container relative">
         <div className="flex flex-col items-center justify-center pt-10 sm:pt-14 md:pt-16 lg:pt-20 pb-8 sm:pb-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto w-full px-3 sm:px-4">
-            <h1 className="landing-heading-hero font-bold mb-4 sm:mb-5 w-full px-1">
+            <h1 className="landing-heading-hero font-extrabold mb-4 sm:mb-5 w-full px-1">
               Corporate gifting, without the chaos
             </h1>
 
