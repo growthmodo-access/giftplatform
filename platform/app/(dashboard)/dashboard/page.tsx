@@ -4,26 +4,16 @@ import { RecentOrders } from '@/components/dashboard/recent-orders'
 import { TopProducts } from '@/components/dashboard/top-products'
 import { QuickActions } from '@/components/dashboard/quick-actions'
 import { ActivityFeed } from '@/components/dashboard/activity-feed'
-import { createClient } from '@/lib/supabase/server'
+import { getCachedAuth } from '@/lib/auth-server'
 import { redirect } from 'next/navigation'
 import { getDashboardStats } from '@/actions/dashboard'
 import { getTimeGreeting, getFormattedDate } from '@/lib/utils/dashboard'
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) {
-    redirect('/login')
-  }
-
-  const { data: currentUser } = await supabase
-    .from('users')
-    .select('name, email')
-    .eq('id', user.id)
-    .single()
-
-  const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'there'
+  const auth = await getCachedAuth()
+  if (!auth) redirect('/login')
+  const { currentUser } = auth
+  const userName = currentUser.name ?? currentUser.email?.split('@')[0] ?? 'there'
   const { stats } = await getDashboardStats()
 
   return (

@@ -153,14 +153,14 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/auth/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' } })
-      if (response.ok) {
-        window.location.href = '/login'
-      } else {
-        window.location.href = '/login'
-      }
-    } catch {
-      window.location.href = '/login'
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      })
+    } finally {
+      // Cache-bust so login page and middleware re-evaluate auth (avoids stale "already logged in" after HR → super admin switch)
+      window.location.href = `/login?t=${Date.now()}`
     }
   }
 

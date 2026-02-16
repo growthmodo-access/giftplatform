@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Sign in',
   description: 'Sign in to your Goodies account to manage corporate gifting, swag, and campaigns.',

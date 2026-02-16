@@ -1,45 +1,17 @@
 'use server'
 
+import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
+import { getCachedAuth } from '@/lib/auth-server'
 import { redirect } from 'next/navigation'
 
-export async function getDashboardStats() {
+/** Request-scoped: one dashboard stats run per request (page + StatsCards + SalesChart + TopProducts + RecentOrders). */
+const getDashboardStatsImpl = cache(async () => {
   try {
+    const auth = await getCachedAuth()
+    if (!auth) redirect('/login')
+    const { currentUser } = auth
     const supabase = await createClient()
-    
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser()
-
-    if (authError || !user) {
-      redirect('/login')
-    }
-
-    // Get current user's company and role
-    const { data: currentUser, error: currentUserError } = await supabase
-      .from('users')
-      .select('company_id, role')
-      .eq('id', user.id)
-      .maybeSingle()
-
-    if (currentUserError || !currentUser) {
-      return {
-        canViewRevenue: false,
-        stats: {
-          todayOrders: 0,
-          totalRevenue: 0,
-          revenueChange: 0,
-          monthlyRevenue: 0,
-          totalEmployees: 0,
-          totalGifts: 0,
-        },
-        chartData: [],
-        recentOrders: [],
-        topProducts: [],
-        error: currentUserError?.message || 'User profile not found'
-      }
-    }
 
     const isSuperAdmin = currentUser.role === 'SUPER_ADMIN'
     const companyFilter = isSuperAdmin ? undefined : currentUser.company_id
@@ -50,86 +22,50 @@ export async function getDashboardStats() {
     const tomorrow = new Date(today)
     tomorrow.setDate(tomorrow.getDate() + 1)
 
-    // Get orders count and revenue
+    // Run independent count queries in parallel to reduce latency
     let ordersQuery = supabase
       .from('orders')
       .select('id, order_number, total, created_at, status, user_id')
-    
-    if (!isSuperAdmin && companyFilter) {
-      ordersQuery = ordersQuery.eq('company_id', companyFilter)
-    }
+    if (!isSuperAdmin && companyFilter) ordersQuery = ordersQuery.eq('company_id', companyFilter)
 
-    const { data: allOrders } = await ordersQuery
-    
-    // Today's orders
+    let employeesQuery = supabase.from('users').select('id, created_at')
+    if (!isSuperAdmin && companyFilter) employeesQuery = employeesQuery.eq('company_id', companyFilter)
+
+    let productsQuery = supabase.from('products').select('id')
+    if (!isSuperAdmin && companyFilter) productsQuery = productsQuery.eq('company_id', companyFilter)
+
+    let campaignsQuery = supabase.from('campaigns').select('id, is_active')
+    if (!isSuperAdmin && companyFilter) campaignsQuery = campaignsQuery.eq('company_id', companyFilter)
+
+    const [
+      { data: allOrders },
+      { data: employees },
+      { data: products },
+      { data: campaigns },
+    ] = await Promise.all([
+      ordersQuery,
+      employeesQuery,
+      productsQuery,
+      campaignsQuery,
+    ])
+
     const todayOrders = allOrders?.filter(order => {
       const orderDate = new Date(order.created_at)
       return orderDate >= today && orderDate < tomorrow
     }) || []
-
-    // Total orders
     const totalOrders = allOrders?.length || 0
-
-    // Total revenue
     const totalRevenue = allOrders?.reduce((sum, order) => sum + Number(order.total || 0), 0) || 0
-
-    // Get employees count
-    let employeesQuery = supabase
-      .from('users')
-      .select('id, created_at')
-    
-    if (!isSuperAdmin && companyFilter) {
-      employeesQuery = employeesQuery.eq('company_id', companyFilter)
-    }
-
-    const { data: employees } = await employeesQuery
     const totalEmployees = employees?.length || 0
-
-    // Get products count
-    let productsQuery = supabase
-      .from('products')
-      .select('id')
-    
-    if (!isSuperAdmin && companyFilter) {
-      productsQuery = productsQuery.eq('company_id', companyFilter)
-    }
-
-    const { data: products } = await productsQuery
     const totalProducts = products?.length || 0
-
-    // Get campaigns count
-    let campaignsQuery = supabase
-      .from('campaigns')
-      .select('id, is_active')
-    
-    if (!isSuperAdmin && companyFilter) {
-      campaignsQuery = campaignsQuery.eq('company_id', companyFilter)
-    }
-
-    const { data: campaigns } = await campaignsQuery
     const activeCampaigns = campaigns?.filter(c => c.is_active).length || 0
     const totalCampaigns = campaigns?.length || 0
 
-    // Get gifts count
-    let giftsQuery = supabase
-      .from('gifts')
-      .select('id, created_at')
-    
+    let giftsQuery = supabase.from('gifts').select('id, created_at')
     if (!isSuperAdmin && companyFilter) {
-      // Get user IDs for the company
-      const { data: companyUsers } = await supabase
-        .from('users')
-        .select('id')
-        .eq('company_id', companyFilter)
-      
+      const { data: companyUsers } = await supabase.from('users').select('id').eq('company_id', companyFilter)
       const userIds = companyUsers?.map(u => u.id) || []
-      if (userIds.length > 0) {
-        giftsQuery = giftsQuery.in('user_id', userIds)
-      } else {
-        giftsQuery = giftsQuery.eq('user_id', '00000000-0000-0000-0000-000000000000') // No results
-      }
+      giftsQuery = userIds.length > 0 ? giftsQuery.in('user_id', userIds) : giftsQuery.eq('user_id', '00000000-0000-0000-0000-000000000000')
     }
-
     const { data: gifts } = await giftsQuery
     const totalGifts = gifts?.length || 0
 
@@ -322,4 +258,8 @@ export async function getDashboardStats() {
       chartData: []
     }
   }
+})
+
+export async function getDashboardStats() {
+  return getDashboardStatsImpl()
 }

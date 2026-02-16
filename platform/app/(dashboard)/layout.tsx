@@ -1,7 +1,7 @@
 import { appendFileSync } from 'fs'
 import path from 'path'
 import { DashboardShell } from '@/components/dashboard/dashboard-shell'
-import { createClient } from '@/lib/supabase/server'
+import { getCachedAuth } from '@/lib/auth-server'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 
@@ -15,6 +15,7 @@ function agentLog(payload: Record<string, unknown>) {
   }
 }
 
+export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
@@ -24,44 +25,10 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const auth = await getCachedAuth()
+  if (!auth) redirect('/login')
+  const { user, currentUser } = auth
 
-  if (!user) {
-    redirect('/login')
-  }
-
-  // Get current user's role and profile data
-  const { data: currentUser, error: currentUserError } = await supabase
-    .from('users')
-    .select('role, name, email')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  if (currentUserError) {
-    console.error('[Layout] Error fetching user profile:', currentUserError)
-    // #region agent log
-    const payload = { location: 'app/(dashboard)/layout.tsx', message: 'Dashboard layout redirect profile_error', data: { code: currentUserError.code }, timestamp: Date.now(), hypothesisId: 'H5' }
-    agentLog(payload)
-    fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{})
-    // #endregion
-    redirect('/login?error=profile_error')
-  }
-
-  if (!currentUser) {
-    console.error('[Layout] User profile not found for user:', user.id, user.email)
-    // #region agent log
-    const payload = { location: 'app/(dashboard)/layout.tsx', message: 'Dashboard layout redirect profile_not_found', data: { userId: user?.id }, timestamp: Date.now(), hypothesisId: 'H5' }
-    agentLog(payload)
-    fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{})
-    // #endregion
-    redirect('/login?error=profile_not_found')
-  }
-
-  // Get role from database and normalize it
   const rawRole = currentUser.role
   
   // Validate and normalize role
@@ -92,7 +59,7 @@ export default async function DashboardLayout({
   })()
   
   const userName = currentUser.name || user.email?.split('@')[0] || 'User'
-  const userEmail = currentUser.email || user.email || ''
+  const userEmail = currentUser.email ?? user.email ?? ''
 
   // Generate initials for avatar
   const getInitials = (name: string | null, email: string) => {
