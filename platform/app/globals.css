@@ -241,13 +241,15 @@
   .landing-grid {
     @apply grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center min-w-0;
   }
-  /* Very light grid pattern for landing page */
+  /* Very light grid + subtle gradient for full landing page */
   .landing-grid-pattern {
     background-color: #ffffff;
     background-image:
-      linear-gradient(rgba(0 0 0 / 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0 0 0 / 0.03) 1px, transparent 1px);
-    background-size: 32px 32px;
+      linear-gradient(180deg, rgba(123 97 255 / 0.04) 0%, transparent 40%, transparent 100%),
+      linear-gradient(rgba(0 0 0 / 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0 0 0 / 0.025) 1px, transparent 1px);
+    background-size: 100% 100%, 32px 32px, 32px 32px;
+    background-position: 0 0, 0 0, 0 0;
   }
 }
 
