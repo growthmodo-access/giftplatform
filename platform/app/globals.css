@@ -241,6 +241,14 @@
   .landing-grid {
     @apply grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center min-w-0;
   }
+  /* Very light grid pattern for landing page */
+  .landing-grid-pattern {
+    background-color: #ffffff;
+    background-image:
+      linear-gradient(rgba(0 0 0 / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0 0 0 / 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
 }
 
 @keyframes fadeInUp {
