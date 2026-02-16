@@ -138,8 +138,20 @@ export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }:
               <div className="space-y-2">
                 <Label className="text-muted-foreground">Shipping Address</Label>
                 <div className="flex items-start gap-2 p-2 bg-muted/50 rounded-md">
-                  <MapPin className="w-4 h-4 text-muted-foreground mt-0.5" />
-                  <span className="text-sm text-foreground">{order.shippingAddress}</span>
+                  <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                  <span className="text-sm text-foreground">
+                    {(() => {
+                      try {
+                        const addr = JSON.parse(order.shippingAddress as string)
+                        if (addr && typeof addr === 'object' && (addr.street || addr.city || addr.country || addr.zip_code)) {
+                          return [addr.street, [addr.city, addr.zip_code].filter(Boolean).join(' '), addr.country].filter(Boolean).join(', ')
+                        }
+                      } catch {
+                        // not JSON, show as-is
+                      }
+                      return order.shippingAddress
+                    })()}
+                  </span>
                 </div>
               </div>
             )}

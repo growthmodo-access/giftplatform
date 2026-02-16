@@ -38,7 +38,10 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
   const [selectedEmployee, setSelectedEmployee] = useState('')
   const [selectedProduct, setSelectedProduct] = useState('')
   const [quantity, setQuantity] = useState(1)
-  const [shippingAddress, setShippingAddress] = useState('')
+  const [shippingStreet, setShippingStreet] = useState('')
+  const [shippingCity, setShippingCity] = useState('')
+  const [shippingCountry, setShippingCountry] = useState('')
+  const [shippingZip, setShippingZip] = useState('')
 
   useEffect(() => {
     if (open) {
@@ -130,13 +133,21 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
       return
     }
 
+    const street = shippingStreet.trim()
+    const city = shippingCity.trim()
+    const country = shippingCountry.trim()
+    const zipCode = shippingZip.trim()
+    if (!street || !city || !country || !zipCode) {
+      setError('Shipping address is required. Please enter address, city, country, and postal code.')
+      setLoading(false)
+      return
+    }
+
     const formData = new FormData()
     formData.set('employee_id', selectedEmployee)
     formData.set('product_id', selectedProduct)
     formData.set('quantity', quantity.toString())
-    if (shippingAddress) {
-      formData.set('shipping_address', shippingAddress)
-    }
+    formData.set('shipping_address', JSON.stringify({ street, city, country, zip_code: zipCode }))
 
     const result = await createOrder(formData)
 
@@ -150,7 +161,10 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
       setSelectedEmployee('')
       setSelectedProduct('')
       setQuantity(1)
-      setShippingAddress('')
+      setShippingStreet('')
+      setShippingCity('')
+      setShippingCountry('')
+      setShippingZip('')
     }
   }
 
@@ -158,7 +172,7 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[540px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create New Order</DialogTitle>
           <DialogDescription>
@@ -247,16 +261,61 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="shipping_address">
-                Shipping Address (Optional)
+              <Label htmlFor="shipping_street">
+                Shipping Address <span className="text-red-500">*</span>
               </Label>
               <Input
-                id="shipping_address"
-                name="shipping_address"
-                placeholder="123 Main St, City, State, ZIP"
-                value={shippingAddress}
-                onChange={(e) => setShippingAddress(e.target.value)}
+                id="shipping_street"
+                name="shipping_street"
+                placeholder="Street address"
+                value={shippingStreet}
+                onChange={(e) => setShippingStreet(e.target.value)}
                 disabled={loading}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="grid gap-2">
+                <Label htmlFor="shipping_city">
+                  City <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="shipping_city"
+                  name="shipping_city"
+                  placeholder="City"
+                  value={shippingCity}
+                  onChange={(e) => setShippingCity(e.target.value)}
+                  disabled={loading}
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="shipping_zip">
+                  ZIP / Postal code <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="shipping_zip"
+                  name="shipping_zip"
+                  placeholder="ZIP or postal code"
+                  value={shippingZip}
+                  onChange={(e) => setShippingZip(e.target.value)}
+                  disabled={loading}
+                  required
+                />
+              </div>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="shipping_country">
+                Country <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="shipping_country"
+                name="shipping_country"
+                placeholder="Country"
+                value={shippingCountry}
+                onChange={(e) => setShippingCountry(e.target.value)}
+                disabled={loading}
+                required
               />
             </div>
           </div>
@@ -269,7 +328,18 @@ export function NewOrderDialog({ open, onOpenChange }: NewOrderDialogProps) {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={loading || !selectedEmployee || !selectedProduct}>
+            <Button
+              type="submit"
+              disabled={
+                loading ||
+                !selectedEmployee ||
+                !selectedProduct ||
+                !shippingStreet.trim() ||
+                !shippingCity.trim() ||
+                !shippingCountry.trim() ||
+                !shippingZip.trim()
+              }
+            >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Create Order
             </Button>

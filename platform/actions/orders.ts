@@ -279,11 +279,17 @@ export async function createOrder(formData: FormData) {
     const employeeId = formData.get('employee_id') as string
     const productId = formData.get('product_id') as string
     const quantity = parseInt(formData.get('quantity') as string) || 1
-    const shippingAddress = formData.get('shipping_address') as string
+    const shippingAddressRaw = formData.get('shipping_address') as string | null
 
     if (!employeeId || !productId) {
       return { error: 'Employee and product are required' }
     }
+
+    if (!shippingAddressRaw || !String(shippingAddressRaw).trim()) {
+      return { error: 'Shipping address is required. Please enter address, city, country, and postal code.' }
+    }
+
+    const shippingAddress = String(shippingAddressRaw).trim()
 
     // Get product details
     const { data: product, error: productError } = await supabase
@@ -326,7 +332,7 @@ export async function createOrder(formData: FormData) {
         status: 'PENDING',
         total: total,
         currency: product.currency || 'USD',
-        shipping_address: shippingAddress || null,
+        shipping_address: shippingAddress,
       })
       .select()
       .single()
