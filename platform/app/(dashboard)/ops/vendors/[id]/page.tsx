@@ -67,7 +67,7 @@ export default async function OpsVendorDetailPage({ params }: { params: Promise<
           ) : (
             <ul className="space-y-4">
               {assignments.map((a) => (
-                <li key={a.id} className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border/50 p-4">
+                <li key={a.id} className="flex flex-wrap items-center justify-between gap-4 rounded-none border border-border/20 p-4">
                   <div>
                     <p className="font-medium text-foreground">{a.order_number ?? a.order_id}</p>
                     {a.order_total != null && (

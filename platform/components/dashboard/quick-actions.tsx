@@ -55,7 +55,7 @@ export async function QuickActions() {
   }
 
   return (
-    <section className="rounded-xl border border-border/40 bg-white px-4 py-3 shadow-sm">
+    <section className="rounded-none border border-border/20 bg-white px-4 py-3 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
         <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground shrink-0 sm:mr-2 sm:border-r sm:border-border/40 sm:pr-4">
           Quick Actions
@@ -67,9 +67,9 @@ export async function QuickActions() {
               <Link
                 key={action.title}
                 href={action.href}
-                className="group flex items-center gap-3 rounded-lg border border-border/40 bg-muted/20 hover:bg-muted/40 hover:border-border/60 p-3 sm:min-w-[160px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-w-0 touch-manipulation"
+                className="group flex items-center gap-3 rounded-none border border-border/20 bg-muted/20 hover:bg-muted/40 hover:border-border/50 p-3 sm:min-w-[160px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-w-0 touch-manipulation"
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none bg-primary/10 text-primary">
                   <Icon className="h-4 w-4" strokeWidth={1.75} />
                 </div>
                 <div className="min-w-0 flex-1 overflow-hidden">

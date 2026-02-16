@@ -51,7 +51,7 @@ export default async function OpsVendorsPage() {
                 <li key={v.id}>
                   <Link
                     href={`/ops/vendors/${v.id}`}
-                    className="flex items-center justify-between py-4 hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors"
+                    className="flex items-center justify-between py-4 hover:bg-muted/30 -mx-2 px-2 rounded-none transition-colors"
                   >
                     <div>
                       <p className="font-medium text-foreground">{v.name}</p>

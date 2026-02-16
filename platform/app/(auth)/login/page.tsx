@@ -198,8 +198,8 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-3 sm:p-4 md:p-6 overflow-x-hidden min-w-0 w-full">
-      <Card className="w-full max-w-[380px] border border-black/[0.06] gradient-card shadow-xl min-w-0 shrink-0">
+    <div className="w-full max-w-[400px] mx-auto overflow-x-hidden min-w-0">
+      <Card className="w-full border border-border/20 shadow-xl min-w-0">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
             <Image
@@ -226,7 +226,7 @@ function LoginForm() {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full border-border/50"
+                className="w-full rounded-none border-border/50"
                 onClick={() => { setMagicLinkSent(false); setError('') }}
               >
                 Use a different email
@@ -235,7 +235,7 @@ function LoginForm() {
           ) : (
             <form onSubmit={useMagicLink ? handleMagicLink : handleLogin} className="space-y-4">
             {error && (
-                <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
+                <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-none">
                 {error}
               </div>
             )}
@@ -264,7 +264,7 @@ function LoginForm() {
               />
             </div>
               )}
-              <Button type="submit" className="w-full gradient-button text-white shadow-primary" disabled={loading}>
+              <Button type="submit" className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 font-medium" disabled={loading}>
                 {loading
                   ? (useMagicLink ? 'Sending link...' : 'Signing in...')
                   : (useMagicLink ? 'Send magic link' : 'Sign in')}
@@ -299,7 +299,7 @@ function LoginForm() {
                   size="sm"
                   onClick={() => handleTestLogin(testUser)}
                   disabled={loading}
-                  className="text-xs border-border/50"
+                  className="text-xs rounded-none border-border/50"
                 >
                   {testUser.label}
                 </Button>

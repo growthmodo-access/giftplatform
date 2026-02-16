@@ -51,10 +51,10 @@ export async function StatsCards() {
         return (
           <div
             key={stat.label}
-            className="rounded-xl border border-border/40 bg-white p-5 shadow-sm transition-shadow hover:shadow-md overflow-hidden"
+            className="rounded-none border border-border/20 bg-white p-5 shadow-sm transition-shadow hover:shadow-md overflow-hidden"
           >
             <div className="flex items-start justify-between gap-2 mb-4">
-              <div className={`p-2 rounded-lg ${stat.iconBg}`}>
+              <div className={`p-2 rounded-none ${stat.iconBg}`}>
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               {stat.change && (

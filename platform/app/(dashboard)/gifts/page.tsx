@@ -55,7 +55,7 @@ export default async function GiftsPage() {
               {myGifts.map((gift) => (
                 <div
                   key={gift.id}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-lg border border-border/50 hover:bg-muted/30 transition-colors"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-none border border-border/20 hover:bg-muted/30 transition-colors"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-1">

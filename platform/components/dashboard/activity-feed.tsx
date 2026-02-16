@@ -59,14 +59,14 @@ export function ActivityFeed() {
 
   if (activities.length === 0) {
     return (
-      <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
+      <Card className="rounded-none border border-border/20 bg-white shadow-sm overflow-hidden">
         <CardHeader className="pb-3 pt-4 sm:pt-5">
           <CardTitle className="text-lg font-semibold text-foreground">Activity Feed</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">Recent activity</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="p-3 rounded-xl bg-muted/50 mb-3">
+            <div className="p-3 rounded-none bg-muted/50 mb-3">
               <Clock className="w-6 h-6 text-muted-foreground" />
             </div>
             <p className="text-muted-foreground font-medium mb-1">No recent activity</p>
@@ -78,7 +78,7 @@ export function ActivityFeed() {
   }
 
   return (
-    <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
+    <Card className="rounded-none border border-border/20 bg-white shadow-sm overflow-hidden">
       <CardHeader className="pb-3 pt-4 sm:pt-5">
         <CardTitle className="text-lg font-semibold text-foreground">Activity Feed</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">Recent activity</CardDescription>
@@ -90,9 +90,9 @@ export function ActivityFeed() {
             return (
               <div
                 key={activity.id}
-                className="flex items-start gap-3 p-3 rounded-2xl hover:bg-muted/40 active:bg-muted/50 transition-colors group sm:rounded-xl"
+                className="flex items-start gap-3 p-3 rounded-none hover:bg-muted/40 active:bg-muted/50 transition-colors group"
               >
-                <div className="p-2 rounded-lg bg-muted/50 flex-shrink-0 mt-0.5">
+                <div className="p-2 rounded-none bg-muted/50 flex-shrink-0 mt-0.5">
                   <Icon className="w-4 h-4 text-foreground" />
                 </div>
                 <div className="flex-1 min-w-0">

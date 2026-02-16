@@ -81,7 +81,7 @@ export default async function OpsCampaignOrdersPage({
               {orders.map((order) => (
                 <div
                   key={order.id}
-                  className="rounded-lg border border-border/50 p-4 space-y-2"
+                  className="rounded-none border border-border/20 p-4 space-y-2"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>

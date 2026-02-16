@@ -179,12 +179,12 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
       <aside className={cn(
         'flex flex-col bg-white transition-all duration-300 ease-out',
         'lg:sticky fixed top-0 h-screen z-[50]',
-        'lg:translate-x-0 lg:border-r lg:border-border/60',
+        'lg:translate-x-0 lg:border-r lg:border-border/20',
         isMobileOpen ? 'translate-x-0 w-[min(280px,88vw)] shadow-xl' : '-translate-x-full lg:translate-x-0 lg:shadow-none',
         isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'
       )}>
         {/* Logo + collapse / mobile close */}
-        <div className="p-4 lg:p-4 border-b border-border/40 flex-shrink-0">
+        <div className="p-4 lg:p-4 border-b border-border/20 flex-shrink-0">
           <div className="flex items-center justify-between gap-2">
             <Link
               href="/dashboard"
@@ -209,7 +209,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
                 variant="ghost"
                 size="icon"
                 onClick={() => setMobileOpenValue(false)}
-                className="lg:hidden h-9 w-9 rounded-lg hover:bg-muted/60"
+                className="lg:hidden h-9 w-9 rounded-none hover:bg-muted/60"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" />
@@ -219,7 +219,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="hidden lg:flex h-9 w-9 rounded-lg hover:bg-muted/60"
+                className="hidden lg:flex h-9 w-9 rounded-none hover:bg-muted/60"
                 title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >
                 {isCollapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -238,8 +238,8 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
               key={item.href}
               href={item.href}
               className={cn(
-                  'flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group relative touch-manipulation',
-                  'lg:px-3 lg:py-2.5 lg:rounded-xl',
+                  'flex items-center gap-3 px-4 py-3 rounded-none transition-all group relative touch-manipulation',
+                  'lg:px-3 lg:py-2.5',
                   'hover:bg-muted/50 active:scale-[0.99]',
                 active
                     ? 'bg-muted/70 text-foreground font-semibold'
@@ -259,7 +259,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
                   {item.label}
                 </span>
                 {isCollapsed && (
-                  <div className="hidden lg:block absolute left-full ml-2 px-2.5 py-1.5 bg-popover border border-border text-popover-foreground text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
+                  <div className="hidden lg:block absolute left-full ml-2 px-2.5 py-1.5 bg-popover border border-border text-popover-foreground text-xs font-medium rounded-none opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap shadow-lg">
                     {item.label}
                   </div>
                 )}
@@ -269,12 +269,12 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
       </nav>
       
         {/* Bottom: Profile */}
-        <div className="p-3 lg:p-4 border-t border-border/40 flex-shrink-0">
+        <div className="p-3 lg:p-4 border-t border-border/20 flex-shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
           <button
                 className={cn(
-                  'flex items-center gap-3 w-full rounded-xl p-2.5 text-left hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+                  'flex items-center gap-3 w-full rounded-none p-2.5 text-left hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                   isCollapsed && 'justify-center lg:justify-center p-2'
                 )}
                 title={isCollapsed ? userName : undefined}

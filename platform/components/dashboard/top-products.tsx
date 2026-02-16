@@ -9,14 +9,14 @@ export async function TopProducts() {
 
   if (topProducts.length === 0) {
     return (
-      <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
+      <Card className="rounded-none border border-border/20 bg-white shadow-sm overflow-hidden">
         <CardHeader className="pb-3 pt-4 sm:pt-5">
           <CardTitle className="text-lg font-semibold text-foreground">Top Products</CardTitle>
           <CardDescription className="text-sm text-muted-foreground">Most popular this month</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="p-3 rounded-xl bg-muted/50 mb-3">
+            <div className="p-3 rounded-none bg-muted/50 mb-3">
               <Trophy className="w-6 h-6 text-muted-foreground" />
             </div>
             <p className="text-muted-foreground font-medium mb-1">No products yet</p>
@@ -28,7 +28,7 @@ export async function TopProducts() {
   }
 
   return (
-    <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
+    <Card className="rounded-none border border-border/20 bg-white shadow-sm overflow-hidden">
       <CardHeader className="pb-3 pt-4 sm:pt-5">
         <div className="flex items-center gap-2">
           <Trophy className="w-4 h-4 text-amber-500" />
@@ -47,7 +47,7 @@ export async function TopProducts() {
             return (
               <div
                 key={product.id}
-                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-2xl hover:bg-muted/40 active:bg-muted/50 transition-colors gap-3 group sm:rounded-xl"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-none hover:bg-muted/40 active:bg-muted/50 transition-colors gap-3 group"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 ${

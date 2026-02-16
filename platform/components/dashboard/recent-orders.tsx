@@ -28,7 +28,7 @@ export async function RecentOrders() {
 
   if (recentOrders.length === 0) {
     return (
-      <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
+      <Card className="rounded-none border border-border/20 bg-white shadow-sm overflow-hidden">
         <CardHeader className="pb-3 pt-4 sm:pt-5">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
@@ -36,7 +36,7 @@ export async function RecentOrders() {
               <CardDescription className="text-sm text-muted-foreground">Latest gift orders</CardDescription>
             </div>
             <Link href="/orders">
-              <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto rounded-xl">
+              <Button variant="ghost" size="sm" className="gap-2 text-xs sm:text-sm w-full sm:w-auto rounded-none">
                 See All <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
@@ -44,14 +44,14 @@ export async function RecentOrders() {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-12 sm:py-16 text-center">
-            <div className="p-4 rounded-xl bg-muted/50 mb-4">
+            <div className="p-4 rounded-none bg-muted/50 mb-4">
               <Package className="w-8 h-8 text-muted-foreground" />
             </div>
             <h3 className="font-semibold text-foreground mb-1">No orders yet</h3>
             <p className="text-sm text-muted-foreground mb-4 max-w-sm">
               Create your first gift order to get started
             </p>
-            <Button asChild className="rounded-lg">
+            <Button asChild className="rounded-none">
               <Link href="/orders">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Order
@@ -64,7 +64,7 @@ export async function RecentOrders() {
   }
 
   return (
-    <Card className="rounded-xl border border-border/40 bg-white shadow-sm overflow-hidden">
+    <Card className="rounded-none border border-border/20 bg-white shadow-sm overflow-hidden">
       <CardHeader className="pb-3 pt-4 sm:pt-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
@@ -72,7 +72,7 @@ export async function RecentOrders() {
             <CardDescription className="text-sm text-muted-foreground">Latest gift orders</CardDescription>
           </div>
           <Link href="/orders">
-            <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted/50 text-xs sm:text-sm w-full sm:w-auto rounded-xl">
+            <Button variant="ghost" size="sm" className="gap-2 hover:bg-muted/50 text-xs sm:text-sm w-full sm:w-auto rounded-none">
               See All <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
@@ -86,7 +86,7 @@ export async function RecentOrders() {
             const initials = getInitials(order.employee, employeeEmail)
             return (
               <Link key={order.id} href={`/orders?order=${order.id}`}>
-                <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-muted/40 active:bg-muted/50 transition-colors group cursor-pointer sm:rounded-xl">
+                <div className="flex items-center gap-3 p-3 rounded-none hover:bg-muted/40 active:bg-muted/50 transition-colors group cursor-pointer">
                   <Avatar className="w-9 h-9 flex-shrink-0">
                     <AvatarFallback className="text-xs bg-muted/50">
                       {initials}

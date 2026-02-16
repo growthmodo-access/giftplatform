@@ -95,8 +95,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-3 sm:p-4 md:p-6 overflow-x-hidden overflow-y-auto py-6 sm:py-8 min-w-0 w-full">
-      <Card className="w-full max-w-[400px] border border-black/[0.06] gradient-card shadow-xl min-w-0 shrink-0 my-auto">
+    <div className="w-full max-w-[420px] mx-auto overflow-x-hidden min-w-0">
+      <Card className="w-full border border-border/20 shadow-xl min-w-0">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex items-center justify-center mb-6">
             <Image
@@ -116,13 +116,13 @@ export default function SignupPage() {
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-4">
             {error && (
-              <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
+              <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-none">
                 {error}
               </div>
             )}
 
             <Tabs value={signupType} onValueChange={(v) => setSignupType(v as 'individual' | 'company')} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4">
+              <TabsList className="grid w-full grid-cols-2 mb-4 rounded-none border border-border/50 bg-muted/30 p-0.5">
                 <TabsTrigger value="individual">Individual</TabsTrigger>
                 <TabsTrigger value="company">Company</TabsTrigger>
               </TabsList>
@@ -295,7 +295,7 @@ export default function SignupPage() {
               </TabsContent>
             </Tabs>
 
-            <Button type="submit" className="w-full gradient-button text-white shadow-primary" disabled={loading}>
+            <Button type="submit" className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 font-medium" disabled={loading}>
               {loading ? 'Creating account...' : 'Sign up'}
             </Button>
             <div className="text-center text-sm text-muted-foreground">
