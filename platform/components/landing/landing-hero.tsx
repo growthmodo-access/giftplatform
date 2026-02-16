@@ -56,9 +56,6 @@ export function LandingHero() {
                 <span className="text-xs sm:text-sm font-medium">Reliable & scalable</span>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-5 sm:mt-6 px-2 text-center max-w-xl mx-auto">
-              Trusted by fast-growing companies to deliver gifts across teams and borders
-            </p>
           </div>
         </div>
 
