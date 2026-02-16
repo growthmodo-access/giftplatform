@@ -27,7 +27,7 @@ export function UseCasesSection() {
   return (
     <section
       id="use-cases"
-      className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-transparent"
+      className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-muted/10"
       aria-labelledby="use-cases-heading"
     >
       <div className="landing-container">

@@ -10,7 +10,7 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-transparent">
+    <section className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white">
       <div className="landing-container">
         <div className="text-center mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto space-y-3 px-2 sm:px-0">
           <p className="landing-label">Testimonials</p>

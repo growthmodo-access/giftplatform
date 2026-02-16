@@ -10,7 +10,7 @@ const items = [
 
 export function ValueStrip() {
   return (
-    <section className="py-8 sm:py-10 md:py-12 bg-transparent border-y border-border/20 w-full max-w-full overflow-hidden">
+    <section className="py-8 sm:py-10 md:py-12 bg-white border-y border-border/20 w-full max-w-full overflow-hidden">
       <div className="landing-container">
         <p className="text-center text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
           Trusted by fast-growing companies to deliver gifts across teams and borders

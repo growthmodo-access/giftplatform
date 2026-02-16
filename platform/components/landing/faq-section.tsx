@@ -6,7 +6,7 @@ import { faqItems } from '@/lib/faq-data'
 export function FAQSection() {
   return (
     <section
-      className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-transparent"
+      className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white"
       aria-labelledby="faq-heading"
     >
       <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0">
