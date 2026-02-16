@@ -30,14 +30,8 @@ export function ServicesSection() {
             <h2 className="landing-heading text-balance mb-4">
               One platform that handles everything for you
             </h2>
-            <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-4">
-              We built a system specifically for teams that need to send gifts at scale—without adding operational burden.
-            </p>
-            <p className="text-base sm:text-lg font-medium text-foreground leading-snug mb-4">
-              You decide what to send. We handle everything else.
-            </p>
-            <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-6">
-              From storage and customization to shipping and tracking—globally.
+            <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-8">
+              We built a system for teams that need to send gifts at scale without adding operational burden. You decide what to send and we handle everything else from storage and customization to global shipping and tracking.
             </p>
             <Button variant="outline" onClick={() => window.location.href = '/contact'} className={ctaLight}>
               Talk to sales
