@@ -22,7 +22,7 @@ export function CTASection() {
           <div className="w-full flex justify-center pt-2">
             <Button
               onClick={handleTalkToSales}
-              className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 text-lg font-semibold w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none shadow-lg hover:shadow-xl"
+              className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 text-lg font-semibold w-full sm:w-auto inline-flex items-center justify-center gap-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:outline-none shadow-lg hover:shadow-xl"
               aria-label="Talk to sales"
             >
               Talk to sales
