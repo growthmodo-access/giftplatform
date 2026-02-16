@@ -40,9 +40,9 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.shortName, url: siteConfig.url }],
   creator: siteConfig.shortName,
   icons: {
-    icon: '/goodies.png',
-    shortcut: '/goodies.png',
-    apple: '/goodies.png',
+    icon: 'https://raw.githubusercontent.com/growthmodo-access/giftplatform/1daacc961fb9e62657368e76e850eaa74117d386/platform/public/goodies.png',
+    shortcut: 'https://raw.githubusercontent.com/growthmodo-access/giftplatform/1daacc961fb9e62657368e76e850eaa74117d386/platform/public/goodies.png',
+    apple: 'https://raw.githubusercontent.com/growthmodo-access/giftplatform/1daacc961fb9e62657368e76e850eaa74117d386/platform/public/goodies.png',
   },
   viewport: {
     width: 'device-width',
