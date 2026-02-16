@@ -70,7 +70,7 @@ export async function createUserProfile(
         id: userId,
         email,
         name: name || null,
-        role: companyId ? 'ADMIN' : 'EMPLOYEE', // If creating company, user becomes ADMIN
+        role: companyId ? 'HR' : 'EMPLOYEE', // If creating company, user becomes Company HR
         company_id: companyId,
       },
       { onConflict: 'id' }

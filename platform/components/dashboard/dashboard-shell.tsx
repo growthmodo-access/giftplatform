@@ -5,12 +5,11 @@ import { Sidebar } from './sidebar'
 import { Header } from './header'
 import { Breadcrumbs } from './breadcrumbs'
 import { KeyboardShortcuts } from './keyboard-shortcuts'
-
-type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+import type { AppRole } from '@/lib/roles'
 
 interface DashboardShellProps {
   children: React.ReactNode
-  userRole: UserRole
+  userRole: AppRole
   userName: string
   userEmail: string
   userInitials: string

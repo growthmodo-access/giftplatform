@@ -1,40 +1,25 @@
 import { CampaignsPageClient } from '@/components/campaigns/campaigns-page-client'
 import { getCampaigns, getCampaignsManagement } from '@/actions/campaigns'
-import { createClient } from '@/lib/supabase/server'
+import { getCachedAuth } from '@/lib/auth-server'
+import { toAppRole } from '@/lib/roles'
 import { redirect } from 'next/navigation'
 
 export default async function CampaignsPage() {
-  const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const auth = await getCachedAuth()
+  if (!auth) redirect('/login')
 
-  if (!user) {
-    redirect('/login')
-  }
+  const userRole = toAppRole(auth.currentUser.role)
+  const { data: campaigns } = await getCampaigns()
 
-  // Get current user's role
-  const { data: currentUser } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
-
-  const { data: campaigns, error } = await getCampaigns()
-  
-  // Get management view data for ADMIN and SUPER_ADMIN
   let managementCampaigns: any[] = []
-  if (userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') {
+  if (userRole === 'SUPER_ADMIN') {
     const { data: mgmtData } = await getCampaignsManagement()
     managementCampaigns = mgmtData || []
   }
 
   return (
-    <CampaignsPageClient 
-      campaigns={campaigns || []} 
+    <CampaignsPageClient
+      campaigns={campaigns || []}
       managementCampaigns={managementCampaigns}
       currentUserRole={userRole}
     />

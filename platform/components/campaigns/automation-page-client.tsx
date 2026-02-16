@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { CampaignWizard } from './campaign-wizard'
 import { CampaignsList } from './campaigns-list'
+import type { AppRole } from '@/lib/roles'
 
 type Campaign = {
   id: string
@@ -24,13 +25,13 @@ type Campaign = {
 
 interface AutomationPageClientProps {
   campaigns: Campaign[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 export function AutomationPageClient({ campaigns, currentUserRole }: AutomationPageClientProps) {
   const router = useRouter()
   const [wizardOpen, setWizardOpen] = useState(false)
-  const canCreateCampaigns = currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  const canCreateCampaigns = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">

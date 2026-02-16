@@ -35,12 +35,13 @@ import { useToast } from '@/hooks/use-toast'
 import { Building2, Users, Shield, Mail, UserPlus } from 'lucide-react'
 import { updateUserRole } from '@/actions/users'
 import { AddUserDialog } from './add-user-dialog'
+import { toAppRole, APP_ROLE_LABELS, type AppRole } from '@/lib/roles'
 
 type User = {
   id: string
   email: string
   name: string | null
-  role: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  role: string
   avatar: string | null
   companyId: string | null
   companyName: string
@@ -51,30 +52,20 @@ interface UsersManagementClientProps {
   users: User[]
 }
 
-const roleColors: Record<string, string> = {
+const roleColors: Record<AppRole, string> = {
   SUPER_ADMIN: 'bg-purple-100 text-purple-700 border-purple-200',
-  ADMIN: 'bg-blue-100 text-blue-700 border-blue-200',
-  HR: 'bg-pink-100 text-pink-700 border-pink-200',
-  MANAGER: 'bg-green-100 text-green-700 border-green-200',
+  HR: 'bg-blue-100 text-blue-700 border-blue-200',
   EMPLOYEE: 'bg-gray-100 text-gray-700 border-gray-200',
-}
-
-const roleLabels: Record<string, string> = {
-  SUPER_ADMIN: 'Super Admin',
-  ADMIN: 'Admin',
-  HR: 'HR',
-  MANAGER: 'Manager',
-  EMPLOYEE: 'Employee',
 }
 
 export function UsersManagementClient({ users }: UsersManagementClientProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [updating, setUpdating] = useState<string | null>(null)
-  const [roleChangeDialog, setRoleChangeDialog] = useState<{ userId: string; newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE' } | null>(null)
+  const [roleChangeDialog, setRoleChangeDialog] = useState<{ userId: string; newRole: AppRole } | null>(null)
   const [addUserOpen, setAddUserOpen] = useState(false)
 
-  const handleRoleChange = async (userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') => {
+  const handleRoleChange = async (userId: string, newRole: AppRole) => {
     setUpdating(userId)
     setRoleChangeDialog(null)
     const result = await updateUserRole(userId, newRole)
@@ -90,7 +81,7 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
       toast({
         variant: "success",
         title: "Role Updated",
-        description: `User role updated to ${roleLabels[newRole]}.`,
+        description: `User role updated to ${APP_ROLE_LABELS[newRole]}.`,
       })
       router.refresh()
     }
@@ -103,11 +94,11 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
     return email[0].toUpperCase()
   }
 
-  // Count users by role
   const roleCounts = users.reduce((acc, user) => {
-    acc[user.role] = (acc[user.role] || 0) + 1
+    const r = toAppRole(user.role)
+    acc[r] = (acc[r] || 0) + 1
     return acc
-  }, {} as Record<string, number>)
+  }, {} as Record<AppRole, number>)
 
   return (
     <div className="space-y-6">
@@ -123,8 +114,8 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
       </div>
       <AddUserDialog open={addUserOpen} onOpenChange={setAddUserOpen} />
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Summary Cards - 3 roles */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="border-border/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -141,9 +132,7 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Super Admins</p>
-                <p className="text-2xl font-semibold text-foreground mt-1">
-                  {roleCounts.SUPER_ADMIN || 0}
-                </p>
+                <p className="text-2xl font-semibold text-foreground mt-1">{roleCounts.SUPER_ADMIN || 0}</p>
               </div>
               <Shield className="w-8 h-8 text-muted-foreground" />
             </div>
@@ -153,10 +142,8 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Admins</p>
-                <p className="text-2xl font-semibold text-foreground mt-1">
-                  {roleCounts.ADMIN || 0}
-                </p>
+                <p className="text-sm text-muted-foreground">Company HR</p>
+                <p className="text-2xl font-semibold text-foreground mt-1">{roleCounts.HR || 0}</p>
               </div>
               <Shield className="w-8 h-8 text-muted-foreground" />
             </div>
@@ -167,9 +154,7 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Employees</p>
-                <p className="text-2xl font-semibold text-foreground mt-1">
-                  {roleCounts.EMPLOYEE || 0}
-                </p>
+                <p className="text-2xl font-semibold text-foreground mt-1">{roleCounts.EMPLOYEE || 0}</p>
               </div>
               <Users className="w-8 h-8 text-muted-foreground" />
             </div>
@@ -229,14 +214,14 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge className={roleColors[user.role] || roleColors.EMPLOYEE}>
-                          {roleLabels[user.role] || 'Employee'}
+                        <Badge className={roleColors[toAppRole(user.role)] ?? roleColors.EMPLOYEE}>
+                          {APP_ROLE_LABELS[toAppRole(user.role)]}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         <Select
-                          value={user.role}
-                          onValueChange={(value) => setRoleChangeDialog({ userId: user.id, newRole: value as any })}
+                          value={toAppRole(user.role)}
+                          onValueChange={(value) => setRoleChangeDialog({ userId: user.id, newRole: value as AppRole })}
                           disabled={updating === user.id}
                         >
                           <SelectTrigger className="w-[140px]">
@@ -244,9 +229,7 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
-                            <SelectItem value="ADMIN">Admin</SelectItem>
-                            <SelectItem value="HR">HR</SelectItem>
-                            <SelectItem value="MANAGER">Manager</SelectItem>
+                            <SelectItem value="HR">Company HR</SelectItem>
                             <SelectItem value="EMPLOYEE">Employee</SelectItem>
                           </SelectContent>
                         </Select>
@@ -270,7 +253,7 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
             <AlertDialogHeader>
               <AlertDialogTitle>Change User Role</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to change this user's role to {roleLabels[roleChangeDialog.newRole]}? This action will immediately update their permissions.
+                Are you sure you want to change this user's role to {APP_ROLE_LABELS[roleChangeDialog.newRole]}? This action will immediately update their permissions.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

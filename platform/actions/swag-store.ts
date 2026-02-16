@@ -32,12 +32,13 @@ export async function updateSwagStoreSettings(companyId: string, formData: FormD
     }
 
     // Check permissions - ADMIN and SUPER_ADMIN can update
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to update swag store settings' }
     }
 
     // ADMIN can only update their own company
-    if (currentUser.role === 'ADMIN' && currentUser.company_id !== companyId) {
+    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.company_id !== companyId) {
       return { error: 'You can only update your own company\'s swag store settings' }
     }
 

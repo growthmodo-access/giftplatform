@@ -13,6 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Building2, Users, Package, Gift, DollarSign } from 'lucide-react'
 import Image from 'next/image'
+import type { AppRole } from '@/lib/roles'
 
 type Campaign = {
   id: string
@@ -34,7 +35,7 @@ type Campaign = {
 
 interface CampaignsManagementClientProps {
   campaigns: Campaign[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 const triggerLabels: Record<string, string> = {

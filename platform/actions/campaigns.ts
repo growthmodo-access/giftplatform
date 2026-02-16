@@ -116,8 +116,8 @@ export async function createCampaign(formData: FormData) {
       return { error: 'You must be part of a company to create campaigns' }
     }
 
-    // Check permissions (V1: only HR, MANAGER, SUPER_ADMIN can create campaigns; Company Admin is view-only)
-    if (currentUser.role !== 'HR' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to create campaigns' }
     }
 
@@ -190,8 +190,8 @@ export async function sendCampaignToEmployees(campaignId: string) {
       return { error: 'You must be part of a company' }
     }
 
-    // Check permissions (V1: only HR/MANAGER/SUPER_ADMIN can send; Company Admin is view-only)
-    if (currentUser.role !== 'HR' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to send campaigns' }
     }
 
@@ -277,8 +277,8 @@ export async function updateCampaignStatus(campaignId: string, isActive: boolean
       return { error: 'You must be part of a company' }
     }
 
-    // Check permissions (V1: only HR/MANAGER/SUPER_ADMIN can update; Company Admin is view-only)
-    if (currentUser.role !== 'HR' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to update campaigns' }
     }
 
@@ -325,8 +325,8 @@ export async function updateCampaignDetails(campaignId: string, formData: FormDa
       return { error: 'User profile not found' }
     }
 
-    // Check permissions (V1: only HR/MANAGER/SUPER_ADMIN can update; Company Admin is view-only)
-    if (currentUser.role !== 'HR' && currentUser.role !== 'MANAGER' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to update campaigns' }
     }
 
@@ -404,8 +404,8 @@ export async function createGiftCampaign(formData: FormData) {
       return { error: 'Failed to fetch user data' }
     }
 
-    // Check permissions - V1: only HR, MANAGER, SUPER_ADMIN can create campaigns
-    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'MANAGER') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to create campaigns' }
     }
 
@@ -669,13 +669,11 @@ export async function getCampaignsManagement() {
       return { data: [], error: 'User profile not found' }
     }
 
-    // Only ADMIN and SUPER_ADMIN can access this
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    if (currentUser.role !== 'SUPER_ADMIN') {
       return { data: [], error: 'Unauthorized' }
     }
 
-    // Get campaigns
-    let query = supabase
+    const query = supabase
       .from('campaigns')
       .select(`
         *,
@@ -693,11 +691,6 @@ export async function getCampaignsManagement() {
       `)
       .eq('is_active', true)
       .order('created_at', { ascending: false })
-
-    // ADMIN can only see their company's campaigns
-    if (currentUser.role === 'ADMIN' && currentUser.company_id) {
-      query = query.eq('company_id', currentUser.company_id)
-    }
 
     const { data: campaigns, error } = await query
 
@@ -789,8 +782,7 @@ export async function deleteCampaign(campaignId: string) {
       return { error: 'You must be part of a company' }
     }
 
-    // Check permissions - only ADMIN and SUPER_ADMIN can delete campaigns
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    if (currentUser.role !== 'SUPER_ADMIN') {
       return { error: 'You do not have permission to delete campaigns. Only Admins can delete campaigns.' }
     }
 

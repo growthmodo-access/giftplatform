@@ -1,45 +1,23 @@
 import { CompaniesPageClient } from '@/components/companies/companies-page-client'
 import { getCompanies } from '@/actions/companies'
+import { getCachedAuth } from '@/lib/auth-server'
+import { toAppRole } from '@/lib/roles'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
 
 export default async function CompaniesPage() {
-  const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const auth = await getCachedAuth()
+  if (!auth) redirect('/login')
 
-  if (!user) {
-    redirect('/login')
-  }
-
-  // Get user's role
-  const { data: currentUser } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  if (!currentUser) {
-    redirect('/login')
-  }
-
-  // Check permissions - only ADMIN and SUPER_ADMIN can access
-  if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
-    redirect('/dashboard')
-  }
+  const userRole = toAppRole(auth.currentUser.role)
+  if (userRole !== 'SUPER_ADMIN') redirect('/dashboard')
 
   const { data: companies, error } = await getCompanies()
-
-  if (error) {
-    console.error('Error fetching companies:', error)
-  }
+  if (error) console.error('Error fetching companies:', error)
 
   return (
     <CompaniesPageClient
       initialCompanies={companies || []}
-      currentUserRole={(currentUser.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'}
+      currentUserRole="SUPER_ADMIN"
     />
   )
 }

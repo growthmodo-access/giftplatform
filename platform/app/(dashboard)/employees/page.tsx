@@ -1,38 +1,23 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { EmployeesPageClient } from '@/components/employees/employees-page-client'
 import { getEmployees } from '@/actions/employees'
-import { createClient } from '@/lib/supabase/server'
+import { getCachedAuth } from '@/lib/auth-server'
+import { toAppRole } from '@/lib/roles'
 import { redirect } from 'next/navigation'
 
 export default async function EmployeesPage() {
-  const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const auth = await getCachedAuth()
+  if (!auth) redirect('/login')
 
-  if (!user) {
-    redirect('/login')
-  }
+  const userRole = toAppRole(auth.currentUser.role)
+  if (userRole !== 'SUPER_ADMIN' && userRole !== 'HR') redirect('/dashboard')
 
-  const { data: currentUser, error: userError } = await supabase
-    .from('users')
-    .select('role, company_id')
-    .eq('id', user.id)
-    .single()
-
-  const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
-  if (userRole !== 'SUPER_ADMIN' && userRole !== 'ADMIN' && userRole !== 'HR') {
-    redirect('/dashboard')
-  }
-
-  const { data: employees, error } = await getEmployees()
+  const { data: employees } = await getEmployees()
 
   return (
-    <EmployeesPageClient 
+    <EmployeesPageClient
       employees={employees || []}
       currentUserRole={userRole}
-      currentUserId={user.id}
+      currentUserId={auth.user.id}
     />
   )
 }

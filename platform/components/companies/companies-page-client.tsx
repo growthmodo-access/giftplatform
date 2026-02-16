@@ -21,9 +21,11 @@ interface Company {
   revenue: number
 }
 
+import type { AppRole } from '@/lib/roles'
+
 interface CompaniesPageClientProps {
   initialCompanies: Company[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 export function CompaniesPageClient({ initialCompanies, currentUserRole }: CompaniesPageClientProps) {
@@ -52,7 +54,7 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
   }
 
   const isSuperAdmin = currentUserRole === 'SUPER_ADMIN'
-  const canCreate = currentUserRole === 'SUPER_ADMIN' || currentUserRole === 'ADMIN'
+  const canCreate = currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">
@@ -131,7 +133,7 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
           <CompaniesTable 
             companies={companies} 
             onEdit={handleEdit}
-            canEdit={isSuperAdmin || currentUserRole === 'ADMIN'}
+            canEdit={isSuperAdmin}
             showRevenue={isSuperAdmin}
           />
         </>

@@ -28,7 +28,7 @@ import { CreateTeamDialog } from './create-team-dialog'
 import { EditTeamDialog } from './edit-team-dialog'
 
 interface TeamsSectionProps {
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 export function TeamsSection({ currentUserRole }: TeamsSectionProps) {
@@ -41,7 +41,7 @@ export function TeamsSection({ currentUserRole }: TeamsSectionProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null)
   const [selectedTeam, setSelectedTeam] = useState<any | null>(null)
 
-  const canManageTeams = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canManageTeams = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
 
   useEffect(() => {
     loadTeams()
@@ -138,7 +138,7 @@ export function TeamsSection({ currentUserRole }: TeamsSectionProps) {
                             <Edit className="w-4 h-4 mr-2" />
                             Edit
                           </DropdownMenuItem>
-                          {(currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN') && (
+                          {(currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN') && (
                             <DropdownMenuItem
                               onClick={() => setDeleteDialogOpen(team.id)}
                               className="text-destructive focus:text-destructive"

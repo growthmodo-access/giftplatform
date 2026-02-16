@@ -2,6 +2,7 @@ import { appendFileSync } from 'fs'
 import path from 'path'
 import { DashboardShell } from '@/components/dashboard/dashboard-shell'
 import { getCachedAuth } from '@/lib/auth-server'
+import { toAppRole } from '@/lib/roles'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 
@@ -29,34 +30,8 @@ export default async function DashboardLayout({
   if (!auth) redirect('/login')
   const { user, currentUser } = auth
 
-  const rawRole = currentUser.role
-  
-  // Validate and normalize role
-  const userRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE' = (() => {
-    // Handle null/undefined
-    if (!rawRole) {
-      return 'EMPLOYEE'
-    }
-    
-    const validRoles = ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] as const
-    const roleStr = String(rawRole).trim()
-    
-    // Direct match (most common case) - exact string match
-    if (validRoles.includes(roleStr as any)) {
-      return roleStr as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
-    }
-    
-    // Case-insensitive fallback
-    const upperRole = roleStr.toUpperCase()
-    if (upperRole === 'SUPER_ADMIN') return 'SUPER_ADMIN'
-    if (upperRole === 'ADMIN') return 'ADMIN'
-    if (upperRole === 'HR') return 'HR'
-    if (upperRole === 'MANAGER') return 'MANAGER'
-    if (upperRole === 'EMPLOYEE') return 'EMPLOYEE'
-    
-    // Default fallback
-    return 'EMPLOYEE'
-  })()
+  // 3 roles: SUPER_ADMIN, HR (Company HR), EMPLOYEE. ADMIN/MANAGER normalized to HR.
+  const userRole = toAppRole(currentUser.role)
   
   const userName = currentUser.name || user.email?.split('@')[0] || 'User'
   const userEmail = currentUser.email ?? user.email ?? ''

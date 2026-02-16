@@ -195,8 +195,8 @@ export async function updateOrderTracking(orderId: string, updates: { trackingNu
       return { error: 'User profile not found' }
     }
 
-    // Check permissions - ADMIN, HR, SUPER_ADMIN can update
-    if (!['ADMIN', 'HR', 'SUPER_ADMIN'].includes(currentUser.role || '')) {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to update orders' }
     }
 
@@ -211,8 +211,7 @@ export async function updateOrderTracking(orderId: string, updates: { trackingNu
       return { error: 'Order not found' }
     }
 
-    // ADMIN can only update orders from their company
-    if (currentUser.role === 'ADMIN' && currentUser.company_id !== order.company_id) {
+    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.company_id !== order.company_id) {
       return { error: 'You can only update orders from your company' }
     }
 
@@ -271,8 +270,8 @@ export async function createOrder(formData: FormData) {
       return { error: 'User profile not found' }
     }
 
-    // Check permissions - V1: only HR, MANAGER, SUPER_ADMIN can create orders (Company Admin is view-only)
-    if (!['HR', 'MANAGER', 'SUPER_ADMIN'].includes(currentUser.role || '')) {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to create orders' }
     }
 

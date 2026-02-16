@@ -84,9 +84,9 @@ export async function createProduct(formData: FormData) {
       return { error: 'Invalid product type' }
     }
 
-    // Check permissions - only ADMIN and SUPER_ADMIN can create products
-    if (userData?.role !== 'ADMIN' && userData?.role !== 'SUPER_ADMIN') {
-      return { error: 'You do not have permission to create products. Only Admins can create products.' }
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (userData?.role !== 'SUPER_ADMIN' && !isCompanyHRDb(userData?.role)) {
+      return { error: 'You do not have permission to create products.' }
     }
 
     const { data, error } = await supabase
@@ -152,9 +152,9 @@ export async function updateProduct(id: string, formData: FormData) {
       return { error: 'Failed to fetch user data' }
     }
 
-    // Check permissions - only ADMIN and SUPER_ADMIN can update products
-    if (userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
-      return { error: 'You do not have permission to update products. Only Admins can update products.' }
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (userData.role !== 'SUPER_ADMIN' && !isCompanyHRDb(userData.role)) {
+      return { error: 'You do not have permission to update products.' }
     }
 
     // Check if user owns the product (same company) or is super admin
@@ -283,9 +283,9 @@ export async function deleteProduct(id: string) {
       return { error: 'Failed to fetch user data' }
     }
 
-    // Check permissions - only ADMIN and SUPER_ADMIN can delete products
-    if (userData.role !== 'ADMIN' && userData.role !== 'SUPER_ADMIN') {
-      return { error: 'You do not have permission to delete products. Only Admins can delete products.' }
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (userData.role !== 'SUPER_ADMIN' && !isCompanyHRDb(userData.role)) {
+      return { error: 'You do not have permission to delete products.' }
     }
 
     // Check if user owns the product (same company) or is super admin

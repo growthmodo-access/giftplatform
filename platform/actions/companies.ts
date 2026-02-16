@@ -33,26 +33,14 @@ export async function getCompanies() {
       return { data: [], error: 'User profile not found' }
     }
 
-    // Check permissions - only ADMIN and SUPER_ADMIN can view companies
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    if (currentUser.role !== 'SUPER_ADMIN') {
       return { data: [], error: 'You do not have permission to view companies' }
     }
 
-    let query = supabase
+    const { data: companies, error } = await supabase
       .from('companies')
       .select('id, name, domain, budget, logo, created_at, updated_at')
       .order('created_at', { ascending: false })
-
-    // SUPER_ADMIN can see all companies
-    // ADMIN can only see their own company
-    if (currentUser.role === 'ADMIN') {
-      if (!currentUser.company_id) {
-        return { data: [], error: null }
-      }
-      query = query.eq('id', currentUser.company_id)
-    }
-
-    const { data: companies, error } = await query
 
     if (error) {
       return { data: [], error: error.message }
@@ -135,9 +123,8 @@ export async function createCompany(formData: FormData) {
       return { error: 'User profile not found' }
     }
 
-    // Check permissions - only SUPER_ADMIN and ADMIN can create companies
-    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.role !== 'ADMIN') {
-      return { error: 'You do not have permission to create companies. Only Super Admins and Admins can create companies.' }
+    if (currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'Only Super Admins can create companies.' }
     }
 
     const name = formData.get('name') as string
@@ -219,12 +206,11 @@ export async function updateCompany(companyId: string, formData: FormData) {
     }
 
     // Check permissions
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to update companies' }
     }
-
-    // ADMIN can only update their own company
-    if (currentUser.role === 'ADMIN' && currentUser.company_id !== companyId) {
+    if (currentUser.role !== 'SUPER_ADMIN' && currentUser.company_id !== companyId) {
       return { error: 'You can only update your own company' }
     }
 

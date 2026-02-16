@@ -9,6 +9,7 @@ import { CampaignWizard } from './campaign-wizard'
 import { CampaignsList } from './campaigns-list'
 import { CampaignsTable } from './campaigns-table'
 import { CampaignsManagementClient } from './campaigns-management-client'
+import type { AppRole } from '@/lib/roles'
 
 type Campaign = {
   id: string
@@ -28,7 +29,7 @@ type Campaign = {
 interface CampaignsPageClientProps {
   campaigns: Campaign[]
   managementCampaigns?: any[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 export function CampaignsPageClient({ campaigns, managementCampaigns = [], currentUserRole }: CampaignsPageClientProps) {
@@ -36,9 +37,8 @@ export function CampaignsPageClient({ campaigns, managementCampaigns = [], curre
   const [wizardOpen, setWizardOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('all')
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table')
-  // V1: only HR, MANAGER, SUPER_ADMIN can create (Company Admin is view-only)
-  const canCreateCampaigns = currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
-  const canViewManagement = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
+  const canCreateCampaigns = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canViewManagement = currentUserRole === 'SUPER_ADMIN'
 
   return (
     <div className="space-y-6">

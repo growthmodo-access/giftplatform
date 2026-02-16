@@ -10,10 +10,11 @@ import { CompanyPerformance } from './company-performance'
 import { CampaignPerformance } from './campaign-performance'
 import { RevenueBreakdown } from './revenue-breakdown'
 import { EmployeeEngagement } from './employee-engagement'
+import type { AppRole } from '@/lib/roles'
 
 interface AnalyticsPageClientProps {
   initialData: any
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 export function AnalyticsPageClient({ initialData, currentUserRole }: AnalyticsPageClientProps) {

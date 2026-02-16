@@ -1,54 +1,20 @@
 import { Gift, Users, Sparkles, Package, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { getCachedAuth } from '@/lib/auth-server'
+import { toAppRole } from '@/lib/roles'
 import { redirect } from 'next/navigation'
 
 export async function QuickActions() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const auth = await getCachedAuth()
+  if (!auth) redirect('/login')
 
-  if (!user) {
-    redirect('/login')
-  }
-
-  const { data: currentUser } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-
-  const role = currentUser?.role
-
+  const role = toAppRole(auth.currentUser.role)
   const actions = [
-    {
-      title: 'New Order',
-      description: 'Create a gift order',
-      icon: Gift,
-      href: '/orders',
-      allowedRoles: ['HR', 'MANAGER', 'SUPER_ADMIN'],
-    },
-    {
-      title: 'Add Employee',
-      description: 'Invite team member',
-      icon: Users,
-      href: '/employees',
-      allowedRoles: ['ADMIN', 'HR', 'SUPER_ADMIN'],
-    },
-    {
-      title: 'New Campaign',
-      description: 'Create gift campaign',
-      icon: Sparkles,
-      href: '/campaigns',
-      allowedRoles: ['HR', 'MANAGER', 'SUPER_ADMIN'],
-    },
-    {
-      title: 'Add Product',
-      description: 'Add new gift product',
-      icon: Package,
-      href: '/products',
-      allowedRoles: ['ADMIN', 'SUPER_ADMIN'],
-    },
-  ].filter(action => action.allowedRoles.includes(role || ''))
+    { title: 'New Order', description: 'Create a gift order', icon: Gift, href: '/orders', allowedRoles: ['HR', 'SUPER_ADMIN'] as const },
+    { title: 'Add Employee', description: 'Invite team member', icon: Users, href: '/employees', allowedRoles: ['HR', 'SUPER_ADMIN'] as const },
+    { title: 'New Campaign', description: 'Create gift campaign', icon: Sparkles, href: '/campaigns', allowedRoles: ['HR', 'SUPER_ADMIN'] as const },
+    { title: 'Add Product', description: 'Add new gift product', icon: Package, href: '/products', allowedRoles: ['HR', 'SUPER_ADMIN'] as const },
+  ].filter(action => action.allowedRoles.includes(role))
 
   if (actions.length === 0) {
     return null

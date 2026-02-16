@@ -33,7 +33,7 @@ type Product = Database['public']['Tables']['products']['Row']
 interface ProductsGridProps {
   initialProducts: Product[]
   canManageProducts?: boolean
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: import('@/lib/roles').AppRole
 }
 
 export function ProductsGrid({ initialProducts, canManageProducts = false, currentUserRole }: ProductsGridProps) {

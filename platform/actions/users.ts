@@ -82,7 +82,7 @@ export async function getAllUsers() {
 /**
  * Update user role - only accessible by SUPER_ADMIN
  */
-export async function updateUserRole(userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') {
+export async function updateUserRole(userId: string, newRole: 'SUPER_ADMIN' | 'HR' | 'EMPLOYEE') {
   try {
     const supabase = await createClient()
     
@@ -116,13 +116,10 @@ export async function updateUserRole(userId: string, newRole: 'SUPER_ADMIN' | 'A
       return { error: 'You cannot change your own role' }
     }
 
-    // Update the role
+    const dbRole = newRole === 'SUPER_ADMIN' ? 'SUPER_ADMIN' : newRole === 'HR' ? 'HR' : 'EMPLOYEE'
     const { error: updateError } = await supabase
       .from('users')
-      .update({ 
-        role: newRole,
-        updated_at: new Date().toISOString()
-      })
+      .update({ role: dbRole, updated_at: new Date().toISOString() })
       .eq('id', userId)
 
     if (updateError) {

@@ -44,7 +44,8 @@ export async function createRecipientsFromCsv(
     if (!currentUser?.company_id && currentUser?.role !== 'SUPER_ADMIN') {
       return { error: 'You must be part of a company' }
     }
-    if (!['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'].includes(currentUser?.role ?? '')) {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser?.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser?.role)) {
       return { error: 'You do not have permission to manage campaign recipients' }
     }
 
@@ -492,7 +493,8 @@ export async function sendGiftLinkEmailsForCampaign(campaignId: string) {
       .eq('id', user.id)
       .single()
 
-    if (!currentUser || !['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'].includes(currentUser.role ?? '')) {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (!currentUser || (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role))) {
       return { error: 'You do not have permission to send gift links' }
     }
 

@@ -20,12 +20,13 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { MoreVertical, Building2, MapPin, Users } from 'lucide-react'
+import { toAppRole, APP_ROLE_LABELS, type AppRole } from '@/lib/roles'
 
 type Employee = {
   id: string
   email: string
   name: string | null
-  role: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  role: string
   avatar: string | null
   giftsCount: number
   companyName?: string | null
@@ -40,24 +41,14 @@ type Employee = {
 
 interface EmployeesListProps {
   employees: Employee[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
   currentUserId: string
 }
 
-const roleColors: Record<string, string> = {
+const roleColors: Record<AppRole, string> = {
   SUPER_ADMIN: 'bg-purple-100 text-purple-700',
-  ADMIN: 'bg-blue-100 text-blue-700',
-  HR: 'bg-pink-100 text-pink-700',
-  MANAGER: 'bg-green-100 text-green-700',
+  HR: 'bg-blue-100 text-blue-700',
   EMPLOYEE: 'bg-gray-100 text-gray-700',
-}
-
-const roleLabels: Record<string, string> = {
-  SUPER_ADMIN: 'Super Admin',
-  ADMIN: 'Admin',
-  HR: 'HR',
-  MANAGER: 'Manager',
-  EMPLOYEE: 'Employee',
 }
 
 export function EmployeesList({ employees, currentUserRole, currentUserId }: EmployeesListProps) {
@@ -65,25 +56,16 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
   const { toast } = useToast()
   const [updating, setUpdating] = useState<string | null>(null)
 
-  const canManageRoles = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canManageRoles = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
 
-  const handleRoleChange = async (userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') => {
+  const handleRoleChange = async (userId: string, newRole: AppRole) => {
     setUpdating(userId)
     const result = await updateEmployeeRole(userId, newRole)
     setUpdating(null)
-    
     if (result.error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: result.error,
-      })
+      toast({ variant: 'destructive', title: 'Error', description: result.error })
     } else {
-      toast({
-        variant: "success",
-        title: "Role Updated",
-        description: `Employee role updated to ${roleLabels[newRole]}.`,
-      })
+      toast({ variant: 'success', title: 'Role Updated', description: `Role updated to ${APP_ROLE_LABELS[newRole]}.` })
       router.refresh()
     }
   }
@@ -147,8 +129,8 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
             </div>
             <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4">
               <div className="text-left sm:text-right">
-                <Badge className={`text-xs ${roleColors[employee.role] || roleColors.EMPLOYEE}`}>
-                  {roleLabels[employee.role] || 'Employee'}
+                <Badge className={`text-xs ${roleColors[toAppRole(employee.role)] ?? roleColors.EMPLOYEE}`}>
+                  {APP_ROLE_LABELS[toAppRole(employee.role)]}
                 </Badge>
                 <p className="text-xs text-muted-foreground mt-1">{employee.giftsCount} gifts sent</p>
               </div>
@@ -159,31 +141,26 @@ export function EmployeesList({ employees, currentUserRole, currentUserId }: Emp
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-40">
-                    <DropdownMenuItem
-                      onClick={() => handleRoleChange(employee.id, 'ADMIN')}
-                      disabled={employee.role === 'ADMIN' || updating === employee.id}
-                      className="text-xs sm:text-sm"
-                    >
-                      Set as Admin
-                    </DropdownMenuItem>
+                  <DropdownMenuContent align="end" className="w-44">
+                    {currentUserRole === 'SUPER_ADMIN' && (
+                      <DropdownMenuItem
+                        onClick={() => handleRoleChange(employee.id, 'SUPER_ADMIN')}
+                        disabled={toAppRole(employee.role) === 'SUPER_ADMIN' || updating === employee.id}
+                        className="text-xs sm:text-sm"
+                      >
+                        Set as Super Admin
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem
                       onClick={() => handleRoleChange(employee.id, 'HR')}
-                      disabled={employee.role === 'HR' || updating === employee.id}
+                      disabled={toAppRole(employee.role) === 'HR' || updating === employee.id}
                       className="text-xs sm:text-sm"
                     >
-                      Set as HR
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => handleRoleChange(employee.id, 'MANAGER')}
-                      disabled={employee.role === 'MANAGER' || updating === employee.id}
-                      className="text-xs sm:text-sm"
-                    >
-                      Set as Manager
+                      Set as Company HR
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => handleRoleChange(employee.id, 'EMPLOYEE')}
-                      disabled={employee.role === 'EMPLOYEE' || updating === employee.id}
+                      disabled={toAppRole(employee.role) === 'EMPLOYEE' || updating === employee.id}
                       className="text-xs sm:text-sm"
                     >
                       Set as Employee

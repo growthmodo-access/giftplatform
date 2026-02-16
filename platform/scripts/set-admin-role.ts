@@ -12,7 +12,7 @@ import { updateUserRoleByEmail } from '@/actions/admin'
 
 async function main() {
   const email = 'kunal@growthmodo.com'
-  const role = 'ADMIN'
+  const role = 'HR' // Company HR (3 roles: Super Admin, Company HR, Employee)
   
   console.log(`Updating ${email} to ${role}...`)
   

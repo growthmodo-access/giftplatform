@@ -8,19 +8,19 @@ import { Pagination } from '@/components/ui/pagination'
 import { Plus, Download, Upload, Package, Grid, List } from 'lucide-react'
 import { Database } from '@/types/database'
 import { ProductDialog } from './product-dialog'
+import type { AppRole } from '@/lib/roles'
 
 type Product = Database['public']['Tables']['products']['Row']
 
 interface ProductsPageClientProps {
   initialProducts: Product[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 const ITEMS_PER_PAGE = 12
 
 export function ProductsPageClient({ initialProducts, currentUserRole }: ProductsPageClientProps) {
-  // Only ADMIN and SUPER_ADMIN can create/edit/delete products
-  const canManageProducts = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
+  const canManageProducts = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('grid')
   const [dialogOpen, setDialogOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)

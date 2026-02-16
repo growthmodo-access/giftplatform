@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Pagination } from '@/components/ui/pagination'
 import { Plus, Search } from 'lucide-react'
+import type { AppRole } from '@/lib/roles'
 import { EmployeesList } from './employees-list'
 import { AddEmployeeDialog } from './add-employee-dialog'
 import { TeamsSection } from './teams-section'
@@ -14,14 +15,14 @@ type Employee = {
   id: string
   email: string
   name: string | null
-  role: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  role: string
   avatar: string | null
   giftsCount: number
 }
 
 interface EmployeesPageClientProps {
   employees: Employee[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
   currentUserId: string
 }
 
@@ -31,7 +32,7 @@ export function EmployeesPageClient({ employees, currentUserRole, currentUserId 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [search, setSearch] = useState('')
-  const canInviteEmployees = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canInviteEmployees = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
 
   const filteredEmployees = useMemo(() => {
     if (!search.trim()) return employees
@@ -65,7 +66,7 @@ export function EmployeesPageClient({ employees, currentUserRole, currentUserId 
         )}
       </div>
 
-      {(currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN') && (
+      {(currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN') && (
         <TeamsSection currentUserRole={currentUserRole} />
       )}
 

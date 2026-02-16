@@ -38,6 +38,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import type { AppRole } from '@/lib/roles'
 
 type Campaign = {
   id: string
@@ -58,7 +59,7 @@ type Campaign = {
 
 interface CampaignsTableProps {
   campaigns: Campaign[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 const triggerLabels: Record<string, string> = {
@@ -80,8 +81,8 @@ export function CampaignsTable({ campaigns, currentUserRole }: CampaignsTablePro
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null)
 
-  const canManageCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
-  const canDeleteCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
+  const canManageCampaigns = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canDeleteCampaigns = currentUserRole === 'SUPER_ADMIN'
 
   const handleSendCampaign = async (campaignId: string) => {
     setSending(campaignId)

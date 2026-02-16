@@ -1,37 +1,21 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { OrdersPageClient } from '@/components/orders/orders-page-client'
 import { getOrders } from '@/actions/orders'
-import { createClient } from '@/lib/supabase/server'
+import { getCachedAuth } from '@/lib/auth-server'
+import { toAppRole } from '@/lib/roles'
 import { redirect } from 'next/navigation'
 
 export default async function OrdersPage() {
-  const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const auth = await getCachedAuth()
+  if (!auth) redirect('/login')
 
-  if (!user) {
-    redirect('/login')
-  }
-
-  // Get current user's role to check permissions
-  const { data: currentUser, error: userError } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  if (userError || !currentUser) {
-    redirect('/login')
-  }
-
+  const currentUser = auth.currentUser
   const { data: orders, error } = await getOrders()
 
+  const userRole = toAppRole(currentUser.role)
   return (
-    <OrdersPageClient 
+    <OrdersPageClient
       orders={orders || []}
-      currentUserRole={currentUser.role || 'EMPLOYEE'}
+      currentUserRole={userRole}
       error={error || undefined}
     />
   )

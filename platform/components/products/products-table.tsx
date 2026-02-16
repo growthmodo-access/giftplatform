@@ -40,7 +40,7 @@ type Product = Database['public']['Tables']['products']['Row']
 interface ProductsTableProps {
   initialProducts: Product[]
   canManageProducts?: boolean
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: import('@/lib/roles').AppRole
 }
 
 export function ProductsTable({ initialProducts, canManageProducts = false, currentUserRole }: ProductsTableProps) {

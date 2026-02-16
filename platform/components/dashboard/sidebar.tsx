@@ -34,34 +34,34 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 
-type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+import type { AppRole } from '@/lib/roles'
 
 interface MenuItem {
   icon: any
   label: string
   href: string
-  allowedRoles: UserRole[]
+  allowedRoles: AppRole[]
 }
 
-// V1: Company Admin = view/billing only; HR = hero (campaigns/employees); Employee = no dashboard (Gifts only)
+// 3 roles: Super Admin, Company HR, Employee
 const allMenuItems: MenuItem[] = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
-  { icon: Package, label: 'Products', href: '/products', allowedRoles: ['SUPER_ADMIN', 'HR', 'MANAGER'] },
-  { icon: ShoppingCart, label: 'Orders', href: '/orders', allowedRoles: ['SUPER_ADMIN', 'HR', 'MANAGER'] },
-  { icon: Gift, label: 'Gifts', href: '/gifts', allowedRoles: ['SUPER_ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-  { icon: CreditCard, label: 'Billing', href: '/billing', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
-  { icon: Users, label: 'Employees', href: '/employees', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR'] },
-  { icon: Zap, label: 'Campaigns', href: '/campaigns', allowedRoles: ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER'] },
-  { icon: BarChart3, label: 'Analytics', href: '/analytics', allowedRoles: ['SUPER_ADMIN', 'HR', 'MANAGER'] },
-  { icon: Building2, label: 'Companies', href: '/companies', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
+  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', allowedRoles: ['SUPER_ADMIN', 'HR'] },
+  { icon: Package, label: 'Products', href: '/products', allowedRoles: ['SUPER_ADMIN', 'HR'] },
+  { icon: ShoppingCart, label: 'Orders', href: '/orders', allowedRoles: ['SUPER_ADMIN', 'HR'] },
+  { icon: Gift, label: 'Gifts', href: '/gifts', allowedRoles: ['SUPER_ADMIN', 'HR', 'EMPLOYEE'] },
+  { icon: CreditCard, label: 'Billing', href: '/billing', allowedRoles: ['SUPER_ADMIN', 'HR'] },
+  { icon: Users, label: 'Employees', href: '/employees', allowedRoles: ['SUPER_ADMIN', 'HR'] },
+  { icon: Zap, label: 'Campaigns', href: '/campaigns', allowedRoles: ['SUPER_ADMIN', 'HR'] },
+  { icon: BarChart3, label: 'Analytics', href: '/analytics', allowedRoles: ['SUPER_ADMIN', 'HR'] },
+  { icon: Building2, label: 'Companies', href: '/companies', allowedRoles: ['SUPER_ADMIN'] },
   { icon: Users, label: 'Users', href: '/users', allowedRoles: ['SUPER_ADMIN'] },
   { icon: ClipboardList, label: 'Ops', href: '/ops', allowedRoles: ['SUPER_ADMIN'] },
   { icon: ScrollText, label: 'Audit log', href: '/audit', allowedRoles: ['SUPER_ADMIN'] },
-  { icon: Settings, label: 'Settings', href: '/settings', allowedRoles: ['SUPER_ADMIN', 'ADMIN'] },
+  { icon: Settings, label: 'Settings', href: '/settings', allowedRoles: ['SUPER_ADMIN', 'HR'] },
 ]
 
 interface SidebarProps {
-  userRole: UserRole
+  userRole: AppRole
   userName: string
   userEmail: string
   userInitials: string
@@ -77,22 +77,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
   const setMobileOpen = onMobileOpenChange ?? setInternalMobileOpen
   const setMobileOpenValue = (open: boolean) => (onMobileOpenChange ? onMobileOpenChange(open) : setInternalMobileOpen(open))
 
-  // Validate role and ensure it's a valid UserRole type
-  const normalizedRole: UserRole = (() => {
-    if (!userRole) {
-      return 'EMPLOYEE'
-    }
-    
-    // Ensure it's a valid UserRole type
-    const validRoles: UserRole[] = ['SUPER_ADMIN', 'ADMIN', 'HR', 'MANAGER', 'EMPLOYEE']
-    if (validRoles.includes(userRole as UserRole)) {
-      return userRole as UserRole
-    }
-    
-    // Fallback if role doesn't match exactly
-    return 'EMPLOYEE'
-  })()
-
+  const normalizedRole: AppRole = (userRole === 'SUPER_ADMIN' || userRole === 'HR' || userRole === 'EMPLOYEE') ? userRole : 'EMPLOYEE'
   const menuItems = allMenuItems.filter(item => item.allowedRoles.includes(normalizedRole))
 
   // Load collapsed state from localStorage on mount (desktop only)

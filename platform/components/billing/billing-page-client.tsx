@@ -8,6 +8,7 @@ import { Plus, Wallet, FileText, Download, CreditCard } from 'lucide-react'
 import { InvoicesList } from './invoices-list'
 import { WalletSection } from './wallet-section'
 import { AddFundsDialog } from './add-funds-dialog'
+import type { AppRole } from '@/lib/roles'
 
 interface Invoice {
   id: string
@@ -28,7 +29,7 @@ interface Wallet {
 interface BillingPageClientProps {
   invoices: Invoice[]
   wallet: Wallet | null
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 export function BillingPageClient({ invoices, wallet, currentUserRole }: BillingPageClientProps) {

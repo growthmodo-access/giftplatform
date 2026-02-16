@@ -10,8 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Settings, Globe, Shield, Bell, Mail } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+import type { AppRole } from '@/lib/roles'
+
 interface AppSettingsProps {
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 export function AppSettings({ currentUserRole }: AppSettingsProps) {

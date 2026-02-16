@@ -145,8 +145,8 @@ export async function updateCompanyInfo(formData: FormData) {
       return { error: 'User profile not found' }
     }
 
-    // Check permissions - only ADMIN and SUPER_ADMIN can update company
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to update company information' }
     }
 

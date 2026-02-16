@@ -39,7 +39,7 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [companyId, setCompanyId] = useState('')
-  const [role, setRole] = useState<'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'>('EMPLOYEE')
+  const [role, setRole] = useState<'SUPER_ADMIN' | 'HR' | 'EMPLOYEE'>('EMPLOYEE')
 
   useEffect(() => {
     if (open) {
@@ -142,9 +142,8 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ADMIN">Admin</SelectItem>
-                <SelectItem value="HR">HR</SelectItem>
-                <SelectItem value="MANAGER">Manager</SelectItem>
+                <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
+                <SelectItem value="HR">Company HR</SelectItem>
                 <SelectItem value="EMPLOYEE">Employee</SelectItem>
               </SelectContent>
             </Select>

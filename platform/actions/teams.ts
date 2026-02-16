@@ -98,7 +98,8 @@ export async function createTeam(formData: FormData) {
     }
 
     // Check permissions
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to create teams' }
     }
 
@@ -187,7 +188,8 @@ export async function updateTeam(teamId: string, formData: FormData) {
     }
 
     // Check permissions
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to update teams' }
     }
 
@@ -250,7 +252,8 @@ export async function deleteTeam(teamId: string) {
     }
 
     // Only ADMIN and SUPER_ADMIN can delete teams
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to delete teams' }
     }
 
@@ -303,7 +306,8 @@ export async function addTeamMembers(teamId: string, userIds: string[]) {
     }
 
     // Check permissions
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to manage team members' }
     }
 
@@ -353,7 +357,8 @@ export async function removeTeamMember(teamId: string, userId: string) {
     }
 
     // Check permissions
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to manage team members' }
     }
 

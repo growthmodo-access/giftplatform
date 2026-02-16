@@ -1,8 +1,10 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { isCompanyHRDb } from '@/lib/roles'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import type { AppRole } from '@/lib/roles'
 
 export async function getEmployees() {
   try {
@@ -112,7 +114,7 @@ export async function getEmployees() {
   }
 }
 
-export async function inviteEmployee(email: string, name: string, role: 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE', shippingAddress?: string | null, companyId?: string | null) {
+export async function inviteEmployee(email: string, name: string, role: 'SUPER_ADMIN' | 'HR' | 'EMPLOYEE', shippingAddress?: string | null, companyId?: string | null) {
   try {
     // #region agent log
     fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:68',message:'inviteEmployee called',data:{email,name,role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
@@ -148,20 +150,16 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
       return { error: 'User profile not found' }
     }
 
-    // Check permissions - only ADMIN, HR, and SUPER_ADMIN can invite
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to invite employees' }
     }
-
-    // SUPER_ADMIN can invite employees to any company (will need company_id in form)
-    // Other roles need company_id
     if (currentUser.role !== 'SUPER_ADMIN' && !currentUser?.company_id) {
       return { error: 'You must be part of a company to invite employees' }
     }
-
-    // HR can only invite HR, MANAGER, or EMPLOYEE roles (not ADMIN or SUPER_ADMIN)
-    if (currentUser.role === 'HR' && (role === 'ADMIN' || role === 'SUPER_ADMIN')) {
-      return { error: 'HR cannot invite users with ADMIN or SUPER_ADMIN roles. Only Admins can invite Admins.' }
+    // Only SUPER_ADMIN can invite SUPER_ADMIN
+    if (role === 'SUPER_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'Only Super Admins can invite Super Admins.' }
     }
 
     // Check if user already exists
@@ -293,7 +291,7 @@ export async function inviteEmployee(email: string, name: string, role: 'ADMIN' 
   }
 }
 
-export async function updateEmployeeRole(userId: string, newRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') {
+export async function updateEmployeeRole(userId: string, newRole: 'SUPER_ADMIN' | 'HR' | 'EMPLOYEE') {
   try {
     const supabase = await createClient()
     
@@ -313,11 +311,12 @@ export async function updateEmployeeRole(userId: string, newRole: 'SUPER_ADMIN' 
       .eq('id', user.id)
       .single()
 
-    if (!currentUser || (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN')) {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    const canManageRoles = currentUser.role === 'SUPER_ADMIN' || isCompanyHRDb(currentUser.role)
+    if (!currentUser || !canManageRoles) {
       return { error: 'You do not have permission to update roles' }
     }
 
-    // Verify the target user is in the same company
     const { data: targetUser } = await supabase
       .from('users')
       .select('company_id, role')
@@ -328,26 +327,17 @@ export async function updateEmployeeRole(userId: string, newRole: 'SUPER_ADMIN' 
       return { error: 'User not found or not in your company' }
     }
 
-    // HR cannot change roles to ADMIN or SUPER_ADMIN
-    if (currentUser.role === 'HR' && (newRole === 'ADMIN' || newRole === 'SUPER_ADMIN')) {
-      return { error: 'HR cannot change roles to ADMIN or SUPER_ADMIN. Only Admins can assign these roles.' }
+    // Only SUPER_ADMIN can assign SUPER_ADMIN
+    if (newRole === 'SUPER_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'Only Super Admins can assign the Super Admin role.' }
     }
 
-    // ADMIN cannot change roles to SUPER_ADMIN (only SUPER_ADMIN can)
-    if (currentUser.role === 'ADMIN' && newRole === 'SUPER_ADMIN') {
-      return { error: 'Admins cannot change roles to SUPER_ADMIN. Only Super Admins can assign this role.' }
-    }
-
-    // ADMIN cannot change roles to ADMIN (prevents privilege escalation)
-    if (currentUser.role === 'ADMIN' && newRole === 'ADMIN' && targetUser.role !== 'ADMIN') {
-      return { error: 'Admins cannot promote users to ADMIN role. Only Super Admins can assign ADMIN role.' }
-    }
-
-    // Update the role
+    // Store one of SUPER_ADMIN | HR | EMPLOYEE in DB
+    const dbRole = newRole === 'SUPER_ADMIN' ? 'SUPER_ADMIN' : newRole === 'HR' ? 'HR' : 'EMPLOYEE'
     const { error } = await supabase
       .from('users')
-      .update({ 
-        role: newRole,
+      .update({
+        role: dbRole,
         updated_at: new Date().toISOString()
       })
       .eq('id', userId)
@@ -389,8 +379,8 @@ export async function importEmployeesFromCSV(formData: FormData) {
       return { error: 'User profile not found' }
     }
 
-    // Check permissions - only ADMIN, HR, and SUPER_ADMIN can import
-    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'HR' && currentUser.role !== 'SUPER_ADMIN') {
+    const { isCompanyHRDb } = await import('@/lib/roles')
+    if (currentUser.role !== 'SUPER_ADMIN' && !isCompanyHRDb(currentUser.role)) {
       return { error: 'You do not have permission to import employees' }
     }
 
@@ -454,18 +444,17 @@ export async function importEmployeesFromCSV(formData: FormData) {
         continue
       }
 
-      if (!['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'].includes(role)) {
-        errors.push(`Row ${i + 1}: Invalid role "${role}"`)
+      // Normalize to 3 roles: map ADMIN/MANAGER to HR for CSV
+      const normalizedRole = role === 'SUPER_ADMIN' ? 'SUPER_ADMIN' : (role === 'ADMIN' || role === 'MANAGER' || role === 'HR') ? 'HR' : 'EMPLOYEE'
+      if (!['SUPER_ADMIN', 'HR', 'EMPLOYEE'].includes(normalizedRole)) {
+        errors.push(`Row ${i + 1}: Invalid role "${role}" (use Super Admin, Company HR, or Employee)`)
         continue
       }
-
-      // HR cannot invite ADMIN or SUPER_ADMIN
-      if (currentUser.role === 'HR' && (role === 'ADMIN' || role === 'SUPER_ADMIN')) {
-        errors.push(`Row ${i + 1}: HR cannot invite ${role} role`)
+      if (normalizedRole === 'SUPER_ADMIN' && currentUser.role !== 'SUPER_ADMIN') {
+        errors.push(`Row ${i + 1}: Only Super Admins can invite Super Admins`)
         continue
       }
-
-      employees.push({ email, name, role, shippingAddress })
+      employees.push({ email, name, role: normalizedRole, shippingAddress })
     }
 
     if (employees.length === 0) {

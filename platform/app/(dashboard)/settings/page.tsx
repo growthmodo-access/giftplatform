@@ -5,18 +5,14 @@ import { CompanyForm } from '@/components/settings/company-form'
 import { AppSettings } from '@/components/settings/app-settings'
 import { SwagStoreSettings } from '@/components/settings/swag-store-settings'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { isCompanyHRDb, toAppRole } from '@/lib/roles'
 
 export default async function SettingsPage() {
-  const supabase = await createClient()
   const profileData = await getCurrentUserProfile()
-
-  if (profileData.error) {
-    redirect('/login')
-  }
+  if (profileData.error) redirect('/login')
 
   const { user, company } = profileData
-  const canEditCompany = user.role === 'ADMIN' || user.role === 'SUPER_ADMIN'
+  const canEditCompany = user.role === 'SUPER_ADMIN' || isCompanyHRDb(user.role)
   const isSuperAdmin = user.role === 'SUPER_ADMIN'
 
   // Get swag store settings if company exists
@@ -61,7 +57,7 @@ export default async function SettingsPage() {
 
       {/* App-Wide Settings (Super Admin only) */}
       {isSuperAdmin && (
-        <AppSettings currentUserRole={user.role} />
+        <AppSettings currentUserRole="SUPER_ADMIN" />
       )}
     </div>
   )

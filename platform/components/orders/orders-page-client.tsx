@@ -13,6 +13,7 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { useRealtimeOrders } from '@/hooks/use-realtime-orders'
 import { useRouter } from 'next/navigation'
 import { ShoppingCart } from 'lucide-react'
+import type { AppRole } from '@/lib/roles'
 
 type Order = {
   id: string
@@ -34,7 +35,7 @@ type Order = {
 
 interface OrdersPageClientProps {
   orders: Order[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
   error?: string
 }
 
@@ -54,8 +55,7 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
   })
   const [currentPage, setCurrentPage] = useState(1)
 
-  // V1: only HR, MANAGER, SUPER_ADMIN can create orders (Company Admin is view-only)
-  const canCreateOrders = currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
+  const canCreateOrders = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
 
   // Safety check for orders
   const safeOrders = orders || []
@@ -240,7 +240,7 @@ export function OrdersPageClient({ orders, currentUserRole, error }: OrdersPageC
           setSelectedOrder(null)
           window.location.reload()
         }}
-        canEdit={canCreateOrders || currentUserRole === 'HR'}
+        canEdit={canCreateOrders}
       />
     </div>
   )

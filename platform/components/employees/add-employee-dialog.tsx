@@ -135,7 +135,7 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
     const result = await inviteEmployee(
       email,
       name,
-      roleValue as 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE',
+      (roleValue === 'SUPER_ADMIN' || roleValue === 'HR' || roleValue === 'EMPLOYEE' ? roleValue : 'EMPLOYEE'),
       shippingAddress || null,
       companyId || null
     )
@@ -314,16 +314,15 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
                 <SelectContent>
                   {(() => {
                     const roleOptions: { value: string; label: string }[] = [
-                      { value: 'ADMIN', label: 'Admin' },
-                      { value: 'HR', label: 'HR' },
-                      { value: 'MANAGER', label: 'Manager' },
+                      { value: 'SUPER_ADMIN', label: 'Super Admin' },
+                      { value: 'HR', label: 'Company HR' },
                       { value: 'EMPLOYEE', label: 'Employee' },
                     ]
                     const allowed =
                       userRole === 'HR'
-                        ? ['HR', 'MANAGER', 'EMPLOYEE']
-                        : userRole === 'ADMIN' || userRole === 'SUPER_ADMIN'
-                          ? ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE']
+                        ? ['HR', 'EMPLOYEE']
+                        : userRole === 'SUPER_ADMIN'
+                          ? ['SUPER_ADMIN', 'HR', 'EMPLOYEE']
                           : ['EMPLOYEE']
                     return roleOptions
                       .filter((r) => allowed.includes(r.value))

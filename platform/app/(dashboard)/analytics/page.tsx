@@ -1,33 +1,17 @@
 import { AnalyticsPageClient } from '@/components/analytics/analytics-page-client'
-import { createClient } from '@/lib/supabase/server'
+import { getCachedAuth } from '@/lib/auth-server'
+import { toAppRole } from '@/lib/roles'
 import { redirect } from 'next/navigation'
 
 export default async function AnalyticsPage() {
-  const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const auth = await getCachedAuth()
+  if (!auth) redirect('/login')
 
-  if (!user) {
-    redirect('/login')
-  }
-
-  // Get current user's role
-  const { data: currentUser } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  const userRole = (currentUser?.role as 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') || 'EMPLOYEE'
-
-  if (userRole === 'EMPLOYEE') {
-    redirect('/dashboard')
-  }
+  const userRole = toAppRole(auth.currentUser.role)
+  if (userRole === 'EMPLOYEE') redirect('/dashboard')
 
   return (
-    <AnalyticsPageClient 
+    <AnalyticsPageClient
       initialData={null}
       currentUserRole={userRole}
     />

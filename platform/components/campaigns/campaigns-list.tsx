@@ -24,6 +24,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { sendCampaignToEmployees, updateCampaignStatus, deleteCampaign } from '@/actions/campaigns'
+import type { AppRole } from '@/lib/roles'
 
 type Campaign = {
   id: string
@@ -42,7 +43,7 @@ type Campaign = {
 
 interface CampaignsListProps {
   campaigns: Campaign[]
-  currentUserRole: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE'
+  currentUserRole: AppRole
 }
 
 const triggerLabels: Record<string, string> = {
@@ -62,9 +63,8 @@ export function CampaignsList({ campaigns, currentUserRole }: CampaignsListProps
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null)
   const [sendDialogOpen, setSendDialogOpen] = useState<string | null>(null)
 
-  const canManageCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'HR' || currentUserRole === 'MANAGER' || currentUserRole === 'SUPER_ADMIN'
-  // Only ADMIN and SUPER_ADMIN can delete campaigns
-  const canDeleteCampaigns = currentUserRole === 'ADMIN' || currentUserRole === 'SUPER_ADMIN'
+  const canManageCampaigns = currentUserRole === 'HR' || currentUserRole === 'SUPER_ADMIN'
+  const canDeleteCampaigns = currentUserRole === 'SUPER_ADMIN'
 
   const handleSendCampaign = async (campaignId: string) => {
     setSending(campaignId)

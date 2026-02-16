@@ -8,20 +8,15 @@ import { env } from '@/lib/env'
  * This uses the service role key to bypass RLS for admin operations
  * Use with caution - only for administrative tasks
  */
-export async function updateUserRoleByEmail(email: string, role: 'SUPER_ADMIN' | 'ADMIN' | 'HR' | 'MANAGER' | 'EMPLOYEE') {
+/** Allowed roles: 3 only. Legacy ADMIN/MANAGER are normalized to HR. */
+export async function updateUserRoleByEmail(email: string, role: 'SUPER_ADMIN' | 'HR' | 'EMPLOYEE') {
   try {
-    // Use service role key to bypass RLS
     const supabaseUrl = env.supabase.url
     const supabaseKey = env.supabase.serviceRoleKey || env.supabase.anonKey
-    
     const supabase = createClient(supabaseUrl, supabaseKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
+      auth: { autoRefreshToken: false, persistSession: false },
     })
 
-    // First, find the user by email
     const { data: user, error: findError } = await supabase
       .from('users')
       .select('id, email, name, role')
@@ -32,11 +27,11 @@ export async function updateUserRoleByEmail(email: string, role: 'SUPER_ADMIN' |
       return { error: `User with email ${email} not found` }
     }
 
-    // Update the role
+    const dbRole = role === 'SUPER_ADMIN' ? 'SUPER_ADMIN' : role === 'HR' ? 'HR' : 'EMPLOYEE'
     const { data: updatedUser, error: updateError } = await supabase
       .from('users')
-      .update({ 
-        role: role,
+      .update({
+        role: dbRole,
         updated_at: new Date().toISOString()
       })
       .eq('id', user.id)
@@ -50,7 +45,7 @@ export async function updateUserRoleByEmail(email: string, role: 'SUPER_ADMIN' |
     return { 
       success: true, 
       data: updatedUser,
-      message: `Successfully updated ${email} to ${role}` 
+      message: `Successfully updated ${email} to ${dbRole}` 
     }
   } catch (error) {
     return { 
