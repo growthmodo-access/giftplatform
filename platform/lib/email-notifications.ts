@@ -13,7 +13,11 @@ export interface EmailNotification {
 const RESEND_API_URL = 'https://api.resend.com/emails'
 const FROM_EMAIL = process.env.EMAIL_FROM ?? 'Goodies <onboarding@resend.dev>'
 const REPLY_TO = process.env.REPLY_TO ?? undefined
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodies.so'
+
+function getAppUrl(): string {
+  const { getAppBaseUrl } = require('@/lib/site')
+  return getAppBaseUrl()
+}
 
 /**
  * Send email notification via Resend when RESEND_API_KEY is set; otherwise log in dev.
@@ -103,7 +107,7 @@ export async function sendCampaignNotificationEmail(
         <p><strong>Gift:</strong> ${giftDetails.product}</p>
         ${giftDetails.message ? `<p><strong>Message:</strong> ${giftDetails.message}</p>` : ''}
       </div>
-      <p><a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://goodies.so'}/gifts">View your gift</a></p>
+      <p><a href="${getAppUrl()}/gifts">View your gift</a></p>
     </div>
   `
 
