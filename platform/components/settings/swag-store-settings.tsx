@@ -9,11 +9,11 @@ import { Switch } from '@/components/ui/switch'
 import { Globe, ExternalLink, Copy, Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { updateSwagStoreSettings } from '@/actions/swag-store'
+import { getStoreBaseUrl } from '@/lib/site'
 
 interface SwagStoreSettingsProps {
   companyId: string | null
   storeIdentifier: string | null
-  subdomain: string | null
   isEnabled: boolean
   canEdit: boolean
 }
@@ -21,7 +21,6 @@ interface SwagStoreSettingsProps {
 export function SwagStoreSettings({ 
   companyId, 
   storeIdentifier: initialStoreIdentifier, 
-  subdomain: initialSubdomain,
   isEnabled: initialIsEnabled,
   canEdit 
 }: SwagStoreSettingsProps) {
@@ -29,16 +28,12 @@ export function SwagStoreSettings({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
-  const [subdomain, setSubdomain] = useState(initialSubdomain || '')
   const [isEnabled, setIsEnabled] = useState(initialIsEnabled)
   const [copied, setCopied] = useState(false)
 
+  const storeBase = getStoreBaseUrl()
   const storeUrl = initialStoreIdentifier 
-    ? `https://goodies.co/companies/${initialStoreIdentifier}`
-    : null
-
-  const subdomainUrl = subdomain 
-    ? `https://${subdomain}.goodies.co`
+    ? `${storeBase}/companies/${initialStoreIdentifier}`
     : null
 
   const handleCopy = (text: string) => {
@@ -60,7 +55,6 @@ export function SwagStoreSettings({
 
     try {
       const formData = new FormData()
-      formData.append('subdomain', subdomain)
       formData.append('isEnabled', isEnabled.toString())
 
       const result = await updateSwagStoreSettings(companyId, formData)
@@ -118,7 +112,7 @@ export function SwagStoreSettings({
           Swag Store Settings
         </CardTitle>
         <CardDescription>
-          Configure your company's swag store URL and subdomain
+          Configure your company's swag store URL
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -175,44 +169,6 @@ export function SwagStoreSettings({
               </p>
             </div>
           )}
-
-          {/* Subdomain */}
-          <div className="space-y-2">
-            <Label htmlFor="subdomain" className="text-foreground">Custom Subdomain</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="subdomain"
-                type="text"
-                value={subdomain}
-                onChange={(e) => setSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                className="border-border/50"
-                placeholder="yourcompany"
-                disabled={loading}
-              />
-              <span className="text-sm text-muted-foreground">.goodies.co</span>
-            </div>
-            {subdomain && (
-              <div className="mt-2 p-3 bg-muted/50 border border-border/50 rounded-md">
-                <p className="text-xs text-muted-foreground mb-1">Your store will be available at:</p>
-                <div className="flex items-center gap-2">
-                  <code className="text-sm font-mono text-foreground">
-                    https://{subdomain}.goodies.co
-                  </code>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleCopy(`https://${subdomain}.goodies.co`)}
-                  >
-                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  </Button>
-                </div>
-              </div>
-            )}
-            <p className="text-xs text-muted-foreground">
-              Point your subdomain to this store. Update your DNS CNAME record to point to goodies.co
-            </p>
-          </div>
 
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? 'Saving...' : 'Save Settings'}

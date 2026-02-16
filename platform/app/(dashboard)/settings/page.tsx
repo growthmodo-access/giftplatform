@@ -49,7 +49,6 @@ export default async function SettingsPage() {
         <SwagStoreSettings
           companyId={company.id}
           storeIdentifier={swagStoreSettings?.storeIdentifier || null}
-          subdomain={swagStoreSettings?.subdomain || null}
           isEnabled={swagStoreSettings?.isEnabled || false}
           canEdit={canEditCompany}
         />

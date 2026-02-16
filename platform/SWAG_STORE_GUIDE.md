@@ -9,11 +9,6 @@ Each company can have their own public swag store accessible at:
 https://yourdomain.com/companies/{store-identifier}
 ```
 
-Or via custom subdomain:
-```
-https://{subdomain}.yourdomain.com
-```
-
 ## Step 1: Create or Edit Company
 
 1. Navigate to **Companies** in the sidebar (Admin/Super Admin only)
@@ -32,9 +27,6 @@ https://{subdomain}.yourdomain.com
    - **Store Identifier**: A unique identifier for your store URL
      - Example: `acme-inc` → Store URL: `/companies/acme-inc`
      - If not set, one will be auto-generated from company name
-   - **Subdomain**: Custom subdomain for your store
-     - Example: `swag` → Store URL: `swag.yourdomain.com`
-     - Must be unique across all companies
 
 ## Step 3: Add Products to Store
 
@@ -46,14 +38,8 @@ https://{subdomain}.yourdomain.com
 
 ## Step 4: Access Your Store
 
-### Option 1: Via Store Identifier
 ```
 https://yourdomain.com/companies/{your-store-identifier}
-```
-
-### Option 2: Via Subdomain (if configured)
-```
-https://{your-subdomain}.yourdomain.com
 ```
 
 ## Store Features
@@ -68,11 +54,10 @@ https://{your-subdomain}.yourdomain.com
 ### For Super Admin:
 - Can create stores for any company
 - Can edit any company's store settings
-- Can configure subdomains
 
-### For Admin:
+### For Company HR:
 - Can edit their own company's store settings
-- Can configure store identifier and subdomain
+- Can configure store identifier
 - Can manage products for their store
 
 ## Best Practices
@@ -81,16 +66,12 @@ https://{your-subdomain}.yourdomain.com
    - Good: `acme`, `techcorp`, `startup-2024`
    - Avoid: Long names with special characters
 
-2. **Subdomain**: Keep it short and brandable
-   - Good: `swag`, `store`, `shop`
-   - Avoid: Generic terms that might conflict
-
-3. **Products**: 
+2. **Products**: 
    - Add high-quality product images
    - Write clear product descriptions
    - Set appropriate prices
 
-4. **Currency**: 
+3. **Currency**: 
    - Set currency that matches your billing
    - All products will display in this currency
 
@@ -101,11 +82,6 @@ https://{your-subdomain}.yourdomain.com
 - Verify company exists and is active
 - Ensure products are assigned to the company
 
-### Subdomain Not Working
-- Verify subdomain is unique
-- Check DNS settings (if using custom domain)
-- Ensure subdomain format is valid (lowercase, alphanumeric, hyphens only)
-
 ### Products Not Showing
 - Verify products are assigned to your company
 - Check product status (should be active)
@@ -113,11 +89,10 @@ https://{your-subdomain}.yourdomain.com
 
 ## Example Workflow
 
-1. **Admin creates company**: "Acme Inc"
-2. **Admin sets store identifier**: "acme"
-3. **Admin adds products**: 5 products assigned to Acme Inc
+1. **Company HR creates company**: "Acme Inc"
+2. **Company HR sets store identifier**: "acme"
+3. **Company HR adds products**: 5 products assigned to Acme Inc
 4. **Store is live**: `https://yourdomain.com/companies/acme`
-5. **Admin configures subdomain**: "swag" → `https://swag.yourdomain.com`
 
 ## API Access
 

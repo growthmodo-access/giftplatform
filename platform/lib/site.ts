@@ -35,4 +35,10 @@ export const siteConfig = {
   },
 } as const
 
+/** Base URL for store links (path-based store URL). */
+export function getStoreBaseUrl(): string {
+  const url = process.env.NEXT_PUBLIC_STORE_URL || process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://goodies.so'
+  return url.replace(/\/$/, '')
+}
+
 export type SiteConfig = typeof siteConfig

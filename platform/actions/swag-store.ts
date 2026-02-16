@@ -42,35 +42,11 @@ export async function updateSwagStoreSettings(companyId: string, formData: FormD
       return { error: 'You can only update your own company\'s swag store settings' }
     }
 
-    const subdomain = formData.get('subdomain') as string
     const isEnabled = formData.get('isEnabled') === 'true'
-
-    // Validate subdomain format
-    if (subdomain && !/^[a-z0-9-]+$/.test(subdomain)) {
-      return { error: 'Subdomain can only contain lowercase letters, numbers, and hyphens' }
-    }
-
-    // Check if subdomain is already taken
-    if (subdomain) {
-      const { data: existing } = await supabase
-        .from('companies')
-        .select('id')
-        .eq('subdomain', subdomain)
-        .neq('id', companyId)
-        .maybeSingle()
-
-      if (existing) {
-        return { error: 'This subdomain is already taken' }
-      }
-    }
 
     // Update company settings
     const updates: any = {
       updated_at: new Date().toISOString(),
-    }
-
-    if (subdomain !== undefined) {
-      updates.subdomain = subdomain.trim() || null
     }
 
     // Store enabled status in settings JSONB
@@ -112,7 +88,7 @@ export async function getSwagStoreByIdentifier(identifier: string) {
     
     const { data: company, error } = await supabase
       .from('companies')
-      .select('id, name, logo, store_identifier, subdomain, settings')
+      .select('id, name, logo, store_identifier, settings')
       .eq('store_identifier', identifier)
       .single()
 
@@ -165,7 +141,7 @@ export async function getSwagStoreSettings(companyId: string) {
 
     const { data: company, error } = await supabase
       .from('companies')
-      .select('store_identifier, subdomain, settings')
+      .select('store_identifier, settings')
       .eq('id', companyId)
       .single()
 
@@ -179,7 +155,6 @@ export async function getSwagStoreSettings(companyId: string) {
     return {
       data: {
         storeIdentifier: company?.store_identifier || null,
-        subdomain: company?.subdomain || null,
         isEnabled,
       },
       error: null
