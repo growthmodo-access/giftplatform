@@ -123,11 +123,6 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const form = e.currentTarget
-    if (!form || form.nodeName !== 'FORM') {
-      setError('Invalid form')
-      return
-    }
     setLoading(true)
     setError('')
 
@@ -161,17 +156,18 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
         imageUrl = publicUrl
       }
 
-      const submitFormData = new FormData(form)
-      
-      // Ensure type is included
-      if (formData.type) {
-        submitFormData.set('type', formData.type)
-      }
-
-      // Add image URL
-      if (imageUrl) {
-        submitFormData.set('image', imageUrl)
-      }
+      // Build FormData from React state so values are correct after async (e.g. image upload)
+      const submitFormData = new FormData()
+      submitFormData.set('name', formData.name)
+      submitFormData.set('description', formData.description ?? '')
+      submitFormData.set('category', formData.category ?? '')
+      submitFormData.set('price', formData.price)
+      submitFormData.set('stock', formData.stock ?? '0')
+      submitFormData.set('sku', formData.sku)
+      submitFormData.set('type', formData.type)
+      submitFormData.set('currency', formData.currency ?? 'INR')
+      submitFormData.set('company_id', formData.company_id ?? '')
+      if (imageUrl) submitFormData.set('image', imageUrl)
 
       const result = isEdit && product
         ? await updateProduct(product.id, submitFormData)
