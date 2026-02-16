@@ -58,11 +58,11 @@ export function BrandsSection() {
     >
       <div className="landing-container">
         <p className="landing-label text-center mb-2">Trusted by</p>
-        <h2 className="landing-heading text-center mb-8 sm:mb-10 leading-[1.25]">
+        <h2 className="landing-heading text-center mb-6 sm:mb-8 leading-[1.25]">
           Brands we&apos;ve worked with
         </h2>
         <div className="max-w-4xl mx-auto px-0">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 items-stretch justify-items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5 sm:gap-6 md:gap-8 items-stretch justify-items-center">
             {BRANDS.map((name) => (
               <BrandCell key={name} name={name} />
             ))}

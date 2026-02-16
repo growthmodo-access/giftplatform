@@ -25,7 +25,7 @@ export function IndustryLeaders() {
     >
       <div className="landing-container">
         <div className="max-w-6xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 xl:gap-14 items-center min-w-0">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 items-center min-w-0">
           <div className="order-1 w-full min-w-0 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-xl xl:max-w-2xl mx-auto lg:mx-0 rounded-2xl overflow-hidden">
               <Image
@@ -55,7 +55,7 @@ export function IndustryLeaders() {
                 </li>
               ))}
             </ul>
-            <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-8">
+            <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed max-w-lg mb-6">
               What starts as a &ldquo;small task&rdquo; turns into weeks of follow-ups.
             </p>
             <Button

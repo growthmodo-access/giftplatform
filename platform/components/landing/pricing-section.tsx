@@ -10,7 +10,7 @@ export function PricingSection() {
   return (
     <section id="pricing" className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white">
       <div className="landing-container">
-        <div className="text-center max-w-2xl mx-auto space-y-5">
+        <div className="text-center max-w-2xl mx-auto space-y-4">
           <p className="landing-label">Pricing</p>
           <h2 className="landing-heading text-balance">Flexible plans that grow with your team</h2>
           <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed">

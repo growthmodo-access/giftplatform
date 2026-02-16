@@ -12,12 +12,12 @@ export function Testimonials() {
   return (
     <section className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white">
       <div className="landing-container">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto space-y-3 sm:space-y-4 px-2 sm:px-0">
+        <div className="text-center mb-6 sm:mb-8 md:mb-10 max-w-2xl mx-auto space-y-3 px-2 sm:px-0">
           <p className="landing-label">Testimonials</p>
           <h2 className="landing-heading text-balance">What teams say about us</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-4xl mx-auto min-w-0 px-2 sm:px-0">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 md:gap-8 max-w-4xl mx-auto min-w-0 px-2 sm:px-0">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}

@@ -11,7 +11,7 @@ export function CTASection() {
   return (
     <section className="relative landing-section bg-white border-t border-border/20 w-full max-w-full overflow-hidden">
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0 overflow-x-hidden">
-        <div className="text-center flex flex-col items-center w-full space-y-5 sm:space-y-6">
+        <div className="text-center flex flex-col items-center w-full space-y-4 sm:space-y-5">
           <p className="landing-label">Get started</p>
           <h2 className="landing-heading text-balance max-w-3xl">
             Stop managing gifting. Start automating it.

@@ -58,7 +58,7 @@ export function LandingPage() {
         Skip to main content
       </a>
       <LandingHeader />
-      <main className="overflow-x-hidden w-full max-w-full min-w-0 box-border pb-20 sm:pb-24">
+      <main className="overflow-x-hidden w-full max-w-full min-w-0 box-border pb-16 sm:pb-20">
         <LandingHero />
         <ValueStrip />
         <BrandsSection />
@@ -69,7 +69,7 @@ export function LandingPage() {
         <IndiaSection />
         <IntegrationsSection />
         <PricingSection />
-        <Suspense fallback={<section className="py-20 bg-white min-h-[320px] flex items-center justify-center"><div className="animate-pulse text-muted-foreground text-sm">Loading...</div></section>}>
+        <Suspense fallback={<section className="py-16 bg-white min-h-[280px] flex items-center justify-center"><div className="animate-pulse text-muted-foreground text-sm">Loading...</div></section>}>
           <Testimonials />
         </Suspense>
         <FAQSection />

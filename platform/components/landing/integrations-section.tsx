@@ -12,7 +12,7 @@ export function IntegrationsSection() {
   return (
     <section id="solutions" className="landing-section w-full max-w-full overflow-hidden border-t border-border/20 bg-white">
       <div className="landing-container">
-        <div className="text-center mb-12 sm:mb-14 max-w-2xl mx-auto space-y-4">
+        <div className="text-center mb-10 sm:mb-12 max-w-2xl mx-auto space-y-4">
           <p className="landing-label">How it works</p>
           <h2 className="landing-heading text-balance">Gifting, simplified into 3 steps</h2>
           <p className="text-[15px] sm:text-base text-muted-foreground leading-relaxed">
@@ -20,7 +20,7 @@ export function IntegrationsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12 max-w-4xl mx-auto w-full min-w-0">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-4xl mx-auto w-full min-w-0">
           {steps.map((step, index) => {
             const Icon = step.icon
             return (

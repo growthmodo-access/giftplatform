@@ -10,12 +10,12 @@ const items = [
 
 export function ValueStrip() {
   return (
-    <section className="py-10 sm:py-12 md:py-14 bg-white border-y border-border/20 w-full max-w-full overflow-hidden">
+    <section className="py-8 sm:py-10 md:py-12 bg-white border-y border-border/20 w-full max-w-full overflow-hidden">
       <div className="landing-container">
-        <p className="text-center text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-center text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
           Trusted by fast-growing companies to deliver gifts across teams and borders
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto">
           {items.map((item) => {
             const Icon = item.icon
             return (

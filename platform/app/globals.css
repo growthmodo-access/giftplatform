@@ -216,9 +216,9 @@
     @apply px-4 sm:px-6 lg:px-8;
   }
 
-  /* Landing: typography & space (tighter for shorter page) */
+  /* Landing: typography & space (consistent rhythm, responsive) */
   .landing-section {
-    @apply py-14 sm:py-16 md:py-20 lg:py-24;
+    @apply py-12 sm:py-14 md:py-16 lg:py-20;
   }
   .landing-container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full box-border min-w-0;

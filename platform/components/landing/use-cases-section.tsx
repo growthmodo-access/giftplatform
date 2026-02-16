@@ -31,7 +31,7 @@ export function UseCasesSection() {
       aria-labelledby="use-cases-heading"
     >
       <div className="landing-container">
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="text-center mb-10 sm:mb-12">
           <p className="landing-label mb-2">Use cases</p>
           <h2 id="use-cases-heading" className="landing-heading text-balance max-w-2xl mx-auto">
             Built for how teams actually gift
