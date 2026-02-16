@@ -31,44 +31,29 @@ export async function getAllUsers() {
       return { data: [], error: 'User profile not found' }
     }
 
-    // Only SUPER_ADMIN can access this
+    // Only SUPER_ADMIN can access this; use RPC to avoid RLS that references users (redirect loop)
     if (currentUser.role !== 'SUPER_ADMIN') {
       return { data: [], error: 'Unauthorized' }
     }
 
-    // Get all users with company information
-    const { data: users, error } = await supabase
-      .from('users')
-      .select(`
-        id,
-        email,
-        name,
-        role,
-        avatar,
-        company_id,
-        created_at,
-        companies:company_id (
-          id,
-          name
-        )
-      `)
-      .order('created_at', { ascending: false })
+    const { data: users, error } = await supabase.rpc('get_all_users_for_super_admin', {
+      requestor_id: user.id,
+    })
 
     if (error) {
       return { data: [], error: error.message }
     }
 
-    // Format users with company name
-    const formattedUsers = users?.map(u => ({
+    const formattedUsers = (users ?? []).map((u: { id: string; email: string; name: string; role: string; avatar: string | null; company_id: string | null; created_at: string; company_name: string }) => ({
       id: u.id,
       email: u.email,
       name: u.name,
       role: u.role,
       avatar: u.avatar,
       companyId: u.company_id,
-      companyName: (u.companies as any)?.name || 'No Company',
+      companyName: u.company_name ?? 'No Company',
       createdAt: u.created_at,
-    })) || []
+    }))
 
     return { data: formattedUsers, error: null }
   } catch (error) {
@@ -117,10 +102,11 @@ export async function updateUserRole(userId: string, newRole: 'SUPER_ADMIN' | 'H
     }
 
     const dbRole = newRole === 'SUPER_ADMIN' ? 'SUPER_ADMIN' : newRole === 'HR' ? 'HR' : 'EMPLOYEE'
-    const { error: updateError } = await supabase
-      .from('users')
-      .update({ role: dbRole, updated_at: new Date().toISOString() })
-      .eq('id', userId)
+    const { error: updateError } = await supabase.rpc('update_user_role_as_super_admin', {
+      requestor_id: user.id,
+      target_user_id: userId,
+      new_role: dbRole,
+    })
 
     if (updateError) {
       return { error: updateError.message }
