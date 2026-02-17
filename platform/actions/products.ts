@@ -53,7 +53,6 @@ export async function createProduct(formData: FormData) {
     const requiresSizes = formData.get('requires_sizes') === 'true'
     const sizesRaw = (formData.get('sizes') as string)?.trim() || ''
     const sizes: string[] = sizesRaw ? sizesRaw.split(',').map((s) => s.trim()).filter(Boolean) : []
-
     const product = {
       name: name.trim(),
       description: (formData.get('description') as string)?.trim() || null,
@@ -295,9 +294,8 @@ export async function deleteProduct(id: string) {
 
     const { error } = await supabase
       .from('products')
-      .update({ deleted_at: new Date().toISOString() })
+      .delete()
       .eq('id', id)
-      .is('deleted_at', null) // Only soft delete if not already deleted
 
     if (error) {
       return { error: error.message }
