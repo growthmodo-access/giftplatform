@@ -12,10 +12,7 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/error.tsx',message:'Error boundary rendered',data:{message:error?.message,digest:error?.digest},timestamp:Date.now(),hypothesisId:'H3'})}).catch(()=>{});
-    // #endregion
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'development') {
       console.error('Application error:', error)
     }
   }, [error])

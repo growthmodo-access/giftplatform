@@ -116,20 +116,12 @@ export async function getEmployees() {
 
 export async function inviteEmployee(email: string, name: string, role: 'SUPER_ADMIN' | 'HR' | 'EMPLOYEE', shippingAddress?: string | null, companyId?: string | null) {
   try {
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:68',message:'inviteEmployee called',data:{email,name,role},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    
     const supabase = await createClient()
     
     const {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser()
-
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/d57efb5a-5bf9-47f9-9b34-6407b474476d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'actions/employees.ts:76',message:'Auth check result',data:{hasUser:!!user,authError:authError?.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
 
     if (authError || !user) {
       redirect('/login')

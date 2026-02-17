@@ -45,9 +45,6 @@ export async function middleware(request: NextRequest) {
 
   // Protect dashboard routes
   if (request.nextUrl.pathname.startsWith('/dashboard') && !user) {
-    // #region agent log
-    fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'middleware.ts',message:'Redirect to login (no user)',data:{pathname:request.nextUrl.pathname},timestamp:Date.now(),hypothesisId:'H2'})}).catch(()=>{});
-    // #endregion
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     url.searchParams.set('redirect', request.nextUrl.pathname)
@@ -67,9 +64,6 @@ export async function middleware(request: NextRequest) {
 
     return response
   } catch (error) {
-    // #region agent log
-    fetch('http://127.0.0.1:7245/ingest/d22e37f8-4626-40d8-a25a-149d05f68c5f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'middleware.ts:catch',message:'Middleware error',data:{pathname:request.nextUrl.pathname,errorMessage:error instanceof Error ? error.message : String(error)},timestamp:Date.now(),hypothesisId:'H2'})}).catch(()=>{});
-    // #endregion
     if (process.env.NODE_ENV === 'development') {
       console.error('Middleware error:', error)
     }
