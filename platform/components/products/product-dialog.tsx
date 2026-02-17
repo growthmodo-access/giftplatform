@@ -13,6 +13,8 @@ import { getCompanies } from '@/actions/companies'
 import { Loader2 } from 'lucide-react'
 import { Database } from '@/types/database'
 import { supabase } from '@/lib/supabase/client'
+import { SafeImage } from '@/components/ui/safe-image'
+import { Package } from 'lucide-react'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -48,6 +50,8 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
     company_id: '',
     currency: 'INR',
     image: '',
+    requires_sizes: false,
+    sizes: '',
   })
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string>('')
@@ -62,6 +66,8 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
   // Populate form when editing
   useEffect(() => {
     if (product && open) {
+      const p = product as any
+      const sizesArr = Array.isArray(p.sizes) ? p.sizes : (typeof p.sizes === 'string' && p.sizes ? (() => { try { const j = JSON.parse(p.sizes); return Array.isArray(j) ? j : []; } catch { return []; } })() : [])
       setFormData({
         name: product.name || '',
         description: product.description || '',
@@ -73,6 +79,8 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
         company_id: product.company_id || '',
         currency: product.currency || 'INR',
         image: product.image || '',
+        requires_sizes: !!p.requires_sizes,
+        sizes: sizesArr.join(', '),
       })
       setImagePreview(product.image || '')
       setImageFile(null)
@@ -89,6 +97,8 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
         company_id: '',
         currency: 'INR',
         image: '',
+        requires_sizes: false,
+        sizes: '',
       })
       setImagePreview('')
       setImageFile(null)
@@ -168,6 +178,8 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
       submitFormData.set('currency', formData.currency ?? 'INR')
       submitFormData.set('company_id', formData.company_id ?? '')
       if (imageUrl) submitFormData.set('image', imageUrl)
+      submitFormData.set('requires_sizes', formData.requires_sizes ? 'true' : 'false')
+      submitFormData.set('sizes', formData.sizes ?? '')
 
       const result = isEdit && product
         ? await updateProduct(product.id, submitFormData)
@@ -191,6 +203,8 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
           company_id: '',
           currency: 'INR',
           image: '',
+          requires_sizes: false,
+          sizes: '',
         })
         setImagePreview('')
         setImageFile(null)
@@ -269,11 +283,17 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
               <div className="space-y-2">
                 {imagePreview && (
                   <div className="relative w-full h-48 border border-border/50 rounded-md overflow-hidden">
-                    <img 
-                      src={imagePreview} 
-                      alt="Preview" 
-                      className="w-full h-full object-cover"
-                    />
+                    {imagePreview.startsWith('data:') ? (
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <SafeImage
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                        containerClassName="w-full h-48 flex items-center justify-center"
+                        fallback={<Package className="w-12 h-12 text-muted-foreground" />}
+                      />
+                    )}
                   </div>
                 )}
                 <Input
@@ -413,6 +433,33 @@ export function ProductDialog({ open, onOpenChange, product, currentUserRole }: 
               </Select>
               <input type="hidden" name="type" value={formData.type} />
             </div>
+
+            {/* Size options for SWAG / Physical Gift */}
+            {(formData.type === 'SWAG' || formData.type === 'PHYSICAL_GIFT') && (
+              <div className="grid gap-2">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="requires_sizes"
+                    checked={formData.requires_sizes}
+                    onChange={(e) => setFormData(prev => ({ ...prev, requires_sizes: e.target.checked }))}
+                    disabled={loading}
+                    className="rounded border-border/50"
+                  />
+                  <Label htmlFor="requires_sizes" className="text-foreground">Requires size selection</Label>
+                </div>
+                {formData.requires_sizes && (
+                  <Input
+                    id="sizes"
+                    placeholder="S, M, L, XL (comma-separated)"
+                    value={formData.sizes}
+                    onChange={(e) => setFormData(prev => ({ ...prev, sizes: e.target.value }))}
+                    disabled={loading}
+                    className="bg-background border-border/50"
+                  />
+                )}
+              </div>
+            )}
           </div>
           <DialogFooter className="border-t border-border/50 pt-4">
             <Button

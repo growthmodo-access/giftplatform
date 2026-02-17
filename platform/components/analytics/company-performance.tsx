@@ -65,7 +65,7 @@ export function CompanyPerformance({ timeRange, canViewAll = false, detailed = f
                   <div>
                     <p className="text-muted-foreground">Revenue</p>
                     <p className="font-semibold text-foreground">
-                      ${(company.revenue / 1000).toFixed(1)}k
+                      ₹{(company.revenue / 1000).toFixed(1)}k
                     </p>
                   </div>
                   <div>

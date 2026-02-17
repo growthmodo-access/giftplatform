@@ -120,8 +120,8 @@ export function ProductsTable({ initialProducts, canManageProducts = false, curr
     return { label: 'In Stock', variant: 'default' as const }
   }
 
-  const formatPrice = (price: number, currency: string = 'USD') => {
-    return new Intl.NumberFormat('en-US', {
+  const formatPrice = (price: number, currency: string = 'INR') => {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: currency,
     }).format(price)
@@ -209,7 +209,7 @@ export function ProductsTable({ initialProducts, canManageProducts = false, curr
                           </span>
                         </TableCell>
                         <TableCell className="text-right font-medium text-foreground">
-                          {formatPrice(product.price || 0, product.currency || 'USD')}
+                          {formatPrice(product.price || 0, product.currency || 'INR')}
                         </TableCell>
                         <TableCell className="text-center">
                           <Badge variant={stockStatus.variant} className="text-xs">

@@ -214,7 +214,7 @@ export function CampaignsTable({ campaigns, currentUserRole }: CampaignsTablePro
                       <div className="text-xs text-muted-foreground">
                         {new Intl.NumberFormat('en-US', {
                           style: 'currency',
-                          currency: 'USD',
+                          currency: 'INR',
                         }).format(campaign.products.price)}
                       </div>
                     </div>
@@ -227,7 +227,7 @@ export function CampaignsTable({ campaigns, currentUserRole }: CampaignsTablePro
                     <span className="text-sm">
                       {new Intl.NumberFormat('en-US', {
                         style: 'currency',
-                        currency: 'USD',
+                        currency: 'INR',
                       }).format(campaign.budget)}
                     </span>
                   ) : (

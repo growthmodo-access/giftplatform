@@ -166,6 +166,9 @@ export async function updateProduct(id: string, formData: FormData) {
       currency?: string
       stock?: number
       company_id?: string | null
+      image?: string | null
+      requires_sizes?: boolean
+      sizes?: string[]
       updated_at: string
     } = {
       updated_at: new Date().toISOString(),
@@ -206,6 +209,14 @@ export async function updateProduct(id: string, formData: FormData) {
       }
       updates.stock = parsedStock
     }
+
+    const image = (formData.get('image') as string)?.trim()
+    if (image !== undefined) updates.image = image || null
+    const requiresSizes = formData.get('requires_sizes') === 'true'
+    const sizesRaw = (formData.get('sizes') as string)?.trim() || ''
+    const sizes: string[] = sizesRaw ? sizesRaw.split(',').map((s) => s.trim()).filter(Boolean) : []
+    updates.requires_sizes = requiresSizes
+    updates.sizes = requiresSizes ? sizes : []
 
     const { data, error } = await supabase
       .from('products')

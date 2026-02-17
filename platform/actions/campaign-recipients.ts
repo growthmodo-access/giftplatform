@@ -324,7 +324,7 @@ export async function submitGiftSelection(token: string, input: SubmitGiftSelect
         campaign_recipient_id: recipient.id,
         status: 'PENDING',
         total: product.price,
-        currency: product.currency ?? 'USD',
+        currency: product.currency ?? 'INR',
         shipping_address: shippingAddress,
       })
       .select()

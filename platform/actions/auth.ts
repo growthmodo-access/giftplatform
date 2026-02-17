@@ -49,7 +49,7 @@ export async function createUserProfile(
         name: companyData.name.trim(),
         domain: companyData.domain?.trim() || null,
         tax_id: companyData.taxId?.trim() || null,
-        currency: companyData.currency || 'USD',
+        currency: companyData.currency || 'INR',
         billing_address: companyData.billingAddress || null,
         store_identifier: storeIdentifier,
       })

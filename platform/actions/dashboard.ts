@@ -175,7 +175,7 @@ const getDashboardStatsImpl = cache(async () => {
         employeeEmail: user?.email || '',
         employeeId: order.user_id,
         product: productName,
-        amount: `$${Number(order.total).toFixed(2)}`,
+        amount: `${(order as any).currency === 'USD' ? '$' : '₹'}${Number(order.total).toFixed(2)}`,
         status: order.status,
         date: new Date(order.created_at).toLocaleDateString('en-US', {
           year: 'numeric',

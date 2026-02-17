@@ -57,7 +57,7 @@ export function RevenueBreakdown({ timeRange }: RevenueBreakdownProps) {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Average Daily Revenue</p>
-              <p className="text-2xl font-semibold text-foreground">${avgRevenue.toFixed(0)}</p>
+              <p className="text-2xl font-semibold text-foreground">₹{avgRevenue.toFixed(0)}</p>
             </div>
             <div className="flex items-center gap-2 text-green-600">
               <TrendingUp className="w-4 h-4" />
@@ -73,7 +73,7 @@ export function RevenueBreakdown({ timeRange }: RevenueBreakdownProps) {
                     <div
                       className="w-full rounded-t bg-foreground/80 hover:bg-foreground transition-all cursor-pointer group-hover:scale-105 origin-bottom"
                       style={{ height: `${Math.max(height, 5)}%` }}
-                      title={`${item.date}: $${item.revenue.toFixed(0)}`}
+                      title={`${item.date}: ₹${item.revenue.toFixed(0)}`}
                     />
                   </div>
                   {index % Math.ceil(data.length / 7) === 0 && (

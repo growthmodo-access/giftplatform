@@ -53,7 +53,7 @@ export async function getInvoices() {
       invoiceNumber: inv.invoice_number,
       orderId: inv.order_id,
       companyName: (inv.companies as any)?.name || 'N/A',
-      amount: `${inv.currency || 'USD'} ${Number(inv.total_amount).toFixed(2)}`,
+      amount: `${inv.currency || 'INR'} ${Number(inv.total_amount).toFixed(2)}`,
       status: inv.status,
       dueDate: inv.due_date,
       createdAt: inv.created_at,
@@ -304,7 +304,7 @@ export async function generateInvoiceForOrder(orderId: string) {
         amount: order.total,
         tax_amount: taxAmount,
         total_amount: totalAmount,
-        currency: order.currency || 'USD',
+        currency: order.currency || 'INR',
         status: 'PENDING',
         due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
         billing_address: (order.companies as any)?.billing_address || null,

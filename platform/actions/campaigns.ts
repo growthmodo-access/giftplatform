@@ -740,7 +740,7 @@ export async function getCampaignsManagement() {
       product: (campaign.products as any)?.name || 'N/A',
       productId: campaign.product_id,
       productPrice: (campaign.products as any)?.price || 0,
-      productCurrency: (campaign.products as any)?.currency || 'USD',
+      productCurrency: (campaign.products as any)?.currency || 'INR',
       productImage: (campaign.products as any)?.image || null,
       trigger: campaign.trigger,
       budget: campaign.budget,

@@ -43,7 +43,7 @@ export function EnhancedStatsCards({ timeRange }: EnhancedStatsCardsProps) {
       ? [
           {
             label: "Total Revenue",
-            value: `$${(stats.totalRevenue / 1000).toFixed(1)}k`,
+            value: `₹${(stats.totalRevenue / 1000).toFixed(1)}k`,
             change: stats.revenueChange,
             trend: (stats.revenueChange >= 0 ? "up" : "down") as "up" | "down",
             icon: DollarSign,

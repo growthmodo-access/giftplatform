@@ -100,8 +100,8 @@ export function ProductsGrid({ initialProducts, canManageProducts = false, curre
     setSelectedProduct(null)
   }
 
-  const formatPrice = (price: number, currency: string = 'USD') => {
-    return new Intl.NumberFormat('en-US', {
+  const formatPrice = (price: number, currency: string = 'INR') => {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: currency,
     }).format(price)
@@ -193,7 +193,7 @@ export function ProductsGrid({ initialProducts, canManageProducts = false, curre
                     
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-foreground">
-                        {formatPrice(product.price || 0, product.currency || 'USD')}
+                        {formatPrice(product.price || 0, product.currency || 'INR')}
                       </span>
                       <Badge variant={stockStatus.variant} className="text-xs">
                         {stockStatus.label}

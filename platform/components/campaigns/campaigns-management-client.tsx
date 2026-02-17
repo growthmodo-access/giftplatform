@@ -189,7 +189,7 @@ export function CampaignsManagementClient({ campaigns, currentUserRole }: Campai
                           <DollarSign className="w-4 h-4 text-muted-foreground" />
                           <span>{new Intl.NumberFormat('en-US', {
                             style: 'currency',
-                            currency: 'USD',
+                            currency: campaign.productCurrency || 'INR',
                           }).format(campaign.budget)}</span>
                         </div>
                       ) : (

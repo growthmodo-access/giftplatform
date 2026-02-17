@@ -21,7 +21,7 @@ const ITEMS_PER_PAGE = 12
 
 export function ProductsPageClient({ initialProducts, currentUserRole }: ProductsPageClientProps) {
   const canManageProducts = currentUserRole === 'SUPER_ADMIN'
-  const [viewMode, setViewMode] = useState<'table' | 'grid'>('grid')
+  const [viewMode, setViewMode] = useState<'table' | 'grid'>('table')
   const [dialogOpen, setDialogOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -128,9 +128,9 @@ export function ProductsPageClient({ initialProducts, currentUserRole }: Product
             <div>
               <p className="text-sm text-muted-foreground">Total Value</p>
               <p className="text-2xl font-semibold text-foreground mt-1">
-                {new Intl.NumberFormat('en-US', {
+                {new Intl.NumberFormat('en-IN', {
                   style: 'currency',
-                  currency: 'USD',
+                  currency: initialProducts[0]?.currency || 'INR',
                   maximumFractionDigits: 0,
                 }).format(
                   initialProducts.reduce((sum, p) => sum + ((p.price || 0) * (p.stock || 0)), 0)

@@ -43,7 +43,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
   const [domain, setDomain] = useState(company.domain || '')
   const [logo, setLogo] = useState(company.logo || '')
   const [taxId, setTaxId] = useState((company as any).tax_id || '')
-  const [currency, setCurrency] = useState((company as any).currency || 'USD')
+  const [currency, setCurrency] = useState((company as any).currency || 'INR')
   const [billingStreet, setBillingStreet] = useState('')
   const [billingCity, setBillingCity] = useState('')
   const [billingState, setBillingState] = useState('')
@@ -59,7 +59,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
       setDomain(company.domain || '')
       setLogo(company.logo || '')
       setTaxId((company as any).tax_id || '')
-      setCurrency((company as any).currency || 'USD')
+      setCurrency((company as any).currency || 'INR')
       const billing = (company as any).billing_address || {}
       setBillingStreet(billing.street || '')
       setBillingCity(billing.city || '')

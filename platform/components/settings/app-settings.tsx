@@ -26,7 +26,7 @@ export function AppSettings({ currentUserRole }: AppSettingsProps) {
   const [emailNotifications, setEmailNotifications] = useState(true)
   const [campaignAutoSend, setCampaignAutoSend] = useState(false)
   const [requireApproval, setRequireApproval] = useState(true)
-  const [defaultCurrency, setDefaultCurrency] = useState('USD')
+  const [defaultCurrency, setDefaultCurrency] = useState('INR')
   const [maxBudget, setMaxBudget] = useState('100000')
 
   const isSuperAdmin = currentUserRole === 'SUPER_ADMIN'

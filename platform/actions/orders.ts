@@ -145,7 +145,7 @@ export async function getOrders() {
         employee: recipientName || user?.name || user?.email || 'Unknown',
         employeeEmail: recipientEmail ?? user?.email,
         product: product?.name || (items.length > 1 ? 'Multiple items' : 'Unknown product'),
-        amount: `${order.currency || 'USD'} ${Number(order.total).toFixed(2)}`,
+        amount: `${order.currency || 'INR'} ${Number(order.total).toFixed(2)}`,
         status: order.status,
         date: new Date(order.created_at).toLocaleDateString('en-US', { 
           year: 'numeric', 
@@ -159,6 +159,7 @@ export async function getOrders() {
         companyId: order.company_id,
         shippingAddress: order.shipping_address || null,
         trackingNumber: order.tracking_number || null,
+        currency: order.currency || 'INR',
       }
     })
 
@@ -333,7 +334,7 @@ export async function createOrder(formData: FormData) {
         company_id: companyId,
         status: 'PENDING',
         total: total,
-        currency: product.currency || 'USD',
+        currency: product.currency || 'INR',
         shipping_address: shippingAddress,
       })
       .select()
@@ -384,7 +385,7 @@ export async function exportOrdersAsCsv(): Promise<{ csv: string; error?: string
       const emp = (o.employee ?? '').replace(/"/g, '""')
       const email = (o.employeeEmail ?? '').replace(/"/g, '""')
       const amount = (o.amount ?? '').replace(/"/g, '""')
-      return `"${o.orderNumber}","${emp}","${email}","${o.status}","${amount}","USD","${o.date}"`
+      return `"${o.orderNumber}","${emp}","${email}","${o.status}","${amount}","${o.currency || 'INR'}","${o.date}"`
     })
     const header = 'Order Number,Employee,Email,Status,Amount,Currency,Date\n'
     return { csv: header + rows.join('\n') }
