@@ -250,6 +250,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
 
     const name = formData.get('name') as string
     const domain = formData.get('domain') as string
+    const logo = formData.get('logo') as string
     const taxId = formData.get('tax_id') as string
     const currency = formData.get('currency') as string
     const billingAddressStr = formData.get('billing_address') as string
@@ -257,6 +258,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
     const updates: {
       name?: string
       domain?: string | null
+      logo?: string | null
       tax_id?: string | null
       currency?: string
       billing_address?: any
@@ -271,6 +273,10 @@ export async function updateCompany(companyId: string, formData: FormData) {
 
     if (domain !== undefined) {
       updates.domain = domain.trim() || null
+    }
+
+    if (logo !== undefined) {
+      updates.logo = logo.trim() || null
     }
 
     if (taxId !== undefined) {

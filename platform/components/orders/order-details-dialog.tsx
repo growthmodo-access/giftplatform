@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { Truck, Package, Building2, User, MapPin } from 'lucide-react'
+import { Truck, Package, Building2, User, MapPin, Mail, Phone } from 'lucide-react'
 import { updateOrderTracking } from '@/actions/orders'
 
 type Order = {
@@ -30,6 +30,8 @@ type Order = {
   companyId?: string | null
   shippingAddress?: string | null
   trackingNumber?: string | null
+  /** Phone number (from payment or placeholder) */
+  mobile?: string
 }
 
 interface OrderDetailsDialogProps {
@@ -122,6 +124,23 @@ export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }:
                 <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
                   <Building2 className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm font-medium text-foreground">{order.company || 'N/A'}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-muted-foreground">Email</Label>
+                <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
+                  <Mail className="w-4 h-4 text-muted-foreground shrink-0" />
+                  <span className="text-sm font-medium text-foreground">{order.employeeEmail || '—'}</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-muted-foreground">Phone</Label>
+                <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
+                  <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
+                  <span className="text-sm font-medium text-foreground">{order.mobile || '—'}</span>
                 </div>
               </div>
             </div>

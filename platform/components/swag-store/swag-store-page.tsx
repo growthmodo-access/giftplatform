@@ -4,11 +4,22 @@ import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Package, ShoppingCart } from 'lucide-react'
-import Image from 'next/image'
+import { Package, ShoppingCart, Minus, Plus, Trash2 } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { createStoreOrder } from '@/actions/swag-store'
 
 interface SwagStorePageProps {
   storeData: {
+    companyId: string
     companyName: string
     companyLogo: string | null
     products: Array<{
@@ -25,19 +36,66 @@ interface SwagStorePageProps {
 
 export function SwagStorePage({ storeData }: SwagStorePageProps) {
   const [cart, setCart] = useState<Record<string, number>>({})
+  const [cartOpen, setCartOpen] = useState(false)
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
+  const [shippingAddress, setShippingAddress] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [orderSuccess, setOrderSuccess] = useState(false)
+  const [orderError, setOrderError] = useState('')
 
   const addToCart = (productId: string) => {
-    setCart(prev => ({
-      ...prev,
-      [productId]: (prev[productId] || 0) + 1
-    }))
+    setCart(prev => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }))
+  }
+  const removeFromCart = (productId: string) => {
+    setCart(prev => {
+      const next = { ...prev }
+      const q = (next[productId] || 0) - 1
+      if (q <= 0) delete next[productId]
+      else next[productId] = q
+      return next
+    })
+  }
+  const setQuantity = (productId: string, qty: number) => {
+    if (qty <= 0) {
+      setCart(prev => { const n = { ...prev }; delete n[productId]; return n })
+    } else {
+      setCart(prev => ({ ...prev, [productId]: qty }))
+    }
   }
 
   const cartCount = Object.values(cart).reduce((sum, qty) => sum + qty, 0)
-  const total = storeData.products.reduce((sum, product) => {
-    const qty = cart[product.id] || 0
-    return sum + (product.price * qty)
-  }, 0)
+  const cartItems = storeData.products.filter(p => (cart[p.id] || 0) > 0)
+  const total = cartItems.reduce((sum, p) => sum + (p.price * (cart[p.id] || 0)), 0)
+  const currency = storeData.products[0]?.currency || 'INR'
+
+  const handleCheckout = () => {
+    setCartOpen(false)
+    setCheckoutOpen(true)
+    setOrderError('')
+  }
+  const handlePlaceOrder = async () => {
+    if (!shippingAddress.trim()) {
+      setOrderError('Please enter shipping address')
+      return
+    }
+    setSubmitting(true)
+    setOrderError('')
+    const items = cartItems.map(p => ({
+      productId: p.id,
+      quantity: cart[p.id] || 0,
+      price: p.price,
+    }))
+    const result = await createStoreOrder(storeData.companyId, items, shippingAddress.trim(), currency)
+    setSubmitting(false)
+    if (result.error) {
+      setOrderError(result.error)
+      return
+    }
+    setOrderSuccess(true)
+    setCart({})
+    setShippingAddress('')
+    setCheckoutOpen(false)
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,23 +108,99 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
                 <img 
                   src={storeData.companyLogo} 
                   alt={storeData.companyName}
-                  className="w-10 h-10 rounded"
+                  className="w-10 h-10 rounded object-contain"
                 />
               )}
               <h1 className="text-2xl font-semibold text-foreground">{storeData.companyName} Swag Store</h1>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" className="gap-2" onClick={() => setCartOpen(true)}>
                 <ShoppingCart className="w-4 h-4" />
                 Cart ({cartCount})
                 {total > 0 && (
-                  <span className="ml-1">${total.toFixed(2)}</span>
+                  <span className="ml-1">
+                    {new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(total)}
+                  </span>
                 )}
               </Button>
             </div>
           </div>
         </div>
       </header>
+
+      {/* Cart Dialog */}
+      <Dialog open={cartOpen} onOpenChange={setCartOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Your Cart</DialogTitle>
+            <DialogDescription>{cartCount} item(s)</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 max-h-64 overflow-y-auto">
+            {cartItems.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Cart is empty</p>
+            ) : (
+              cartItems.map(p => (
+                <div key={p.id} className="flex items-center justify-between gap-2 p-2 rounded-lg bg-muted/50">
+                  <span className="text-sm font-medium truncate flex-1">{p.name}</span>
+                  <div className="flex items-center gap-1">
+                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => setQuantity(p.id, (cart[p.id] || 0) - 1)}>
+                      <Minus className="w-3 h-3" />
+                    </Button>
+                    <span className="w-6 text-center text-sm">{cart[p.id] || 0}</span>
+                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => addToCart(p.id)}>
+                      <Plus className="w-3 h-3" />
+                    </Button>
+                  </div>
+                  <span className="text-sm font-medium w-20 text-right">
+                    {new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(p.price * (cart[p.id] || 0))}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+          <div className="flex items-center justify-between border-t pt-3">
+            <span className="font-semibold">Total</span>
+            <span>{new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(total)}</span>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setCartOpen(false)}>Continue Shopping</Button>
+            <Button onClick={handleCheckout} disabled={cartItems.length === 0}>Proceed to Checkout</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Checkout Dialog */}
+      <Dialog open={checkoutOpen} onOpenChange={setCheckoutOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Checkout</DialogTitle>
+            <DialogDescription>Enter shipping address to place your order</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2">
+            <Label htmlFor="shipping">Shipping Address</Label>
+            <Textarea
+              id="shipping"
+              value={shippingAddress}
+              onChange={e => setShippingAddress(e.target.value)}
+              placeholder="Street, City, State, ZIP, Country"
+              rows={4}
+              className="border-border/50"
+            />
+          </div>
+          {orderError && <p className="text-sm text-destructive">{orderError}</p>}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setCheckoutOpen(false)}>Cancel</Button>
+            <Button onClick={handlePlaceOrder} disabled={submitting}>{submitting ? 'Placing...' : 'Place Order'}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Order success toast */}
+      {orderSuccess && (
+        <div className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-md shadow-lg z-50">
+          Order placed successfully!
+        </div>
+      )}
 
       {/* Products Grid */}
       <main className="container mx-auto px-4 py-8">
@@ -107,9 +241,9 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
                     
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-foreground">
-                        {new Intl.NumberFormat('en-US', {
+                        {new Intl.NumberFormat('en-IN', {
                           style: 'currency',
-                          currency: product.currency || 'USD',
+                          currency: product.currency || 'INR',
                         }).format(product.price)}
                       </span>
                       <Badge variant="outline" className="text-xs">

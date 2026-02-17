@@ -108,6 +108,7 @@ export async function getSwagStoreByIdentifier(identifier: string) {
 
     return {
       data: {
+        companyId: company.id,
         companyName: company.name,
         companyLogo: company.logo,
         products: products || [],
@@ -120,6 +121,59 @@ export async function getSwagStoreByIdentifier(identifier: string) {
       data: null, 
       error: error instanceof Error ? error.message : 'An unexpected error occurred' 
     }
+  }
+}
+
+/**
+ * Create an order from the company store (cart checkout).
+ * Caller must be authenticated; order is created for their company (store company).
+ */
+export async function createStoreOrder(
+  companyId: string,
+  items: { productId: string; quantity: number; price: number }[],
+  shippingAddress: string,
+  currency: string = 'INR'
+) {
+  try {
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return { error: 'Please sign in to place an order' }
+    }
+    const { data: currentUser } = await supabase.from('users').select('company_id, role').eq('id', user.id).maybeSingle()
+    if (!currentUser) return { error: 'User profile not found' }
+    if (!currentUser.company_id && currentUser.role !== 'SUPER_ADMIN') return { error: 'You must be part of a company to order from the store' }
+    if (currentUser.company_id !== companyId && currentUser.role !== 'SUPER_ADMIN') return { error: 'You can only order from your company store' }
+    if (!items.length) return { error: 'Cart is empty' }
+
+    const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+    const { data: newOrder, error: orderError } = await supabase
+      .from('orders')
+      .insert({
+        order_number: orderNumber,
+        user_id: user.id,
+        company_id: companyId,
+        status: 'PENDING',
+        total,
+        currency: currency || 'INR',
+        shipping_address: shippingAddress,
+      })
+      .select()
+      .single()
+    if (orderError) return { error: orderError.message }
+    for (const item of items) {
+      const { error: itemError } = await supabase.from('order_items').insert({
+        order_id: newOrder.id,
+        product_id: item.productId,
+        quantity: item.quantity,
+        price: item.price,
+      })
+      if (itemError) return { error: itemError.message }
+    }
+    return { success: true, orderId: newOrder.id }
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'Failed to place order' }
   }
 }
 

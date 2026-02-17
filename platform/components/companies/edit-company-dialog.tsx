@@ -41,6 +41,7 @@ const CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY
 export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCompanyDialogProps) {
   const [name, setName] = useState(company.name)
   const [domain, setDomain] = useState(company.domain || '')
+  const [logo, setLogo] = useState(company.logo || '')
   const [taxId, setTaxId] = useState((company as any).tax_id || '')
   const [currency, setCurrency] = useState((company as any).currency || 'USD')
   const [billingStreet, setBillingStreet] = useState('')
@@ -55,6 +56,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
     if (open) {
       setName(company.name)
       setDomain(company.domain || '')
+      setLogo(company.logo || '')
       setTaxId((company as any).tax_id || '')
       setCurrency((company as any).currency || 'USD')
       const billing = (company as any).billing_address || {}
@@ -76,6 +78,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
       const formData = new FormData()
       formData.append('name', name)
       formData.append('domain', domain)
+      formData.append('logo', logo)
       formData.append('tax_id', taxId)
       formData.append('currency', currency)
       formData.append('billing_address', JSON.stringify({
@@ -139,6 +142,18 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
                 className="border-border/50"
                 placeholder="acme.com"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="logo" className="text-foreground">Brand logo URL</Label>
+              <Input
+                id="logo"
+                type="url"
+                value={logo}
+                onChange={(e) => setLogo(e.target.value)}
+                className="border-border/50"
+                placeholder="https://example.com/logo.png"
+              />
+              <p className="text-xs text-muted-foreground">Used in company store and company profile</p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="currency" className="text-foreground">Currency</Label>

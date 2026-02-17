@@ -10,7 +10,7 @@ DROP POLICY IF EXISTS "order_items_insert" ON public.order_items;
 DROP POLICY IF EXISTS "order_items_update" ON public.order_items;
 DROP POLICY IF EXISTS "order_items_delete" ON public.order_items;
 
--- INSERT: SUPER_ADMIN can insert any order; HR can insert for their company
+-- INSERT: SUPER_ADMIN any; HR/ADMIN for their company; EMPLOYEE for their company (e.g. store checkout)
 CREATE POLICY "orders_insert" ON public.orders
   FOR INSERT
   WITH CHECK (
@@ -20,6 +20,7 @@ CREATE POLICY "orders_insert" ON public.orders
       AND (
         u.role = 'SUPER_ADMIN'
         OR (u.role IN ('ADMIN', 'HR') AND u.company_id = orders.company_id)
+        OR (u.company_id = orders.company_id)
       )
     )
   );
