@@ -1,15 +1,27 @@
+import type { Metadata } from 'next'
 import { SwagStorePage } from '@/components/swag-store/swag-store-page'
 import { getSwagStoreByIdentifier } from '@/actions/swag-store'
 import { notFound } from 'next/navigation'
+import { buildMetadata } from '@/lib/seo'
 
 interface SwagStorePageProps {
-  params: {
-    identifier: string
-  }
+  params: Promise<{ identifier: string }>
+}
+
+export async function generateMetadata({ params }: SwagStorePageProps): Promise<Metadata> {
+  const { identifier } = await params
+  const { data } = await getSwagStoreByIdentifier(identifier)
+  if (!data) return {}
+  return buildMetadata({
+    title: `${data.companyName} Swag Store`,
+    description: `Shop ${data.companyName} swag and corporate gifts. ${data.products?.length ?? 0} products available.`,
+    path: `companies/${identifier}`,
+    noIndex: false,
+  })
 }
 
 export default async function SwagStorePublicPage({ params }: SwagStorePageProps) {
-  const { identifier } = params
+  const { identifier } = await params
 
   const { data: storeData, error } = await getSwagStoreByIdentifier(identifier)
 

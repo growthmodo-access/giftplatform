@@ -12,6 +12,8 @@ export type SEOProps = {
   noIndex?: boolean
   /** Override type for OG (default 'website'). */
   type?: 'website' | 'article'
+  /** Optional keywords for the page (merged with defaults for landing). */
+  keywords?: string | string[] | null
 }
 
 const defaultImage = '/MAINIMAGE.PNG'
@@ -33,6 +35,7 @@ export function buildMetadata(options: SEOProps = {}): Metadata {
     image = defaultImage,
     noIndex = false,
     type = 'website',
+    keywords,
   } = options
 
   const fullTitle = title ? `${title} | ${siteConfig.shortName}` : siteConfig.shortName
@@ -44,6 +47,9 @@ export function buildMetadata(options: SEOProps = {}): Metadata {
   const metadata: Metadata = {
     title: fullTitle,
     description: desc,
+    ...(keywords != null && keywords.length > 0 && {
+      keywords: Array.isArray(keywords) ? keywords : [keywords],
+    }),
     metadataBase: new URL(siteConfig.url),
     ...(setCanonical && {
       alternates: {
@@ -112,6 +118,15 @@ export function getOrganizationJsonLd() {
           target: { '@type': 'EntryPoint', urlTemplate: `${siteConfig.url}/?q={search_term_string}` },
           'query-input': 'required name=search_term_string',
         },
+      },
+      {
+        '@type': 'SoftwareApplication',
+        name: siteConfig.shortName,
+        applicationCategory: 'BusinessApplication',
+        description: siteConfig.description,
+        url: siteConfig.url,
+        author: { '@id': `${siteConfig.url}/#organization` },
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
       },
     ],
   }

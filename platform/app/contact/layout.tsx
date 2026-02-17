@@ -5,6 +5,7 @@ export const metadata: Metadata = buildMetadata({
   title: 'Contact',
   description: 'Get in touch with Goodies. Questions about corporate gifting, swag, or global delivery? We\'d love to hear from you.',
   path: 'contact',
+  keywords: ['contact Goodies', 'corporate gifting demo', 'sales enquiry', 'support', 'partnership'],
 })
 
 export default function ContactLayout({

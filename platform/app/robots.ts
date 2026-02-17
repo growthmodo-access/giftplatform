@@ -12,10 +12,10 @@ export default function robots(): MetadataRoute.Robots {
           '/dashboard',
           '/dashboard/',
           '/api/',
-          '/companies/',
           '/login',
           '/signup',
           '/check-role',
+          '/g/', // one-time gift links — do not index
         ],
       },
     ],
