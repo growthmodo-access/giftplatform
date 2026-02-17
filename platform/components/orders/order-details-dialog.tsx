@@ -14,8 +14,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { Truck, Package, Building2, User, MapPin, Mail, Phone } from 'lucide-react'
+import { Truck, Package, Building2, User, MapPin, Mail, Phone, ExternalLink } from 'lucide-react'
 import { updateOrderTracking } from '@/actions/orders'
+import { getTrackingUrl } from '@/lib/order-tracking'
 
 type Order = {
   id: string
@@ -216,6 +217,16 @@ export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }:
                     disabled={loading}
                   />
                 </div>
+                {trackingNumber.trim() && (
+                  <a
+                    href={getTrackingUrl(trackingNumber)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                  >
+                    Track shipment <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
                 <p className="text-xs text-muted-foreground">
                   Add tracking number when order is shipped
                 </p>
@@ -227,9 +238,17 @@ export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }:
           {!canEdit && order.trackingNumber && (
             <div className="space-y-2 border-t border-border/50 pt-4">
               <Label className="text-muted-foreground">Tracking Number</Label>
-              <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-md">
-                <Truck className="w-4 h-4 text-muted-foreground" />
+              <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-md flex-wrap">
+                <Truck className="w-4 h-4 text-muted-foreground shrink-0" />
                 <span className="text-sm font-mono text-foreground">{order.trackingNumber}</span>
+                <a
+                  href={getTrackingUrl(order.trackingNumber)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline ml-auto"
+                >
+                  Track <ExternalLink className="w-3 h-3" />
+                </a>
               </div>
             </div>
           )}

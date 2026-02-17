@@ -86,10 +86,10 @@ export async function getOrders() {
     // Create company lookup map
     const companyMap = new Map(companies?.map(c => [c.id, c.name]) || [])
 
-    // Get order items for each order
+    // Get order items for each order (include size for fulfillment)
     const { data: orderItems } = await supabase
       .from('order_items')
-      .select('order_id, product_id, quantity, price')
+      .select('order_id, product_id, quantity, price, size')
       .in('order_id', orderIds)
 
     // Get payment information if available (gracefully handle if table doesn't exist)
@@ -121,13 +121,19 @@ export async function getOrders() {
 
     // Combine orders with items
     const ordersWithItems = orders.map(order => {
-      const items = (orderItems || []).filter(item => item.order_id === order.id)
-      const firstItem = items[0]
+      const orderItemRows = (orderItems || []).filter(item => item.order_id === order.id)
+      const firstItem = orderItemRows[0]
       const product = firstItem ? productMap.get(firstItem.product_id) : null
       const user = userMap.get(order.user_id)
       const payment = paymentMap.get(order.id)
       const companyName = order.company_id ? companyMap.get(order.company_id) : null
-      
+      const itemLines = orderItemRows.map(oi => {
+        const p = productMap.get(oi.product_id)
+        const name = p?.name || 'Unknown'
+        const size = (oi as any).size ? ` (${(oi as any).size})` : ''
+        return `${oi.quantity}x ${name}${size}`
+      })
+
       // Map payment methods to display names
       const paymentMethodMap: Record<string, string> = {
         'credit_card': 'Credit Card',
@@ -144,7 +150,7 @@ export async function getOrders() {
         orderNumber: order.order_number,
         employee: recipientName || user?.name || user?.email || 'Unknown',
         employeeEmail: recipientEmail ?? user?.email,
-        product: product?.name || (items.length > 1 ? 'Multiple items' : 'Unknown product'),
+        product: product?.name || (orderItemRows.length > 1 ? 'Multiple items' : 'Unknown product'),
         amount: `${order.currency || 'INR'} ${Number(order.total).toFixed(2)}`,
         status: order.status,
         date: new Date(order.created_at).toLocaleDateString('en-US', { 
@@ -160,6 +166,7 @@ export async function getOrders() {
         shippingAddress: order.shipping_address || null,
         trackingNumber: order.tracking_number || null,
         currency: order.currency || 'INR',
+        itemLines,
       }
     })
 
@@ -372,22 +379,24 @@ export async function createOrder(formData: FormData) {
   }
 }
 
-/** Export orders as CSV (same scope as getOrders by role). */
+/** Export orders as CSV for fulfillment (same scope as getOrders by role). Includes recipient, phone, address, items, tracking. */
 export async function exportOrdersAsCsv(): Promise<{ csv: string; error?: string }> {
   try {
     const { data: orders, error } = await getOrders()
     if (error) return { csv: '', error }
-    if (!orders?.length) {
-      const header = 'Order Number,Employee,Email,Status,Amount,Currency,Date\n'
-      return { csv: header }
-    }
+    const header = 'Order Number,Recipient Name,Email,Phone,Shipping Address,Items,Status,Amount,Currency,Date,Tracking\n'
+    if (!orders?.length) return { csv: header }
     const rows = orders.map((o) => {
-      const emp = (o.employee ?? '').replace(/"/g, '""')
-      const email = (o.employeeEmail ?? '').replace(/"/g, '""')
-      const amount = (o.amount ?? '').replace(/"/g, '""')
-      return `"${o.orderNumber}","${emp}","${email}","${o.status}","${amount}","${o.currency || 'INR'}","${o.date}"`
+      const esc = (s: string) => (s ?? '').replace(/"/g, '""')
+      const name = esc(o.employee)
+      const email = esc(o.employeeEmail ?? '')
+      const phone = esc(o.mobile ?? '')
+      const address = esc(o.shippingAddress ?? '')
+      const items = esc((o as any).itemLines?.join('; ') ?? o.product ?? '')
+      const amount = esc(o.amount ?? '')
+      const tracking = esc(o.trackingNumber ?? '')
+      return `"${o.orderNumber}","${name}","${email}","${phone}","${address}","${items}","${o.status}","${amount}","${o.currency || 'INR'}","${o.date}","${tracking}"`
     })
-    const header = 'Order Number,Employee,Email,Status,Amount,Currency,Date\n'
     return { csv: header + rows.join('\n') }
   } catch (e) {
     return { csv: '', error: e instanceof Error ? e.message : 'Export failed' }

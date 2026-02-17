@@ -49,6 +49,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
   const [billingState, setBillingState] = useState('')
   const [billingCountry, setBillingCountry] = useState('')
   const [billingZip, setBillingZip] = useState('')
+  const [primaryColor, setPrimaryColor] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const logoFileRef = useRef<HTMLInputElement>(null)
@@ -66,6 +67,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
       setBillingState(billing.state || '')
       setBillingCountry(billing.country || '')
       setBillingZip(billing.zip_code || '')
+      setPrimaryColor((company as any).settings?.primaryColor || '')
       setError('')
     }
   }, [company, open])
@@ -91,6 +93,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
         country: billingCountry,
         zip_code: billingZip,
       }))
+      formData.append('primary_color', primaryColor.trim())
 
       const result = await updateCompany(company.id, formData)
 
@@ -190,6 +193,26 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
                 className="border-border/50"
                 placeholder="TAX-123456"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="primary_color" className="text-foreground">Store theme color</Label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  id="primary_color"
+                  value={primaryColor || '#6366f1'}
+                  onChange={(e) => setPrimaryColor(e.target.value)}
+                  className="h-10 w-14 rounded border border-border/50 cursor-pointer"
+                />
+                <Input
+                  type="text"
+                  value={primaryColor}
+                  onChange={(e) => setPrimaryColor(e.target.value)}
+                  className="flex-1 border-border/50 font-mono text-sm"
+                  placeholder="#6366f1"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">Used for company store header (leave empty for default)</p>
             </div>
             <div className="space-y-4 pt-2 border-t border-border/50">
               <h3 className="text-sm font-semibold text-foreground">Billing Address</h3>

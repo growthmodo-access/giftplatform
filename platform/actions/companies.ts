@@ -39,7 +39,7 @@ export async function getCompanies() {
 
     const { data: companies, error } = await supabase
       .from('companies')
-      .select('id, name, domain, budget, logo, created_at, updated_at')
+      .select('id, name, domain, budget, logo, created_at, updated_at, settings')
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -255,6 +255,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
     const taxId = formData.get('tax_id') as string
     const currency = formData.get('currency') as string
     const billingAddressStr = formData.get('billing_address') as string
+    const primaryColorRaw = (formData.get('primary_color') as string)?.trim()
 
     const updates: {
       name?: string
@@ -263,6 +264,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
       tax_id?: string | null
       currency?: string
       billing_address?: any
+      settings?: any
       updated_at: string
     } = {
       updated_at: new Date().toISOString(),
@@ -306,6 +308,14 @@ export async function updateCompany(companyId: string, formData: FormData) {
       } catch (e) {
         console.error('Invalid billing address JSON:', e)
       }
+    }
+
+    const { data: existing } = await supabase.from('companies').select('settings').eq('id', companyId).single()
+    const settings = { ...(existing?.settings || {}) }
+    if (primaryColorRaw !== undefined) {
+      if (primaryColorRaw) settings.primaryColor = primaryColorRaw
+      else delete settings.primaryColor
+      updates.settings = settings
     }
 
     const { error: updateError } = await supabase

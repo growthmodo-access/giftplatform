@@ -13,8 +13,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { ArrowUpDown, ArrowUp, ArrowDown, CreditCard, Wallet, Building2, Coins, Truck } from 'lucide-react'
+import { ArrowUpDown, ArrowUp, ArrowDown, CreditCard, Wallet, Building2, Coins, Truck, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getTrackingUrl } from '@/lib/order-tracking'
 
 type Order = {
   id: string
@@ -225,7 +226,12 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                   <span>Mobile: {order.mobile || 'N/A'}</span>
                   <span>Payment: {order.paymentMethod || 'N/A'}</span>
-                  {order.trackingNumber && <span className="font-mono">Tracking: {order.trackingNumber}</span>}
+                  {order.trackingNumber && (
+                    <span className="flex items-center gap-1">
+                      <span className="font-mono">Tracking: {order.trackingNumber}</span>
+                      <a href={getTrackingUrl(order.trackingNumber)} target="_blank" rel="noopener noreferrer" className="text-primary text-xs hover:underline">Track</a>
+                    </span>
+                  )}
                 </div>
               </div>
             )
@@ -406,9 +412,18 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                     </TableCell>
                     <TableCell>
                       {order.trackingNumber ? (
-                        <div className="flex items-center gap-2">
-                          <Truck className="w-4 h-4 text-muted-foreground" />
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Truck className="w-4 h-4 text-muted-foreground shrink-0" />
                           <span className="text-sm font-mono text-foreground">{order.trackingNumber}</span>
+                          <a
+                            href={getTrackingUrl(order.trackingNumber)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-0.5 text-xs text-primary hover:underline"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Track <ExternalLink className="w-3 h-3" />
+                          </a>
                         </div>
                       ) : (
                         <span className="text-sm text-muted-foreground">—</span>

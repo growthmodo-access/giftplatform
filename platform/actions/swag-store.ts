@@ -102,7 +102,7 @@ export async function getSwagStoreByIdentifier(identifier: string) {
     // Get products for this company
     const { data: products } = await supabase
       .from('products')
-      .select('id, name, description, image, price, currency, category')
+      .select('id, name, description, image, price, currency, category, stock, requires_sizes, sizes')
       .eq('company_id', company.id)
       .order('created_at', { ascending: false })
 
@@ -111,6 +111,7 @@ export async function getSwagStoreByIdentifier(identifier: string) {
         companyId: company.id,
         companyName: company.name,
         companyLogo: company.logo,
+        companySettings: company.settings || {},
         products: products || [],
         isEnabled,
       },
