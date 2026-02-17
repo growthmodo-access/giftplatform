@@ -80,15 +80,8 @@ function LoginForm() {
         password,
       })
 
-      if (error) {
-        console.error('[Login] Supabase auth error:', error)
-        throw error
-      }
-
-      if (!data?.user) {
-        console.error('[Login] No user returned from signInWithPassword')
-        throw new Error('Login failed: No user data returned')
-      }
+      if (error) throw error
+      if (!data?.user) throw new Error('Login failed: No user data returned')
 
       // Verify user profile exists before redirecting
       try {
@@ -98,21 +91,10 @@ function LoginForm() {
           .eq('id', data.user.id)
           .maybeSingle()
 
-        if (profileError) {
-          console.error('[Login] Error fetching user profile:', profileError)
-          throw new Error(`Profile error: ${profileError.message}`)
-        }
-
-        if (!profile) {
-          console.error('[Login] User profile not found for user:', data.user.id)
-          throw new Error('User profile not found. Please contact support.')
-        }
-
-        console.log('[Login] User profile found:', { role: profile.role, company_id: profile.company_id })
-      } catch (profileErr) {
-        // If profile check fails, still allow login but log the error
-        console.warn('[Login] Profile check warning:', profileErr)
-        // Don't throw - let the user proceed and see if layout handles it
+        if (profileError) throw new Error(`Profile error: ${profileError.message}`)
+        if (!profile) throw new Error('User profile not found. Please contact support.')
+      } catch {
+        // Let the user proceed; layout may handle missing profile
       }
 
       // Get redirect URL from query params or default to dashboard
@@ -122,77 +104,7 @@ function LoginForm() {
       // This ensures middleware can read the authentication cookies
       window.location.href = redirectTo
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'An error occurred during login'
-      console.error('[Login] Error:', errorMessage, error)
-      setError(errorMessage)
-      setLoading(false)
-    }
-  }
-
-  const testUsers = [
-    { email: 'superadmin@test.com', password: 'Test123!@#', role: 'SUPER_ADMIN', label: 'Super Admin' },
-    { email: 'admin@test.com', password: 'Test123!@#', role: 'ADMIN', label: 'Admin' },
-    { email: 'hr@test.com', password: 'Test123!@#', role: 'HR', label: 'HR' },
-    { email: 'manager@test.com', password: 'Test123!@#', role: 'MANAGER', label: 'Manager' },
-    { email: 'employee@test.com', password: 'Test123!@#', role: 'EMPLOYEE', label: 'Employee' },
-  ]
-
-  const handleTestLogin = async (testUser: typeof testUsers[0]) => {
-    setEmail(testUser.email)
-    setPassword(testUser.password)
-    setLoading(true)
-    setError('')
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: testUser.email,
-        password: testUser.password,
-      })
-
-      if (error) {
-        console.error('[Login] Test login Supabase auth error:', error)
-        throw error
-      }
-
-      if (!data?.user) {
-        console.error('[Login] Test login: No user returned')
-        throw new Error('Login failed: No user data returned')
-      }
-
-      // Verify user profile exists
-      try {
-        const { data: profile, error: profileError } = await supabase
-          .from('users')
-          .select('id, role, company_id')
-          .eq('id', data.user.id)
-          .maybeSingle()
-
-        if (profileError) {
-          console.error('[Login] Test login profile error:', profileError)
-          throw new Error(`Profile error: ${profileError.message}`)
-        }
-
-        if (!profile) {
-          console.error('[Login] Test login: User profile not found for:', testUser.email)
-          throw new Error(`User profile not found for ${testUser.email}. Please ensure the user exists in the database.`)
-        }
-
-        console.log('[Login] Test login profile found:', { email: testUser.email, role: profile.role, company_id: profile.company_id })
-      } catch (profileErr) {
-        console.warn('[Login] Test login profile check warning:', profileErr)
-        // Don't throw - let the user proceed
-      }
-
-      // Get redirect URL from query params or default to dashboard
-      const redirectTo = searchParams.get('redirect') || '/dashboard'
-      
-      // Use window.location for a full page reload to ensure cookies are set
-      // This ensures middleware can read the authentication cookies
-      window.location.href = redirectTo
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'An error occurred during login'
-      console.error('[Login] Test login error:', errorMessage, error)
-      setError(errorMessage)
+      setError(error instanceof Error ? error.message : 'An error occurred during login')
       setLoading(false)
     }
   }
@@ -286,29 +198,6 @@ function LoginForm() {
             </div>
           </form>
           )}
-
-          {/* Test User Quick Login */}
-          <div className="mt-6 pt-6 border-t border-border/50">
-            <p className="text-xs text-muted-foreground mb-3 text-center">Quick Login (Testing)</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
-              {testUsers.map((testUser) => (
-                <Button
-                  key={testUser.email}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleTestLogin(testUser)}
-                  disabled={loading}
-                  className="text-xs rounded-none border-border/50"
-                >
-                  {testUser.label}
-                </Button>
-              ))}
-            </div>
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              All test users: Test123!@#
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
