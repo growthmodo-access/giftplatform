@@ -30,20 +30,22 @@ interface Company {
 }
 
 interface EditCompanyDialogProps {
-  company: Company
+  company: Company & { store_identifier?: string | null }
   open: boolean
   onClose: () => void
   onSuccess: () => void
+  currentUserRole?: 'SUPER_ADMIN' | 'HR' | 'EMPLOYEE'
 }
 
 const CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'CHF', 'CNY', 'BRL', 'MXN', 'SGD', 'HKD', 'NZD', 'ZAR', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK']
 
-export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCompanyDialogProps) {
+export function EditCompanyDialog({ company, open, onClose, onSuccess, currentUserRole }: EditCompanyDialogProps) {
   const [name, setName] = useState(company.name)
   const [domain, setDomain] = useState(company.domain || '')
   const [logo, setLogo] = useState(company.logo || '')
   const [taxId, setTaxId] = useState((company as any).tax_id || '')
   const [currency, setCurrency] = useState((company as any).currency || 'INR')
+  const [storeIdentifier, setStoreIdentifier] = useState((company as any).store_identifier || '')
   const [billingStreet, setBillingStreet] = useState('')
   const [billingCity, setBillingCity] = useState('')
   const [billingState, setBillingState] = useState('')
@@ -61,6 +63,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
       setLogo(company.logo || '')
       setTaxId((company as any).tax_id || '')
       setCurrency((company as any).currency || 'INR')
+      setStoreIdentifier((company as any).store_identifier || '')
       const billing = (company as any).billing_address || {}
       setBillingStreet(billing.street || '')
       setBillingCity(billing.city || '')
@@ -94,6 +97,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
         zip_code: billingZip,
       }))
       formData.append('primary_color', primaryColor.trim())
+      if (currentUserRole === 'SUPER_ADMIN') formData.append('store_identifier', storeIdentifier.trim())
 
       const result = await updateCompany(company.id, formData)
 
@@ -214,6 +218,20 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
               </div>
               <p className="text-xs text-muted-foreground">Used for company store header (leave empty for default)</p>
             </div>
+            {currentUserRole === 'SUPER_ADMIN' && (
+              <div className="space-y-2">
+                <Label htmlFor="store_identifier" className="text-foreground">Swag store URL slug</Label>
+                <Input
+                  id="store_identifier"
+                  type="text"
+                  value={storeIdentifier}
+                  onChange={(e) => setStoreIdentifier(e.target.value)}
+                  className="border-border/50 font-mono"
+                  placeholder="acme-store"
+                />
+                <p className="text-xs text-muted-foreground">Store URL: /companies/[slug]. Only letters, numbers, hyphens.</p>
+              </div>
+            )}
             <div className="space-y-4 pt-2 border-t border-border/50">
               <h3 className="text-sm font-semibold text-foreground">Billing Address</h3>
               <div className="space-y-2">

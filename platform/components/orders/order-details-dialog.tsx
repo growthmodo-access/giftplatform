@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge'
 import { Truck, Package, Building2, User, MapPin, Mail, Phone, ExternalLink } from 'lucide-react'
 import { updateOrderTracking } from '@/actions/orders'
-import { getTrackingUrl } from '@/lib/order-tracking'
+import { getOrderTrackingLink } from '@/lib/order-tracking'
 
 type Order = {
   id: string
@@ -31,7 +31,7 @@ type Order = {
   companyId?: string | null
   shippingAddress?: string | null
   trackingNumber?: string | null
-  /** Phone number (from payment or placeholder) */
+  trackingUrl?: string | null
   mobile?: string
 }
 
@@ -53,6 +53,7 @@ const statusOptions = [
 
 export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }: OrderDetailsDialogProps) {
   const [trackingNumber, setTrackingNumber] = useState('')
+  const [trackingUrl, setTrackingUrl] = useState('')
   const [status, setStatus] = useState('PENDING')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -60,6 +61,7 @@ export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }:
   useEffect(() => {
     if (order && open) {
       setTrackingNumber(order.trackingNumber || '')
+      setTrackingUrl((order as any).trackingUrl || '')
       setStatus(order.status || 'PENDING')
       setError('')
     }
@@ -75,6 +77,7 @@ export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }:
     try {
       const result = await updateOrderTracking(order.id, {
         trackingNumber: trackingNumber.trim() || null,
+        trackingUrl: trackingUrl.trim() || null,
         status: status as any,
       })
 
@@ -212,14 +215,26 @@ export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }:
                     type="text"
                     value={trackingNumber}
                     onChange={(e) => setTrackingNumber(e.target.value)}
-                    placeholder="Enter tracking number"
+                    placeholder="e.g. 1Z999AA10123456784"
                     className="border-border/50"
                     disabled={loading}
                   />
                 </div>
-                {trackingNumber.trim() && (
+                <div className="space-y-1">
+                  <Label htmlFor="tracking_link" className="text-foreground text-xs">Tracking link (optional)</Label>
+                  <Input
+                    id="tracking_link"
+                    type="url"
+                    value={trackingUrl}
+                    onChange={(e) => setTrackingUrl(e.target.value)}
+                    placeholder="https://carrier.com/track/..."
+                    className="border-border/50 text-sm"
+                    disabled={loading}
+                  />
+                </div>
+                {getOrderTrackingLink(trackingNumber, trackingUrl) && (
                   <a
-                    href={getTrackingUrl(trackingNumber)}
+                    href={getOrderTrackingLink(trackingNumber, trackingUrl)!}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
@@ -228,27 +243,29 @@ export function OrderDetailsDialog({ order, open, onClose, onSuccess, canEdit }:
                   </a>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Add tracking number when order is shipped
+                  Add tracking number and/or paste carrier tracking link when order is shipped
                 </p>
               </div>
             </div>
           )}
 
           {/* Read-only tracking display */}
-          {!canEdit && order.trackingNumber && (
+          {!canEdit && (order.trackingNumber || (order as any).trackingUrl) && (
             <div className="space-y-2 border-t border-border/50 pt-4">
-              <Label className="text-muted-foreground">Tracking Number</Label>
+              <Label className="text-muted-foreground">Tracking</Label>
               <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-md flex-wrap">
                 <Truck className="w-4 h-4 text-muted-foreground shrink-0" />
-                <span className="text-sm font-mono text-foreground">{order.trackingNumber}</span>
-                <a
-                  href={getTrackingUrl(order.trackingNumber)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline ml-auto"
-                >
-                  Track <ExternalLink className="w-3 h-3" />
-                </a>
+                {order.trackingNumber && <span className="text-sm font-mono text-foreground">{order.trackingNumber}</span>}
+                {getOrderTrackingLink(order.trackingNumber, (order as any).trackingUrl) && (
+                  <a
+                    href={getOrderTrackingLink(order.trackingNumber, (order as any).trackingUrl)!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline ml-auto"
+                  >
+                    Track <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
               </div>
             </div>
           )}

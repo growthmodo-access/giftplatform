@@ -35,7 +35,7 @@ export async function getOrders() {
     // Get orders based on role
     let query = supabase
       .from('orders')
-      .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at, company_id, recipient_name, recipient_email, recipient_phone')
+      .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, tracking_url, created_at, company_id, recipient_name, recipient_email, recipient_phone')
 
     // SUPER_ADMIN can see all orders (all companies)
     if (currentUser.role === 'SUPER_ADMIN') {
@@ -165,6 +165,7 @@ export async function getOrders() {
         companyId: order.company_id,
         shippingAddress: order.shipping_address || null,
         trackingNumber: order.tracking_number || null,
+        trackingUrl: (order as any).tracking_url || null,
         currency: order.currency || 'INR',
         itemLines,
       }
@@ -180,9 +181,9 @@ export async function getOrders() {
 }
 
 /**
- * Update order tracking number and status
+ * Update order tracking number, optional tracking URL, and status (Super Admin / HR).
  */
-export async function updateOrderTracking(orderId: string, updates: { trackingNumber?: string | null, status?: string }) {
+export async function updateOrderTracking(orderId: string, updates: { trackingNumber?: string | null, trackingUrl?: string | null, status?: string }) {
   try {
     const supabase = await createClient()
     
@@ -233,6 +234,9 @@ export async function updateOrderTracking(orderId: string, updates: { trackingNu
 
     if (updates.trackingNumber !== undefined) {
       updateData.tracking_number = updates.trackingNumber
+    }
+    if (updates.trackingUrl !== undefined) {
+      updateData.tracking_url = updates.trackingUrl
     }
 
     if (updates.status) {

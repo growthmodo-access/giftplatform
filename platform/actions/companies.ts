@@ -39,7 +39,7 @@ export async function getCompanies() {
 
     const { data: companies, error } = await supabase
       .from('companies')
-      .select('id, name, domain, budget, logo, created_at, updated_at, settings')
+      .select('id, name, domain, budget, logo, created_at, updated_at, settings, store_identifier')
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -256,6 +256,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
     const currency = formData.get('currency') as string
     const billingAddressStr = formData.get('billing_address') as string
     const primaryColorRaw = (formData.get('primary_color') as string)?.trim()
+    const storeIdentifierRaw = (formData.get('store_identifier') as string)?.trim()
 
     const updates: {
       name?: string
@@ -265,6 +266,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
       currency?: string
       billing_address?: any
       settings?: any
+      store_identifier?: string | null
       updated_at: string
     } = {
       updated_at: new Date().toISOString(),
@@ -316,6 +318,13 @@ export async function updateCompany(companyId: string, formData: FormData) {
       if (primaryColorRaw) settings.primaryColor = primaryColorRaw
       else delete settings.primaryColor
       updates.settings = settings
+    }
+
+    // Only SUPER_ADMIN can change store_identifier (swag store URL slug)
+    const { data: currentUser } = await supabase.from('users').select('role').eq('id', user.id).maybeSingle()
+    if (currentUser?.role === 'SUPER_ADMIN' && storeIdentifierRaw !== undefined) {
+      const slug = storeIdentifierRaw ? storeIdentifierRaw.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') : null
+      updates.store_identifier = slug || null
     }
 
     const { error: updateError } = await supabase

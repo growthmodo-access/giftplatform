@@ -99,12 +99,18 @@ export async function getSwagStoreByIdentifier(identifier: string) {
     const settings = company?.settings || {}
     const isEnabled = settings.swagStoreEnabled || false
 
-    // Get products for this company
-    const { data: products } = await supabase
+    // Get products: company-specific + global (company_id null) so store always has catalog
+    const { data: companyProducts } = await supabase
       .from('products')
       .select('id, name, description, image, price, currency, category, stock, requires_sizes, sizes')
       .eq('company_id', company.id)
       .order('created_at', { ascending: false })
+    const { data: globalProducts } = await supabase
+      .from('products')
+      .select('id, name, description, image, price, currency, category, stock, requires_sizes, sizes')
+      .is('company_id', null)
+      .order('created_at', { ascending: false })
+    const products = [...(companyProducts || []), ...(globalProducts || [])]
 
     return {
       data: {

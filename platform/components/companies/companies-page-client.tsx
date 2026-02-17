@@ -145,6 +145,7 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
           open={isEditDialogOpen}
           onClose={handleEditDialogClose}
           onSuccess={handleUpdateSuccess}
+          currentUserRole={currentUserRole}
         />
       )}
 

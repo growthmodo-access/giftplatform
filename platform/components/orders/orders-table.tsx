@@ -15,7 +15,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { ArrowUpDown, ArrowUp, ArrowDown, CreditCard, Wallet, Building2, Coins, Truck, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { getTrackingUrl } from '@/lib/order-tracking'
+import { getOrderTrackingLink } from '@/lib/order-tracking'
 
 type Order = {
   id: string
@@ -32,8 +32,9 @@ type Order = {
   company?: string
   companyId?: string | null
   shippingAddress?: string | null
-  trackingNumber?: string | null
-}
+trackingNumber?: string | null
+  trackingUrl?: string | null
+  }
 
 interface OrdersTableProps {
   orders: Order[]
@@ -226,10 +227,10 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                 <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                   <span>Mobile: {order.mobile || 'N/A'}</span>
                   <span>Payment: {order.paymentMethod || 'N/A'}</span>
-                  {order.trackingNumber && (
+                  {getOrderTrackingLink(order.trackingNumber, order.trackingUrl) && (
                     <span className="flex items-center gap-1">
-                      <span className="font-mono">Tracking: {order.trackingNumber}</span>
-                      <a href={getTrackingUrl(order.trackingNumber)} target="_blank" rel="noopener noreferrer" className="text-primary text-xs hover:underline">Track</a>
+                      {order.trackingNumber && <span className="font-mono">Tracking: {order.trackingNumber}</span>}
+                      <a href={getOrderTrackingLink(order.trackingNumber, order.trackingUrl)!} target="_blank" rel="noopener noreferrer" className="text-primary text-xs hover:underline">Track</a>
                     </span>
                   )}
                 </div>
@@ -411,12 +412,12 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                       )}
                     </TableCell>
                     <TableCell>
-                      {order.trackingNumber ? (
+                      {getOrderTrackingLink(order.trackingNumber, order.trackingUrl) ? (
                         <div className="flex items-center gap-2 flex-wrap">
                           <Truck className="w-4 h-4 text-muted-foreground shrink-0" />
-                          <span className="text-sm font-mono text-foreground">{order.trackingNumber}</span>
+                          {order.trackingNumber && <span className="text-sm font-mono text-foreground">{order.trackingNumber}</span>}
                           <a
-                            href={getTrackingUrl(order.trackingNumber)}
+                            href={getOrderTrackingLink(order.trackingNumber, order.trackingUrl)!}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-0.5 text-xs text-primary hover:underline"

@@ -31,6 +31,7 @@ type Order = {
   companyId?: string | null
   shippingAddress?: string | null
   trackingNumber?: string | null
+  trackingUrl?: string | null
 }
 
 interface OrdersPageClientProps {
