@@ -321,8 +321,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
     }
 
     // Only SUPER_ADMIN can change store_identifier (swag store URL slug)
-    const { data: currentUser } = await supabase.from('users').select('role').eq('id', user.id).maybeSingle()
-    if (currentUser?.role === 'SUPER_ADMIN' && storeIdentifierRaw !== undefined) {
+    if (currentUser.role === 'SUPER_ADMIN' && storeIdentifierRaw !== undefined) {
       const slug = storeIdentifierRaw ? storeIdentifierRaw.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') : null
       updates.store_identifier = slug || null
     }
