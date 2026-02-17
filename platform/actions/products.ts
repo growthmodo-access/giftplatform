@@ -49,6 +49,10 @@ export async function createProduct(formData: FormData) {
     const company_id = formCompanyId && formCompanyId.trim() !== '' ? formCompanyId.trim() : null
 
     const currency = (formData.get('currency') as string)?.trim() || 'INR'
+    const image = (formData.get('image') as string)?.trim() || null
+    const requiresSizes = formData.get('requires_sizes') === 'true'
+    const sizesRaw = (formData.get('sizes') as string)?.trim() || ''
+    const sizes: string[] = sizesRaw ? sizesRaw.split(',').map((s) => s.trim()).filter(Boolean) : []
 
     const product = {
       name: name.trim(),
@@ -60,6 +64,9 @@ export async function createProduct(formData: FormData) {
       type: type as 'SWAG' | 'GIFT_CARD' | 'PHYSICAL_GIFT' | 'EXPERIENCE',
       company_id: company_id,
       stock: parseInt(formData.get('stock') as string) || 0,
+      image,
+      requires_sizes: requiresSizes,
+      sizes: requiresSizes ? sizes : [],
     }
 
     // Validate price

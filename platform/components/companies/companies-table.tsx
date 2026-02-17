@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Building2, Edit, Users, ShoppingCart, DollarSign } from 'lucide-react'
+import { SafeImage } from '@/components/ui/safe-image'
 
 interface Company {
   id: string
@@ -54,12 +55,14 @@ export function CompaniesTable({ companies, onEdit, canEdit, showRevenue = true 
             <TableRow key={company.id} className="border-border/50 hover:bg-muted/50">
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center flex-shrink-0">
-                    {company.logo ? (
-                      <img src={company.logo} alt={company.name} className="w-full h-full rounded-lg object-cover" />
-                    ) : (
-                      <Building2 className="w-5 h-5 text-background" />
-                    )}
+                  <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
+                    <SafeImage
+                      src={company.logo}
+                      alt={company.name}
+                      className="w-full h-full object-cover"
+                      containerClassName="w-full h-full"
+                      fallback={<Building2 className="w-5 h-5 text-muted-foreground" />}
+                    />
                   </div>
                   <div>
                     <p className="font-medium text-foreground">{company.name}</p>

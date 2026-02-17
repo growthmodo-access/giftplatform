@@ -26,7 +26,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import Image from 'next/image'
+import { SafeImage } from '@/components/ui/safe-image'
 
 type Product = Database['public']['Tables']['products']['Row']
 
@@ -139,17 +139,13 @@ export function ProductsGrid({ initialProducts, canManageProducts = false, curre
                 <CardContent className="p-0">
                   {/* Product Image */}
                   <div className="relative w-full h-48 bg-muted overflow-hidden">
-                    {product.image ? (
-                      <img 
-                        src={product.image} 
-                        alt={product.name || 'Product'} 
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Package className="w-12 h-12 text-muted-foreground" />
-                      </div>
-                    )}
+                    <SafeImage
+                      src={product.image}
+                      alt={product.name || 'Product'}
+                      className="w-full h-full object-cover"
+                      containerClassName="w-full h-full flex items-center justify-center"
+                      fallback={<Package className="w-12 h-12 text-muted-foreground" />}
+                    />
                     {canManageProducts && (
                       <TooltipProvider>
                         <div className="absolute top-2 right-2 flex gap-1">

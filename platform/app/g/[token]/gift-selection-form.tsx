@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { submitGiftSelection } from '@/actions/campaign-recipients'
 import { Loader2, Check } from 'lucide-react'
-import Image from 'next/image'
+import { SafeImage } from '@/components/ui/safe-image'
 
 type Product = {
   id: string
@@ -111,21 +111,15 @@ export function GiftSelectionForm({ token, campaignName, products, recipientEmai
             >
               <CardContent className="p-4">
                 <div className="flex gap-4">
-                  {product.image ? (
-                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-muted">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                        sizes="80px"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
-                      Gift
-                    </div>
-                  )}
+                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-muted">
+                    <SafeImage
+                      src={product.image}
+                      alt={product.name}
+                      className="h-full w-full object-cover"
+                      containerClassName="h-full w-full flex items-center justify-center text-muted-foreground"
+                      fallback={<span>Gift</span>}
+                    />
+                  </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-foreground">{product.name}</p>
                     {product.description && (

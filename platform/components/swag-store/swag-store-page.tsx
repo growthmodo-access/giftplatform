@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Package, ShoppingCart, Minus, Plus, Trash2 } from 'lucide-react'
+import { SafeImage } from '@/components/ui/safe-image'
 import {
   Dialog,
   DialogContent,
@@ -123,13 +124,14 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {storeData.companyLogo && (
-                <img 
-                  src={storeData.companyLogo} 
+              {storeData.companyLogo ? (
+                <SafeImage
+                  src={storeData.companyLogo}
                   alt={storeData.companyName}
                   className="w-10 h-10 rounded object-contain"
+                  containerClassName="w-10 h-10 rounded bg-muted"
                 />
-              )}
+              ) : null}
               <h1 className="text-2xl font-semibold text-foreground">{storeData.companyName} Swag Store</h1>
             </div>
             <div className="flex items-center gap-4">
@@ -271,17 +273,13 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
                 <CardContent className="p-0">
                   {/* Product Image */}
                   <div className="relative w-full h-48 bg-muted overflow-hidden">
-                    {product.image ? (
-                      <img 
-                        src={product.image} 
-                        alt={product.name} 
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Package className="w-12 h-12 text-muted-foreground" />
-                      </div>
-                    )}
+                    <SafeImage
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                      containerClassName="w-full h-48 flex items-center justify-center"
+                      fallback={<Package className="w-12 h-12 text-muted-foreground" />}
+                    />
                   </div>
                   
                   {/* Product Info */}
