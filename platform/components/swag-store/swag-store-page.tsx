@@ -43,8 +43,14 @@ interface SwagStorePageProps {
 
 const LOW_STOCK_THRESHOLD = 5
 
+function getCartKey(productId: string, product: { requires_sizes?: boolean; sizes?: string[] | null }, size: string | null): string {
+  if (product?.requires_sizes && size) return `${productId}::${size}`
+  return productId
+}
+
 export function SwagStorePage({ storeData }: SwagStorePageProps) {
   const [cart, setCart] = useState<Record<string, number>>({})
+  const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({}) // productId -> size for add-to-cart
   const [cartOpen, setCartOpen] = useState(false)
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [fulfillment, setFulfillment] = useState({ name: '', email: '', phone: '', address: '' })
@@ -82,37 +88,47 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
     return p?.stock != null ? p.stock : 999
   }
 
-  const addToCart = (productId: string) => {
+  const addToCart = (productId: string, size: string | null = null) => {
+    const product = storeData.products.find(p => p.id === productId)
+    const key = getCartKey(productId, product ?? {}, size)
     const stock = getStock(productId)
     if (stock <= 0) return
+    if (product?.requires_sizes && product.sizes?.length && !size) return // require size selection
     setCart(prev => {
-      const current = prev[productId] || 0
+      const current = prev[key] || 0
       const nextQty = Math.min(current + 1, stock)
-      if (nextQty <= 0) { const n = { ...prev }; delete n[productId]; return n }
-      return { ...prev, [productId]: nextQty }
+      if (nextQty <= 0) { const n = { ...prev }; delete n[key]; return n }
+      return { ...prev, [key]: nextQty }
     })
   }
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = (key: string) => {
     setCart(prev => {
       const next = { ...prev }
-      const q = (next[productId] || 0) - 1
-      if (q <= 0) delete next[productId]
-      else next[productId] = q
+      const q = (next[key] || 0) - 1
+      if (q <= 0) delete next[key]
+      else next[key] = q
       return next
     })
   }
-  const setQuantity = (productId: string, qty: number) => {
+  const setQuantity = (key: string, qty: number) => {
+    const [productId] = key.includes('::') ? key.split('::') : [key]
     const stock = getStock(productId)
     if (qty <= 0) {
-      setCart(prev => { const n = { ...prev }; delete n[productId]; return n })
+      setCart(prev => { const n = { ...prev }; delete n[key]; return n })
     } else {
-      setCart(prev => ({ ...prev, [productId]: Math.min(qty, stock) }))
+      setCart(prev => ({ ...prev, [key]: Math.min(qty, stock) }))
     }
   }
 
   const cartCount = Object.values(cart).reduce((sum, qty) => sum + qty, 0)
-  const cartItems = storeData.products.filter(p => (cart[p.id] || 0) > 0)
-  const total = cartItems.reduce((sum, p) => sum + (p.price * (cart[p.id] || 0)), 0)
+  // Derive cart line items: key is productId or productId::size
+  const cartEntries = Object.entries(cart).filter(([, qty]) => qty > 0).map(([key, qty]) => {
+    const [productId, size] = key.includes('::') ? key.split('::') : [key, null]
+    const product = storeData.products.find(p => p.id === productId)
+    return { key, productId, size: size || undefined, qty, product }
+  })
+  const cartItems = cartEntries.filter(e => e.product) as Array<{ key: string; productId: string; size?: string; qty: number; product: NonNullable<typeof cartEntries[0]['product']> }>
+  const total = cartItems.reduce((sum, item) => sum + item.product.price * item.qty, 0)
   const currency = storeData.products[0]?.currency || 'INR'
 
   const handleCheckout = () => {
@@ -140,10 +156,11 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
     }
     setSubmitting(true)
     setOrderError('')
-    const items = cartItems.map(p => ({
-      productId: p.id,
-      quantity: cart[p.id] || 0,
-      price: p.price,
+    const items = cartItems.map(item => ({
+      productId: item.productId,
+      quantity: item.qty,
+      price: item.product.price,
+      size: item.size ?? undefined,
     }))
     const result = await createStoreOrder(storeData.companyId, items, {
       name: name.trim(),
@@ -218,20 +235,23 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
             {cartItems.length === 0 ? (
               <p className="text-sm text-muted-foreground">Cart is empty</p>
             ) : (
-              cartItems.map(p => (
-                <div key={p.id} className="flex items-center justify-between gap-2 p-2 rounded-lg bg-muted/50">
-                  <span className="text-sm font-medium truncate flex-1">{p.name}</span>
+              cartItems.map(item => (
+                <div key={item.key} className="flex items-center justify-between gap-2 p-2 rounded-lg bg-muted/50">
+                  <span className="text-sm font-medium truncate flex-1">
+                    {item.product.name}
+                    {item.size && <span className="text-muted-foreground font-normal"> — {item.size}</span>}
+                  </span>
                   <div className="flex items-center gap-1">
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => setQuantity(p.id, (cart[p.id] || 0) - 1)}>
+                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => setQuantity(item.key, item.qty - 1)}>
                       <Minus className="w-3 h-3" />
                     </Button>
-                    <span className="w-6 text-center text-sm">{cart[p.id] || 0}</span>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => addToCart(p.id)}>
+                    <span className="w-6 text-center text-sm">{item.qty}</span>
+                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7" onClick={() => addToCart(item.productId, item.size ?? null)}>
                       <Plus className="w-3 h-3" />
                     </Button>
                   </div>
                   <span className="text-sm font-medium w-20 text-right">
-                    {new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(p.price * (cart[p.id] || 0))}
+                    {new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(item.product.price * item.qty)}
                   </span>
                 </div>
               ))
@@ -357,6 +377,11 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
               const stock = product.stock != null ? product.stock : 999
               const outOfStock = stock <= 0
               const lowStock = stock > 0 && stock <= LOW_STOCK_THRESHOLD
+              const needsSize = product.requires_sizes && Array.isArray(product.sizes) && product.sizes.length > 0
+              const selectedSize = selectedSizes[product.id] ?? null
+              const cartKey = getCartKey(product.id, product, selectedSize)
+              const inCartQty = cart[cartKey] || 0
+              const canAdd = !outOfStock && (!needsSize || selectedSize)
               return (
                 <Card key={product.id} className="border-border/50 hover:shadow-md transition-shadow">
                   <CardContent className="p-0">
@@ -388,6 +413,24 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
                           <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{product.description}</p>
                         )}
                       </div>
+                      {needsSize && (
+                        <div className="space-y-1">
+                          <Label className="text-xs text-muted-foreground">Size</Label>
+                          <Select
+                            value={selectedSize || ''}
+                            onValueChange={(v) => setSelectedSizes(s => ({ ...s, [product.id]: v }))}
+                          >
+                            <SelectTrigger className="h-8 border-border/50">
+                              <SelectValue placeholder="Select size" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {product.sizes!.map((s) => (
+                                <SelectItem key={s} value={s}>{s}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
                       <div className="flex items-center justify-between">
                         <span className="text-lg font-bold text-foreground">
                           {new Intl.NumberFormat('en-IN', {
@@ -401,12 +444,12 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
                       </div>
                       <Button
                         className="w-full mt-2"
-                        onClick={() => addToCart(product.id)}
-                        disabled={outOfStock}
+                        onClick={() => addToCart(product.id, needsSize ? selectedSize : null)}
+                        disabled={!canAdd}
                       >
-                        {outOfStock ? 'Out of stock' : 'Add to Cart'}
-                        {cart[product.id] > 0 && !outOfStock && (
-                          <span className="ml-2">({cart[product.id]})</span>
+                        {outOfStock ? 'Out of stock' : needsSize && !selectedSize ? 'Select size' : 'Add to Cart'}
+                        {inCartQty > 0 && canAdd && (
+                          <span className="ml-2">({inCartQty})</span>
                         )}
                       </Button>
                     </div>

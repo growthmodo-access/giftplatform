@@ -138,7 +138,7 @@ export async function getSwagStoreByIdentifier(identifier: string) {
  */
 export async function createStoreOrder(
   companyId: string,
-  items: { productId: string; quantity: number; price: number }[],
+  items: { productId: string; quantity: number; price: number; size?: string }[],
   fulfillment: { name: string; email: string; phone: string; address: string },
   currency: string = 'INR'
 ) {
@@ -183,6 +183,7 @@ export async function createStoreOrder(
         product_id: item.productId,
         quantity: item.quantity,
         price: item.price,
+        ...(item.size != null && item.size !== '' && { size: item.size }),
       })
       if (itemError) return { error: itemError.message }
     }
