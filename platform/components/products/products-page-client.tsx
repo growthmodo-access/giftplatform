@@ -44,40 +44,42 @@ export function ProductsPageClient({ initialProducts, currentUserRole }: Product
             Manage your product catalog
           </p>
         </div>
-        {canManageProducts && (
-          <div className="flex flex-wrap gap-2 sm:gap-3">
-            <div className="flex items-center gap-1 border border-border/50 rounded-md p-1">
-              <Button
-                variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                size="sm"
-                className="h-7 px-2"
-                onClick={() => setViewMode('grid')}
-              >
-                <Grid className="w-4 h-4" />
-              </Button>
-              <Button
-                variant={viewMode === 'table' ? 'default' : 'ghost'}
-                size="sm"
-                className="h-7 px-2"
-                onClick={() => setViewMode('table')}
-              >
-                <List className="w-4 h-4" />
-              </Button>
-            </div>
-            <Button variant="outline" size="sm" className="gap-2 border-border/50">
-              <Upload className="w-4 h-4" />
-              <span className="hidden sm:inline">Import</span>
+        <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="flex items-center gap-1 border border-border/50 rounded-md p-1">
+            <Button
+              variant={viewMode === 'grid' ? 'default' : 'ghost'}
+              size="sm"
+              className="h-7 px-2"
+              onClick={() => setViewMode('grid')}
+            >
+              <Grid className="w-4 h-4" />
             </Button>
-            <Button variant="outline" size="sm" className="gap-2 border-border/50">
-              <Download className="w-4 h-4" />
-              <span className="hidden sm:inline">Export</span>
-            </Button>
-            <Button size="sm" className="gap-2" onClick={() => setDialogOpen(true)}>
-              <Plus className="w-4 h-4" />
-              <span className="hidden sm:inline">Add Product</span>
+            <Button
+              variant={viewMode === 'table' ? 'default' : 'ghost'}
+              size="sm"
+              className="h-7 px-2"
+              onClick={() => setViewMode('table')}
+            >
+              <List className="w-4 h-4" />
             </Button>
           </div>
-        )}
+          {canManageProducts && (
+            <>
+              <Button variant="outline" size="sm" className="gap-2 border-border/50">
+                <Upload className="w-4 h-4" />
+                <span className="hidden sm:inline">Import</span>
+              </Button>
+              <Button variant="outline" size="sm" className="gap-2 border-border/50">
+                <Download className="w-4 h-4" />
+                <span className="hidden sm:inline">Export</span>
+              </Button>
+              <Button size="sm" className="gap-2" onClick={() => setDialogOpen(true)}>
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Add Product</span>
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Summary Cards */}

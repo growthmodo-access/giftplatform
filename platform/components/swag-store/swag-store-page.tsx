@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { createStoreOrder } from '@/actions/swag-store'
 
@@ -38,7 +39,7 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
   const [cart, setCart] = useState<Record<string, number>>({})
   const [cartOpen, setCartOpen] = useState(false)
   const [checkoutOpen, setCheckoutOpen] = useState(false)
-  const [shippingAddress, setShippingAddress] = useState('')
+  const [fulfillment, setFulfillment] = useState({ name: '', email: '', phone: '', address: '' })
   const [submitting, setSubmitting] = useState(false)
   const [orderSuccess, setOrderSuccess] = useState(false)
   const [orderError, setOrderError] = useState('')
@@ -74,7 +75,20 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
     setOrderError('')
   }
   const handlePlaceOrder = async () => {
-    if (!shippingAddress.trim()) {
+    const { name, email, phone, address } = fulfillment
+    if (!name.trim()) {
+      setOrderError('Please enter your full name')
+      return
+    }
+    if (!email.trim()) {
+      setOrderError('Please enter your email')
+      return
+    }
+    if (!phone.trim()) {
+      setOrderError('Please enter your phone number')
+      return
+    }
+    if (!address.trim()) {
       setOrderError('Please enter shipping address')
       return
     }
@@ -85,7 +99,12 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
       quantity: cart[p.id] || 0,
       price: p.price,
     }))
-    const result = await createStoreOrder(storeData.companyId, items, shippingAddress.trim(), currency)
+    const result = await createStoreOrder(storeData.companyId, items, {
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      address: address.trim(),
+    }, currency)
     setSubmitting(false)
     if (result.error) {
       setOrderError(result.error)
@@ -93,7 +112,7 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
     }
     setOrderSuccess(true)
     setCart({})
-    setShippingAddress('')
+    setFulfillment({ name: '', email: '', phone: '', address: '' })
     setCheckoutOpen(false)
   }
 
@@ -174,18 +193,53 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Checkout</DialogTitle>
-            <DialogDescription>Enter shipping address to place your order</DialogDescription>
+            <DialogDescription>Enter fulfillment details for your order</DialogDescription>
           </DialogHeader>
-          <div className="space-y-2">
-            <Label htmlFor="shipping">Shipping Address</Label>
-            <Textarea
-              id="shipping"
-              value={shippingAddress}
-              onChange={e => setShippingAddress(e.target.value)}
-              placeholder="Street, City, State, ZIP, Country"
-              rows={4}
-              className="border-border/50"
-            />
+          <div className="space-y-3">
+            <div className="space-y-2">
+              <Label htmlFor="checkout-name">Full name</Label>
+              <Input
+                id="checkout-name"
+                type="text"
+                value={fulfillment.name}
+                onChange={e => setFulfillment(f => ({ ...f, name: e.target.value }))}
+                placeholder="John Doe"
+                className="border-border/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="checkout-email">Email</Label>
+              <Input
+                id="checkout-email"
+                type="email"
+                value={fulfillment.email}
+                onChange={e => setFulfillment(f => ({ ...f, email: e.target.value }))}
+                placeholder="you@company.com"
+                className="border-border/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="checkout-phone">Phone number</Label>
+              <Input
+                id="checkout-phone"
+                type="tel"
+                value={fulfillment.phone}
+                onChange={e => setFulfillment(f => ({ ...f, phone: e.target.value }))}
+                placeholder="+1 234 567 8900"
+                className="border-border/50"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="checkout-address">Shipping address</Label>
+              <Textarea
+                id="checkout-address"
+                value={fulfillment.address}
+                onChange={e => setFulfillment(f => ({ ...f, address: e.target.value }))}
+                placeholder="Street, City, State, ZIP, Country"
+                rows={3}
+                className="border-border/50"
+              />
+            </div>
           </div>
           {orderError && <p className="text-sm text-destructive">{orderError}</p>}
           <DialogFooter>

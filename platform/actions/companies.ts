@@ -251,6 +251,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
     const name = formData.get('name') as string
     const domain = formData.get('domain') as string
     const logo = formData.get('logo') as string
+    const logoFile = formData.get('logoFile') as File | null
     const taxId = formData.get('tax_id') as string
     const currency = formData.get('currency') as string
     const billingAddressStr = formData.get('billing_address') as string
@@ -275,7 +276,19 @@ export async function updateCompany(companyId: string, formData: FormData) {
       updates.domain = domain.trim() || null
     }
 
-    if (logo !== undefined) {
+    // Logo: prefer uploaded file over URL
+    if (logoFile && logoFile.size > 0) {
+      const ext = logoFile.name.split('.').pop() || 'png'
+      const path = `${companyId}/${Date.now()}.${ext}`
+      const { error: uploadError } = await supabase.storage
+        .from('company-logos')
+        .upload(path, logoFile, { upsert: true, contentType: logoFile.type || 'image/png' })
+      if (uploadError) {
+        return { error: `Logo upload failed: ${uploadError.message}` }
+      }
+      const { data: urlData } = supabase.storage.from('company-logos').getPublicUrl(path)
+      updates.logo = urlData.publicUrl
+    } else if (logo !== undefined) {
       updates.logo = logo.trim() || null
     }
 

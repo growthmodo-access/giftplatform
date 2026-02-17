@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -51,6 +51,7 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
   const [billingZip, setBillingZip] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const logoFileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (open) {
@@ -79,6 +80,8 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
       formData.append('name', name)
       formData.append('domain', domain)
       formData.append('logo', logo)
+      const logoFile = logoFileRef.current?.files?.[0]
+      if (logoFile) formData.append('logoFile', logoFile)
       formData.append('tax_id', taxId)
       formData.append('currency', currency)
       formData.append('billing_address', JSON.stringify({
@@ -144,16 +147,25 @@ export function EditCompanyDialog({ company, open, onClose, onSuccess }: EditCom
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="logo" className="text-foreground">Brand logo URL</Label>
-              <Input
-                id="logo"
-                type="url"
-                value={logo}
-                onChange={(e) => setLogo(e.target.value)}
-                className="border-border/50"
-                placeholder="https://example.com/logo.png"
-              />
-              <p className="text-xs text-muted-foreground">Used in company store and company profile</p>
+              <Label className="text-foreground">Brand logo</Label>
+              <div className="flex flex-col gap-2">
+                <input
+                  ref={logoFileRef}
+                  type="file"
+                  accept="image/*"
+                  className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-3 file:rounded file:border-0 file:bg-primary file:text-primary-foreground file:text-sm"
+                />
+                <span className="text-xs text-muted-foreground">Or enter URL:</span>
+                <Input
+                  id="logo"
+                  type="url"
+                  value={logo}
+                  onChange={(e) => setLogo(e.target.value)}
+                  className="border-border/50"
+                  placeholder="https://example.com/logo.png"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">Used in company store and company profile. Upload an image or paste a URL.</p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="currency" className="text-foreground">Currency</Label>

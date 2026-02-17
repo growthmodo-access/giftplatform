@@ -35,7 +35,7 @@ export async function getOrders() {
     // Get orders based on role
     let query = supabase
       .from('orders')
-      .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at, company_id')
+      .select('id, order_number, user_id, status, total, currency, shipping_address, tracking_number, created_at, company_id, recipient_name, recipient_email, recipient_phone')
 
     // SUPER_ADMIN can see all orders (all companies)
     if (currentUser.role === 'SUPER_ADMIN') {
@@ -136,11 +136,14 @@ export async function getOrders() {
         'paypal': 'PayPal',
       }
       
+      const recipientName = (order as any).recipient_name
+      const recipientEmail = (order as any).recipient_email
+      const recipientPhone = (order as any).recipient_phone
       return {
         id: order.id,
         orderNumber: order.order_number,
-        employee: user?.name || user?.email || 'Unknown',
-        employeeEmail: user?.email,
+        employee: recipientName || user?.name || user?.email || 'Unknown',
+        employeeEmail: recipientEmail ?? user?.email,
         product: product?.name || (items.length > 1 ? 'Multiple items' : 'Unknown product'),
         amount: `${order.currency || 'USD'} ${Number(order.total).toFixed(2)}`,
         status: order.status,
@@ -150,7 +153,7 @@ export async function getOrders() {
           day: 'numeric' 
         }),
         dateTimestamp: order.created_at, // Keep original timestamp for filtering
-        mobile: payment?.phone_number || user?.email?.split('@')[0] || undefined,
+        mobile: recipientPhone || payment?.phone_number || user?.email?.split('@')[0] || undefined,
         paymentMethod: payment?.payment_method ? paymentMethodMap[payment.payment_method] || payment.payment_method : undefined,
         company: companyName || 'N/A',
         companyId: order.company_id,

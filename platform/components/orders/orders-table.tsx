@@ -188,17 +188,61 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
 
   return (
     <div className="bg-background rounded-lg border border-border overflow-hidden">
-      <div className="overflow-x-auto">
-        <Table>
+      {/* Card layout on small/medium: no horizontal scroll; table on lg+ */}
+      <div className="block lg:hidden space-y-3 p-4">
+        {sortedOrders.length === 0 ? (
+          <p className="text-center py-8 text-muted-foreground">No orders found</p>
+        ) : (
+          sortedOrders.map((order) => {
+            const PaymentIcon = order.paymentMethod ? paymentMethodIcons[order.paymentMethod] : null
+            return (
+              <div
+                key={order.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => onOrderClick?.(order)}
+                onKeyDown={(e) => e.key === 'Enter' && onOrderClick?.(order)}
+                className="rounded-lg border border-border bg-card p-4 space-y-2 text-left hover:bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/20"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <span className="font-mono text-sm font-medium text-foreground truncate">{order.orderNumber}</span>
+                  <Badge className={cn('text-xs shrink-0', statusColors[order.status] || statusColors.PENDING)}>
+                    {statusLabels[order.status] || order.status || 'Pending'}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Avatar className="w-8 h-8 border border-border">
+                    <AvatarFallback className="bg-primary/20 text-primary text-xs font-medium">
+                      {getInitials(order.employee || 'Unknown')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-foreground truncate">{order.employee || 'Unknown'}</p>
+                    <p className="text-xs text-muted-foreground truncate">{order.company || 'N/A'}</p>
+                  </div>
+                </div>
+                <p className="text-sm font-semibold text-foreground">{order.amount || 'N/A'}</p>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                  <span>Mobile: {order.mobile || 'N/A'}</span>
+                  <span>Payment: {order.paymentMethod || 'N/A'}</span>
+                  {order.trackingNumber && <span className="font-mono">Tracking: {order.trackingNumber}</span>}
+                </div>
+              </div>
+            )
+          })
+        )}
+      </div>
+      <div className="hidden lg:block w-full min-w-0 overflow-x-auto">
+        <Table className="table-fixed w-full">
           <TableHeader>
             <TableRow className="bg-muted hover:bg-muted border-b border-border">
-              <TableHead className="w-12">
+              <TableHead className="w-10 shrink-0">
                 <Checkbox
                   checked={selectedOrders.size === orders.length && orders.length > 0}
                   onCheckedChange={handleSelectAll}
                 />
               </TableHead>
-              <TableHead>
+              <TableHead className="w-[140px]">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -209,7 +253,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                   {getSortIcon('orderNumber')}
                 </Button>
               </TableHead>
-              <TableHead>
+              <TableHead className="w-[120px]">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -220,18 +264,18 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                   {getSortIcon('employee')}
                 </Button>
               </TableHead>
-              <TableHead>
+              <TableHead className="min-w-0 w-[140px]">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent"
+                  className="h-8 gap-1 font-semibold text-foreground hover:bg-transparent truncate max-w-full"
                   onClick={() => handleSort('company')}
                 >
                   COMPANY (BILL TO)
                   {getSortIcon('company')}
                 </Button>
               </TableHead>
-              <TableHead>
+              <TableHead className="w-[110px]">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -242,7 +286,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                   {getSortIcon('amount')}
                 </Button>
               </TableHead>
-              <TableHead>
+              <TableHead className="w-[100px]">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -253,7 +297,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                   {getSortIcon('status')}
                 </Button>
               </TableHead>
-              <TableHead>
+              <TableHead className="w-[100px]">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -264,7 +308,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                   {getSortIcon('mobile')}
                 </Button>
               </TableHead>
-              <TableHead>
+              <TableHead className="w-[120px]">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -275,7 +319,7 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                   {getSortIcon('paymentMethod')}
                 </Button>
               </TableHead>
-              <TableHead>
+              <TableHead className="w-[120px]">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -309,18 +353,18 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                         onClick={(e) => e.stopPropagation()}
                       />
                     </TableCell>
-                    <TableCell className="font-medium text-foreground">
+                    <TableCell className="font-medium text-foreground min-w-0 max-w-[140px] truncate font-mono text-sm">
                       {order.orderNumber}
                     </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Avatar className="w-8 h-8 border border-border">
+                    <TableCell className="min-w-0 max-w-[120px]">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Avatar className="w-8 h-8 shrink-0 border border-border">
                           <AvatarFallback className="bg-primary/20 text-primary text-xs font-medium">
                             {getInitials(order.employee || 'Unknown')}
                           </AvatarFallback>
                         </Avatar>
-                        <div>
-                          <div className="text-sm text-foreground font-medium">{order.employee || 'Unknown'}</div>
+                        <div className="min-w-0">
+                          <div className="text-sm text-foreground font-medium truncate">{order.employee || 'Unknown'}</div>
                           {order.shippingAddress && (
                             <div className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                               <Truck className="w-3 h-3" />
@@ -330,10 +374,10 @@ export function OrdersTable({ orders, onOrderClick }: OrdersTableProps) {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Building2 className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm text-foreground font-medium">{order.company || 'N/A'}</span>
+                    <TableCell className="min-w-0 max-w-[140px]">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Building2 className="w-4 h-4 shrink-0 text-muted-foreground" />
+                        <span className="text-sm text-foreground font-medium truncate block">{order.company || 'N/A'}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-foreground font-medium">

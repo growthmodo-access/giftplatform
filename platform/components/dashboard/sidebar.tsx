@@ -154,7 +154,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
       {/* Mobile overlay - tap to close menu */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/40 z-[45] transition-opacity duration-200"
+          className="lg:hidden fixed inset-0 bg-black/40 z-[45] transition-opacity duration-150"
           onClick={() => setMobileOpenValue(false)}
           aria-hidden="true"
         />
@@ -162,7 +162,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
 
       {/* Sidebar - clean drawer on mobile, collapsible on desktop */}
       <aside className={cn(
-        'flex flex-col bg-white transition-all duration-300 ease-out',
+        'flex flex-col bg-white transition-all duration-150 ease-out will-change-transform',
         'lg:sticky fixed top-0 h-screen z-[50]',
         'lg:translate-x-0 lg:border-r lg:border-border/20',
         isMobileOpen ? 'translate-x-0 w-[min(280px,88vw)] shadow-xl' : '-translate-x-full lg:translate-x-0 lg:shadow-none',
@@ -174,7 +174,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
             <Link
               href="/dashboard"
               className={cn(
-                'flex items-center gap-2.5 transition-opacity duration-300 hover:opacity-80 flex-shrink-0 min-w-0',
+                'flex items-center gap-2.5 transition-opacity duration-150 hover:opacity-80 flex-shrink-0 min-w-0',
                 isCollapsed ? 'opacity-0 w-0 overflow-hidden pointer-events-none' : 'opacity-100'
               )}
             >
@@ -238,7 +238,7 @@ export function Sidebar({ userRole, userName, userEmail, userInitials, isMobileO
                   active ? 'text-foreground' : 'text-foreground group-hover:text-foreground lg:text-muted-foreground lg:group-hover:text-foreground'
                 )} />
                 <span className={cn(
-                  'transition-opacity duration-300 whitespace-nowrap text-sm font-medium min-w-0',
+                  'transition-opacity duration-150 whitespace-nowrap text-sm font-medium min-w-0',
                   isCollapsed ? 'opacity-0 w-0 overflow-hidden lg:opacity-0' : 'opacity-100'
                 )}>
                   {item.label}

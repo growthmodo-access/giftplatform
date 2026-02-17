@@ -127,11 +127,12 @@ export async function getSwagStoreByIdentifier(identifier: string) {
 /**
  * Create an order from the company store (cart checkout).
  * Caller must be authenticated; order is created for their company (store company).
+ * Fulfillment: name, email, phone, address for order fulfillment.
  */
 export async function createStoreOrder(
   companyId: string,
   items: { productId: string; quantity: number; price: number }[],
-  shippingAddress: string,
+  fulfillment: { name: string; email: string; phone: string; address: string },
   currency: string = 'INR'
 ) {
   try {
@@ -145,6 +146,10 @@ export async function createStoreOrder(
     if (!currentUser.company_id && currentUser.role !== 'SUPER_ADMIN') return { error: 'You must be part of a company to order from the store' }
     if (currentUser.company_id !== companyId && currentUser.role !== 'SUPER_ADMIN') return { error: 'You can only order from your company store' }
     if (!items.length) return { error: 'Cart is empty' }
+    if (!fulfillment?.name?.trim()) return { error: 'Recipient name is required' }
+    if (!fulfillment?.email?.trim()) return { error: 'Email is required' }
+    if (!fulfillment?.phone?.trim()) return { error: 'Phone number is required' }
+    if (!fulfillment?.address?.trim()) return { error: 'Shipping address is required' }
 
     const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
     const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
@@ -157,7 +162,10 @@ export async function createStoreOrder(
         status: 'PENDING',
         total,
         currency: currency || 'INR',
-        shipping_address: shippingAddress,
+        shipping_address: fulfillment.address.trim(),
+        recipient_name: fulfillment.name.trim(),
+        recipient_email: fulfillment.email.trim(),
+        recipient_phone: fulfillment.phone.trim(),
       })
       .select()
       .single()
