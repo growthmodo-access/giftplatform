@@ -282,7 +282,7 @@ export async function updateCompany(companyId: string, formData: FormData) {
       const path = `${companyId}/${Date.now()}.${ext}`
       const { error: uploadError } = await supabase.storage
         .from('company-logos')
-        .upload(path, logoFile, { upsert: true, contentType: logoFile.type || 'image/png' })
+        .upload(path, logoFile, { contentType: logoFile.type || 'image/png' })
       if (uploadError) {
         return { error: `Logo upload failed: ${uploadError.message}` }
       }
