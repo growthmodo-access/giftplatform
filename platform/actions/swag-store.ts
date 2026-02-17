@@ -3,6 +3,23 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { env } from '@/lib/env'
+
+/** Resolve logo or product image to a full URL for public store (avoids broken images from paths or referrer issues). */
+function resolveImageUrl(value: string | null | undefined): string | null {
+  if (!value || typeof value !== 'string') return null
+  const trimmed = value.trim()
+  if (!trimmed) return null
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed
+  const base = env.supabase.url?.replace(/\/$/, '') || ''
+  if (!base) return trimmed
+  if (trimmed.startsWith('company-logos/'))
+    return `${base}/storage/v1/object/public/company-logos/${trimmed.slice('company-logos/'.length)}`
+  if (trimmed.startsWith('product-images/'))
+    return `${base}/storage/v1/object/public/product-images/${trimmed.slice('product-images/'.length)}`
+  if (trimmed.startsWith('/')) return `${base}${trimmed}`
+  return `${base}/storage/v1/object/public/${trimmed}`
+}
 
 /**
  * Update swag store settings
@@ -110,15 +127,19 @@ export async function getSwagStoreByIdentifier(identifier: string) {
       .select('id, name, description, image, price, currency, category, stock, requires_sizes, sizes')
       .is('company_id', null)
       .order('created_at', { ascending: false })
-    const products = [...(companyProducts || []), ...(globalProducts || [])]
+    const rawProducts = [...(companyProducts || []), ...(globalProducts || [])]
+    const products = (rawProducts || []).map((p: { image?: string | null }) => ({
+      ...p,
+      image: resolveImageUrl(p.image) ?? p.image,
+    }))
 
     return {
       data: {
         companyId: company.id,
         companyName: company.name,
-        companyLogo: company.logo,
+        companyLogo: resolveImageUrl(company.logo) ?? company.logo,
         companySettings: company.settings || {},
-        products: products || [],
+        products,
         isEnabled,
       },
       error: null

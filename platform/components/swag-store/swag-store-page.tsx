@@ -59,6 +59,8 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
   const [orderError, setOrderError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [categoryFilter, setCategoryFilter] = useState<string>('all')
+  const [priceFilter, setPriceFilter] = useState<string>('all')
+  const [sortBy, setSortBy] = useState<string>('newest')
 
   const primaryColor = (storeData.companySettings?.primaryColor as string) || undefined
 
@@ -80,8 +82,20 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
     if (categoryFilter && categoryFilter !== 'all') {
       list = list.filter(p => p.category === categoryFilter)
     }
-    return list
-  }, [storeData.products, searchQuery, categoryFilter])
+    if (priceFilter && priceFilter !== 'all') {
+      const [min, max] = priceFilter.split('-').map(Number)
+      list = list.filter(p => {
+        const price = p.price
+        if (max != null && !Number.isNaN(max)) return price >= min && price <= max
+        return price >= min
+      })
+    }
+    const sorted = [...list]
+    if (sortBy === 'price-asc') sorted.sort((a, b) => a.price - b.price)
+    else if (sortBy === 'price-desc') sorted.sort((a, b) => b.price - a.price)
+    else if (sortBy === 'name') sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+    return sorted
+  }, [storeData.products, searchQuery, categoryFilter, priceFilter, sortBy])
 
   const getStock = (productId: string) => {
     const p = storeData.products.find(x => x.id === productId)
@@ -336,10 +350,10 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
         </div>
       )}
 
-      {/* Search and filter */}
+      {/* Search and filters */}
       <main className="container mx-auto px-4 py-6">
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
-          <div className="relative flex-1">
+        <div className="flex flex-col gap-3 mb-6">
+          <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
               placeholder="Search products..."
@@ -348,17 +362,42 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
               className="pl-9 border-border/50"
             />
           </div>
-          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-full sm:w-[180px] border-border/50">
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All categories</SelectItem>
-              {categories.map(cat => (
-                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex flex-wrap gap-2 items-center">
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="w-[160px] border-border/50 h-9">
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All categories</SelectItem>
+                {categories.map(cat => (
+                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={priceFilter} onValueChange={setPriceFilter}>
+              <SelectTrigger className="w-[160px] border-border/50 h-9">
+                <SelectValue placeholder="Price" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All prices</SelectItem>
+                <SelectItem value="0-500">Under ₹500</SelectItem>
+                <SelectItem value="500-1000">₹500 – ₹1,000</SelectItem>
+                <SelectItem value="1000-2500">₹1,000 – ₹2,500</SelectItem>
+                <SelectItem value="2500-100000">₹2,500+</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-[180px] border-border/50 h-9">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="price-asc">Price: low to high</SelectItem>
+                <SelectItem value="price-desc">Price: high to low</SelectItem>
+                <SelectItem value="name">Name A–Z</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {filteredProducts.length === 0 ? (
@@ -372,7 +411,7 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
             {filteredProducts.map((product) => {
               const stock = product.stock != null ? product.stock : 999
               const outOfStock = stock <= 0
@@ -383,9 +422,9 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
               const inCartQty = cart[cartKey] || 0
               const canAdd = !outOfStock && (!needsSize || selectedSize)
               return (
-                <Card key={product.id} className="border-border/50 hover:shadow-md transition-shadow">
-                  <CardContent className="p-0">
-                    <div className="relative">
+                <Card key={product.id} className="border-border/50 hover:shadow-md transition-shadow flex flex-col h-full">
+                  <CardContent className="p-0 flex flex-col h-full">
+                    <div className="relative shrink-0">
                       <div className="relative w-full h-48 bg-muted overflow-hidden">
                         <SafeImage
                           src={product.image}
@@ -406,32 +445,36 @@ export function SwagStorePage({ storeData }: SwagStorePageProps) {
                         )}
                       </div>
                     </div>
-                    <div className="p-4 space-y-2">
-                      <div>
+                    <div className="p-4 flex flex-col flex-1 min-h-[200px]">
+                      <div className="min-h-[2.75rem]">
                         <h3 className="font-semibold text-foreground line-clamp-1">{product.name}</h3>
-                        {product.description && (
-                          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{product.description}</p>
+                        <p className="text-sm text-muted-foreground line-clamp-2 mt-1 min-h-[2.5rem]">
+                          {product.description || '\u00A0'}
+                        </p>
+                      </div>
+                      <div className="min-h-[52px] flex flex-col justify-center">
+                        {needsSize ? (
+                          <div className="space-y-1">
+                            <Label className="text-xs text-muted-foreground">Size</Label>
+                            <Select
+                              value={selectedSize || ''}
+                              onValueChange={(v) => setSelectedSizes(s => ({ ...s, [product.id]: v }))}
+                            >
+                              <SelectTrigger className="h-8 border-border/50">
+                                <SelectValue placeholder="Select size" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {product.sizes!.map((s) => (
+                                  <SelectItem key={s} value={s}>{s}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        ) : (
+                          <div className="h-8" aria-hidden />
                         )}
                       </div>
-                      {needsSize && (
-                        <div className="space-y-1">
-                          <Label className="text-xs text-muted-foreground">Size</Label>
-                          <Select
-                            value={selectedSize || ''}
-                            onValueChange={(v) => setSelectedSizes(s => ({ ...s, [product.id]: v }))}
-                          >
-                            <SelectTrigger className="h-8 border-border/50">
-                              <SelectValue placeholder="Select size" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {product.sizes!.map((s) => (
-                                <SelectItem key={s} value={s}>{s}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      )}
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mt-auto pt-2">
                         <span className="text-lg font-bold text-foreground">
                           {new Intl.NumberFormat('en-IN', {
                             style: 'currency',
