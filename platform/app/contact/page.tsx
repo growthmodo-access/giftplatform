@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { siteConfig } from '@/lib/site'
@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { submitContactForm, type ContactFormState } from '@/actions/contact'
 
 const inquiryTopics = [
   { value: 'sales', label: 'Sales — Get a quote or demo' },
@@ -25,6 +26,8 @@ const inquiryTopics = [
   { value: 'other', label: 'Other' },
 ]
 
+const initialState: ContactFormState = {}
+
 export default function ContactPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -32,22 +35,20 @@ export default function ContactPage() {
   const [company, setCompany] = useState('')
   const [topic, setTopic] = useState<string>('')
   const [message, setMessage] = useState('')
-  const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      setSubmitted(true)
+  const [state, formAction] = useActionState(submitContactForm, initialState)
+  const submitted = state?.success === true
+
+  useEffect(() => {
+    if (state?.success) {
       setName('')
       setEmail('')
       setPhone('')
       setCompany('')
       setTopic('')
       setMessage('')
-    } catch (err) {
-      throw err
     }
-  }
+  }, [state?.success])
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
@@ -173,12 +174,18 @@ export default function ContactPage() {
                     </Button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form action={formAction} className="space-y-4">
+                    {state?.error && (
+                      <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg">
+                        {state.error}
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="name">Name</Label>
                         <Input
                           id="name"
+                          name="name"
                           type="text"
                           placeholder="Your name"
                           value={name}
@@ -191,6 +198,7 @@ export default function ContactPage() {
                         <Label htmlFor="email">Email</Label>
                         <Input
                           id="email"
+                          name="email"
                           type="email"
                           placeholder="you@company.com"
                           value={email}
@@ -205,6 +213,7 @@ export default function ContactPage() {
                         <Label htmlFor="phone">Phone (optional)</Label>
                         <Input
                           id="phone"
+                          name="phone"
                           type="tel"
                           placeholder="+91 98765 43210"
                           value={phone}
@@ -216,6 +225,7 @@ export default function ContactPage() {
                         <Label htmlFor="company">Company (optional)</Label>
                         <Input
                           id="company"
+                          name="company"
                           type="text"
                           placeholder="Company name"
                           value={company}
@@ -226,6 +236,7 @@ export default function ContactPage() {
                     </div>
                     <div className="space-y-2">
                       <Label>What&apos;s this about?</Label>
+                      <input type="hidden" name="topic" value={topic} />
                       <Select value={topic} onValueChange={setTopic}>
                         <SelectTrigger className="border-border/50 focus:ring-2 focus:ring-primary">
                           <SelectValue placeholder="Select a topic" />
@@ -243,6 +254,7 @@ export default function ContactPage() {
                       <Label htmlFor="message">Message</Label>
                       <Textarea
                         id="message"
+                        name="message"
                         placeholder="How can we help? Share your gifting needs, team size, or questions."
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
@@ -254,6 +266,7 @@ export default function ContactPage() {
                     <Button
                       type="submit"
                       className="w-full sm:w-auto rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 text-base font-medium"
+                      disabled={state?.success === true}
                     >
                       Send message
                     </Button>

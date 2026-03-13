@@ -8,6 +8,7 @@ export interface EmailNotification {
   subject: string
   html: string
   text?: string
+  replyTo?: string
 }
 
 const RESEND_API_URL = 'https://api.resend.com/emails'
@@ -38,7 +39,7 @@ export async function sendEmailNotification(notification: EmailNotification): Pr
           subject: notification.subject,
           html: notification.html,
           text: notification.text,
-          ...(REPLY_TO && { reply_to: REPLY_TO }),
+          ...((notification.replyTo ?? REPLY_TO) && { reply_to: notification.replyTo ?? REPLY_TO }),
         }),
       })
       if (!response.ok) {
@@ -60,6 +61,50 @@ export async function sendEmailNotification(notification: EmailNotification): Pr
       error: error instanceof Error ? error.message : 'Failed to send email',
     }
   }
+}
+
+/**
+ * Send contact form submission to support (and set reply_to to submitter for easy reply).
+ */
+export async function sendContactInquiryEmail(payload: {
+  name: string
+  email: string
+  phone?: string
+  company?: string
+  topic: string
+  message: string
+}): Promise<{ success: boolean; error?: string }> {
+  const topicLabel = payload.topic ? payload.topic.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : 'General'
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2>Contact form submission</h2>
+      <p><strong>From:</strong> ${escapeHtml(payload.name)} &lt;${escapeHtml(payload.email)}&gt;</p>
+      ${payload.phone ? `<p><strong>Phone:</strong> ${escapeHtml(payload.phone)}</p>` : ''}
+      ${payload.company ? `<p><strong>Company:</strong> ${escapeHtml(payload.company)}</p>` : ''}
+      <p><strong>Topic:</strong> ${escapeHtml(topicLabel)}</p>
+      <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 16px 0;">
+        <p style="margin: 0; white-space: pre-wrap;">${escapeHtml(payload.message)}</p>
+      </div>
+      <p style="color: #666; font-size: 12px;">Reply to this email to respond to the sender.</p>
+    </div>
+  `
+  const { siteConfig } = await import('@/lib/site')
+  const to = process.env.CONTACT_FORM_TO || siteConfig.supportEmail
+  return sendEmailNotification({
+    to,
+    subject: `[Contact] ${topicLabel}: ${payload.name}`,
+    html,
+    text: `From: ${payload.name} <${payload.email}>\nTopic: ${topicLabel}\n\n${payload.message}`,
+    replyTo: payload.email,
+  })
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 }
 
 /**
