@@ -5,6 +5,7 @@ import { ErrorBoundary } from '@/components/error-boundary'
 import { CSSVariablesCheck } from '@/components/css-variables-check'
 import { TooltipProviderWrapper } from '@/components/tooltip-provider-wrapper'
 import { Toaster } from '@/components/ui/toaster'
+import { RecoveryLinkRedirect } from '@/components/auth/recovery-link-redirect'
 import { buildMetadata, getOrganizationJsonLd } from '@/lib/seo'
 import { siteConfig } from '@/lib/site'
 
@@ -75,6 +76,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationJsonLd()) }}
         />
+        <RecoveryLinkRedirect />
         <CSSVariablesCheck />
         <ErrorBoundary>
           <TooltipProviderWrapper>

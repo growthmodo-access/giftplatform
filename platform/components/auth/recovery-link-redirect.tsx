@@ -1,0 +1,29 @@
+'use client'
+
+import { useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+
+/**
+ * Supabase recovery links sometimes land on Site URL (e.g. "/") with tokens in hash/query.
+ * If recovery intent is detected, send user to /reset-password while preserving params/hash.
+ */
+export function RecoveryLinkRedirect() {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (pathname === '/reset-password') return
+
+    const hash = window.location.hash || ''
+    const search = window.location.search || ''
+    const combined = `${search}${hash}`.toLowerCase()
+    const isRecovery = combined.includes('type=recovery')
+    if (!isRecovery) return
+
+    // Keep tokens/code so Supabase client can establish the recovery session on reset page.
+    router.replace(`/reset-password${search}${hash}`)
+  }, [pathname, router])
+
+  return null
+}

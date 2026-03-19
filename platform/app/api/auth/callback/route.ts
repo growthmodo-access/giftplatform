@@ -5,7 +5,8 @@ import { createUserProfile } from '@/actions/auth'
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
-  const next = requestUrl.searchParams.get('next') ?? '/dashboard'
+  const type = requestUrl.searchParams.get('type')
+  const next = requestUrl.searchParams.get('next') ?? (type === 'recovery' ? '/reset-password' : '/dashboard')
 
   const supabase = await createClient()
   if (code) {
