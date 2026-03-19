@@ -1,6 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
+import { env } from '@/lib/env'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
@@ -377,7 +379,14 @@ export async function deleteCompany(companyId: string) {
 
     // DB constraint users_hr_employee_company_check requires HR/EMPLOYEE to have company_id.
     // Before deleting a company, move those users to a neutral legacy role and clear company_id.
-    const { error: reassignUsersError } = await supabase
+    const db =
+      env.supabase.serviceRoleKey
+        ? createServiceClient(env.supabase.url, env.supabase.serviceRoleKey, {
+            auth: { autoRefreshToken: false, persistSession: false },
+          })
+        : supabase
+
+    const { error: reassignUsersError } = await db
       .from('users')
       .update({
         role: 'MANAGER',
@@ -389,6 +398,21 @@ export async function deleteCompany(companyId: string) {
 
     if (reassignUsersError) {
       return { error: `Failed to reassign company users: ${reassignUsersError.message}` }
+    }
+
+    // Guard rail: verify no constrained roles remain linked to the company.
+    const { data: stillConstrained, error: constrainedCheckError } = await db
+      .from('users')
+      .select('id')
+      .eq('company_id', companyId)
+      .in('role', ['HR', 'EMPLOYEE'])
+      .limit(1)
+
+    if (constrainedCheckError) {
+      return { error: `Failed to verify company users before delete: ${constrainedCheckError.message}` }
+    }
+    if (stillConstrained && stillConstrained.length > 0) {
+      return { error: 'Cannot delete company: constrained users are still linked. Please retry.' }
     }
 
     const { error: deleteError } = await supabase
