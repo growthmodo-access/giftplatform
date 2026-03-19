@@ -23,7 +23,8 @@ export async function createUserProfile(
       country: string
       zip_code: string
     }
-  } | null
+  } | null,
+  options?: { defaultRoleWithoutCompany?: 'EMPLOYEE' | 'MANAGER' }
 ) {
   // Try using service role key first (bypasses RLS)
   // If not available, use regular client (should work if user session is established)
@@ -63,6 +64,7 @@ export async function createUserProfile(
     companyId = newCompany.id
   }
   
+  const roleWithoutCompany = options?.defaultRoleWithoutCompany ?? 'EMPLOYEE'
   const { error } = await supabase
     .from('users')
     .upsert(
@@ -70,7 +72,7 @@ export async function createUserProfile(
         id: userId,
         email,
         name: name || null,
-        role: companyId ? 'HR' : 'EMPLOYEE', // If creating company, user becomes Company HR
+        role: companyId ? 'HR' : roleWithoutCompany, // If creating company, user becomes Company HR
         company_id: companyId,
       },
       { onConflict: 'id' }

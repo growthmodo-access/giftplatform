@@ -28,7 +28,8 @@ export async function GET(request: Request) {
         user.id,
         user.email ?? '',
         typeof user.user_metadata?.name === 'string' ? user.user_metadata.name : undefined,
-        null
+        null,
+        { defaultRoleWithoutCompany: 'MANAGER' }
       )
     }
   }

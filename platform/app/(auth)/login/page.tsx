@@ -105,7 +105,8 @@ function LoginForm() {
           data.user.id,
           data.user.email ?? email,
           typeof data.user.user_metadata?.name === 'string' ? data.user.user_metadata.name : undefined,
-          null
+          null,
+          { defaultRoleWithoutCompany: 'MANAGER' }
         )
         if (createResult.error) {
           throw new Error(`User profile setup failed: ${createResult.error}`)
