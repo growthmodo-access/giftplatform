@@ -116,7 +116,7 @@ function LoginForm() {
     setResetSent(false)
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
-        redirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/login`,
+        redirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/reset-password`,
       })
       if (error) throw error
       setResetSent(true)
