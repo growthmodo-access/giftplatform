@@ -259,16 +259,16 @@ export async function inviteEmployee(email: string, name: string, role: 'SUPER_A
 
     // Create shipping address if provided
     if (shippingAddress) {
-      await serviceSupabase
+      const { error: shippingError } = await serviceSupabase
         .from('addresses')
         .insert({
           user_id: authData.user.id,
           street: shippingAddress,
           type: 'SHIPPING',
         })
-        .catch(() => {
-          // Ignore address creation errors
-        })
+      if (shippingError) {
+        // Ignore address creation errors
+      }
     }
 
     // Note: In production, you'd want to send a proper invitation email
@@ -524,16 +524,16 @@ export async function importEmployeesFromCSV(formData: FormData) {
 
         // Create shipping address if provided
         if (emp.shippingAddress) {
-          await serviceSupabase
+          const { error: shippingError } = await serviceSupabase
             .from('addresses')
             .insert({
               user_id: authData.user.id,
               street: emp.shippingAddress,
               type: 'SHIPPING',
             })
-            .catch(() => {
-              // Ignore address creation errors
-            })
+          if (shippingError) {
+            // Ignore address creation errors
+          }
         }
 
         successCount++
