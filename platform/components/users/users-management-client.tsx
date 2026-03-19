@@ -32,8 +32,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { useToast } from '@/hooks/use-toast'
-import { Building2, Users, Shield, Mail, UserPlus } from 'lucide-react'
-import { updateUserRole } from '@/actions/users'
+import { Building2, Users, Shield, Mail, UserPlus, Trash2 } from 'lucide-react'
+import { updateUserRole, deleteUser } from '@/actions/users'
 import { AddUserDialog } from './add-user-dialog'
 import { toAppRole, APP_ROLE_LABELS, type AppRole } from '@/lib/roles'
 
@@ -63,6 +63,7 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
   const { toast } = useToast()
   const [updating, setUpdating] = useState<string | null>(null)
   const [roleChangeDialog, setRoleChangeDialog] = useState<{ userId: string; newRole: AppRole } | null>(null)
+  const [deleteDialogUserId, setDeleteDialogUserId] = useState<string | null>(null)
   const [addUserOpen, setAddUserOpen] = useState(false)
 
   const handleRoleChange = async (userId: string, newRole: AppRole) => {
@@ -99,6 +100,29 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
     acc[r] = (acc[r] || 0) + 1
     return acc
   }, {} as Record<AppRole, number>)
+
+  const handleDeleteUser = async (userId: string) => {
+    setUpdating(userId)
+    setDeleteDialogUserId(null)
+    const result = await deleteUser(userId)
+    setUpdating(null)
+
+    if (result.error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: result.error,
+      })
+      return
+    }
+
+    toast({
+      variant: 'success',
+      title: 'User Deleted',
+      description: 'User account has been deleted successfully.',
+    })
+    router.refresh()
+  }
 
   return (
     <div className="space-y-6">
@@ -179,12 +203,13 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
                   <TableHead>Role</TableHead>
                   <TableHead>Access Level</TableHead>
                   <TableHead>Joined</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {users.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                       No users found.
                     </TableCell>
                   </TableRow>
@@ -237,6 +262,18 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
                       <TableCell className="text-sm text-muted-foreground">
                         {new Date(user.createdAt).toLocaleDateString()}
                       </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => setDeleteDialogUserId(user.id)}
+                          disabled={updating === user.id}
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))
                 )}
@@ -260,6 +297,28 @@ export function UsersManagementClient({ users }: UsersManagementClientProps) {
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction onClick={() => roleChangeDialog && handleRoleChange(roleChangeDialog.userId, roleChangeDialog.newRole)}>
                 Change Role
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+
+      {deleteDialogUserId && (
+        <AlertDialog open={!!deleteDialogUserId} onOpenChange={(open) => !open && setDeleteDialogUserId(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete User</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete this user? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                onClick={() => deleteDialogUserId && handleDeleteUser(deleteDialogUserId)}
+              >
+                Delete User
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

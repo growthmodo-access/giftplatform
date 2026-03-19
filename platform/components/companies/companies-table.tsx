@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Building2, Edit, Users, ShoppingCart, DollarSign } from 'lucide-react'
+import { Building2, Edit, Users, ShoppingCart, DollarSign, Trash2 } from 'lucide-react'
 import { SafeImage } from '@/components/ui/safe-image'
 
 interface Company {
@@ -29,11 +29,13 @@ interface Company {
 interface CompaniesTableProps {
   companies: Company[]
   onEdit: (company: Company) => void
+  onDelete?: (company: Company) => void
   canEdit: boolean
+  canDelete?: boolean
   showRevenue?: boolean
 }
 
-export function CompaniesTable({ companies, onEdit, canEdit, showRevenue = true }: CompaniesTableProps) {
+export function CompaniesTable({ companies, onEdit, onDelete, canEdit, canDelete = false, showRevenue = true }: CompaniesTableProps) {
   return (
     <div className="border border-border/50 rounded-lg overflow-x-auto overflow-hidden min-w-0">
       <Table className="min-w-[640px]">
@@ -108,15 +110,28 @@ export function CompaniesTable({ companies, onEdit, canEdit, showRevenue = true 
               </TableCell>
               {canEdit && (
                 <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onEdit(company)}
-                    className="border-border/50"
-                  >
-                    <Edit className="w-4 h-4 mr-2" />
-                    Edit
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onEdit(company)}
+                      className="border-border/50"
+                    >
+                      <Edit className="w-4 h-4 mr-2" />
+                      Edit
+                    </Button>
+                    {canDelete && onDelete && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onDelete(company)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </Button>
+                    )}
+                  </div>
                 </TableCell>
               )}
             </TableRow>

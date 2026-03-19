@@ -7,6 +7,18 @@ import { CreateCompanyDialog } from './create-company-dialog'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Building2, Plus } from 'lucide-react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { useToast } from '@/hooks/use-toast'
+import { deleteCompany } from '@/actions/companies'
 
 interface Company {
   id: string
@@ -33,6 +45,8 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
   const [editingCompany, setEditingCompany] = useState<Company | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [deletingCompany, setDeletingCompany] = useState<Company | null>(null)
+  const { toast } = useToast()
 
   const handleEdit = (company: Company) => {
     setEditingCompany(company)
@@ -50,6 +64,26 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
 
   const handleUpdateSuccess = () => {
     // Refresh the page to get updated data
+    window.location.reload()
+  }
+
+  const handleDeleteCompany = async () => {
+    if (!deletingCompany) return
+    const result = await deleteCompany(deletingCompany.id)
+    if (result.error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: result.error,
+      })
+      return
+    }
+    toast({
+      variant: 'success',
+      title: 'Company Deleted',
+      description: `${deletingCompany.name} has been deleted.`,
+    })
+    setDeletingCompany(null)
     window.location.reload()
   }
 
@@ -133,7 +167,9 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
           <CompaniesTable 
             companies={companies} 
             onEdit={handleEdit}
+            onDelete={(company) => setDeletingCompany(company)}
             canEdit={isSuperAdmin}
+            canDelete={isSuperAdmin}
             showRevenue={isSuperAdmin}
           />
         </>
@@ -154,6 +190,28 @@ export function CompaniesPageClient({ initialCompanies, currentUserRole }: Compa
         onClose={handleCreateDialogClose}
         onSuccess={handleUpdateSuccess}
       />
+
+      {deletingCompany && (
+        <AlertDialog open={!!deletingCompany} onOpenChange={(open) => !open && setDeletingCompany(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Company</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete {deletingCompany.name}? This cannot be undone and may remove related data.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                onClick={handleDeleteCompany}
+              >
+                Delete Company
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   )
 }

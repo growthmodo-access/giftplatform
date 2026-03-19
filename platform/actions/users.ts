@@ -1,6 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
+import { env } from '@/lib/env'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
@@ -117,6 +119,80 @@ export async function updateUserRole(userId: string, newRole: 'SUPER_ADMIN' | 'H
   } catch (error) {
     return { 
       error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+    }
+  }
+}
+
+/**
+ * Delete user - only accessible by SUPER_ADMIN.
+ * Deletes from auth.users (if service role available) and public.users.
+ */
+export async function deleteUser(userId: string) {
+  try {
+    const supabase = await createClient()
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    const { data: currentUser, error: currentUserError } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (currentUserError || !currentUser) {
+      return { error: 'User profile not found' }
+    }
+
+    if (currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'Unauthorized' }
+    }
+
+    if (userId === user.id) {
+      return { error: 'You cannot delete your own account' }
+    }
+
+    const { data: targetUser, error: targetError } = await supabase
+      .from('users')
+      .select('id, email, role')
+      .eq('id', userId)
+      .maybeSingle()
+
+    if (targetError || !targetUser) {
+      return { error: 'Target user not found' }
+    }
+
+    // Prefer deleting auth account first when service role is available.
+    if (env.supabase.serviceRoleKey) {
+      const service = createServiceClient(env.supabase.url, env.supabase.serviceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      })
+      const { error: authDeleteError } = await service.auth.admin.deleteUser(userId)
+      if (authDeleteError) {
+        return { error: `Failed to delete auth user: ${authDeleteError.message}` }
+      }
+    }
+
+    const { error: profileDeleteError } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', userId)
+
+    if (profileDeleteError) {
+      return { error: profileDeleteError.message }
+    }
+
+    revalidatePath('/users')
+    return { success: true }
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : 'An unexpected error occurred',
     }
   }
 }

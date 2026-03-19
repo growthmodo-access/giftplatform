@@ -344,3 +344,51 @@ export async function updateCompany(companyId: string, formData: FormData) {
     }
   }
 }
+
+/**
+ * Delete company - only SUPER_ADMIN.
+ */
+export async function deleteCompany(companyId: string) {
+  try {
+    const supabase = await createClient()
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      redirect('/login')
+    }
+
+    const { data: currentUser, error: currentUserError } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (currentUserError || !currentUser) {
+      return { error: 'User profile not found' }
+    }
+
+    if (currentUser.role !== 'SUPER_ADMIN') {
+      return { error: 'Only Super Admins can delete companies.' }
+    }
+
+    const { error: deleteError } = await supabase
+      .from('companies')
+      .delete()
+      .eq('id', companyId)
+
+    if (deleteError) {
+      return { error: deleteError.message }
+    }
+
+    revalidatePath('/companies')
+    return { success: true }
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : 'Failed to delete company',
+    }
+  }
+}
