@@ -18,10 +18,20 @@ export function RecoveryLinkRedirect() {
     const hash = window.location.hash || ''
     const search = window.location.search || ''
     const combined = `${search}${hash}`.toLowerCase()
+    const url = new URL(window.location.href)
+    const code = url.searchParams.get('code')
     const isRecovery = combined.includes('type=recovery')
+
+    // If Supabase drops user on Site URL with ?code=..., pass through callback to exchange code.
+    if (code) {
+      const next = encodeURIComponent('/reset-password')
+      router.replace(`/api/auth/callback?code=${encodeURIComponent(code)}&type=recovery&next=${next}`)
+      return
+    }
+
     if (!isRecovery) return
 
-    // Keep tokens/code so Supabase client can establish the recovery session on reset page.
+    // Keep tokens so Supabase client can establish recovery session on reset page.
     router.replace(`/reset-password${search}${hash}`)
   }, [pathname, router])
 
