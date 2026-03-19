@@ -375,6 +375,22 @@ export async function deleteCompany(companyId: string) {
       return { error: 'Only Super Admins can delete companies.' }
     }
 
+    // DB constraint users_hr_employee_company_check requires HR/EMPLOYEE to have company_id.
+    // Before deleting a company, move those users to a neutral legacy role and clear company_id.
+    const { error: reassignUsersError } = await supabase
+      .from('users')
+      .update({
+        role: 'MANAGER',
+        company_id: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('company_id', companyId)
+      .in('role', ['HR', 'EMPLOYEE'])
+
+    if (reassignUsersError) {
+      return { error: `Failed to reassign company users: ${reassignUsersError.message}` }
+    }
+
     const { error: deleteError } = await supabase
       .from('companies')
       .delete()
