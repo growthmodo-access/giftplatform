@@ -34,10 +34,18 @@ function LoginForm() {
     const checkUser = async () => {
       try {
       const { data: { user } } = await supabase.auth.getUser()
-        
+
       if (user) {
-        const redirectTo = searchParams.get('redirect') || '/dashboard'
-        router.push(redirectTo)
+        const { data: profile } = await supabase
+          .from('users')
+          .select('id')
+          .eq('id', user.id)
+          .maybeSingle()
+
+        if (profile) {
+          const redirectTo = searchParams.get('redirect') || '/dashboard'
+          router.push(redirectTo)
+        }
         }
       } catch (err) {
         // Silently handle error - user can still log in

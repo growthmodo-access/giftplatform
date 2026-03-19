@@ -55,11 +55,22 @@ export async function middleware(request: NextRequest) {
     // BUT: Allow access to /login after logout (user might be null but cookies still exist)
     // Only redirect if user is actually authenticated
     if (
-      (request.nextUrl.pathname.startsWith('/login') ||
-        request.nextUrl.pathname.startsWith('/signup')) &&
-      user
+      request.nextUrl.pathname.startsWith('/login') ||
+      request.nextUrl.pathname.startsWith('/signup')
     ) {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      if (user) {
+        // Prevent login<->dashboard redirect loops:
+        // only redirect away from auth pages when the app profile exists.
+        const { data: currentUser } = await supabase
+          .from('users')
+          .select('id')
+          .eq('id', user.id)
+          .maybeSingle()
+
+        if (currentUser) {
+          return NextResponse.redirect(new URL('/dashboard', request.url))
+        }
+      }
     }
 
     return response
