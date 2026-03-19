@@ -158,34 +158,37 @@ export async function deleteUser(userId: string) {
       return { error: 'You cannot delete your own account' }
     }
 
-    const { data: targetUser, error: targetError } = await supabase
-      .from('users')
-      .select('id, email, role')
-      .eq('id', userId)
-      .maybeSingle()
-
-    if (targetError || !targetUser) {
-      return { error: 'Target user not found' }
-    }
-
     // Prefer deleting auth account first when service role is available.
     if (env.supabase.serviceRoleKey) {
       const service = createServiceClient(env.supabase.url, env.supabase.serviceRoleKey, {
         auth: { autoRefreshToken: false, persistSession: false },
       })
+      // Optional existence check via service role (bypasses RLS).
+      const { data: targetUser } = await service
+        .from('users')
+        .select('id')
+        .eq('id', userId)
+        .maybeSingle()
+      if (!targetUser) {
+        return { error: 'Target user not found' }
+      }
       const { error: authDeleteError } = await service.auth.admin.deleteUser(userId)
       if (authDeleteError) {
         return { error: `Failed to delete auth user: ${authDeleteError.message}` }
       }
     }
 
-    const { error: profileDeleteError } = await supabase
+    const { data: deletedRows, error: profileDeleteError } = await supabase
       .from('users')
       .delete()
       .eq('id', userId)
+      .select('id')
 
     if (profileDeleteError) {
       return { error: profileDeleteError.message }
+    }
+    if (!env.supabase.serviceRoleKey && (!deletedRows || deletedRows.length === 0)) {
+      return { error: 'Target user not found or not deletable in current configuration' }
     }
 
     revalidatePath('/users')

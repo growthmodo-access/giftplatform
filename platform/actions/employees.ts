@@ -207,6 +207,12 @@ export async function inviteEmployee(email: string, name: string, role: 'SUPER_A
 
     const finalCompanyId = companyId || currentUser?.company_id || null
 
+    // DB constraint: HR/EMPLOYEE must belong to a company.
+    if ((role === 'HR' || role === 'EMPLOYEE') && !finalCompanyId) {
+      await serviceSupabase.auth.admin.deleteUser(authData.user.id)
+      return { error: 'Company is required for HR/Employee users. Please select a company.' }
+    }
+
     // Validate company exists when one is specified (SUPER_ADMIN or HR selecting a company)
     if (finalCompanyId) {
       const { data: companyExists } = await supabase
