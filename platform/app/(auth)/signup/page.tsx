@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { supabase } from '@/lib/supabase/client'
 import { createUserProfile } from '@/actions/auth'
 
@@ -18,7 +17,6 @@ export default function SignupPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [signupType, setSignupType] = useState<'individual' | 'company'>('individual')
   const [companyName, setCompanyName] = useState('')
   const [companyDomain, setCompanyDomain] = useState('')
   const [taxId, setTaxId] = useState('')
@@ -53,8 +51,8 @@ export default function SignupPage() {
         throw new Error('Failed to create user account')
       }
 
-      // Create user profile and company if needed
-      const companyData = signupType === 'company' ? {
+      // Company signup only
+      const companyData = {
         name: companyName,
         domain: companyDomain,
         taxId: taxId,
@@ -66,7 +64,7 @@ export default function SignupPage() {
           country: billingCountry,
           zip_code: billingZip,
         }
-      } : null
+      }
 
       const profileResult = await createUserProfile(
         data.user.id,
@@ -121,52 +119,7 @@ export default function SignupPage() {
               </div>
             )}
 
-            <Tabs value={signupType} onValueChange={(v) => setSignupType(v as 'individual' | 'company')} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4 rounded-none border border-border/50 bg-muted/30 p-0.5">
-                <TabsTrigger value="individual">Individual</TabsTrigger>
-                <TabsTrigger value="company">Company</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="individual" className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-foreground">Full Name</Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="John Doe"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className="border-border/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-foreground">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name@company.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="border-border/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-foreground">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength={6}
-                    className="border-border/50"
-                  />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="company" className="space-y-4">
+            <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-foreground">Your Name</Label>
                   <Input
@@ -211,7 +164,7 @@ export default function SignupPage() {
                     placeholder="Acme Inc."
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    required={signupType === 'company'}
+                    required
                     className="border-border/50"
                   />
                 </div>
@@ -292,8 +245,7 @@ export default function SignupPage() {
                     </div>
                   </div>
                 </div>
-              </TabsContent>
-            </Tabs>
+            </div>
 
             <Button type="submit" className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 font-medium" disabled={loading}>
               {loading ? 'Creating account...' : 'Sign up'}

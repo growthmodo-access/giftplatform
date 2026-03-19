@@ -17,6 +17,7 @@ function LoginForm() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [resetSent, setResetSent] = useState(false)
 
   // Check for error in URL params (from redirects)
   useEffect(() => {
@@ -103,6 +104,29 @@ function LoginForm() {
     }
   }
 
+  const handleForgotPassword = async () => {
+    const normalizedEmail = email.trim()
+    if (!normalizedEmail) {
+      setError('Please enter your email first.')
+      return
+    }
+
+    setLoading(true)
+    setError('')
+    setResetSent(false)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+        redirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/login`,
+      })
+      if (error) throw error
+      setResetSent(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send reset email')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="w-full max-w-[400px] mx-auto overflow-x-hidden min-w-0">
       <Card className="w-full border border-border/20 shadow-xl min-w-0">
@@ -129,6 +153,11 @@ function LoginForm() {
                 {error}
               </div>
             )}
+            {resetSent && (
+              <div className="p-3 text-sm text-green-700 bg-green-50 border border-green-200 rounded-none">
+                Password reset link sent. Please check your inbox.
+              </div>
+            )}
             <div className="space-y-2">
                 <Label htmlFor="email" className="text-foreground">Email</Label>
               <Input
@@ -151,6 +180,16 @@ function LoginForm() {
                 required
                     className="border-border/50"
               />
+            </div>
+            <div className="text-right">
+              <button
+                type="button"
+                className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-2"
+                onClick={handleForgotPassword}
+                disabled={loading}
+              >
+                Forgot password?
+              </button>
             </div>
               <Button type="submit" className="w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 font-medium" disabled={loading}>
                 {loading
