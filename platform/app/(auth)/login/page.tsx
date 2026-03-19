@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { supabase } from '@/lib/supabase/client'
+import { createUserProfile } from '@/actions/auth'
 
 function LoginForm() {
   const router = useRouter()
@@ -91,18 +92,24 @@ function LoginForm() {
       if (error) throw error
       if (!data?.user) throw new Error('Login failed: No user data returned')
 
-      // Verify user profile exists before redirecting
-      try {
-        const { data: profile, error: profileError } = await supabase
-          .from('users')
-          .select('id, role, company_id')
-          .eq('id', data.user.id)
-          .maybeSingle()
+      // Ensure user profile exists before redirecting; self-heal if missing.
+      const { data: profile, error: profileError } = await supabase
+        .from('users')
+        .select('id, role, company_id')
+        .eq('id', data.user.id)
+        .maybeSingle()
 
-        if (profileError) throw new Error(`Profile error: ${profileError.message}`)
-        if (!profile) throw new Error('User profile not found. Please contact support.')
-      } catch {
-        // Let the user proceed; layout may handle missing profile
+      if (profileError) throw new Error(`Profile error: ${profileError.message}`)
+      if (!profile) {
+        const createResult = await createUserProfile(
+          data.user.id,
+          data.user.email ?? email,
+          typeof data.user.user_metadata?.name === 'string' ? data.user.user_metadata.name : undefined,
+          null
+        )
+        if (createResult.error) {
+          throw new Error(`User profile setup failed: ${createResult.error}`)
+        }
       }
 
       // Get redirect URL from query params or default to dashboard
